@@ -9,8 +9,9 @@ import { dirname } from 'path';
 
 // LOGIC FIX: Explicitly point to the writable volume in Railway
 const isProd = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
-const dbPath = isProd ? '/data/local.sqlite' : 'local.sqlite';
+export const dbPath = isProd ? '/data/local.sqlite' : 'local.sqlite';
 
+export function initializeDatabase() {
 // Ensure the directory exists before opening the database
 const dbDir = dirname(dbPath);
 if (dbDir !== '.' && !existsSync(dbDir)) {
@@ -2666,4 +2667,10 @@ try {
   process.exit(1);
 } finally {
   sqlite.close();
+}
+}
+
+// Allow running directly: tsx src/init-db.ts
+if (process.argv[1]?.endsWith('init-db.ts') || process.argv[1]?.endsWith('init-db.js')) {
+  initializeDatabase();
 }
