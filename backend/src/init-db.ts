@@ -9,7 +9,7 @@ import { dirname } from 'path';
 
 // LOGIC FIX: Explicitly point to the writable volume in Railway
 const isProd = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
-const dbPath = isProd ? '/app/data/local.sqlite' : 'local.sqlite';
+const dbPath = isProd ? '/data/local.sqlite' : 'local.sqlite';
 
 // Ensure the directory exists before opening the database
 const dbDir = dirname(dbPath);
