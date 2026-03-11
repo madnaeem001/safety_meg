@@ -83,7 +83,8 @@ Remember: You are a proactive safety partner. Every response should make workpla
 
 
 // Dedicated SQLite instance for AI Audit Form persistence
-const sqlite = new Database('local.sqlite');
+const isProdRoute = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
+const sqlite = new Database(isProdRoute ? '/data/local.sqlite' : 'local.sqlite');
 
 // ── Table DDL ────────────────────────────────────────────────────────────────
 sqlite.exec(`
@@ -702,7 +703,7 @@ Provide 3-5 specific safety recommendations and best practices.`;
     const body = await c.req.json().catch(() => ({}));
     const { department, timeRange = '30d' } = body;
 
-    const db = new Database('local.sqlite');
+    const db = new Database(isProdRoute ? '/data/local.sqlite' : 'local.sqlite');
     db.pragma('foreign_keys = OFF');
     let q = 'SELECT severity, department, incident_date FROM incidents WHERE 1=1';
     const params: any[] = [];
@@ -750,7 +751,7 @@ Provide 3-5 specific safety recommendations and best practices.`;
     const body = await c.req.json().catch(() => ({}));
     const { dataType = 'incidents', threshold = 2.0 } = body;
 
-    const db = new Database('local.sqlite');
+    const db = new Database(isProdRoute ? '/data/local.sqlite' : 'local.sqlite');
     db.pragma('foreign_keys = OFF');
     const sensorData = db.prepare('SELECT * FROM sensor_readings ORDER BY recorded_at DESC LIMIT 100').all();
     const incidents = db.prepare('SELECT department, COUNT(*) as cnt FROM incidents GROUP BY department').all();
@@ -867,7 +868,7 @@ Provide 3-5 specific safety recommendations and best practices.`;
   app.get('/api/ai/recommendations', async (c) => {
     const { department, limit = '5' } = c.req.query() as any;
 
-    const db = new Database('local.sqlite');
+    const db = new Database(isProdRoute ? '/data/local.sqlite' : 'local.sqlite');
     db.pragma('foreign_keys = OFF');
     let q = "SELECT severity, incident_type, department FROM incidents WHERE status = 'open' ORDER BY created_at DESC LIMIT 20";
     const openIncidents = db.prepare(q).all();
