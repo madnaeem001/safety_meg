@@ -4,7 +4,8 @@ import Database from 'better-sqlite3';
 import { z } from 'zod';
 import { createHash, randomBytes } from 'crypto';
 
-const sqlite = new Database('local.sqlite');
+const isProdAuth = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
+const sqlite = new Database(isProdAuth ? '/data/local.sqlite' : 'local.sqlite');
 sqlite.pragma('journal_mode = WAL');
 
 const logger = {
