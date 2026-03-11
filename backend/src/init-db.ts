@@ -1,4 +1,6 @@
 import Database from 'better-sqlite3';
+import { mkdirSync, existsSync } from 'fs';
+import { dirname } from 'path';
 
 /**
  * Initialize database tables
@@ -8,6 +10,12 @@ import Database from 'better-sqlite3';
 // LOGIC FIX: Explicitly point to the writable volume in Railway
 const isProd = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
 const dbPath = isProd ? '/app/data/local.sqlite' : 'local.sqlite';
+
+// Ensure the directory exists before opening the database
+const dbDir = dirname(dbPath);
+if (dbDir !== '.' && !existsSync(dbDir)) {
+  mkdirSync(dbDir, { recursive: true });
+}
 
 const sqlite = new Database(dbPath);
 
