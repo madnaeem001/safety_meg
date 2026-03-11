@@ -607,7 +607,8 @@ class SDSDatabaseService {
         }
 
         // POST to real backend
-        const response = await fetch('/api/sds/sync', {
+        const _apiBase = (import.meta.env.VITE_API_BASE_URL as string | undefined) || '/api';
+        const response = await fetch(`${_apiBase}/sds/sync`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ items: equipmentItems }),

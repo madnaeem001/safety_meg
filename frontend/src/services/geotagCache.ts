@@ -1,3 +1,5 @@
+const _API_BASE = (import.meta.env.VITE_API_BASE_URL as string | undefined) || '/api';
+
 /**
  * Geotag Offline Caching Service
  * Provides IndexedDB storage for geolocation data with offline sync capabilities
@@ -358,7 +360,7 @@ class GeotagCacheService {
     // If online, try to save directly to backend and mark as synced
     if (navigator.onLine && geotag.syncStatus === 'pending') {
       try {
-        const response = await fetch('/api/geotags', {
+        const response = await fetch(`${_API_BASE}/geotags`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(geotag),
@@ -519,7 +521,7 @@ class GeotagCacheService {
 
     try {
       // Batch sync to real backend
-      const response = await fetch('/api/geotags/sync', {
+      const response = await fetch(`${_API_BASE}/geotags/sync`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ geotags: pending }),

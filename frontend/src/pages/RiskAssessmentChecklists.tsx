@@ -225,7 +225,8 @@ const EmailNotificationSection: React.FC<EmailNotificationSectionProps> = ({ che
       // Get current locale
       const locale = localStorage.getItem('safetymeg_language') || 'en';
       
-      const response = await fetch('/api/public/notifications/checklist-completed', {
+      const _apiBase = (import.meta.env.VITE_API_BASE_URL as string | undefined) || '/api';
+      const response = await fetch(`${_apiBase}/public/notifications/checklist-completed`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

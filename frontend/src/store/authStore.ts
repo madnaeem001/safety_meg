@@ -48,7 +48,7 @@ export interface RegisterPayload {
 type AuthStore = AuthState & AuthActions;
 
 // ── API BASE URL ─────────────────────────────────────────────────────────────
-const API_BASE = '/api';
+const API_BASE = (import.meta.env.VITE_API_BASE_URL as string | undefined) || '/api';
 
 async function apiCall<T>(
   path: string,
