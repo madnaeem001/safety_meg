@@ -285,7 +285,10 @@ export function vehicleIncidentsRoutes(app: Hono) {
       const existing = db.prepare('SELECT * FROM vehicle_incident_reports WHERE id=?').get(id);
       if (!existing) return c.json({ success: false, error: 'Report not found' }, 404);
 
-      const body = await c.req.json();
+      const body = await c.req.json().catch(() => null);
+      if (!body || typeof body !== 'object' || Object.keys(body).length === 0) {
+        return c.json({ success: false, error: 'No fields to update' }, 400);
+      }
       const parsed = UpdateSchema.safeParse(body);
       if (!parsed.success) {
         return c.json({ success: false, error: parsed.error.issues[0].message }, 400);

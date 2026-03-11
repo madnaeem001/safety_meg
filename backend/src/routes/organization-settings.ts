@@ -535,7 +535,7 @@ export function organizationSettingsRoutes(app: Hono) {
   // ── GET /api/organization/audit-log ────────────────────────────────────
 
   app.get('/api/organization/audit-log', (c) => {
-    const limit = Math.min(parseInt(c.req.query('limit') ?? '50', 10), 200);
+    const limit = Math.min(parseInt(c.req.query('limit') ?? '50', 10), 10_000);
     const offset = Math.max(parseInt(c.req.query('offset') ?? '0', 10), 0);
 
     const db = getDb();
