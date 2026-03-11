@@ -5,12 +5,9 @@ import Database from 'better-sqlite3';
  * Run this once to create all necessary tables for Phase 1
  */
 
-// LOGIC FIX: Use the Railway Volume path if available, otherwise fallback to local
-let dbPath = 'local.sqlite';
-if (process.env.DATABASE_URL) {
-  // better-sqlite3 doesn't need "file:" prefix, so we remove it if present
-  dbPath = process.env.DATABASE_URL.replace('file:', '');
-}
+// LOGIC FIX: Explicitly point to the writable volume in Railway
+const isProd = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
+const dbPath = isProd ? '/app/data/local.sqlite' : 'local.sqlite';
 
 const sqlite = new Database(dbPath);
 
