@@ -14,7 +14,8 @@ import Database from 'better-sqlite3';
 import { z } from 'zod';
 import { resolve } from 'path';
 
-const dbPath = resolve(process.cwd(), 'local.sqlite');
+const isProdRoute = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
+const dbPath = isProdRoute ? '/data/local.sqlite' : resolve(process.cwd(), 'local.sqlite');
 function getDb() { return new Database(dbPath); }
 const now = () => Date.now();
 

@@ -8,7 +8,7 @@ import { Hono } from 'hono';
 import Database from 'better-sqlite3';
 import { z } from 'zod';
 
-const isProdRoute = process.env.NODE_ENV === 'production' || # Fix all non-test route files that still have hardcoded 'local.sqlite'process.env.RAILWAY_ENVIRONMENT;
+const isProdRoute = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
 const sqlite = new Database(isProdRoute ? '/data/local.sqlite' : 'local.sqlite');
 sqlite.pragma('journal_mode = WAL');
 sqlite.pragma('foreign_keys = OFF');

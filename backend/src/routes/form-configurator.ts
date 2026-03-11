@@ -4,7 +4,8 @@ import { z } from 'zod';
 import { verify } from 'hono/jwt';
 import { resolve } from 'path';
 
-const dbPath = resolve(process.cwd(), 'local.sqlite');
+const isProdRoute = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
+const dbPath = isProdRoute ? '/data/local.sqlite' : resolve(process.cwd(), 'local.sqlite');
 function getDb() { return new Database(dbPath); }
 
 const JWT_SECRET = process.env.JWT_SECRET || 'safetymeg-jwt-secret-2025-change-in-production';

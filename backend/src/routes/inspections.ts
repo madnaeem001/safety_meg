@@ -3,7 +3,7 @@ import { z } from 'zod';
 import Database from 'better-sqlite3';
 import { logger } from '../services/logger';
 
-const isProdRoute = process.env.NODE_ENV === 'production' || # Fix all non-test route files that still have hardcoded 'local.sqlite'process.env.RAILWAY_ENVIRONMENT;
+const isProdRoute = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
 const sqlite = new Database(isProdRoute ? '/data/local.sqlite' : 'local.sqlite');
 
 // ==================== VALIDATION SCHEMAS ====================
