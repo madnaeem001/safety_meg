@@ -2,7 +2,8 @@ import { Hono } from 'hono';
 import Database from 'better-sqlite3';
 import { z } from 'zod';
 
-const sqlite = new Database('local.sqlite');
+const isProdRoute = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
+const sqlite = new Database(isProdRoute ? '/data/local.sqlite' : 'local.sqlite');
 sqlite.pragma('journal_mode = WAL');
 
 const logger = {

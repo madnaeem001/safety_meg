@@ -5,7 +5,8 @@ import type { Client } from "@sdk/server-types";
 import { tables } from "@generated";
 import { createLogger } from "../services/logger";
 
-const sqlite = new Database('local.sqlite');
+const isProdRoute = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
+const sqlite = new Database(isProdRoute ? '/data/local.sqlite' : 'local.sqlite');
 sqlite.pragma('journal_mode = WAL');
 sqlite.pragma('foreign_keys = OFF');
 
