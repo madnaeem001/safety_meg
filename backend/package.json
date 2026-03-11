@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "lsof -i :8787 | grep -v COMMAND | awk '{print $2}' | xargs kill -9 2>/dev/null; tsx watch src/main.ts",
-    "start": "tsx src/main.ts",
+    "start": "tsx src/init-db.ts && tsx src/main.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
