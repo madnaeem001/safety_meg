@@ -73,14 +73,16 @@ export async function createApp(edgespark: any): Promise<Hono> {
   // ── CORS MIDDLEWARE ────────────────────────────────────────────────────────
   app.use('*', cors({
     origin: (origin) => {
+      const extraOrigin = process.env.FRONTEND_URL;
       const allowed = [
         'http://localhost:5173',
         'http://localhost:4173',
         'http://127.0.0.1:5173',
         'http://127.0.0.1:4173',
         'http://localhost:3000',
+        ...(extraOrigin ? [extraOrigin] : []),
       ];
-      if (!origin || allowed.includes(origin) || origin.endsWith('.youware.com')) {
+      if (!origin || allowed.includes(origin) || origin.endsWith('.youware.com') || origin.endsWith('.railway.app') || origin.endsWith('.vercel.app') || origin.endsWith('.netlify.app')) {
         return origin || '*';
       }
       return allowed[0];
