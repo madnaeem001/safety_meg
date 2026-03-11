@@ -5,7 +5,14 @@ import Database from 'better-sqlite3';
  * Run this once to create all necessary tables for Phase 1
  */
 
-const sqlite = new Database('local.sqlite');
+// LOGIC FIX: Use the Railway Volume path if available, otherwise fallback to local
+let dbPath = 'local.sqlite';
+if (process.env.DATABASE_URL) {
+  // better-sqlite3 doesn't need "file:" prefix, so we remove it if present
+  dbPath = process.env.DATABASE_URL.replace('file:', '');
+}
+
+const sqlite = new Database(dbPath);
 
 const initSQL = `
 -- Users Table
