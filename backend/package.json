@@ -1,0 +1,31 @@
+{
+  "name": "backend",
+  "version": "2.0.0",
+  "description": "SafetyMEG EHS Platform Backend API",
+  "type": "module",
+  "scripts": {
+    "dev": "lsof -i :8787 | grep -v COMMAND | awk '{print $2}' | xargs kill -9 2>/dev/null; tsx watch src/main.ts",
+    "start": "tsx src/main.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.19.11",
+    "@openrouter/sdk": "^0.3.16",
+    "better-sqlite3": "^9.4.3",
+    "dotenv": "^16.6.1",
+    "drizzle-orm": "^0.44.7",
+    "hono": "^4.10.5",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.8",
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^4.0.18",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  }
+}

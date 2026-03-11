@@ -1,0 +1,1 @@
+export { QRCodeFeature } from './QRCodeFeature';
