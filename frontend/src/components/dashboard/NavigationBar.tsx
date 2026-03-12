@@ -105,6 +105,9 @@ const INITIAL_NOTIFICATIONS = [
 
 interface NavigationBarProps {
   onRefresh?: () => void;
+  isMenuOpen?: boolean;
+  onMenuToggle?: () => void;
+  onMenuClose?: () => void;
 }
 
 export const NavigationBar: React.FC<NavigationBarProps> = ({ onRefresh }) => {
