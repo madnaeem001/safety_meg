@@ -24,6 +24,54 @@
         "id": "P1-4",
         "title": "Run production build",
         "status": "implemented"
+      },
+      {
+        "id": "P1-5",
+        "title": "Create master frontend-backend audit plan",
+        "status": "implemented"
+      }
+    ]
+  },
+  {
+    "id": "PHASE-1B",
+    "title": "Functional Audit Execution",
+    "status": "implemented",
+    "priority": "critical",
+    "items": [
+      {
+        "id": "P1B-1",
+        "title": "Execute page-by-page navigation and route audit",
+        "status": "implemented"
+      },
+      {
+        "id": "P1B-2",
+        "title": "Execute shared component behavior audit",
+        "status": "implemented"
+      },
+      {
+        "id": "P1B-3",
+        "title": "Verify backend CRUD flows by page and refresh persistence",
+        "status": "implemented"
+      },
+      {
+        "id": "P1B-4",
+        "title": "Verify AI functionality success and failure states",
+        "status": "implemented"
+      },
+      {
+        "id": "P1B-5",
+        "title": "Create implemented and verified coverage report",
+        "status": "implemented"
+      },
+      {
+        "id": "P1B-6",
+        "title": "Create remaining gaps and defects report",
+        "status": "implemented"
+      },
+      {
+        "id": "P1B-7",
+        "title": "Maintain execution log during audit",
+        "status": "implemented"
       }
     ]
   },
@@ -57,6 +105,11 @@
         "id": "P2-5",
         "title": "Platform-wide removal of localStorage business persistence",
         "status": "pending"
+      },
+      {
+        "id": "P2-6",
+        "title": "Production start flow initializes schema and seed data",
+        "status": "implemented"
       }
     ]
   },
@@ -102,32 +155,32 @@
       {
         "id": "P4-1",
         "title": "Convert Analytics from mixed mock plus live mode to backend-only business data",
-        "status": "pending"
+        "status": "implemented"
       },
       {
         "id": "P4-2",
         "title": "Convert ESGReporting to backend-only metrics and trend data",
-        "status": "pending"
+        "status": "implemented"
       },
       {
         "id": "P4-3",
         "title": "Complete ProjectManagement backendization for milestones RFI and schedule data",
-        "status": "pending"
+        "status": "implemented"
       },
       {
         "id": "P4-4",
         "title": "Remove mock fallback from ChemicalSDSManagement",
-        "status": "pending"
+        "status": "implemented"
       },
       {
         "id": "P4-5",
         "title": "Remove mock fallback from AssetQRScanner",
-        "status": "pending"
+        "status": "implemented"
       },
       {
         "id": "P4-6",
-        "title": "Move SafetyProcedures reference content under backend control",
-        "status": "pending"
+        "title": "Complete SafetyProcedures data ownership and backend alignment for business content",
+        "status": "implemented"
       },
       {
         "id": "P4-7",
@@ -137,7 +190,7 @@
       {
         "id": "P4-8",
         "title": "Replace EmissionReports mock detail data with backend records",
-        "status": "pending"
+        "status": "implemented"
       },
       {
         "id": "P4-9",
@@ -152,30 +205,40 @@
       {
         "id": "P4-11",
         "title": "Replace KPIIndicators mock export data with backend report datasets",
-        "status": "pending"
+        "status": "implemented"
       },
       {
         "id": "P4-12",
         "title": "Remove NotificationSettings mock preference fallback",
-        "status": "pending"
+        "status": "implemented"
       },
       {
         "id": "P4-13",
         "title": "Replace ContractorPermitManagement mock permit datasets",
         "status": "pending"
+      },
+      {
+        "id": "P4-14",
+        "title": "Fix dashboard incident CTA routing and auth-page widget leakage",
+        "status": "implemented"
+      },
+      {
+        "id": "P4-15",
+        "title": "Reset scroll position on every route navigation",
+        "status": "implemented"
       }
     ]
   },
   {
     "id": "PHASE-5",
     "title": "New Backend Modules Required",
-    "status": "pending",
+    "status": "partial",
     "priority": "critical",
     "items": [
       {
         "id": "P5-1",
         "title": "Build checklist template CRUD backend for ChecklistBuilder",
-        "status": "pending"
+        "status": "implemented"
       },
       {
         "id": "P5-2",
@@ -184,8 +247,8 @@
       },
       {
         "id": "P5-3",
-        "title": "Build organization management backend for OrganizationSettings",
-        "status": "pending"
+        "title": "Complete OrganizationSettings integration onto backend organization module",
+        "status": "partial"
       },
       {
         "id": "P5-4",

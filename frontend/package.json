@@ -9,7 +9,19 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:audit": "playwright test --workers=1",
+    "test:e2e:navigation-audit": "playwright test e2e/all-pages-route-and-button-navigation.spec.ts --workers=1",
+    "test:e2e:surface": "playwright test e2e/route-surface-audit.spec.ts --workers=1",
+    "test:e2e:critical": "playwright test e2e/route-audit-critical-paths.spec.ts e2e/domain-crud.spec.ts --workers=1",
+    "test:e2e:smoke": "playwright test e2e/auth-and-dashboard.smoke.spec.ts e2e/auth-protection-and-register.spec.ts e2e/incident-routing.smoke.spec.ts e2e/scroll-reset.spec.ts e2e/shell-navigation-and-ai.spec.ts --workers=1",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report",
+    "test:e2e:report:html": "playwright show-report playwright-report/html",
+    "playwright:install": "playwright install chromium"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.3.22",
@@ -41,6 +53,7 @@
   },
   "devDependencies": {
     "@edgespark/cli": "^0.0.5",
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/typography": "^0.5.19",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",

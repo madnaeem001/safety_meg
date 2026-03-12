@@ -467,6 +467,7 @@ export const AIAuditTemplateForm: React.FC = () => {
   const saveSessionMutation = useSaveAuditFormSessionMutation();
   const auditAnalysisMutation = useAuditAnalysisMutation();
 
+  const [customTemplates, setCustomTemplates] = useState<AuditTemplate[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<AuditTemplate | null>(null);
 
   useEffect(() => {
@@ -500,7 +501,6 @@ export const AIAuditTemplateForm: React.FC = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [visualEvidence, setVisualEvidence] = useState<{ photos: number; videos: number; scans: number }>({ photos: 0, videos: 0, scans: 0 });
   const [searchFilter, setSearchFilter] = useState('');
-  const [customTemplates, setCustomTemplates] = useState<AuditTemplate[]>([]);
 
   // Hydrate persisted custom templates from backend on first load
   useEffect(() => {

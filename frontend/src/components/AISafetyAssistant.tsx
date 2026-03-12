@@ -183,22 +183,7 @@ export const AISafetyAssistant: React.FC = () => {
     startListening, 
     stopListening, 
     isSupported: isVoiceSupported 
-  } = useVoiceRecognition({
-    onResult: (text, isFinal) => {
-      if (isFinal) {
-        setInputValue(prev => prev + ' ' + text);
-      }
-    }
-  });
-
-  const toggleVoice = () => {
-    if (isListening) {
-      stopListening();
-    } else {
-      startListening();
-    }
-  };
-
+  } = useVoiceRecognition();
   const handleImageAnalysis = async (file: File) => {
     setIsAnalyzingImage(true);
     
@@ -326,6 +311,7 @@ Would you like me to log these as formal observations?`,
             whileHover={{ scale: 1.1, rotate: 5 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setIsOpen(true)}
+            aria-label="Open AI assistant"
             className="fixed bottom-24 right-6 z-50 w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500 to-violet-600 text-white shadow-2xl shadow-brand-500/40 flex items-center justify-center group"
           >
             <div className="absolute inset-0 rounded-2xl bg-white/20 animate-ping group-hover:hidden" />
@@ -367,18 +353,21 @@ Would you like me to log these as formal observations?`,
               <div className="flex items-center gap-1">
                 <button 
                   onClick={() => setIsMuted(!isMuted)}
+                  aria-label={isMuted ? 'Unmute assistant audio' : 'Mute assistant audio'}
                   className="p-2 hover:bg-white/10 rounded-lg text-white/80 transition-colors"
                 >
                   {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
                 </button>
                 <button 
                   onClick={() => setIsMinimized(!isMinimized)}
+                  aria-label={isMinimized ? 'Expand AI assistant' : 'Minimize AI assistant'}
                   className="p-2 hover:bg-white/10 rounded-lg text-white/80 transition-colors"
                 >
                   {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
                 </button>
                 <button 
                   onClick={() => { setIsOpen(false); aiService.resetConversation(); }}
+                  aria-label="Close AI assistant"
                   className="p-2 hover:bg-white/10 rounded-lg text-white/80 transition-colors"
                 >
                   <X className="w-4 h-4" />
@@ -530,6 +519,7 @@ Would you like me to log these as formal observations?`,
                     <button
                       onClick={() => handleSend()}
                       disabled={!inputValue.trim() || isTyping}
+                      aria-label="Send AI message"
                       className="w-11 h-11 rounded-2xl bg-brand-600 hover:bg-brand-500 disabled:bg-surface-800 disabled:text-surface-600 text-white flex items-center justify-center transition-all shadow-lg shadow-brand-600/20 shrink-0"
                     >
                       <Send className="w-5 h-5" />

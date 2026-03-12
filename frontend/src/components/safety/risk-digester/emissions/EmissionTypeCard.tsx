@@ -1,10 +1,19 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { DetailedEmission } from '../../../../data/mockRiskDigester';
 import { TrendingUp, TrendingDown, Minus, AlertCircle, CheckCircle2, AlertTriangle } from 'lucide-react';
 
+export interface EmissionCardData {
+  id: string;
+  type: string;
+  unit: string;
+  actual: number;
+  limit: number;
+  status: 'Compliant' | 'Warning' | 'Exceeded';
+  trend: 'up' | 'down' | 'stable';
+}
+
 interface EmissionTypeCardProps {
-  emission: DetailedEmission;
+  emission: EmissionCardData;
   delay?: number;
 }
 

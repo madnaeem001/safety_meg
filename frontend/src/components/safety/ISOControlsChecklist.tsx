@@ -1,10 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ISOControl } from '../../data/mockSafetyProcedures';
 import { CheckCircle2, FileText, ArrowUpRight } from 'lucide-react';
 
+export interface ISOChecklistItem {
+  id: string;
+  clause: string;
+  title: string;
+  description: string;
+}
+
 interface ISOControlsChecklistProps {
-  controls: ISOControl[];
+  controls: ISOChecklistItem[];
 }
 
 export const ISOControlsChecklist: React.FC<ISOControlsChecklistProps> = ({ controls }) => {

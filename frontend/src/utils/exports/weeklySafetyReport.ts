@@ -79,6 +79,34 @@ export interface WeeklySafetyReportData {
   }[];
 }
 
+interface WeeklyReportIndicatorSnapshot {
+  name: string;
+  current: number;
+  target: number;
+  benchmark?: number;
+}
+
+interface WeeklyReportSummarySnapshot {
+  leadingScore: number;
+  trir: number;
+  daysWithoutLTI: number;
+  training: number;
+}
+
+interface WeeklyReportIncidentBreakdownItem {
+  name: string;
+  value: number;
+}
+
+interface BuildWeeklySafetyReportParams {
+  overview: WeeklyReportSummarySnapshot;
+  previousLeadingScore: number;
+  leadingIndicators: WeeklyReportIndicatorSnapshot[];
+  laggingIndicators: WeeklyReportIndicatorSnapshot[];
+  incidentBreakdown: WeeklyReportIncidentBreakdownItem[];
+  reportDate?: Date;
+}
+
 // Mock data generator for weekly reports
 export const generateMockWeeklyData = (): WeeklySafetyReportData => {
   const today = new Date();
@@ -151,6 +179,105 @@ export const generateMockWeeklyData = (): WeeklySafetyReportData => {
       { date: '2026-01-25', topic: 'Chemical Handling', attendees: 40, signOffRate: 100 },
       { date: '2026-01-24', topic: 'Emergency Evacuation', attendees: 44, signOffRate: 97 },
     ],
+  };
+};
+
+export const buildWeeklySafetyReportData = ({
+  overview,
+  previousLeadingScore,
+  leadingIndicators,
+  laggingIndicators,
+  incidentBreakdown,
+  reportDate = new Date(),
+}: BuildWeeklySafetyReportParams): WeeklySafetyReportData => {
+  const endDate = reportDate;
+  const startDate = new Date(endDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const totalIncidents = incidentBreakdown.reduce((sum, item) => sum + item.value, 0);
+  const nearMissEntry = incidentBreakdown.find((item) => item.name.toLowerCase().includes('near'));
+  const trainingIndicator = leadingIndicators.find((item) => item.name.toLowerCase().includes('training'));
+  const inspectionIndicator = leadingIndicators.find((item) => item.name.toLowerCase().includes('inspection'));
+  const toolboxIndicator = leadingIndicators.find((item) => item.name.toLowerCase().includes('toolbox'));
+  const dartIndicator = laggingIndicators.find((item) => item.name.toLowerCase().includes('dart'));
+
+  return {
+    reportPeriod: {
+      startDate,
+      endDate,
+    },
+    companyInfo: {
+      name: 'SafetyMEG',
+      location: 'Enterprise-wide',
+      department: 'EHS Operations',
+    },
+    summary: {
+      safetyScore: overview.leadingScore,
+      previousScore: previousLeadingScore,
+      trir: overview.trir,
+      dart: dartIndicator?.current ?? 0,
+      daysWithoutLTI: overview.daysWithoutLTI,
+      totalIncidents,
+      nearMisses: nearMissEntry?.value ?? 0,
+      openCAPAs: 0,
+      trainingCompliance: overview.training,
+    },
+    incidents: incidentBreakdown.map((item, index) => ({
+      id: `KPI-${index + 1}`,
+      date: endDate.toISOString().slice(0, 10),
+      type: item.name,
+      severity: item.value >= 5 ? 'High' : item.value >= 3 ? 'Medium' : 'Low',
+      location: 'Multi-site',
+      status: 'Tracked',
+      description: `${item.value} ${item.name.toLowerCase()} logged during the current reporting window.`,
+    })),
+    nearMisses: nearMissEntry
+      ? [{
+          id: 'NM-SUMMARY',
+          date: endDate.toISOString().slice(0, 10),
+          location: 'Enterprise-wide',
+          hazardType: nearMissEntry.name,
+          potentialSeverity: nearMissEntry.value >= 5 ? 'High' : nearMissEntry.value >= 3 ? 'Medium' : 'Low',
+          correctiveAction: `${nearMissEntry.value} near-miss items require follow-up review in the detailed incident workflow.`,
+        }]
+      : [],
+    trainingRecords: trainingIndicator
+      ? [{
+          employee: 'All Personnel',
+          course: 'Required training portfolio',
+          completionDate: endDate.toISOString().slice(0, 10),
+          status: `${trainingIndicator.current}% complete against ${trainingIndicator.target}% target`,
+        }]
+      : [],
+    inspections: inspectionIndicator
+      ? [{
+          date: endDate.toISOString().slice(0, 10),
+          area: 'All active sites',
+          inspector: 'Live KPI feed',
+          score: inspectionIndicator.current,
+          findings: Math.max(totalIncidents - (nearMissEntry?.value ?? 0), 0),
+        }]
+      : [],
+    kpis: {
+      leadingIndicators: leadingIndicators.map((item) => ({
+        name: item.name,
+        current: item.current,
+        target: item.target,
+        status: item.current >= item.target ? 'on-track' : item.current >= item.target * 0.85 ? 'at-risk' : 'behind',
+      })),
+      laggingIndicators: laggingIndicators.map((item) => ({
+        name: item.name,
+        current: item.current,
+        target: item.target,
+        benchmark: item.benchmark ?? item.target,
+      })),
+    },
+    toolboxTalks: toolboxIndicator
+      ? [{
+          date: endDate.toISOString().slice(0, 10),
+          topic: 'Participation snapshot',
+          attendees: Math.round(toolboxIndicator.current),
+          signOffRate: Math.round(toolboxIndicator.current),
+        }]
+      : [],
   };
 };
 

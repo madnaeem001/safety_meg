@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence, Reorder } from 'framer-motion';
-import { PROJECT_SCHEDULE, RFI_REGISTER, INITIAL_TASKS, MILESTONES, EPICS, ProjectTask, TaskStatus, TaskPriority, Milestone, IssueType, Epic } from '../data/mockProjectManagement';
+import { INITIAL_TASKS, EPICS, ProjectTask, TaskStatus, TaskPriority, Milestone, IssueType, Epic, ScheduleTask, RFI } from '../data/mockProjectManagement';
 import { Calendar, FileText, Clock, AlertCircle, CheckCircle2, ArrowUpRight, Plus, X, User, ListTodo, Loader2, MoreVertical, Trash2, Search, Filter, Target, Flag, GripVertical, Zap, Bug, BookOpen, CheckSquare, Layers, Eye, Play, Archive, BarChart3, Brain } from 'lucide-react';
 import { hapticFeedback } from '../utils/mobileFeatures';
 import { TaskDetailModal, SprintPlanningView, BacklogManagement, VelocityCharts, SprintRetrospectives, ReleasePlanningView, SprintSettings, WorkflowAutomation } from '../components/agile';
@@ -512,6 +512,7 @@ export const ProjectManagement: React.FC = () => {
   const { data: backendTasks, refetch: refetchTasks } = useProjectTasks(activeProjectId);
   const createTask = useCreateProjectTask();
   const updateTask = useUpdateProjectTask();
+  const activeProjectName = (backendProjects?.[0] as any)?.title ?? (backendProjects?.[0] as any)?.name ?? 'Active Project';
 
   // ── Epics (backend with mock fallback) ─────────────────────────────────
   const { data: backendEpics } = useProjectEpics();
@@ -529,38 +530,45 @@ export const ProjectManagement: React.FC = () => {
     return EPICS;
   }, [backendEpics]);
 
-  // ── Milestones (backend with mock fallback) ─────────────────────────────
-  const { data: backendMilestones } = useProjectMilestones();
+  // ── Milestones (backend-owned) ──────────────────────────────────────────
+  const { data: backendMilestones } = useProjectMilestones(activeProjectId ? { projectId: activeProjectId } : undefined);
   const milestones: Milestone[] = useMemo(() => {
-    if (backendMilestones && backendMilestones.length > 0) {
-      return backendMilestones as Milestone[];
-    }
-    return MILESTONES;
+    return (backendMilestones ?? []).map((milestone) => ({
+      id: String(milestone.id),
+      title: milestone.title,
+      description: milestone.description ?? '',
+      dueDate: milestone.dueDate,
+      status: milestone.status,
+      owner: milestone.owner || 'Unassigned',
+      taskIds: milestone.taskIds ?? [],
+    }));
   }, [backendMilestones]);
 
-  // ── RFI Register (backend with mock fallback) ───────────────────────────
-  const { data: backendRFI } = useProjectRFI();
-  const rfiRegister = useMemo(() => {
-    if (backendRFI && backendRFI.length > 0) {
-      return backendRFI;
-    }
-    return RFI_REGISTER;
-  }, [backendRFI]);
+  // ── RFI Register (backend-owned) ───────────────────────────────────────
+  const { data: backendRFI } = useProjectRFI(activeProjectId ? { projectId: activeProjectId } : undefined);
+  const rfiRegister: RFI[] = useMemo(() => (
+    (backendRFI ?? []).map((rfi) => ({
+      id: String(rfi.id),
+      subject: rfi.subject,
+      from: rfi.from,
+      to: rfi.to,
+      dateSubmitted: rfi.dateSubmitted,
+      dueDate: rfi.dueDate,
+      status: rfi.status,
+    }))
+  ), [backendRFI]);
 
-  // ── Project Schedule (backend with mock fallback) ────────────────────────
+  // ── Project Schedule (backend-owned) ───────────────────────────────────
   const { data: scheduleData } = useProjectSchedule(activeProjectId);
-  const projectSchedule = useMemo(() => {
-    if (scheduleData?.data?.timeline && scheduleData.data.timeline.length > 0) {
-      return scheduleData.data.timeline.map((t: any) => ({
-        id: String(t.id),
-        task: t.task,
-        startDate: t.startDate ?? '',
-        endDate: t.endDate ?? '',
-        progress: t.progress ?? 0,
-        status: t.status === 'completed' ? 'Completed' : t.status === 'blocked' ? 'Delayed' : 'On Track',
-      }));
-    }
-    return PROJECT_SCHEDULE;
+  const projectSchedule: ScheduleTask[] = useMemo(() => {
+    return (scheduleData?.data?.timeline ?? []).map((timelineItem: any) => ({
+      id: String(timelineItem.id),
+      task: timelineItem.task,
+      startDate: timelineItem.startDate ?? '',
+      endDate: timelineItem.endDate ?? '',
+      progress: timelineItem.progress ?? 0,
+      status: timelineItem.status === 'completed' ? 'Completed' : timelineItem.status === 'blocked' ? 'Delayed' : 'On Track',
+    }));
   }, [scheduleData]);
 
   // Merge backend tasks with mock fallback
@@ -903,7 +911,10 @@ export const ProjectManagement: React.FC = () => {
         {activeView === 'milestones' && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-xl font-bold text-brand-900">Project Milestones</h3>
+              <div>
+                <h3 className="text-xl font-bold text-brand-900">Project Milestones</h3>
+                <p className="text-sm text-surface-500 mt-1">Backend-owned milestones for {activeProjectName}</p>
+              </div>
               <div className="flex items-center gap-4 text-xs">
                 <div className="flex items-center gap-1.5">
                   <div className="w-3 h-3 rounded-full bg-emerald-500" />
@@ -921,20 +932,26 @@ export const ProjectManagement: React.FC = () => {
             </div>
             
             {/* Timeline visualization */}
-            <div className="relative">
-              <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-surface-200" />
-              <div className="space-y-6">
-                {milestones.sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()).map((milestone, index) => (
-                  <div key={milestone.id} className="relative pl-14">
-                    <div className={`absolute left-4 w-5 h-5 rounded-full border-4 border-white ${
-                      milestone.status === 'completed' ? 'bg-emerald-500' : 
-                      milestone.status === 'in_progress' ? 'bg-blue-500' : 'bg-surface-300'
-                    }`} />
-                    <MilestoneCard milestone={milestone} tasks={tasks} />
-                  </div>
-                ))}
+            {milestones.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-dashed border-surface-200 p-8 text-center text-surface-500">
+                No backend milestones are currently available for this project.
               </div>
-            </div>
+            ) : (
+              <div className="relative">
+                <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-surface-200" />
+                <div className="space-y-6">
+                  {milestones.slice().sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()).map((milestone) => (
+                    <div key={milestone.id} className="relative pl-14">
+                      <div className={`absolute left-4 w-5 h-5 rounded-full border-4 border-white ${
+                        milestone.status === 'completed' ? 'bg-emerald-500' : 
+                        milestone.status === 'in_progress' ? 'bg-blue-500' : 'bg-surface-300'
+                      }`} />
+                      <MilestoneCard milestone={milestone} tasks={tasks} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -946,37 +963,46 @@ export const ProjectManagement: React.FC = () => {
             className="bg-white p-6 sm:p-8 rounded-3xl shadow-soft border border-surface-100"
           >
             <div className="flex justify-between items-center mb-8">
-              <h3 className="text-xl font-bold text-brand-900 tracking-tight">Project Schedule</h3>
+              <div>
+                <h3 className="text-xl font-bold text-brand-900 tracking-tight">Project Schedule</h3>
+                <p className="text-sm text-surface-500 mt-1">Timeline generated from backend project tasks for {activeProjectName}</p>
+              </div>
               <button className="text-[10px] font-bold text-brand-600 uppercase tracking-widest hover:text-brand-700 transition-colors flex items-center gap-1">
                 Gantt View <ArrowUpRight className="w-3 h-3" />
               </button>
             </div>
-            <div className="space-y-6">
-              {projectSchedule.map((task, index) => (
-                <div key={task.id} className="space-y-2">
-                  <div className="flex justify-between items-end">
-                    <div>
-                      <div className="text-sm font-bold text-brand-900">{task.task}</div>
-                      <div className="text-[10px] text-surface-400 font-medium uppercase tracking-wider">{task.startDate} — {task.endDate}</div>
+            {projectSchedule.length === 0 ? (
+              <div className="rounded-2xl border border-dashed border-surface-200 p-8 text-center text-surface-500">
+                No scheduled backend task timeline is available for this project yet.
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {projectSchedule.map((task, index) => (
+                  <div key={task.id} className="space-y-2">
+                    <div className="flex justify-between items-end">
+                      <div>
+                        <div className="text-sm font-bold text-brand-900">{task.task}</div>
+                        <div className="text-[10px] text-surface-400 font-medium uppercase tracking-wider">{task.startDate} — {task.endDate}</div>
+                      </div>
+                      <div className="text-right">
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${task.status === 'Completed' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : task.status === 'Delayed' ? 'bg-accent-50 text-accent-600 border-accent-100' : 'bg-brand-50 text-brand-600 border-brand-100'}`}>
+                          {task.status}
+                        </span>
+                        <div className="text-xs font-bold text-brand-900 mt-1">{task.progress}%</div>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${task.status === 'Completed' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : task.status === 'Delayed' ? 'bg-accent-50 text-accent-600 border-accent-100' : 'bg-brand-50 text-brand-600 border-brand-100'}`}>
-                        {task.status}
-                      </span>
-                      <div className="text-xs font-bold text-brand-900 mt-1">{task.progress}%</div>
+                    <div className="h-1.5 bg-surface-50 rounded-full overflow-hidden border border-surface-100">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${task.progress}%` }}
+                        transition={{ duration: 1, delay: index * 0.1 }}
+                        className={`h-full rounded-full ${task.status === 'Completed' ? 'bg-emerald-500' : task.status === 'Delayed' ? 'bg-accent-500' : 'bg-brand-500'}`}
+                      />
                     </div>
                   </div>
-                  <div className="h-1.5 bg-surface-50 rounded-full overflow-hidden border border-surface-100">
-                    <motion.div 
-                      initial={{ width: 0 }}
-                      animate={{ width: `${task.progress}%` }}
-                      transition={{ duration: 1, delay: index * 0.1 }}
-                      className={`h-full rounded-full ${task.status === 'Completed' ? 'bg-emerald-500' : task.status === 'Delayed' ? 'bg-accent-500' : 'bg-brand-500'}`}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </motion.div>
         )}
 
@@ -988,39 +1014,48 @@ export const ProjectManagement: React.FC = () => {
             className="bg-white p-6 sm:p-8 rounded-3xl shadow-soft border border-surface-100"
           >
             <div className="flex justify-between items-center mb-8">
-              <h3 className="text-xl font-bold text-brand-900 tracking-tight">RFI Register</h3>
+              <div>
+                <h3 className="text-xl font-bold text-brand-900 tracking-tight">RFI Register</h3>
+                <p className="text-sm text-surface-500 mt-1">Backend-owned RFIs for {activeProjectName}</p>
+              </div>
               <button className="text-[10px] font-bold text-brand-600 uppercase tracking-widest hover:text-brand-700 transition-colors flex items-center gap-1">
                 New RFI <ArrowUpRight className="w-3 h-3" />
               </button>
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead>
-                  <tr className="border-b border-surface-50">
-                    <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest">Subject</th>
-                    <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest text-center">Status</th>
-                    <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest text-right">Due Date</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-surface-50">
-                  {rfiRegister.map(rfi => (
-                    <tr key={rfi.id} className="group hover:bg-surface-50/50 transition-colors">
-                      <td className="py-4">
-                        <div className="text-sm font-bold text-brand-900">{rfi.subject}</div>
-                        <div className="text-[10px] text-surface-500 mt-0.5">From: {rfi.from}</div>
-                      </td>
-                      <td className="py-4 text-center">
-                        <div className="flex items-center justify-center gap-2 text-xs font-medium text-surface-600">
-                          {rfi.status === 'Overdue' ? <AlertCircle className="w-4 h-4 text-accent-500" /> : rfi.status === 'Closed' ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <Clock className="w-4 h-4 text-brand-500" />}
-                          {rfi.status}
-                        </div>
-                      </td>
-                      <td className="py-4 text-right text-xs font-medium text-surface-500">{rfi.dueDate}</td>
+            {rfiRegister.length === 0 ? (
+              <div className="rounded-2xl border border-dashed border-surface-200 p-8 text-center text-surface-500">
+                No backend RFIs are currently available for this project.
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr className="border-b border-surface-50">
+                      <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest">Subject</th>
+                      <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest text-center">Status</th>
+                      <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest text-right">Due Date</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-surface-50">
+                    {rfiRegister.map(rfi => (
+                      <tr key={rfi.id} className="group hover:bg-surface-50/50 transition-colors">
+                        <td className="py-4">
+                          <div className="text-sm font-bold text-brand-900">{rfi.subject}</div>
+                          <div className="text-[10px] text-surface-500 mt-0.5">From: {rfi.from}</div>
+                        </td>
+                        <td className="py-4 text-center">
+                          <div className="flex items-center justify-center gap-2 text-xs font-medium text-surface-600">
+                            {rfi.status === 'Overdue' ? <AlertCircle className="w-4 h-4 text-accent-500" /> : rfi.status === 'Closed' ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <Clock className="w-4 h-4 text-brand-500" />}
+                            {rfi.status}
+                          </div>
+                        </td>
+                        <td className="py-4 text-right text-xs font-medium text-surface-500">{rfi.dueDate}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </motion.div>
         )}
 

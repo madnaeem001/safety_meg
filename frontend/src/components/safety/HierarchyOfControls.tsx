@@ -1,10 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ControlItem } from '../../data/mockSafetyProcedures';
 import { ChevronRight, Info, Shield } from 'lucide-react';
 
+export interface HierarchyControlItem {
+  id: string;
+  title: string;
+  description: string;
+  examples: string[];
+}
+
 interface HierarchyOfControlsProps {
-  controls: ControlItem[];
+  controls: HierarchyControlItem[];
 }
 
 const getLevelColor = (id: string) => {

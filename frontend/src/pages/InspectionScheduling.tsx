@@ -117,6 +117,9 @@ export const InspectionScheduling: React.FC = () => {
   const { data: sensors = [], loading: sensorsLoading } = useInspectionSensors(sensorParams);
   const createInspection = useCreateInspection();
 
+  const scheduleItems = Array.isArray(schedule) ? schedule : [];
+  const sensorItems = Array.isArray(sensors) ? sensors : [];
+
   const handleCreateInspection = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setCreateMessage(null);
@@ -317,7 +320,7 @@ export const InspectionScheduling: React.FC = () => {
                 </div>
 
                 <div className="space-y-3 max-h-[760px] overflow-auto pr-1">
-                  {schedule.map((inspection) => (
+                  {scheduleItems.map((inspection) => (
                     <button key={inspection.id} onClick={() => setSelectedInspectionId(inspection.id)} className={`w-full text-left p-4 rounded-2xl border transition-colors ${selectedInspectionId === inspection.id ? 'border-brand-300 bg-brand-50' : 'border-surface-100 bg-surface-50 hover:bg-surface-100'}`}>
                       <div className="flex items-start justify-between gap-3">
                         <div>
@@ -337,7 +340,7 @@ export const InspectionScheduling: React.FC = () => {
                       </div>
                     </button>
                   ))}
-                  {!scheduleLoading && schedule.length === 0 && <div className="text-sm text-surface-500">No inspections found for current filters.</div>}
+                  {!scheduleLoading && scheduleItems.length === 0 && <div className="text-sm text-surface-500">No inspections found for current filters.</div>}
                 </div>
               </div>
 
@@ -409,7 +412,7 @@ export const InspectionScheduling: React.FC = () => {
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                {sensors.map((sensor) => (
+                {sensorItems.map((sensor) => (
                   <div key={sensor.sensorId} className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div>
@@ -435,7 +438,7 @@ export const InspectionScheduling: React.FC = () => {
                     </div>
                   </div>
                 ))}
-                {!sensorsLoading && sensors.length === 0 && <div className="text-sm text-surface-500">No sensors found for current filter.</div>}
+                {!sensorsLoading && sensorItems.length === 0 && <div className="text-sm text-surface-500">No sensors found for current filter.</div>}
               </div>
             </motion.div>
           )}

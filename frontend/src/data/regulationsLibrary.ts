@@ -3779,7 +3779,52 @@ export const globalRegulations: Regulation[] = [
 ];
 
 // Combine all regulations
-export const allRegulations: Regulation[] = [
+const dedupeValues = (values?: string[]) => {
+  if (!values || values.length === 0) {
+    return values;
+  }
+
+  return Array.from(new Set(values));
+};
+
+const dedupeRegulations = (regulations: Regulation[]): Regulation[] => {
+  const uniqueRegulations = new Map<string, Regulation>();
+
+  for (const regulation of regulations) {
+    const existing = uniqueRegulations.get(regulation.id);
+
+    if (!existing) {
+      uniqueRegulations.set(regulation.id, regulation);
+      continue;
+    }
+
+    uniqueRegulations.set(regulation.id, {
+      ...existing,
+      ...regulation,
+      managementTabs: dedupeValues([
+        ...existing.managementTabs,
+        ...regulation.managementTabs,
+      ]) as ManagementTab[],
+      applicableIndustries: dedupeValues([
+        ...(existing.applicableIndustries || []),
+        ...(regulation.applicableIndustries || []),
+      ]),
+      keyRequirements: dedupeValues([
+        ...(existing.keyRequirements || []),
+        ...(regulation.keyRequirements || []),
+      ]),
+      relatedStandards: dedupeValues([
+        ...(existing.relatedStandards || []),
+        ...(regulation.relatedStandards || []),
+      ]),
+      sourceUrl: regulation.sourceUrl || existing.sourceUrl,
+    });
+  }
+
+  return Array.from(uniqueRegulations.values());
+};
+
+export const allRegulations: Regulation[] = dedupeRegulations([
   ...osha1910Regulations,
   ...osha1926Regulations,
   ...epaRegulations,
@@ -3800,7 +3845,7 @@ export const allRegulations: Regulation[] = [
   ...hipaaRegulations,
   ...bseeRegulations,
   ...globalRegulations
-];
+]);
 
 // Helper functions
 export const getRegulationsByBody = (body: RegulatoryBody): Regulation[] => {

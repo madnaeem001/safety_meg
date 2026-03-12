@@ -46,6 +46,10 @@ const effortConfig: Record<string, { color: string; dots: number }> = {
   high: { color: 'text-red-600', dots: 3 }
 };
 
+const fallbackSeverity = severityConfig.minor;
+const fallbackStatus = { color: 'text-surface-600', bgColor: 'bg-surface-100', label: 'Unknown' };
+const fallbackEffort = { color: 'text-surface-500', dots: 1 };
+
 export const ComplianceGapAnalysis: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
@@ -253,15 +257,16 @@ export const ComplianceGapAnalysis: React.FC = () => {
           animate="visible"
         >
           <AnimatePresence mode="popLayout">
-            {filteredGaps.map((gap) => {
-              const severity = severityConfig[gap.severity];
-              const status = statusConfig[gap.status];
-              const effort = effortConfig[gap.effort];
+            {filteredGaps.map((gap, index) => {
+              const severity = severityConfig[gap.severity] ?? fallbackSeverity;
+              const status = statusConfig[gap.status] ?? fallbackStatus;
+              const effort = effortConfig[gap.effort] ?? fallbackEffort;
               const isExpanded = expandedGap === gap.id;
+              const gapKey = String(gap.id ?? `${gap.standardId}-${gap.clauseId ?? 'unknown'}-${index}`);
 
               return (
                 <motion.div
-                  key={gap.id}
+                  key={gapKey}
                   variants={itemVariants}
                   layout
                   className={`bg-white dark:bg-surface-800 rounded-xl border-l-4 ${severity.borderColor} shadow-sm overflow-hidden`}
@@ -284,7 +289,7 @@ export const ComplianceGapAnalysis: React.FC = () => {
                           {gap.clauseTitle}
                         </h3>
                         <p className="text-sm text-surface-500 mt-0.5">
-                          {getStandardName(gap.standardId)} • Clause {gap.clauseId.split('-').pop()}
+                          {getStandardName(gap.standardId)} • Clause {(gap.clauseId ?? 'N/A').split('-').pop()}
                         </p>
                       </div>
                       <div className="flex flex-col items-end gap-1">

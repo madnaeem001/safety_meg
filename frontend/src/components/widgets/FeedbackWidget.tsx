@@ -28,17 +28,21 @@ export const FeedbackWidget: React.FC = () => {
     }, 2000);
   };
 
+  // Hide widget if sidebar menu is open
+  const isMenuOpen = typeof window !== 'undefined' && document.querySelector('.nav-dropdown') !== null;
   return (
     <>
       {/* Floating Button */}
-      <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-44 right-6 z-[60] w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500 text-white shadow-lg shadow-cyan-500/25 flex items-center justify-center hover:shadow-cyan-500/40 transition-shadow"
-      >
-        <MessageSquare className="w-5 h-5" />
-      </motion.button>
+      {!isMenuOpen && (
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setIsOpen(true)}
+          className="fixed bottom-44 right-6 z-[60] w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500 text-white shadow-lg shadow-cyan-500/25 flex items-center justify-center hover:shadow-cyan-500/40 transition-shadow"
+        >
+          <MessageSquare className="w-5 h-5" />
+        </motion.button>
+      )}
 
       {/* Feedback Panel */}
       <AnimatePresence>
@@ -55,7 +59,7 @@ export const FeedbackWidget: React.FC = () => {
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
-              className="fixed bottom-44 right-6 z-[70] w-[340px] max-h-[480px] rounded-2xl bg-slate-900/95 backdrop-blur-xl border border-cyan-500/20 shadow-2xl overflow-hidden"
+              className="fixed bottom-44 right-6 z-[50] w-[340px] max-h-[480px] rounded-2xl bg-slate-900/95 backdrop-blur-xl border border-cyan-500/20 shadow-2xl overflow-hidden"
             >
               {/* Header */}
               <div className="p-4 border-b border-slate-800 flex items-center justify-between">

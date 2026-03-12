@@ -1,41 +1,33 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { ESG_METRICS, type ESGMetric } from '../data/mockESG';
+import React, { useMemo } from 'react';
+import { motion } from 'framer-motion';
 import {
   Globe,
   Users,
   ShieldCheck,
-  ArrowUpRight,
   TrendingUp,
-  BarChart3,
-  ArrowLeft,
   Sparkles,
   Zap,
-  Target,
-  Activity,
-  Info,
   Download,
   Share2,
   ChevronRight,
   Brain,
   Leaf,
   Scale,
+  Database,
   Shield
 } from 'lucide-react';
 import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
   ResponsiveContainer,
   BarChart,
   Bar,
-  Cell
+  CartesianGrid,
+  Tooltip,
+  XAxis,
+  YAxis,
+  Cell,
 } from 'recharts';
 import { useESGMetrics } from '../api/hooks/useAPIHooks';
+import type { ESGMetrics } from '../api/services/apiService';
 
 /* ================================================================
    ESG REPORTING (HD & DARK THEME)
@@ -49,46 +41,240 @@ const categoryConfig = {
   'Governance': { icon: Scale, color: 'text-purple-400', bgColor: 'bg-purple-500/10', borderColor: 'border-purple-500/20', gradient: 'from-purple-500 to-indigo-500' }
 };
 
-const mockChartData = [
-  { month: 'Jan', score: 82 },
-  { month: 'Feb', score: 85 },
-  { month: 'Mar', score: 84 },
-  { month: 'Apr', score: 88 },
-  { month: 'May', score: 91 },
-  { month: 'Jun', score: 94 },
-];
+type CategoryName = 'Environmental' | 'Social' | 'Governance';
+
+type ESGMetricCard = {
+  category: CategoryName;
+  metric: string;
+  value: string;
+  target: string;
+  status: 'On Track' | 'At Risk';
+  description: string;
+  progress: number;
+};
+
+const SectionEmptyState = ({ title, description }: { title: string; description: string }) => (
+  <div className="rounded-[2.5rem] border border-dashed border-surface-800 bg-surface-900/40 p-8 text-center backdrop-blur-md">
+    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-800 text-surface-500">
+      <Database className="h-5 w-5" />
+    </div>
+    <h3 className="text-lg font-black text-white">{title}</h3>
+    <p className="mx-auto mt-2 max-w-lg text-sm text-surface-400">{description}</p>
+  </div>
+);
+
+const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+
+function buildESGMetrics(data: ESGMetrics | null): ESGMetricCard[] {
+  if (!data) {
+    return [];
+  }
+
+  const env = data.environmental;
+  const social = data.social;
+  const governance = data.governance;
+
+  return [
+    {
+      category: 'Environmental',
+      metric: 'Carbon Footprint',
+      value: `${env.carbonEmissions} tCO2e`,
+      target: '<= 500 tCO2e',
+      status: env.carbonEmissions <= 500 ? 'On Track' : 'At Risk',
+      description: 'Combined carbon emissions from the current ESG dashboard period.',
+      progress: clamp(Math.round((500 / Math.max(env.carbonEmissions, 1)) * 100), 0, 100),
+    },
+    {
+      category: 'Environmental',
+      metric: 'Renewable Energy Share',
+      value: `${env.renewableEnergy}%`,
+      target: '>= 50%',
+      status: env.renewableEnergy >= 50 ? 'On Track' : 'At Risk',
+      description: 'Renewable energy contribution to current operational demand.',
+      progress: clamp(Math.round(env.renewableEnergy), 0, 100),
+    },
+    {
+      category: 'Environmental',
+      metric: 'Waste Diversion',
+      value: `${env.wasteDiverted}%`,
+      target: '>= 95%',
+      status: env.wasteDiverted >= 95 ? 'On Track' : 'At Risk',
+      description: 'Waste diverted from landfill across monitored facilities.',
+      progress: clamp(Math.round(env.wasteDiverted), 0, 100),
+    },
+    {
+      category: 'Environmental',
+      metric: 'Water Usage',
+      value: `${env.waterUsage} m3`,
+      target: '<= 5000 m3',
+      status: env.waterUsage <= 5000 ? 'On Track' : 'At Risk',
+      description: 'Backend-recorded water use for the current ESG period.',
+      progress: clamp(Math.round((5000 / Math.max(env.waterUsage, 1)) * 100), 0, 100),
+    },
+    {
+      category: 'Social',
+      metric: 'TRIR Safety Rate',
+      value: `${social.trir}`,
+      target: '< 1.0',
+      status: social.trir < 1 ? 'On Track' : 'At Risk',
+      description: 'Recordable incident rate derived from current worker and incident counts.',
+      progress: clamp(Math.round((1 / Math.max(social.trir, 0.25)) * 100), 0, 100),
+    },
+    {
+      category: 'Social',
+      metric: 'Training Hours Per Employee',
+      value: `${social.trainingHoursPerEmployee} h`,
+      target: '>= 40 h',
+      status: social.trainingHoursPerEmployee >= 40 ? 'On Track' : 'At Risk',
+      description: 'Average training load derived from current employee training completions.',
+      progress: clamp(Math.round((social.trainingHoursPerEmployee / 40) * 100), 0, 100),
+    },
+    {
+      category: 'Social',
+      metric: 'Diversity Index',
+      value: `${social.diversityIndex}%`,
+      target: '>= 40%',
+      status: social.diversityIndex >= 40 ? 'On Track' : 'At Risk',
+      description: 'Leadership and workforce diversity representation index.',
+      progress: clamp(Math.round(social.diversityIndex), 0, 100),
+    },
+    {
+      category: 'Social',
+      metric: 'Volunteer Hours',
+      value: `${social.volunteerHours} hrs`,
+      target: '>= 1000 hrs',
+      status: social.volunteerHours >= 1000 ? 'On Track' : 'At Risk',
+      description: 'Current community engagement hours logged for the reporting period.',
+      progress: clamp(Math.round((social.volunteerHours / 1000) * 100), 0, 100),
+    },
+    {
+      category: 'Governance',
+      metric: 'Compliance Score',
+      value: `${governance.complianceScore}%`,
+      target: '>= 95%',
+      status: governance.complianceScore >= 95 ? 'On Track' : 'At Risk',
+      description: 'Inspection-derived governance compliance score.',
+      progress: clamp(Math.round(governance.complianceScore), 0, 100),
+    },
+    {
+      category: 'Governance',
+      metric: 'Audit Findings Closed',
+      value: `${governance.auditFindingsClosed}`,
+      target: 'Growing closure count',
+      status: governance.auditFindingsClosed > 0 ? 'On Track' : 'At Risk',
+      description: 'Closed CAPA and audit findings counted from backend governance records.',
+      progress: clamp(Math.round(governance.auditFindingsClosed * 10), 0, 100),
+    },
+    {
+      category: 'Governance',
+      metric: 'Policy Reviews Completed',
+      value: `${governance.policyReviewsCompleted}`,
+      target: '>= 12',
+      status: governance.policyReviewsCompleted >= 12 ? 'On Track' : 'At Risk',
+      description: 'Policy review completions captured in governance metrics.',
+      progress: clamp(Math.round((governance.policyReviewsCompleted / 12) * 100), 0, 100),
+    },
+    {
+      category: 'Governance',
+      metric: 'Ethics Violations',
+      value: `${governance.ethicsViolations}`,
+      target: '0',
+      status: governance.ethicsViolations === 0 ? 'On Track' : 'At Risk',
+      description: 'Reported governance ethics violations for the current period.',
+      progress: governance.ethicsViolations === 0 ? 100 : clamp(100 - governance.ethicsViolations * 20, 0, 100),
+    },
+  ];
+}
 
 export const ESGReporting: React.FC = () => {
-  const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
-  // ── Real API Data ──────────────────────────────────────────────────────
   const { data: liveESGData } = useESGMetrics('quarter');
+  const metrics = useMemo(() => buildESGMetrics(liveESGData ?? null), [liveESGData]);
 
-  // Convert live backend ESGMetrics to display ESGMetric[] format
-  const mergedESGMetrics: ESGMetric[] = React.useMemo(() => {
-    if (!liveESGData) return ESG_METRICS;
-    const env = liveESGData.environmental;
-    const soc = liveESGData.social;
-    const gov = liveESGData.governance;
+  const scoreData = useMemo(() => {
+    if (!liveESGData) {
+      return [];
+    }
+
     return [
-      // Environmental
-      { category: 'Environmental', metric: 'Carbon Footprint Reduction', value: `${env.scope1Emissions + env.scope2Emissions} tCO₂e`, target: '500 tCO₂e', status: (env.scope1Emissions + env.scope2Emissions) <= 500 ? 'On Track' : 'At Risk', description: 'Scope 1 + 2 carbon emissions.', trend: 'up' },
-      { category: 'Environmental', metric: 'Energy Consumption', value: `${env.energyConsumption} MWh`, target: '800 MWh', status: env.energyConsumption <= 800 ? 'On Track' : 'At Risk', description: 'Total energy usage.', trend: env.energyConsumption <= 800 ? 'up' : 'down' },
-      { category: 'Environmental', metric: 'Water Usage Efficiency', value: `${env.waterUsage} m³`, target: '5000 m³', status: env.waterUsage <= 5000 ? 'On Track' : 'At Risk', description: 'Water consumption efficiency.', trend: 'stable' },
-      { category: 'Environmental', metric: 'Waste Management', value: `${env.wasteDiverted}%`, target: '95%', status: env.wasteDiverted >= 95 ? 'On Track' : 'At Risk', description: 'Waste diverted from landfills.', trend: env.wasteDiverted >= 90 ? 'up' : 'down' },
-      // Social
-      { category: 'Social', metric: 'Employee Diversity', value: `${soc.diversityIndex}%`, target: '40%', status: soc.diversityIndex >= 35 ? 'On Track' : 'At Risk', description: 'Diverse representation across all levels.', trend: 'up' },
-      { category: 'Social', metric: 'Safety Training Completion', value: `${soc.trainingHoursPerEmployee}h/emp`, target: '40h', status: soc.trainingHoursPerEmployee >= 30 ? 'On Track' : 'At Risk', description: 'Training hours per employee.', trend: 'stable' },
-      { category: 'Social', metric: 'Community Impact', value: `${soc.volunteerHours} hrs`, target: '1000 hrs', status: soc.volunteerHours >= 800 ? 'On Track' : 'At Risk', description: 'Volunteer hours contributed.', trend: 'up' },
-      { category: 'Social', metric: 'TRIR Safety Rate', value: `${soc.trir}`, target: '< 1.0', status: soc.trir < 1.0 ? 'On Track' : 'At Risk', description: 'Total recordable incident rate.', trend: soc.trir < 1.0 ? 'up' : 'down' },
-      // Governance
-      { category: 'Governance', metric: 'Compliance Score', value: `${gov.complianceScore}%`, target: '98%', status: gov.complianceScore >= 95 ? 'On Track' : 'At Risk', description: 'Overall regulatory compliance.', trend: gov.complianceScore >= 95 ? 'up' : 'down' },
-      { category: 'Governance', metric: 'Audit Findings Closed', value: `${gov.auditFindingsClosed}`, target: '100%', status: gov.auditFindingsClosed > 10 ? 'On Track' : 'At Risk', description: 'Closed audit findings count.', trend: 'up' },
-      { category: 'Governance', metric: 'Policy Reviews Completed', value: `${gov.policyReviewsCompleted}`, target: '12', status: gov.policyReviewsCompleted >= 10 ? 'On Track' : 'At Risk', description: 'Policy reviews conducted this period.', trend: 'stable' },
-      { category: 'Governance', metric: 'Ethics Violations', value: `${gov.ethicsViolations}`, target: '0', status: gov.ethicsViolations === 0 ? 'On Track' : 'At Risk', description: 'Reported ethics violations.', trend: gov.ethicsViolations === 0 ? 'up' : 'down' },
+      { name: 'Environmental', score: Math.round(70 + liveESGData.environmental.renewableEnergy * 0.15 + liveESGData.environmental.wasteDiverted * 0.15), color: '#10b981' },
+      { name: 'Social', score: Math.round(Math.max(0, 100 - liveESGData.social.trir * 5 + liveESGData.social.trainingHoursPerEmployee * 0.2)), color: '#38bdf8' },
+      { name: 'Governance', score: Math.round(liveESGData.governance.complianceScore), color: '#a855f7' },
+    ].map((item) => ({ ...item, score: clamp(item.score, 0, 100) }));
+  }, [liveESGData]);
+
+  const forecastCards = useMemo(() => {
+    if (!liveESGData) {
+      return [];
+    }
+
+    const env = liveESGData.environmental;
+    const social = liveESGData.social;
+    const governance = liveESGData.governance;
+    const carbonGap = Math.max(env.carbonEmissions - 500, 0);
+    const disclosureRisk = governance.complianceScore >= 95 && governance.ethicsViolations === 0 ? 'Low' : governance.complianceScore >= 85 ? 'Medium' : 'High';
+
+    return [
+      {
+        label: 'Carbon Reduction Gap',
+        value: carbonGap === 0 ? 'On Target' : `${carbonGap.toFixed(1)} tCO2e`,
+        detail: carbonGap === 0 ? 'Current dashboard period is within the carbon target band.' : 'Current emissions remain above the target band for this reporting period.',
+      },
+      {
+        label: 'Renewable Momentum',
+        value: `${env.renewableEnergy}%`,
+        detail: env.renewableEnergy >= 50 ? 'Renewable share is already at or above the target threshold.' : 'Increasing renewable input remains the clearest environmental lift.',
+      },
+      {
+        label: 'Safety Culture Pressure',
+        value: `${social.trir}`,
+        detail: social.trir < 1 ? 'Incident rate supports a healthy social performance outlook.' : 'TRIR remains the main drag on the social score.',
+      },
+      {
+        label: 'Disclosure Risk',
+        value: disclosureRisk,
+        detail: `${governance.complianceScore}% compliance score with ${governance.ethicsViolations} ethics violations recorded.`,
+      },
     ];
   }, [liveESGData]);
+
+  const insights = useMemo(() => {
+    if (!liveESGData) {
+      return [];
+    }
+
+    return [
+      {
+        title: 'Environmental priority',
+        text: liveESGData.environmental.renewableEnergy >= 50
+          ? 'Renewable energy adoption is supporting the environmental score, so the next gain is likely through carbon and water reduction.'
+          : 'Renewable energy remains below target, making it the highest-leverage environmental improvement area.',
+      },
+      {
+        title: 'Social outlook',
+        text: liveESGData.social.trainingHoursPerEmployee >= 40
+          ? 'Training coverage is strong; TRIR reduction is now the key driver for improving social performance.'
+          : 'Training hours per employee remain below target and are constraining the social score improvement path.',
+      },
+    ];
+  }, [liveESGData]);
+
+  const disclosureReadiness = useMemo(() => {
+    if (!liveESGData) {
+      return 0;
+    }
+
+    const score = Math.round((liveESGData.overallScore + liveESGData.governance.complianceScore + liveESGData.social.employeeSatisfaction) / 3);
+    return clamp(score, 0, 100);
+  }, [liveESGData]);
+
+  const hasESGData = Boolean(
+    liveESGData && (
+      liveESGData.overallScore > 0 ||
+      liveESGData.environmental.carbonEmissions > 0 ||
+      liveESGData.social.trainingHoursPerEmployee > 0 ||
+      liveESGData.governance.complianceScore > 0
+    ),
+  );
 
   return (
     <div className="min-h-screen bg-surface-950 text-white pb-20 selection:bg-brand-500/30">
@@ -147,33 +333,45 @@ export const ESGReporting: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-2xl font-black text-white">Global ESG Index</h3>
-                <p className="text-sm text-surface-500">Consolidated performance trend across all categories</p>
+                <p className="text-sm text-surface-500">Current backend category score mix across environmental, social, and governance performance</p>
               </div>
             </div>
             <div className="text-right">
               <p className="text-[10px] text-surface-500 uppercase tracking-widest font-bold mb-1">Current Score</p>
-              <h4 className="text-4xl font-black text-brand-400">{liveESGData?.overallScore?.toFixed(1) ?? '94.2'}</h4>
+              <h4 className="text-4xl font-black text-brand-400">{liveESGData?.overallScore?.toFixed(1) ?? '0.0'}</h4>
             </div>
           </div>
 
-          <div className="h-[300px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={mockChartData}>
-                <defs>
-                  <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#14b8a6" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#14b8a6" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
-                <XAxis dataKey="month" stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} />
-                <YAxis stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} domain={[0, 100]} />
-                <Tooltip contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '12px' }} />
-                <Area type="monotone" dataKey="score" stroke="#14b8a6" strokeWidth={3} fillOpacity={1} fill="url(#colorScore)" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+          {scoreData.length > 0 ? (
+            <div className="h-[300px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={scoreData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+                  <XAxis dataKey="name" stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} />
+                  <YAxis stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} domain={[0, 100]} />
+                  <Tooltip contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '12px' }} />
+                  <Bar dataKey="score" radius={[12, 12, 0, 0]}>
+                    {scoreData.map((entry) => (
+                      <Cell key={entry.name} fill={entry.color} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <SectionEmptyState
+              title="No backend ESG score data is available"
+              description="This index now reads from the backend ESG dashboard endpoint and shows category scores only when ESG metrics have been recorded."
+            />
+          )}
         </motion.div>
+
+        {!hasESGData && (
+          <SectionEmptyState
+            title="No backend ESG metrics are currently available"
+            description="ESG Reporting now depends on backend environmental, social, and governance dashboard metrics. Record ESG values to populate this page."
+          />
+        )}
 
         {/* ESG Categories Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
@@ -198,7 +396,7 @@ export const ESGReporting: React.FC = () => {
                 </div>
                 
                 <div className="space-y-8">
-                  {mergedESGMetrics.filter((m: ESGMetric) => m.category === cat).map((metric: ESGMetric, index: number) => (
+                  {metrics.filter((metric) => metric.category === cat).length > 0 ? metrics.filter((metric) => metric.category === cat).map((metric, index) => (
                     <div key={metric.metric} className="space-y-3">
                       <div className="flex justify-between items-end">
                         <div className="text-sm font-bold text-white group-hover:text-brand-300 transition-colors">{metric.metric}</div>
@@ -215,14 +413,18 @@ export const ESGReporting: React.FC = () => {
                       <div className="h-1.5 bg-surface-800 rounded-full overflow-hidden">
                         <motion.div 
                           initial={{ width: 0 }}
-                          animate={{ width: metric.value.includes('%') ? metric.value : '85%' }}
+                          animate={{ width: `${metric.progress}%` }}
                           transition={{ duration: 1, delay: index * 0.1 }}
                           className={`h-full rounded-full bg-gradient-to-r ${config.gradient}`}
                         />
                       </div>
                       <p className="text-[10px] text-surface-500 leading-relaxed">{metric.description}</p>
                     </div>
-                  ))}
+                  )) : (
+                    <div className="rounded-3xl border border-dashed border-surface-700 bg-surface-800/20 p-6 text-sm text-surface-400">
+                      No backend {cat.toLowerCase()} metrics are available for the selected ESG period.
+                    </div>
+                  )}
                 </div>
               </motion.div>
             );
@@ -252,42 +454,23 @@ export const ESGReporting: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="space-y-6">
-                <div className="p-6 bg-surface-800/30 rounded-3xl border border-surface-700/50">
-                  <h4 className="text-xs font-black text-white uppercase tracking-widest mb-3">Carbon Neutrality Path</h4>
-                  <div className="flex items-end gap-4 mb-4">
-                    <div className="flex-1 h-2 bg-surface-700 rounded-full overflow-hidden">
-                      <motion.div 
-                        initial={{ width: 0 }}
-                        animate={{ width: '75%' }}
-                        className="h-full bg-emerald-500"
-                      />
-                    </div>
-                    <span className="text-sm font-bold text-emerald-400">75%</span>
+                {forecastCards.slice(0, 2).map((card) => (
+                  <div key={card.label} className="p-6 bg-surface-800/30 rounded-3xl border border-surface-700/50">
+                    <h4 className="text-xs font-black text-white uppercase tracking-widest mb-3">{card.label}</h4>
+                    <p className="text-2xl font-black text-brand-300 mb-3">{card.value}</p>
+                    <p className="text-xs text-surface-400 leading-relaxed">{card.detail}</p>
                   </div>
-                  <p className="text-xs text-surface-400 leading-relaxed">
-                    Based on current renewable energy adoption rates, you are projected to reach Net Zero by Q3 2029, 15 months ahead of the 2030 target.
-                  </p>
-                </div>
-                <div className="p-6 bg-surface-800/30 rounded-3xl border border-surface-700/50">
-                  <h4 className="text-xs font-black text-white uppercase tracking-widest mb-3">Social Impact Projection</h4>
-                  <p className="text-xs text-surface-400 leading-relaxed">
-                    Employee retention is forecasted to increase by 8% following the implementation of the new AI-driven safety mentorship program.
-                  </p>
-                </div>
+                ))}
               </div>
               
               <div className="bg-surface-800/20 rounded-3xl border border-surface-700/50 p-6 flex flex-col justify-between">
                 <div>
                   <h4 className="text-xs font-black text-white uppercase tracking-widest mb-4">Compliance Risk Outlook</h4>
                   <div className="space-y-4">
-                    {[
-                      { label: 'GRI Standards', risk: 'Low', color: 'text-emerald-400' },
-                      { label: 'SASB Disclosure', risk: 'Low', color: 'text-emerald-400' },
-                      { label: 'EU Taxonomy', risk: 'Medium', color: 'text-amber-400' },
-                    ].map((item, i) => (
+                    {forecastCards.slice(2).map((item, i) => (
                       <div key={i} className="flex items-center justify-between">
                         <span className="text-sm text-surface-300">{item.label}</span>
-                        <span className={`text-xs font-bold ${item.color}`}>{item.risk} Risk</span>
+                        <span className={`text-xs font-bold ${item.value === 'Low' || item.value === 'On Target' ? 'text-emerald-400' : item.value === 'Medium' ? 'text-amber-400' : 'text-brand-300'}`}>{item.value}</span>
                       </div>
                     ))}
                   </div>
@@ -319,18 +502,17 @@ export const ESGReporting: React.FC = () => {
               </div>
 
               <div className="space-y-4">
-                <div className="p-6 bg-surface-800/30 rounded-3xl border border-surface-700/50">
-                  <h4 className="text-sm font-bold text-white mb-2 uppercase tracking-widest">Carbon Neutrality Path</h4>
-                  <p className="text-xs text-surface-400 leading-relaxed">
-                    Based on current trends, you are projected to reach your 2030 carbon neutrality goal 14 months ahead of schedule.
-                  </p>
-                </div>
-                <div className="p-6 bg-surface-800/30 rounded-3xl border border-surface-700/50">
-                  <h4 className="text-sm font-bold text-white mb-2 uppercase tracking-widest">Social Impact Alert</h4>
-                  <p className="text-xs text-surface-400 leading-relaxed">
-                    Employee diversity in leadership roles has increased by 12% following the new mentorship program.
-                  </p>
-                </div>
+                {insights.length > 0 ? insights.map((insight) => (
+                  <div key={insight.title} className="p-6 bg-surface-800/30 rounded-3xl border border-surface-700/50">
+                    <h4 className="text-sm font-bold text-white mb-2 uppercase tracking-widest">{insight.title}</h4>
+                    <p className="text-xs text-surface-400 leading-relaxed">{insight.text}</p>
+                  </div>
+                )) : (
+                  <SectionEmptyState
+                    title="No AI ESG insights are available"
+                    description="Insight cards now summarize backend ESG dashboard metrics instead of using static copy."
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -345,7 +527,7 @@ export const ESGReporting: React.FC = () => {
                   Ready for <br />Disclosure
                 </h3>
                 <p className="text-brand-100 text-sm leading-relaxed mb-8 max-w-xs">
-                  Your ESG data is fully validated and ready for export to CDP, GRI, and SASB reporting platforms.
+                  Backend ESG metrics currently indicate {disclosureReadiness}% disclosure readiness across sustainability, social, and governance reporting signals.
                 </p>
               </div>
               <div className="space-y-3">

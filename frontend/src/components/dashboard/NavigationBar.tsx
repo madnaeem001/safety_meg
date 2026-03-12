@@ -421,7 +421,7 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({ onRefresh }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMenuOpen(false)}
-              className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
+              className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[100]" // CHANGED TO 100
             />
             {/* Drawer */}
             <motion.div
@@ -429,7 +429,7 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({ onRefresh }) => {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="nav-dropdown fixed left-0 top-0 bottom-20 w-[85%] max-w-sm bg-slate-900 shadow-2xl z-50 overflow-y-auto border-r border-cyan-500/10"
+              className="nav-dropdown fixed left-0 top-0 bottom-0 w-[85%] max-w-sm bg-slate-900 shadow-2xl z-[110] overflow-y-auto border-r border-cyan-500/10" // CHANGED TO 110
             >
               {/* Drawer Header */}
               <div className="sticky top-0 bg-slate-900/95 backdrop-blur-xl border-b border-cyan-500/10 p-4">
@@ -529,7 +529,7 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({ onRefresh }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsNotificationsOpen(false)}
-              className="fixed inset-0 bg-black/20 z-40"
+              className="fixed inset-0 bg-black/20 z-[100]" // CHANGED TO 100 TO MATCH
             />
             {/* Panel */}
             <motion.div
@@ -537,7 +537,7 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({ onRefresh }) => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="nav-dropdown fixed top-20 right-4 w-[90%] max-w-sm bg-slate-900 rounded-2xl shadow-2xl z-50 overflow-hidden border border-cyan-500/15"
+              className="nav-dropdown fixed top-20 right-4 w-[90%] max-w-sm bg-slate-900 rounded-2xl shadow-2xl z-[110] overflow-hidden border border-cyan-500/15" // CHANGED TO 110
             >
               {/* Header */}
               <div className="flex items-center justify-between px-4 py-3 border-b border-cyan-500/10">

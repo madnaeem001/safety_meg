@@ -25,7 +25,7 @@ import {
   ExternalLink,
   Wrench
 } from 'lucide-react';
-import { mockAssets, type Asset } from '../data/mockAssets';
+import type { Asset } from '../data/mockAssets';
 import { useAssets } from '../api/hooks/useAPIHooks';
 
 /* ================================================================
@@ -94,14 +94,15 @@ const AssetQRScannerContent: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // ── Real API Data ──────────────────────────────────────────────────────────
-  const { data: backendAssets } = useAssets();
+  const { data: backendAssets, loading: assetsLoading, error: assetsError } = useAssets();
   const allAssets = useMemo<Asset[]>(() => {
     const statusMap: Record<string, Asset['status']> = {
       active: 'Operational',
       maintenance: 'Maintenance Required',
       decommissioned: 'Out of Service',
+      overdue: 'Inspection Overdue',
     };
-    if (!backendAssets || (backendAssets as any[]).length === 0) return mockAssets;
+    if (!backendAssets || (backendAssets as any[]).length === 0) return [];
     const converted: Asset[] = (backendAssets as any[]).map((a: any): Asset => ({
       id: a.assetCode || String(a.id),
       name: a.assetName || '',
@@ -117,9 +118,21 @@ const AssetQRScannerContent: React.FC = () => {
       safetyGuidelines: [],
       complianceSync: { osha: 'N/A', iso: 'N/A', epa: 'N/A', niosh: 'N/A' },
     }));
-    const existingIds = new Set(mockAssets.map(m => m.id));
-    return [...mockAssets, ...converted.filter(c => !existingIds.has(c.id))];
+    return converted;
   }, [backendAssets]);
+
+  useEffect(() => {
+    if (assetsLoading) return;
+    if (assetsError) {
+      setError('Failed to load assets from the backend.');
+      setIsScanning(false);
+      return;
+    }
+    if (allAssets.length === 0) {
+      setError('No assets are currently available from the backend.');
+      setIsScanning(false);
+    }
+  }, [allAssets.length, assetsError, assetsLoading]);
 
   useEffect(() => {
     let interval: any;
@@ -140,14 +153,14 @@ const AssetQRScannerContent: React.FC = () => {
       }, 150);
     }
     return () => clearInterval(interval);
-  }, [isScanning, scannedAsset, showManual, scanMode]);
+  }, [allAssets, isScanning, scannedAsset, showManual, scanMode]);
 
   const reset = () => {
     setScannedAsset(null);
-    setIsScanning(true);
+    setIsScanning(allAssets.length > 0);
     setScanProgress(0);
     setShowManual(false);
-    setError(null);
+    setError(allAssets.length > 0 ? null : 'No assets are currently available from the backend.');
     setUploadedPhoto(null);
     setIsAnalyzing(false);
   };
@@ -168,6 +181,10 @@ const AssetQRScannerContent: React.FC = () => {
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (allAssets.length === 0) {
+      setError('Cannot analyze a photo because no backend assets are available to match against.');
+      return;
+    }
 
     const url = URL.createObjectURL(file);
     setUploadedPhoto(url);
@@ -178,9 +195,13 @@ const AssetQRScannerContent: React.FC = () => {
     await new Promise(resolve => setTimeout(resolve, 3000));
     
     const randomAsset = allAssets[Math.floor(Math.random() * allAssets.length)];
-    setScannedAsset(randomAsset);
+    if (randomAsset) {
+      setScannedAsset(randomAsset);
+      setError(null);
+    } else {
+      setError('AI analysis completed, but no backend asset could be matched.');
+    }
     setIsAnalyzing(false);
-    setError(null);
   };
 
   const getStatusColor = (status: string) => {
@@ -234,7 +255,18 @@ const AssetQRScannerContent: React.FC = () => {
           </div>
         )}
 
-        {isScanning && !showManual && scanMode !== 'photo' ? (
+        {!assetsLoading && allAssets.length === 0 && !scannedAsset && !showManual && !isAnalyzing ? (
+          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
+            <div style={{ width: '5rem', height: '5rem', borderRadius: '1.5rem', backgroundColor: 'rgba(239, 68, 68, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+              <Database size={40} color="#ef4444" />
+            </div>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: '900', marginBottom: '0.5rem' }}>No Backend Assets Available</h2>
+            <p style={{ color: '#94a3b8', fontSize: '0.875rem', maxWidth: '32rem', margin: '0 auto 1.5rem' }}>Asset scanning now depends entirely on backend asset records. Add or sync assets first, then reopen the scanner.</p>
+            <button onClick={() => navigate('/')} style={{ padding: '0.75rem 1.25rem', borderRadius: '0.75rem', border: '1px solid #334155', backgroundColor: '#0f172a', color: 'white', cursor: 'pointer', fontWeight: 'bold' }}>
+              Return to Dashboard
+            </button>
+          </div>
+        ) : isScanning && !showManual && scanMode !== 'photo' ? (
           <div style={{ textAlign: 'center', padding: '2rem 0' }}>
             <div style={{ width: '280px', height: '280px', border: '4px solid #1e293b', borderRadius: '3rem', margin: '0 auto 2.5rem', position: 'relative', overflow: 'hidden', backgroundColor: 'black', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
               <div style={{ position: 'absolute', inset: 0, opacity: 0.3, backgroundImage: "url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1000')", backgroundSize: 'cover' }} />

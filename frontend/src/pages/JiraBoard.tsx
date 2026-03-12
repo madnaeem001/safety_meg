@@ -189,7 +189,7 @@ const DroppableColumn: React.FC<{
       </div>
       
       <div className={`bg-gradient-to-b ${column.bgGradient} rounded-b-2xl p-3 min-h-[500px] space-y-3`}>
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence>
           {tasks.map(task => (
             <DraggableIssueCard 
               key={task.id} 

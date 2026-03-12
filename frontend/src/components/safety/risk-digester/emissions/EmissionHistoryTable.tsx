@@ -1,8 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { EMISSION_LOGS, EmissionLog } from '../../../../data/mockRiskDigester';
 import { EmissionLogItem } from '../../../../api/hooks/useAPIHooks';
-import { Download, Filter } from 'lucide-react';
+import { Database, Download, Filter } from 'lucide-react';
+
+interface EmissionLog {
+  id: string;
+  date: string;
+  facility: string;
+  type: string;
+  value: number;
+  unit: string;
+  recordedBy: string;
+}
 
 interface EmissionHistoryTableProps {
   logs?: EmissionLogItem[];
@@ -21,7 +30,7 @@ function toDisplayLog(item: EmissionLogItem | EmissionLog): EmissionLog {
 }
 
 export const EmissionHistoryTable: React.FC<EmissionHistoryTableProps> = ({ logs }) => {
-  const data = logs && logs.length > 0 ? logs.map(toDisplayLog) : EMISSION_LOGS;
+  const data = logs && logs.length > 0 ? logs.map(toDisplayLog) : [];
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -45,44 +54,56 @@ export const EmissionHistoryTable: React.FC<EmissionHistoryTableProps> = ({ logs
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="border-b border-surface-50">
-              <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest">Date</th>
-              <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest">Facility</th>
-              <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest">Type</th>
-              <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest text-right">Value</th>
-              <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest text-right">Recorded By</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-surface-50">
-            {data.map((log, index) => (
-              <motion.tr 
-                key={log.id}
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                className="group hover:bg-surface-50/50 transition-colors"
-              >
-                <td className="py-4 text-xs font-medium text-surface-600">{log.date}</td>
-                <td className="py-4 text-sm font-bold text-brand-900">{log.facility}</td>
-                <td className="py-4">
-                  <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-brand-50 text-brand-600 border border-brand-100">
-                    {log.type}
-                  </span>
-                </td>
-                <td className="py-4 text-right">
-                  <span className="text-sm font-bold text-brand-900">{log.value}</span>
-                  <span className="text-[10px] font-medium text-surface-400 ml-1">{log.unit}</span>
-                </td>
-                <td className="py-4 text-right text-xs font-medium text-surface-500">{log.recordedBy}</td>
-              </motion.tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {data.length > 0 ? (
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b border-surface-50">
+                <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest">Date</th>
+                <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest">Facility</th>
+                <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest">Type</th>
+                <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest text-right">Value</th>
+                <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest text-right">Recorded By</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-surface-50">
+              {data.map((log, index) => (
+                <motion.tr
+                  key={log.id}
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.05 }}
+                  className="group hover:bg-surface-50/50 transition-colors"
+                >
+                  <td className="py-4 text-xs font-medium text-surface-600">{log.date}</td>
+                  <td className="py-4 text-sm font-bold text-brand-900">{log.facility}</td>
+                  <td className="py-4">
+                    <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-brand-50 text-brand-600 border border-brand-100">
+                      {log.type}
+                    </span>
+                  </td>
+                  <td className="py-4 text-right">
+                    <span className="text-sm font-bold text-brand-900">{log.value}</span>
+                    <span className="text-[10px] font-medium text-surface-400 ml-1">{log.unit}</span>
+                  </td>
+                  <td className="py-4 text-right text-xs font-medium text-surface-500">{log.recordedBy}</td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="flex flex-1 flex-col items-center justify-center rounded-[2rem] border border-dashed border-surface-200 bg-surface-50/60 px-6 py-12 text-center">
+          <div className="mb-3 rounded-2xl bg-white p-3 shadow-soft">
+            <Database className="h-5 w-5 text-surface-400" />
+          </div>
+          <p className="font-semibold text-brand-900">No backend emission logs are available</p>
+          <p className="mt-1 max-w-sm text-sm text-surface-500">
+            Emission history is now sourced entirely from backend gas sensor readings for the selected reporting year.
+          </p>
+        </div>
+      )}
     </motion.div>
   );
 };

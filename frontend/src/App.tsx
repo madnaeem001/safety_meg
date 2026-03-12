@@ -54,11 +54,11 @@ const UserProfile = lazy(() => import('./pages/UserProfile'));
 const NearMissReport = lazy(() => import('./pages/NearMissReport'));
 const ToolboxTalks = lazy(() => import('./pages/ToolboxTalks'));
 const KPIIndicators = lazy(() => import('./pages/KPIIndicators'));
-const ReportDashboard = lazy(() => import('./pages/ReportDashboard'));
+const ReportDashboard = lazy(() => import('./pages/ReportDashboard').then(m => ({ default: m.ReportDashboard })));
 const AutomationRuleBuilder = lazy(() => import('./pages/AutomationRuleBuilder'));
 const WebhooksPage = lazy(() => import('./pages/WebhooksPage'));
 const InternationalStandards = lazy(() => import('./pages/InternationalStandards'));
-const ComplianceGapAnalysis = lazy(() => import('./pages/ComplianceGapAnalysis'));
+const ComplianceGapAnalysis = lazy(() => import('./pages/ComplianceGapAnalysis').then(m => ({ default: m.ComplianceGapAnalysis })));
 const CertificationTracker = lazy(() => import('./pages/CertificationTracker'));
 const CrossReferenceMatrix = lazy(() => import('./pages/CrossReferenceMatrix'));
 const SIFPrecursorDashboard = lazy(() => import('./pages/SIFPrecursorDashboard'));
@@ -67,14 +67,14 @@ const NoCodeFormConfigurator = lazy(() => import('./pages/NoCodeFormConfigurator
 const EnterpriseCommandCenter = lazy(() => import('./pages/EnterpriseCommandCenter'));
 const OrganizationSettings = lazy(() => import('./pages/OrganizationSettings'));
 const GlobalComplianceHub = lazy(() => import('./pages/GlobalComplianceHub'));
-const JiraBoard = lazy(() => import('./pages/JiraBoard'));
+const JiraBoard = lazy(() => import('./pages/JiraBoard').then(m => ({ default: m.JiraBoard })));
 const ContractorPermitManagement = lazy(() => import('./pages/ContractorPermitManagement'));
 const SustainabilityDashboard = lazy(() => import('./pages/SustainabilityDashboard'));
 const PredictiveSafetyAI = lazy(() => import('./pages/PredictiveSafetyAI'));
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const MobileWorkerApp = lazy(() => import('./pages/MobileWorkerApp'));
-const ComplianceReporting = lazy(() => import('./pages/ComplianceReporting'));
-const WorkerDashboard = lazy(() => import('./pages/WorkerDashboard'));
+const ComplianceReporting = lazy(() => import('./pages/ComplianceReporting').then(m => ({ default: m.ComplianceReporting })));
+const WorkerDashboard = lazy(() => import('./pages/WorkerDashboard').then(m => ({ default: m.WorkerDashboard })));
 const SafetyLeaderboard = lazy(() => import('./pages/SafetyLeaderboard'));
 const SupervisorApprovals = lazy(() => import('./pages/SupervisorApprovals'));
 const NotificationCenter = lazy(() => import('./pages/NotificationCenter'));
@@ -84,7 +84,7 @@ const AdvancedTechnologyHub = lazy(() => import('./pages/AdvancedTechnologyHub')
 const SelfAdminPlatform = lazy(() => import('./pages/SelfAdminPlatform'));
 const CustomAppBuilder = lazy(() => import('./pages/CustomAppBuilder'));
 const AIVisualAudit = lazy(() => import('./pages/AIVisualAudit'));
-const AIAuditTemplateForm = lazy(() => import('./pages/AIAuditTemplateForm'));
+const AIAuditTemplateForm = lazy(() => import('./pages/AIAuditTemplateForm').then(m => ({ default: m.AIAuditTemplateForm })));
 const AIVisualAuditHub = lazy(() => import('./pages/AIVisualAuditHub'));
 const AIVisualAuditHistory = lazy(() => import('./pages/AIVisualAuditHistory'));
 const AssetQRScanner = lazy(() => import('./pages/AssetQRScanner'));
@@ -109,13 +109,13 @@ const SSOLoginFlow = lazy(() => import('./pages/SSOLoginFlow'));
 
 // Auth guard: redirects unauthenticated users to /login
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isAuthenticated, loadCurrentUser } = useAuthStore();
+  const { isAuthenticated, user, loadCurrentUser } = useAuthStore();
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !user) {
       loadCurrentUser();
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, user, loadCurrentUser]);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -186,7 +186,7 @@ function AnimatedRoutes() {
           <Route path="/risk-digester" element={<ProtectedRoute><RiskDigester /></ProtectedRoute>} />
           <Route path="/emission-reports" element={<ProtectedRoute><EmissionReports /></ProtectedRoute>} />
           <Route path="/risk-register" element={<ProtectedRoute><RiskRegister /></ProtectedRoute>} />
-          <Route path="/project-management" element={<ProtectedRoute><JiraBoard /></ProtectedRoute>} />
+          <Route path="/project-management" element={<ProtectedRoute><ProjectManagement /></ProtectedRoute>} />
           <Route path="/project-schedule" element={<ProtectedRoute><ProjectManagement /></ProtectedRoute>} />
           <Route path="/jira-board" element={<ProtectedRoute><JiraBoard /></ProtectedRoute>} />
           <Route path="/investigation-reports" element={<ProtectedRoute><InvestigationReports /></ProtectedRoute>} />

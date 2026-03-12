@@ -15,23 +15,28 @@ import type {
   NotificationGroup,
 } from '../data/mockNavigation';
 import {
+  DEFAULT_NOTIFICATION_SETTINGS,
   NOTIFICATION_SOUNDS,
   loadNotifications,
   saveNotifications,
-  loadNotificationSettings,
-  saveNotificationSettings,
   markAsRead,
   markAllAsRead,
   getUnreadCount,
   playNotificationSound,
   groupNotificationsByDate,
 } from '../data/mockNavigation';
+import { useAuthStore } from '../store/authStore';
 import {
   useBackendNotifications,
   useNotificationSettings,
   useUpdateNotificationSettings,
   useMarkNotificationsRead,
 } from '../api/hooks/useAPIHooks';
+import {
+  emitNotificationSettingsChanged,
+  mapNotificationPreferencesToSettings,
+  serializeNotificationSettings,
+} from '../utils/notificationSettings';
 
 const NotificationIcon: Record<Notification['type'], React.ElementType> = {
   warning: AlertTriangle,
@@ -73,14 +78,16 @@ const KEYBOARD_SHORTCUTS = [
 
 export const NotificationSettings: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuthStore();
+  const notificationUserId = user ? String(user.id) : 'default';
   const [activeTab, setActiveTab] = useState<'notifications' | 'settings'>('notifications');
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [settings, setSettings] = useState<NotificationSettingsType>(loadNotificationSettings());
+  const [settings, setSettings] = useState<NotificationSettingsType>(DEFAULT_NOTIFICATION_SETTINGS);
   const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
 
   // ── Real API Hooks ───────────────────────────────────────────────────────
   const { data: backendNotifs, refetch: refetchNotifs } = useBackendNotifications({ limit: 50 });
-  const { data: notifSettings } = useNotificationSettings();
+  const { data: notifSettings } = useNotificationSettings(notificationUserId);
   const { mutate: markReadMutation } = useMarkNotificationsRead();
   const { mutate: updateSettingsMutation } = useUpdateNotificationSettings();
 
@@ -132,21 +139,22 @@ export const NotificationSettings: React.FC = () => {
 
   // Sync backend notification preferences into local settings on load
   useEffect(() => {
-    if (!notifSettings?.preferences) return;
-    const prefs = notifSettings.preferences;
-    setSettings(prev => ({
-      ...prev,
-      ...(prefs.emailNotifications !== undefined && { emailNotifications: prefs.emailNotifications }),
-      ...(prefs.inAppNotifications !== undefined && { pushNotifications: prefs.inAppNotifications }),
-      ...(prefs.preferences && {
-        safetyAlerts: prefs.preferences['safetyAlerts'] ?? prev.safetyAlerts,
-        trainingReminders: prefs.preferences['trainingReminders'] ?? prev.trainingReminders,
-        complianceUpdates: prefs.preferences['complianceUpdates'] ?? prev.complianceUpdates,
-        auditNotifications: prefs.preferences['auditNotifications'] ?? prev.auditNotifications,
-        systemAlerts: prefs.preferences['systemAlerts'] ?? prev.systemAlerts,
-      }),
-    }));
+    setSettings(mapNotificationPreferencesToSettings(notifSettings?.preferences));
   }, [notifSettings]);
+
+  const persistSettings = useCallback(async (nextSettings: NotificationSettingsType, previousSettings: NotificationSettingsType) => {
+    setSettings(nextSettings);
+    emitNotificationSettingsChanged(nextSettings);
+
+    const result = await updateSettingsMutation(
+      serializeNotificationSettings(nextSettings, notificationUserId),
+    );
+
+    if (!result) {
+      setSettings(previousSettings);
+      emitNotificationSettingsChanged(previousSettings);
+    }
+  }, [notificationUserId, updateSettingsMutation]);
 
   // Debounce search
   useEffect(() => {
@@ -383,10 +391,6 @@ export const NotificationSettings: React.FC = () => {
   const handleSettingChange = (key: keyof NotificationSettingsType) => {
     const newValue = !settings[key];
     const updated = { ...settings, [key]: newValue };
-    setSettings(updated);
-    saveNotificationSettings(updated);
-    // Notify other components (e.g. NavigationBar) in the same tab
-    window.dispatchEvent(new CustomEvent('notificationSettingsChanged'));
 
     if (key === 'soundEnabled' && newValue) {
       setTimeout(() => playNotificationSound(), 100);
@@ -395,47 +399,26 @@ export const NotificationSettings: React.FC = () => {
     // Request browser Push Notification permission when enabled
     if (key === 'pushNotifications' && newValue) {
       if (typeof Notification === 'undefined') {
-        // Browser doesn't support push — revert silently
-        const reverted = { ...updated, pushNotifications: false };
-        setSettings(reverted);
-        saveNotificationSettings(reverted);
-        window.dispatchEvent(new CustomEvent('notificationSettingsChanged'));
+        setSettings(settings);
+        emitNotificationSettingsChanged(settings);
       } else if (Notification.permission === 'denied') {
-        // Permission was previously denied — revert and inform user
-        const reverted = { ...updated, pushNotifications: false };
-        setSettings(reverted);
-        saveNotificationSettings(reverted);
-        window.dispatchEvent(new CustomEvent('notificationSettingsChanged'));
+        setSettings(settings);
+        emitNotificationSettingsChanged(settings);
         alert('Push notification permission was denied. Please enable it in your browser settings.');
       } else if (Notification.permission !== 'granted') {
         Notification.requestPermission().then(perm => {
           if (perm !== 'granted') {
-            const reverted = { ...updated, pushNotifications: false };
-            setSettings(reverted);
-            saveNotificationSettings(reverted);
-            window.dispatchEvent(new CustomEvent('notificationSettingsChanged'));
+            setSettings(settings);
+            emitNotificationSettingsChanged(settings);
+            return;
           }
+          void persistSettings(updated, settings);
         });
+        return;
       }
     }
 
-    // Persist delivery preferences to backend
-    if (key === 'emailNotifications') {
-      updateSettingsMutation({ userId: 'default', emailNotifications: newValue as boolean });
-    } else if (key === 'pushNotifications') {
-      updateSettingsMutation({ userId: 'default', inAppNotifications: newValue as boolean });
-    } else if (['safetyAlerts', 'trainingReminders', 'complianceUpdates', 'auditNotifications', 'systemAlerts'].includes(key)) {
-      updateSettingsMutation({
-        userId: 'default',
-        preferences: {
-          safetyAlerts: updated.safetyAlerts,
-          trainingReminders: updated.trainingReminders,
-          complianceUpdates: updated.complianceUpdates,
-          auditNotifications: updated.auditNotifications,
-          systemAlerts: updated.systemAlerts,
-        },
-      });
-    }
+    void persistSettings(updated, settings);
   };
 
   const unreadCount = getUnreadCount(notifications);
@@ -462,9 +445,7 @@ export const NotificationSettings: React.FC = () => {
   // Handle sound type change
   const handleSoundTypeChange = (soundType: NotificationSoundType) => {
     const updated = { ...settings, soundType };
-    setSettings(updated);
-    saveNotificationSettings(updated);
-    window.dispatchEvent(new CustomEvent('notificationSettingsChanged'));
+    void persistSettings(updated, settings);
     // Preview the selected sound
     if (soundType !== 'none') {
       playNotificationSound(true, soundType);
@@ -474,9 +455,7 @@ export const NotificationSettings: React.FC = () => {
   // Handle animation speed change
   const handleAnimationSpeedChange = (speed: number) => {
     const updated = { ...settings, badgeAnimationSpeed: speed };
-    setSettings(updated);
-    saveNotificationSettings(updated);
-    window.dispatchEvent(new CustomEvent('notificationSettingsChanged'));
+    void persistSettings(updated, settings);
   };
 
   return (
@@ -605,7 +584,7 @@ export const NotificationSettings: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 py-4">
+      <main className="max-w-2xl mx-auto px-4 py-4">
         <AnimatePresence mode="wait">
           {activeTab === 'notifications' ? (
             <motion.div
@@ -1170,7 +1149,7 @@ export const NotificationSettings: React.FC = () => {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </main>
 
 
     </div>

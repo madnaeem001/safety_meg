@@ -1,39 +1,190 @@
 import React, { useState, useMemo } from 'react';
-import { EmissionTypeCard } from '../components/safety/risk-digester/emissions/EmissionTypeCard';
+import { EmissionTypeCard, EmissionCardData } from '../components/safety/risk-digester/emissions/EmissionTypeCard';
 import { EmissionHistoryTable } from '../components/safety/risk-digester/emissions/EmissionHistoryTable';
 import { FacilityBreakdownChart } from '../components/safety/risk-digester/emissions/FacilityBreakdownChart';
-import { DETAILED_EMISSIONS, DetailedEmission } from '../data/mockRiskDigester';
 import { PhotoUpload } from '../components/safety/PhotoUpload';
 import { motion } from 'framer-motion';
-import { Wind, ArrowLeft, Calendar, Filter, Brain, Activity, Leaf, TrendingDown, AlertTriangle, CheckCircle2, BarChart3, Globe, Target, Zap, Factory } from 'lucide-react';
+import { Wind, ArrowLeft, Calendar, Filter, Brain, Activity, Leaf, TrendingDown, AlertTriangle, CheckCircle2, BarChart3, Factory, Database } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useEmissionsData, EmissionsResponse } from '../api/hooks/useAPIHooks';
+import { useEmissionsData } from '../api/hooks/useAPIHooks';
+
+const SectionEmptyState = ({ title, description }: { title: string; description: string }) => (
+  <div className="rounded-[2rem] border border-dashed border-surface-200 bg-white p-8 text-center shadow-soft">
+    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-100 text-surface-400">
+      <Database className="h-5 w-5" />
+    </div>
+    <h3 className="text-lg font-bold text-brand-900">{title}</h3>
+    <p className="mx-auto mt-2 max-w-lg text-sm text-surface-500">{description}</p>
+  </div>
+);
 
 export const EmissionReports: React.FC = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'overview' | 'compliance' | 'ai-forecast'>('overview');
 
-  // ── Real API Data ────────────────────────────────────────────────────────
   const { data: backendEmissions } = useEmissionsData();
 
-  const detailedEmissions = useMemo<DetailedEmission[]>(() => {
-    if (!backendEmissions) return DETAILED_EMISSIONS;
-    // Backend returns { detailedEmissions, logs, facilityBreakdown, ... }
-    if (Array.isArray(backendEmissions.detailedEmissions) && backendEmissions.detailedEmissions.length > 0) {
-      const converted: DetailedEmission[] = backendEmissions.detailedEmissions.map((e) => ({
-        id: String(e.id),
-        type: e.type,
-        unit: e.unit,
-        actual: e.actual,
-        limit: e.limit,
-        status: e.status,
-        trend: e.trend,
-      }));
-      const backendIds = new Set(converted.map(c => c.id));
-      return [...converted, ...DETAILED_EMISSIONS.filter(d => !backendIds.has(d.id))];
-    }
-    return DETAILED_EMISSIONS;
+  const detailedEmissions = useMemo<EmissionCardData[]>(() => {
+    return (backendEmissions?.detailedEmissions ?? []).map((emission) => ({
+      id: String(emission.id),
+      type: emission.type,
+      unit: emission.unit,
+      actual: emission.actual,
+      limit: emission.limit,
+      status: emission.status,
+      trend: emission.trend,
+    }));
   }, [backendEmissions]);
+
+  const summaryCards = useMemo(() => {
+    const summary = backendEmissions?.summary;
+    const totalStatuses = (summary?.compliantCount ?? 0) + (summary?.warningCount ?? 0) + (summary?.exceededCount ?? 0);
+    const complianceRate = totalStatuses > 0
+      ? Math.round(((summary?.compliantCount ?? 0) / totalStatuses) * 100)
+      : 0;
+
+    return [
+      {
+        label: 'Compliance Rate',
+        value: `${complianceRate}%`,
+        detail: `${summary?.compliantCount ?? 0} compliant sources`,
+        icon: CheckCircle2,
+      },
+      {
+        label: 'Gas Readings',
+        value: `${summary?.totalGasReadings ?? 0}`,
+        detail: `Captured for ${backendEmissions?.year ?? 'current year'}`,
+        icon: Activity,
+      },
+      {
+        label: 'Anomalies',
+        value: `${summary?.totalAnomalies ?? 0}`,
+        detail: 'Backend sensor anomalies detected',
+        icon: AlertTriangle,
+      },
+      {
+        label: 'Environmental Incidents',
+        value: `${backendEmissions?.environmentalIncidents ?? 0}`,
+        detail: 'Incident records matched to emission terms',
+        icon: Factory,
+      },
+    ];
+  }, [backendEmissions]);
+
+  const complianceCards = useMemo(() => {
+    const summary = backendEmissions?.summary;
+    const topZone = [...(backendEmissions?.anomaliesByZone ?? [])].sort((left, right) => (right.anomalies ?? 0) - (left.anomalies ?? 0))[0];
+    const topFacility = backendEmissions?.facilityBreakdown?.[0];
+    const totalStatuses = (summary?.compliantCount ?? 0) + (summary?.warningCount ?? 0) + (summary?.exceededCount ?? 0);
+    const monitoredSources = backendEmissions?.gasSensorReadings?.length ?? 0;
+    const networkHealth = totalStatuses > 0
+      ? Math.round(((summary?.compliantCount ?? 0) / totalStatuses) * 100)
+      : 0;
+
+    return [
+      {
+        title: 'Emission Limits',
+        status: (summary?.exceededCount ?? 0) > 0 ? 'Action Required' : (summary?.warningCount ?? 0) > 0 ? 'Monitor Closely' : 'Compliant',
+        detail: `${summary?.exceededCount ?? 0} exceeded and ${summary?.warningCount ?? 0} warning sources are currently flagged.`,
+      },
+      {
+        title: 'Sensor Coverage',
+        status: monitoredSources > 0 ? 'Active Monitoring' : 'No Coverage',
+        detail: `${monitoredSources} gas sensors contributed readings to the current report year.`,
+      },
+      {
+        title: 'Hotspot Zone',
+        status: topZone?.zone ? topZone.zone : 'No Zone Data',
+        detail: topZone?.zone
+          ? `${topZone.anomalies ?? 0} anomalies across ${topZone.readings ?? 0} readings (${topZone.anomalyRate ?? 0}% anomaly rate).`
+          : 'No zone-level anomaly data is available from backend monitoring records.',
+      },
+      {
+        title: 'Top Facility Load',
+        status: topFacility?.name ? topFacility.name : 'No Facility Data',
+        detail: topFacility?.name
+          ? `${topFacility.value} total measured units are currently attributed to this location.`
+          : 'Facility totals will appear when backend gas readings are available.',
+      },
+      {
+        title: 'Environmental Incident Linkage',
+        status: (backendEmissions?.environmentalIncidents ?? 0) > 0 ? 'Review Required' : 'No Incidents',
+        detail: `${backendEmissions?.environmentalIncidents ?? 0} incident records matched environmental spill, leak, or emission conditions.`,
+      },
+      {
+        title: 'Network Health',
+        status: networkHealth >= 90 ? 'Healthy' : networkHealth >= 75 ? 'Stable' : 'Under Pressure',
+        detail: `${networkHealth}% of monitored emission sources are currently in compliant status.`,
+      },
+    ];
+  }, [backendEmissions]);
+
+  const forecastMetrics = useMemo(() => {
+    const summary = backendEmissions?.summary;
+    const topZone = [...(backendEmissions?.anomaliesByZone ?? [])].sort((left, right) => (right.anomalies ?? 0) - (left.anomalies ?? 0))[0];
+    const riskRatio = (summary?.totalGasReadings ?? 0) > 0
+      ? Math.round(((summary?.totalAnomalies ?? 0) / (summary?.totalGasReadings ?? 1)) * 1000) / 10
+      : 0;
+    const exceeded = summary?.exceededCount ?? 0;
+    const warning = summary?.warningCount ?? 0;
+
+    return [
+      {
+        label: 'Projected Alert Pressure',
+        value: `${riskRatio}%`,
+        trend: exceeded > 0 ? 'Elevated anomaly ratio' : 'Within expected range',
+        color: exceeded > 0 ? 'amber' : 'green',
+      },
+      {
+        label: 'Highest Priority Zone',
+        value: topZone?.zone ?? 'None',
+        trend: topZone?.zone ? `${topZone.anomalies ?? 0} anomalies detected` : 'No anomaly zones detected',
+        color: topZone?.anomalies ? 'amber' : 'green',
+      },
+      {
+        label: 'Exceedance Risk',
+        value: `${exceeded}`,
+        trend: exceeded > 0 ? 'Sensors over configured threshold' : 'No exceeded sources',
+        color: exceeded > 0 ? 'amber' : 'green',
+      },
+      {
+        label: 'Watchlist Sources',
+        value: `${warning}`,
+        trend: warning > 0 ? 'Near-threshold sensors to inspect' : 'No near-threshold sources',
+        color: warning > 0 ? 'cyan' : 'green',
+      },
+    ];
+  }, [backendEmissions]);
+
+  const recommendations = useMemo(() => {
+    const topSensors = [...(backendEmissions?.gasSensorReadings ?? [])]
+      .sort((left, right) => (right.anomalies ?? 0) - (left.anomalies ?? 0))
+      .slice(0, 3);
+
+    return topSensors.map((sensor, index) => ({
+      title: `${sensor.name} anomaly review`,
+      description: `${sensor.readings} readings were captured in ${sensor.zone ?? sensor.location ?? 'the monitored area'}, with ${sensor.anomalies} marked anomalous and an average value of ${sensor.avgValue} ${sensor.unit}.`,
+      impact: `${sensor.anomalies} anomalies`,
+      confidence: Math.min(98, 70 + (sensor.anomalies ?? 0) * 5 + index * 2),
+    }));
+  }, [backendEmissions]);
+
+  const insightStats = useMemo(() => {
+    const summary = backendEmissions?.summary;
+    const totalStatuses = (summary?.compliantCount ?? 0) + (summary?.warningCount ?? 0) + (summary?.exceededCount ?? 0);
+    const complianceScore = totalStatuses > 0
+      ? Math.round(((summary?.compliantCount ?? 0) / totalStatuses) * 100)
+      : 0;
+
+    return [
+      { label: 'Emission Reduction Focus', value: `${(summary?.warningCount ?? 0) + (summary?.exceededCount ?? 0)}`, icon: TrendingDown },
+      { label: 'Carbon Hotspots', value: `${backendEmissions?.facilityBreakdown?.length ?? 0}`, icon: Leaf },
+      { label: 'AI Priorities', value: `${recommendations.length}`, icon: Brain },
+      { label: 'Compliance Score', value: `${complianceScore}%`, icon: Activity },
+    ];
+  }, [backendEmissions, recommendations.length]);
+
+  const hasEmissionData = detailedEmissions.length > 0 || (backendEmissions?.logs?.length ?? 0) > 0 || (backendEmissions?.facilityBreakdown?.length ?? 0) > 0;
 
   return (
     <div className="min-h-screen bg-surface-50 pb-32 text-left">
@@ -95,14 +246,50 @@ export const EmissionReports: React.FC = () => {
           ))}
         </div>
 
+        {!hasEmissionData && (
+          <SectionEmptyState
+            title="No backend emission data is currently available"
+            description="Emission Reports now depends on backend gas sensor readings, anomaly summaries, and incident linkage data. Add monitored readings to populate this dashboard."
+          />
+        )}
+
         {activeTab === 'overview' && (
           <>
-            {/* Emission Type Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-              {detailedEmissions.map((emission, index) => (
-                <EmissionTypeCard key={emission.id} emission={emission} delay={index * 0.1} />
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+              {summaryCards.map((card, index) => (
+                <motion.div
+                  key={card.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.08 }}
+                  className="rounded-[2rem] border border-surface-100 bg-white p-6 shadow-soft"
+                >
+                  <div className="mb-4 flex items-center justify-between">
+                    <div className="rounded-2xl bg-brand-50 p-3 text-brand-600">
+                      <card.icon className="h-5 w-5" />
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-surface-400">Live</span>
+                  </div>
+                  <p className="text-sm font-semibold text-surface-500">{card.label}</p>
+                  <p className="mt-2 text-3xl font-bold tracking-tight text-brand-900">{card.value}</p>
+                  <p className="mt-2 text-xs text-surface-500">{card.detail}</p>
+                </motion.div>
               ))}
             </div>
+
+            {/* Emission Type Grid */}
+            {detailedEmissions.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                {detailedEmissions.map((emission, index) => (
+                  <EmissionTypeCard key={emission.id} emission={emission} delay={index * 0.1} />
+                ))}
+              </div>
+            ) : (
+              <SectionEmptyState
+                title="No monitored emission sources are available"
+                description="Detailed emission cards will appear once backend gas sensor readings are present for the selected reporting year."
+              />
+            )}
 
             {/* Detailed Analysis Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -118,30 +305,30 @@ export const EmissionReports: React.FC = () => {
 
         {activeTab === 'compliance' && (
           <div className="space-y-6">
-            {/* Regulatory Compliance Status */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[
-                { regulation: 'EPA Clean Air Act (CAA)', status: 'Compliant', lastAudit: '2026-01-15', nextDue: '2026-07-15', permits: 4, violations: 0, color: 'green' },
-                { regulation: 'EU ETS - Emissions Trading', status: 'Compliant', lastAudit: '2026-01-20', nextDue: '2026-06-20', permits: 2, violations: 0, color: 'green' },
-                { regulation: 'EPA NESHAP (40 CFR 63)', status: 'Minor Finding', lastAudit: '2026-02-01', nextDue: '2026-08-01', permits: 3, violations: 1, color: 'yellow' },
-                { regulation: 'State Title V Permits', status: 'Compliant', lastAudit: '2026-01-10', nextDue: '2026-07-10', permits: 5, violations: 0, color: 'green' },
-                { regulation: 'GHG Reporting Rule (40 CFR 98)', status: 'Report Due', lastAudit: '2025-12-15', nextDue: '2026-03-31', permits: 1, violations: 0, color: 'blue' },
-                { regulation: 'CARB AB 32 (California)', status: 'Compliant', lastAudit: '2026-01-25', nextDue: '2026-07-25', permits: 2, violations: 0, color: 'green' },
-              ].map((reg, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className="bg-white rounded-2xl p-5 border border-surface-100 shadow-soft">
-                  <div className="flex justify-between items-start mb-3">
-                    <h4 className="font-bold text-brand-900 text-sm">{reg.regulation}</h4>
-                    <span className={`px-2 py-1 rounded-lg text-[10px] font-bold ${reg.color === 'green' ? 'bg-emerald-50 text-emerald-700' : reg.color === 'yellow' ? 'bg-amber-50 text-amber-700' : 'bg-blue-50 text-blue-700'}`}>{reg.status}</span>
-                  </div>
-                  <div className="space-y-2 text-xs text-surface-500">
-                    <div className="flex justify-between"><span>Last Audit:</span><span className="font-bold text-surface-700">{reg.lastAudit}</span></div>
-                    <div className="flex justify-between"><span>Next Due:</span><span className="font-bold text-surface-700">{reg.nextDue}</span></div>
-                    <div className="flex justify-between"><span>Active Permits:</span><span className="font-bold text-surface-700">{reg.permits}</span></div>
-                    <div className="flex justify-between"><span>Open Violations:</span><span className={`font-bold ${reg.violations > 0 ? 'text-red-600' : 'text-emerald-600'}`}>{reg.violations}</span></div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            {complianceCards.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {complianceCards.map((card, index) => (
+                  <motion.div
+                    key={card.title}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-white rounded-2xl p-5 border border-surface-100 shadow-soft"
+                  >
+                    <div className="mb-3 flex items-start justify-between gap-3">
+                      <h4 className="font-bold text-brand-900 text-sm">{card.title}</h4>
+                      <span className="rounded-lg bg-brand-50 px-2 py-1 text-[10px] font-bold text-brand-700">{card.status}</span>
+                    </div>
+                    <p className="text-sm text-surface-600">{card.detail}</p>
+                  </motion.div>
+                ))}
+              </div>
+            ) : (
+              <SectionEmptyState
+                title="No backend compliance summary is available"
+                description="Compliance status cards are now derived from live sensor counts, anomaly rates, facility totals, and environmental incident linkage."
+              />
+            )}
           </div>
         )}
 
@@ -155,38 +342,34 @@ export const EmissionReports: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg">AI Emission Forecasting Engine</h3>
-                  <p className="text-cyan-300 text-xs font-mono">LSTM NEURAL NETWORK • 94.2% ACCURACY • 12-MONTH PROJECTION</p>
+                  <p className="text-cyan-300 text-xs font-mono">BACKEND ANOMALY SYNTHESIS • LIVE SENSOR SIGNALS • CURRENT PERIOD OUTLOOK</p>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                {[
-                  { label: 'Predicted CO₂ (2026)', value: '12,450 t', trend: '-8.3% vs 2025', color: 'green' },
-                  { label: 'Carbon Tax Liability', value: '$186K', trend: '-$24K savings', color: 'green' },
-                  { label: 'Permit Exceedance Risk', value: '4.2%', trend: 'Within limits', color: 'green' },
-                  { label: 'Net Zero Target', value: '2041', trend: '3 yrs ahead', color: 'cyan' },
-                ].map((m, i) => (
-                  <div key={i} className="bg-white/5 rounded-xl p-4 border border-white/10">
-                    <p className="text-xs text-cyan-300 mb-1">{m.label}</p>
-                    <p className="text-xl font-black">{m.value}</p>
-                    <p className={`text-[10px] font-mono mt-1 ${m.color === 'green' ? 'text-green-400' : 'text-cyan-400'}`}>{m.trend}</p>
+                {forecastMetrics.map((metric, index) => (
+                  <div key={metric.label} className="bg-white/5 rounded-xl p-4 border border-white/10">
+                    <p className="text-xs text-cyan-300 mb-1">{metric.label}</p>
+                    <p className="text-xl font-black">{metric.value}</p>
+                    <p className={`text-[10px] font-mono mt-1 ${metric.color === 'green' ? 'text-green-400' : metric.color === 'amber' ? 'text-amber-300' : 'text-cyan-400'}`}>{metric.trend}</p>
                   </div>
                 ))}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {[
-                  { title: 'Boiler Efficiency Optimization', desc: 'AI recommends adjusting combustion parameters on Boiler #3 to reduce NOx emissions by 15% while maintaining thermal efficiency.', impact: '-340 kg/yr NOx', confidence: 92 },
-                  { title: 'Fugitive Emission Reduction', desc: 'LDAR analysis identifies 3 valve stems in Section C with leak rates exceeding 500 ppm. Predicted to escalate to reportable levels within 30 days.', impact: '-1,200 kg/yr VOCs', confidence: 88 },
-                  { title: 'Renewable Energy Transition', desc: 'Solar panel installation on Building D roof can offset 18% of facility electricity emissions. ROI estimated at 4.2 years.', impact: '-2,100 t/yr CO₂', confidence: 95 },
-                ].map((rec, i) => (
-                  <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.15 }} className="bg-white/10 rounded-2xl p-4 border border-white/10">
+                {recommendations.length > 0 ? recommendations.map((rec, i) => (
+                  <motion.div key={rec.title} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.15 }} className="bg-white/10 rounded-2xl p-4 border border-white/10">
                     <h4 className="font-bold text-sm mb-2">{rec.title}</h4>
-                    <p className="text-cyan-200 text-xs mb-3">{rec.desc}</p>
+                    <p className="text-cyan-200 text-xs mb-3">{rec.description}</p>
                     <div className="flex justify-between items-center">
                       <span className="text-[10px] text-green-400 font-bold">{rec.impact}</span>
                       <span className="text-[10px] text-cyan-300 font-mono">Confidence: {rec.confidence}%</span>
                     </div>
                   </motion.div>
-                ))}
+                )) : (
+                  <SectionEmptyState
+                    title="No forecast recommendations are available"
+                    description="AI forecast recommendations are now synthesized from backend anomaly, facility, and gas sensor readings when available."
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -204,12 +387,7 @@ export const EmissionReports: React.FC = () => {
             </div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {[
-              { label: 'Emission Reduction', value: '-12.4%', icon: TrendingDown },
-              { label: 'Carbon Offset', value: '847t', icon: Leaf },
-              { label: 'AI Predictions', value: '94.2%', icon: Brain },
-              { label: 'Compliance Score', value: '97%', icon: Activity },
-            ].map((s, i) => (
+            {insightStats.map((s, i) => (
               <div key={i} className="bg-white/10 rounded-xl p-3 border border-white/10">
                 <p className="text-xl font-black">{s.value}</p>
                 <p className="text-[9px] text-emerald-200 uppercase tracking-wider">{s.label}</p>

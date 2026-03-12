@@ -1096,6 +1096,7 @@ class APIService {
     options: RequestInit = {}
   ): Promise<APIResponse<T>> {
     const url = `${this.config.baseURL}${endpoint}`;
+    const authHeaders = typeof window !== 'undefined' ? getAuthHeader() : {};
     
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.config.timeout);
@@ -1105,6 +1106,7 @@ class APIService {
         ...options,
         headers: {
           ...this.config.headers,
+          ...authHeaders,
           ...options.headers,
         },
         signal: controller.signal,
@@ -1954,7 +1956,7 @@ export interface BackendNotification {
 }
 export interface NotificationPreferences {
   userId: string; emailNotifications?: boolean; smsNotifications?: boolean;
-  inAppNotifications?: boolean; preferences?: Record<string, boolean>;
+  inAppNotifications?: boolean; preferences?: Record<string, boolean | string | number>;
   quietHours?: { start: string; end: string }; frequency?: string;
 }
 

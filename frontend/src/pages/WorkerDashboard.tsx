@@ -5,7 +5,7 @@ import {
   FileText, ClipboardList, Wrench, Shield, TrendingUp, Award,
   Bell, Settings, ChevronRight, MapPin, Briefcase, Star,
   BarChart3, Target, Zap, Users, Activity, Timer, Plus,
-  Camera, Mic, Send, Eye, RefreshCw, Filter, Search,
+  Camera, Mic, Send, Eye, RefreshCw, Filter, Search, Sparkles, Brain,
   XCircle, CheckCircle2, Circle, AlertCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -62,7 +62,7 @@ interface SafetyMetric {
 }
 
 // Mock data
-const workerProfile: WorkerProfile = {
+const mockWorkerProfile: WorkerProfile = {
   id: 'W-001',
   name: 'John Martinez',
   role: 'Safety Technician',

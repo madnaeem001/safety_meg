@@ -263,7 +263,7 @@ export const UserProfile: React.FC = () => {
         </motion.div>
       )}
 
-      <div className="max-w-2xl mx-auto px-4 py-6">
+      <main className="max-w-2xl mx-auto px-4 py-6">
         {/* Profile Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -606,7 +606,7 @@ export const UserProfile: React.FC = () => {
             </p>
           </div>
         </motion.div>
-      </div>
+      </main>
 
 
 

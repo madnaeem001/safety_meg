@@ -38,6 +38,10 @@ lerna-debug.log*
 
 # ===========================
 # OS generated files
+########################################
+# Playwright testing files/folders
+frontend/playwright.config.ts
+frontend/e2e/
 # ===========================
 .DS_Store
 .DS_Store?
@@ -75,6 +79,11 @@ Desktop.ini
 coverage/
 .nyc_output/
 *.lcov
+playwright-report/
+test-results/
+blob-report/
+frontend/playwright/.auth/
+
 
 # ===========================
 # Cache

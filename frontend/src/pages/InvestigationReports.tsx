@@ -313,9 +313,17 @@ export const InvestigationReports: React.FC = () => {
                 transition={{ delay: index * 0.08 }}
                 className="bg-white rounded-3xl shadow-soft border border-surface-100 overflow-hidden"
               >
-                <button
+                <div
+                  role="button"
+                  tabIndex={0}
                   onClick={() => setExpandedId(isExpanded ? null : Number(item.id.replace('INV-', '')))}
-                  className="w-full p-5 text-left flex items-start gap-4 hover:bg-surface-50/50 transition-colors"
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      setExpandedId(isExpanded ? null : Number(item.id.replace('INV-', '')));
+                    }
+                  }}
+                  className="w-full p-5 text-left flex items-start gap-4 hover:bg-surface-50/50 transition-colors cursor-pointer"
                 >
                   <div className={`flex-shrink-0 w-12 h-12 rounded-2xl ${severityColors.bg} border ${severityColors.border} flex items-center justify-center`}>
                     <AlertTriangle className={`w-5 h-5 ${severityColors.text}`} />
@@ -368,7 +376,7 @@ export const InvestigationReports: React.FC = () => {
                       <span className="flex items-center gap-1"><BookOpen className="w-3 h-3" />ISO {item.isoClause.split(' ')[0]}</span>
                     </div>
                   </div>
-                </button>
+                </div>
 
                 <AnimatePresence>
                   {isExpanded && (

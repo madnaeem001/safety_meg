@@ -1,128 +1,298 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, TrendingUp, TrendingDown, Activity, PieChart as PieChartIcon, BarChart3, Award, Shield, CheckCircle2, AlertTriangle, Target, Clock, Sparkles, Brain, ShieldAlert, Zap, FileCheck, Star, ChevronRight, Users, Building2, AlertCircle, GraduationCap, ChevronDown, ChevronUp, Filter, X, SlidersHorizontal, Calendar } from 'lucide-react';
+import {
+  ArrowLeft,
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  PieChart as PieChartIcon,
+  BarChart3,
+  Award,
+  Shield,
+  CheckCircle2,
+  AlertTriangle,
+  Target,
+  Clock,
+  Sparkles,
+  Brain,
+  ShieldAlert,
+  Zap,
+  FileCheck,
+  Star,
+  ChevronRight,
+  ChevronDown,
+  Users,
+  Building2,
+  Filter,
+  X,
+  SlidersHorizontal,
+  Calendar,
+  Database,
+  GraduationCap,
+} from 'lucide-react';
 import { motion } from 'framer-motion';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, RadialBarChart, RadialBar, Legend, LineChart, Line } from 'recharts';
-import { kpiData, incidentsByMonth, incidentsByCategory, inspectionCompletionData, qualityMetrics, qualityEvents, complianceSummary, performanceBenchmarks, departmentComparison } from '../data/mockAnalytics';
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  BarChart,
+  Bar,
+  RadialBarChart,
+  RadialBar,
+  LineChart,
+  Line,
+} from 'recharts';
 import {
   useKPIMetricsAnalytics,
   useIncidentTrends,
   useDepartmentMetrics,
   useSeverityBreakdown,
+  useExecutiveKPIs,
+  useLeadingIndicatorsArray,
+  useLaggingIndicators,
+  useMonthlyTrend,
 } from '../api/hooks/useAPIHooks';
 
-// Colors used per department in backend-driven cards
-const DEPT_COLORS = ['#14b8a6','#6366f1','#f59e0b','#ef4444','#10b981','#8b5cf6','#0ea5e9','#f97316'];
+const DEPT_COLORS = ['#14b8a6', '#6366f1', '#f59e0b', '#ef4444', '#10b981', '#8b5cf6', '#0ea5e9', '#f97316'];
+const CATEGORY_COLORS = ['#10b981', '#3b82f6', '#14b8a6', '#f59e0b'];
 
-const KPICard = ({ data, index }: { data: any, index: number }) => (
+type DateRange = '7d' | '30d' | '90d' | '1y' | 'all';
+
+type KpiCardData = {
+  id: string;
+  label: string;
+  value: string;
+  change: string;
+  trend: 'up' | 'down';
+  period: string;
+};
+
+type QualityCategory = {
+  name: string;
+  score: number;
+  color: string;
+};
+
+type QualityTrendPoint = {
+  month: string;
+  score: number;
+};
+
+type ComplianceCategory = {
+  category: string;
+  compliant: number;
+  total: number;
+  rate: number;
+};
+
+type DepartmentViewModel = {
+  id: string;
+  name: string;
+  color: string;
+  summaryLabel: string;
+  metrics: {
+    safetyScore: number;
+    incidents: number;
+    highSeverityIncidents: number;
+    openActions: number;
+    closureRate: number;
+    totalCapas: number;
+  };
+};
+
+type BenchmarkItem = {
+  metric: string;
+  current: number;
+  industryAvg: number;
+  target: number;
+  unit: string;
+};
+
+type ActivityEvent = {
+  id: string;
+  type: 'improvement' | 'alert' | 'achievement' | 'action';
+  title: string;
+  description: string;
+  timestamp: string;
+};
+
+type InsightItem = {
+  label: string;
+  value: string;
+  icon: typeof Brain;
+  color: string;
+};
+
+const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+
+const parseDeltaNumber = (value?: string) => {
+  const match = value?.match(/([+-]?\d+(?:\.\d+)?)/);
+  return match ? Number(match[1]) : 0;
+};
+
+const formatKpiValue = (value: number | null, unit?: string) => {
+  if (value === null || Number.isNaN(value)) {
+    return 'N/A';
+  }
+
+  return `${value}${unit ?? ''}`;
+};
+
+const formatTrendLabel = (trend: 'good' | 'bad' | 'neutral') => {
+  if (trend === 'good') {
+    return '+Healthy';
+  }
+
+  if (trend === 'bad') {
+    return '-Watch';
+  }
+
+  return 'Stable';
+};
+
+const scoreBucket = (score: number) => {
+  if (score >= 95) {
+    return 'high';
+  }
+
+  if (score >= 85) {
+    return 'medium';
+  }
+
+  return 'low';
+};
+
+const SectionEmptyState = ({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) => (
+  <div className="rounded-2xl border border-dashed border-surface-200 bg-white p-8 text-center">
+    <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-100 text-surface-400">
+      <Database className="h-5 w-5" />
+    </div>
+    <p className="font-medium text-surface-700">{title}</p>
+    <p className="mt-1 text-sm text-surface-500">{description}</p>
+  </div>
+);
+
+const KPICard = ({ data, index }: { data: KpiCardData; index: number }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: index * 0.1 }}
-    className="bg-white p-4 rounded-2xl shadow-soft border border-surface-100"
+    transition={{ delay: index * 0.08 }}
+    className="rounded-2xl border border-surface-100 bg-white p-4 shadow-soft"
   >
-    <div className="flex justify-between items-start mb-2">
-      <span className="text-surface-500 text-sm font-medium">{data.label}</span>
-      <div className={`flex items-center text-xs font-bold px-2 py-1 rounded-full ${
+    <div className="mb-2 flex items-start justify-between">
+      <span className="text-sm font-medium text-surface-500">{data.label}</span>
+      <div className={`flex items-center rounded-full px-2 py-1 text-xs font-bold ${
         data.trend === 'up' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
       }`}>
-        {data.trend === 'up' ? <TrendingUp className="w-3 h-3 mr-1" /> : <TrendingDown className="w-3 h-3 mr-1" />}
+        {data.trend === 'up' ? <TrendingUp className="mr-1 h-3 w-3" /> : <TrendingDown className="mr-1 h-3 w-3" />}
         {data.change}
       </div>
     </div>
     <div className="text-2xl font-bold text-brand-900">{data.value}</div>
-    <div className="text-xs text-surface-400 mt-1">{data.period}</div>
+    <div className="mt-1 text-xs text-surface-400">{data.period}</div>
   </motion.div>
 );
 
-const QualityScoreGauge = ({ score, previousScore }: { score: number, previousScore: number }) => {
+const QualityScoreGauge = ({ score, previousScore }: { score: number; previousScore: number }) => {
   const data = [{ name: 'Score', value: score, fill: score >= 90 ? '#10b981' : score >= 70 ? '#f59e0b' : '#ef4444' }];
   const diff = score - previousScore;
-  
+
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
+      initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="bg-gradient-to-br from-brand-900 to-brand-950 p-6 rounded-3xl shadow-xl text-white relative overflow-hidden"
+      className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-900 to-brand-950 p-6 text-white shadow-xl"
     >
-      <div className="flex items-center justify-between mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-xl flex items-center justify-center border border-white/20">
-            <Award className="w-7 h-7 text-brand-300" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/20 bg-white/10 backdrop-blur-md">
+            <Award className="h-7 w-7 text-brand-300" />
           </div>
           <div>
-            <h3 className="font-bold text-lg">Quality Score</h3>
-            <p className="text-brand-300 text-xs">Overall Performance</p>
+            <h3 className="text-lg font-bold">Safety Score</h3>
+            <p className="text-xs text-brand-300">Backend-derived executive KPI</p>
           </div>
         </div>
-        <div className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-bold ${
-          diff > 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'
+        <div className={`flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-bold ${
+          diff >= 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'
         }`}>
-          {diff > 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-          {diff > 0 ? '+' : ''}{diff}%
+          {diff >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
+          {diff >= 0 ? '+' : ''}
+          {diff}
         </div>
       </div>
-      
-      <div className="flex items-center justify-center relative">
+
+      <div className="relative flex items-center justify-center">
         <ResponsiveContainer width="100%" height={180}>
-          <RadialBarChart 
-            cx="50%" 
-            cy="50%" 
-            innerRadius="60%" 
-            outerRadius="90%" 
-            barSize={16} 
+          <RadialBarChart
+            cx="50%"
+            cy="50%"
+            innerRadius="60%"
+            outerRadius="90%"
+            barSize={16}
             data={data}
             startAngle={180}
             endAngle={0}
           >
-            <RadialBar
-              background={{ fill: 'rgba(255,255,255,0.1)' }}
-              dataKey="value"
-              cornerRadius={10}
-            />
+            <RadialBar background={{ fill: 'rgba(255,255,255,0.1)' }} dataKey="value" cornerRadius={10} />
           </RadialBarChart>
         </ResponsiveContainer>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-5xl font-bold">{score}</span>
-          <span className="text-brand-300 text-sm">out of 100</span>
+          <span className="text-sm text-brand-300">out of 100</span>
         </div>
       </div>
-      
-      <div className="absolute right-[-30px] bottom-[-30px] w-40 h-40 bg-white/5 rounded-full blur-2xl" />
+
+      <div className="absolute bottom-[-30px] right-[-30px] h-40 w-40 rounded-full bg-white/5 blur-2xl" />
     </motion.div>
   );
 };
 
-const QualityEventCard = ({ event, index }: { event: any, index: number }) => {
+const QualityEventCard = ({ event, index }: { event: ActivityEvent; index: number }) => {
   const icons = {
     improvement: CheckCircle2,
     alert: AlertTriangle,
     achievement: Star,
     action: FileCheck,
   };
+
   const colors = {
     improvement: 'text-emerald-500 bg-emerald-50',
     alert: 'text-amber-500 bg-amber-50',
     achievement: 'text-purple-500 bg-purple-50',
     action: 'text-blue-500 bg-blue-50',
   };
-  const Icon = icons[event.type as keyof typeof icons] || CheckCircle2;
-  const colorClass = colors[event.type as keyof typeof colors] || colors.improvement;
-  
+
+  const Icon = icons[event.type];
+  const colorClass = colors[event.type];
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: index * 0.1 }}
-      className="flex items-start gap-3 p-4 bg-white rounded-2xl shadow-soft border border-surface-100"
+      transition={{ delay: index * 0.08 }}
+      className="flex items-start gap-3 rounded-2xl border border-surface-100 bg-white p-4 shadow-soft"
     >
-      <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${colorClass}`}>
-        <Icon className="w-5 h-5" />
+      <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${colorClass}`}>
+        <Icon className="h-5 w-5" />
       </div>
-      <div className="flex-1 min-w-0">
-        <h4 className="font-semibold text-brand-900 text-sm">{event.title}</h4>
-        <p className="text-surface-500 text-xs mt-0.5 line-clamp-2">{event.description}</p>
-        <span className="text-surface-400 text-xs mt-1 block">
+      <div className="min-w-0 flex-1">
+        <h4 className="text-sm font-semibold text-brand-900">{event.title}</h4>
+        <p className="mt-0.5 line-clamp-2 text-xs text-surface-500">{event.description}</p>
+        <span className="mt-1 block text-xs text-surface-400">
           {new Date(event.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
         </span>
       </div>
@@ -130,24 +300,26 @@ const QualityEventCard = ({ event, index }: { event: any, index: number }) => {
   );
 };
 
-const BenchmarkRow = ({ benchmark, index }: { benchmark: any, index: number }) => {
-  const isAboveTarget = benchmark.current >= benchmark.target;
-  const isBetterThanIndustry = benchmark.metric === 'TRIR' || benchmark.metric === 'LTIR' 
-    ? benchmark.current < benchmark.industryAvg 
+const BenchmarkRow = ({ benchmark, index }: { benchmark: BenchmarkItem; index: number }) => {
+  const isAboveTarget = benchmark.metric === 'TRIR' || benchmark.metric === 'LTIR'
+    ? benchmark.current <= benchmark.target
+    : benchmark.current >= benchmark.target;
+  const isBetterThanIndustry = benchmark.metric === 'TRIR' || benchmark.metric === 'LTIR'
+    ? benchmark.current < benchmark.industryAvg
     : benchmark.current > benchmark.industryAvg;
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08 }}
-      className="flex items-center justify-between p-3 bg-surface-50 rounded-xl"
+      className="flex items-center justify-between rounded-xl bg-surface-50 p-3"
     >
       <div className="flex items-center gap-3">
-        <div className={`w-2 h-8 rounded-full ${isAboveTarget ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+        <div className={`h-8 w-2 rounded-full ${isAboveTarget ? 'bg-emerald-500' : 'bg-amber-500'}`} />
         <div>
-          <span className="font-medium text-brand-900 text-sm">{benchmark.metric}</span>
-          <div className="text-xs text-surface-500">{benchmark.unit}</div>
+          <span className="text-sm font-medium text-brand-900">{benchmark.metric}</span>
+          <div className="text-xs text-surface-500">{benchmark.unit || 'benchmark'}</div>
         </div>
       </div>
       <div className="flex items-center gap-4">
@@ -157,24 +329,37 @@ const BenchmarkRow = ({ benchmark, index }: { benchmark: any, index: number }) =
             vs {benchmark.industryAvg} avg
           </div>
         </div>
-        <Target className={`w-5 h-5 ${isAboveTarget ? 'text-emerald-500' : 'text-amber-500'}`} />
+        <Target className={`h-5 w-5 ${isAboveTarget ? 'text-emerald-500' : 'text-amber-500'}`} />
       </div>
     </motion.div>
   );
 };
 
-const DepartmentCard = ({ dept, isExpanded, onToggle, index }: { dept: any, isExpanded: boolean, onToggle: () => void, index: number }) => {
+const DepartmentCard = ({
+  dept,
+  isExpanded,
+  onToggle,
+  index,
+}: {
+  dept: DepartmentViewModel;
+  isExpanded: boolean;
+  onToggle: () => void;
+  index: number;
+}) => {
   const getScoreColor = (score: number) => {
-    if (score >= 95) return 'text-emerald-600 bg-emerald-50';
-    if (score >= 90) return 'text-blue-600 bg-blue-50';
-    if (score >= 85) return 'text-amber-600 bg-amber-50';
-    return 'text-rose-600 bg-rose-50';
-  };
+    if (score >= 95) {
+      return 'text-emerald-600 bg-emerald-50';
+    }
 
-  const getTrendIcon = (trend: number) => {
-    if (trend > 0) return <TrendingUp className="w-3 h-3 text-emerald-500" />;
-    if (trend < 0) return <TrendingDown className="w-3 h-3 text-rose-500" />;
-    return <span className="w-3 h-3 text-surface-400">—</span>;
+    if (score >= 90) {
+      return 'text-blue-600 bg-blue-50';
+    }
+
+    if (score >= 85) {
+      return 'text-amber-600 bg-amber-50';
+    }
+
+    return 'text-rose-600 bg-rose-50';
   };
 
   return (
@@ -182,38 +367,32 @@ const DepartmentCard = ({ dept, isExpanded, onToggle, index }: { dept: any, isEx
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08 }}
-      className="bg-white rounded-2xl shadow-soft border border-surface-100 overflow-hidden"
+      className="overflow-hidden rounded-2xl border border-surface-100 bg-white shadow-soft"
     >
-      {/* Header - Always Visible */}
       <button
         onClick={onToggle}
-        className="w-full p-4 flex items-center justify-between hover:bg-surface-50 transition-colors"
+        className="flex w-full items-center justify-between p-4 text-left transition-colors hover:bg-surface-50"
       >
         <div className="flex items-center gap-3">
-          <div 
-            className="w-10 h-10 rounded-xl flex items-center justify-center"
+          <div
+            className="flex h-10 w-10 items-center justify-center rounded-xl"
             style={{ backgroundColor: `${dept.color}15` }}
           >
-            <Building2 className="w-5 h-5" style={{ color: dept.color }} />
+            <Building2 className="h-5 w-5" style={{ color: dept.color }} />
           </div>
-          <div className="text-left">
+          <div>
             <h4 className="font-semibold text-brand-900">{dept.name}</h4>
-            <span className="text-xs text-surface-500">{dept.employees} employees</span>
+            <span className="text-xs text-surface-500">{dept.summaryLabel}</span>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <div className={`px-3 py-1.5 rounded-full text-sm font-bold ${getScoreColor(dept.metrics.safetyScore)}`}>
+          <div className={`rounded-full px-3 py-1.5 text-sm font-bold ${getScoreColor(dept.metrics.safetyScore)}`}>
             {dept.metrics.safetyScore}%
           </div>
-          {isExpanded ? (
-            <ChevronUp className="w-5 h-5 text-surface-400" />
-          ) : (
-            <ChevronDown className="w-5 h-5 text-surface-400" />
-          )}
+          {isExpanded ? <ChevronDown className="h-5 w-5 rotate-180 text-surface-400" /> : <ChevronDown className="h-5 w-5 text-surface-400" />}
         </div>
       </button>
 
-      {/* Expanded Content */}
       {isExpanded && (
         <motion.div
           initial={{ height: 0, opacity: 0 }}
@@ -221,72 +400,49 @@ const DepartmentCard = ({ dept, isExpanded, onToggle, index }: { dept: any, isEx
           exit={{ height: 0, opacity: 0 }}
           className="border-t border-surface-100"
         >
-          <div className="p-4 space-y-4">
-            {/* Key Metrics Grid */}
+          <div className="space-y-4 p-4">
             <div className="grid grid-cols-3 gap-2">
-              <div className="text-center p-2 bg-surface-50 rounded-xl">
-                <div className="flex items-center justify-center gap-1">
-                  <span className="text-lg font-bold text-brand-900">{dept.metrics.incidents}</span>
-                  {getTrendIcon(dept.trend.incidents * -1)}
-                </div>
+              <div className="rounded-xl bg-surface-50 p-2 text-center">
+                <div className="text-lg font-bold text-brand-900">{dept.metrics.incidents}</div>
                 <div className="text-xs text-surface-500">Incidents</div>
               </div>
-              <div className="text-center p-2 bg-surface-50 rounded-xl">
-                <div className="flex items-center justify-center gap-1">
-                  <span className="text-lg font-bold text-brand-900">{dept.metrics.nearMisses}</span>
-                </div>
-                <div className="text-xs text-surface-500">Near Misses</div>
+              <div className="rounded-xl bg-surface-50 p-2 text-center">
+                <div className="text-lg font-bold text-brand-900">{dept.metrics.highSeverityIncidents}</div>
+                <div className="text-xs text-surface-500">High Severity</div>
               </div>
-              <div className="text-center p-2 bg-surface-50 rounded-xl">
-                <div className="flex items-center justify-center gap-1">
-                  <span className="text-lg font-bold text-brand-900">{dept.metrics.openActions}</span>
-                </div>
-                <div className="text-xs text-surface-500">Open Actions</div>
+              <div className="rounded-xl bg-surface-50 p-2 text-center">
+                <div className="text-lg font-bold text-brand-900">{dept.metrics.openActions}</div>
+                <div className="text-xs text-surface-500">Open CAPAs</div>
               </div>
             </div>
 
-            {/* Progress Bars */}
             <div className="space-y-3">
               <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-surface-600 flex items-center gap-1">
-                    <GraduationCap className="w-3 h-3" /> Training
+                <div className="mb-1 flex justify-between text-xs">
+                  <span className="flex items-center gap-1 text-surface-600">
+                    <Shield className="h-3 w-3" /> Safety score
                   </span>
-                  <span className="font-medium text-brand-900">{dept.metrics.trainingCompletion}%</span>
+                  <span className="font-medium text-brand-900">{dept.metrics.safetyScore}%</span>
                 </div>
-                <div className="h-1.5 bg-surface-100 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full rounded-full transition-all"
-                    style={{ width: `${dept.metrics.trainingCompletion}%`, backgroundColor: dept.color }}
-                  />
+                <div className="h-1.5 overflow-hidden rounded-full bg-surface-100">
+                  <div className="h-full rounded-full" style={{ width: `${dept.metrics.safetyScore}%`, backgroundColor: dept.color }} />
                 </div>
               </div>
               <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-surface-600 flex items-center gap-1">
-                    <Shield className="w-3 h-3" /> Compliance
+                <div className="mb-1 flex justify-between text-xs">
+                  <span className="flex items-center gap-1 text-surface-600">
+                    <GraduationCap className="h-3 w-3" /> CAPA closure
                   </span>
-                  <span className="font-medium text-brand-900">{dept.metrics.complianceRate}%</span>
+                  <span className="font-medium text-brand-900">{dept.metrics.closureRate}%</span>
                 </div>
-                <div className="h-1.5 bg-surface-100 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full rounded-full transition-all"
-                    style={{ width: `${dept.metrics.complianceRate}%`, backgroundColor: dept.color }}
-                  />
+                <div className="h-1.5 overflow-hidden rounded-full bg-surface-100">
+                  <div className="h-full rounded-full" style={{ width: `${dept.metrics.closureRate}%`, backgroundColor: dept.color }} />
                 </div>
               </div>
             </div>
 
-            {/* Mini Incident Trend */}
-            <div className="pt-2">
-              <div className="text-xs text-surface-500 mb-2">Incident Trend (5 months)</div>
-              <div className="h-16 w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={dept.monthlyIncidents}>
-                    <Bar dataKey="count" fill={dept.color} radius={[2, 2, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
+            <div className="rounded-xl bg-surface-50 p-3 text-xs text-surface-600">
+              {dept.metrics.totalCapas} total CAPAs tracked for this department, with {dept.metrics.highSeverityIncidents} high-severity incidents currently influencing the score.
             </div>
           </div>
         </motion.div>
@@ -302,73 +458,257 @@ export const Analytics: React.FC = () => {
   const [selectedDepts, setSelectedDepts] = React.useState<string[]>([]);
   const [scoreFilter, setScoreFilter] = React.useState<'all' | 'high' | 'medium' | 'low'>('all');
   const [sortBy, setSortBy] = React.useState<'score' | 'incidents' | 'name'>('score');
-  const [dateRange, setDateRange] = React.useState<'7d' | '30d' | '90d' | '1y' | 'all'>('30d');
+  const [dateRange, setDateRange] = React.useState<DateRange>('30d');
 
-  // ── Real API Data ───────────────────────────────────────────────────────
+  const monthsByRange: Record<DateRange, number> = {
+    '7d': 1,
+    '30d': 1,
+    '90d': 3,
+    '1y': 12,
+    all: 24,
+  };
+
+  const months = monthsByRange[dateRange];
+  const indicatorPeriod = dateRange === '1y' || dateRange === 'all' ? 'year' : 'month';
+
   const { data: liveKPIs } = useKPIMetricsAnalytics();
-  const { data: liveIncidentTrends } = useIncidentTrends({ months: 12 });
+  const { data: liveIncidentTrends } = useIncidentTrends({ months });
   const { data: liveDepartmentMetrics } = useDepartmentMetrics();
   const { data: liveSeverityBreakdown } = useSeverityBreakdown();
+  const { data: executiveKpis } = useExecutiveKPIs();
+  const { data: leadingIndicators } = useLeadingIndicatorsArray(indicatorPeriod);
+  const { data: laggingIndicators } = useLaggingIndicators(indicatorPeriod);
+  const { data: monthlyTrend } = useMonthlyTrend(months);
 
-  // ── Merged Data (real API + mock fallback) ──────────────────────────────
-  // KPI data: prefer live KPIs if available, else fallback to mock
-  const mergedKPIData = React.useMemo(() => {
-    if (liveKPIs && liveKPIs.length > 0) {
-      return liveKPIs.map((kpi: any, idx: number) => ({
-        label: kpi.label,
-        value: kpi.value !== null ? String(kpi.value) + (kpi.unit ? kpi.unit : '') : 'N/A',
-        change: kpi.trend === 'good' ? '+Improving' : kpi.trend === 'bad' ? '-Declining' : 'Stable',
-        trend: kpi.trend === 'bad' ? 'down' : 'up',
-        period: 'YTD',
-        icon: kpiData[idx % kpiData.length]?.icon,
-        color: kpiData[idx % kpiData.length]?.color,
-      }));
-    }
-    return kpiData;
-  }, [liveKPIs]);
+  const getDateRangeLabel = () => {
+    const labels: Record<DateRange, string> = {
+      '7d': 'Last 7 Days',
+      '30d': 'Last 30 Days',
+      '90d': 'Last 90 Days',
+      '1y': 'Last Year',
+      all: 'All Time',
+    };
 
-  // Incident trends: prefer live data
-  const mergedIncidentsByMonth = React.useMemo(() => {
-    if (liveIncidentTrends && liveIncidentTrends.length > 0) {
-      return liveIncidentTrends.map((item: any) => ({
-        name: item.month,
-        month: item.month,
-        incidents: item.total,
-        nearMisses: item.nearMisses,
-        critical: item.critical,
-        resolved: item.total - item.critical,
-      }));
-    }
-    return incidentsByMonth;
+    return labels[dateRange];
+  };
+
+  const previousSafetyScore = React.useMemo(() => {
+    const score = executiveKpis?.safetyScore ?? 0;
+    const delta = parseDeltaNumber(executiveKpis?.safetyScoreDelta);
+    return clamp(Math.round(score - delta), 0, 100);
+  }, [executiveKpis]);
+
+  const kpiCards = React.useMemo<KpiCardData[]>(() => {
+    return (liveKPIs ?? []).map((kpi) => ({
+      id: kpi.id,
+      label: kpi.label,
+      value: formatKpiValue(kpi.value, kpi.unit),
+      change: formatTrendLabel(kpi.trend),
+      trend: kpi.trend === 'bad' ? 'down' : 'up',
+      period: getDateRangeLabel(),
+    }));
+  }, [liveKPIs, dateRange]);
+
+  const incidentTrendData = React.useMemo(() => {
+    return (liveIncidentTrends ?? []).map((item) => ({
+      name: item.month,
+      incidents: item.total,
+      nearMisses: item.nearMisses,
+      critical: item.critical,
+      resolved: Math.max(item.total - item.critical, 0),
+    }));
   }, [liveIncidentTrends]);
 
-  // Severity breakdown for pie chart
-  const mergedIncidentsByCategory = React.useMemo(() => {
-    if (liveSeverityBreakdown && liveSeverityBreakdown.length > 0) {
-      const colors: Record<string, string> = {
-        critical: '#ef4444', high: '#f97316', medium: '#f59e0b',
-        low: '#10b981', CRITICAL: '#ef4444', HIGH: '#f97316',
-        MEDIUM: '#f59e0b', LOW: '#10b981',
-      };
-      return liveSeverityBreakdown.map((item: any) => ({
-        name: item.severity,
-        value: item.count,
-        color: colors[item.severity] || '#6366f1',
-      }));
-    }
-    return incidentsByCategory;
+  const severityBreakdown = React.useMemo(() => {
+    const colors: Record<string, string> = {
+      critical: '#ef4444',
+      high: '#f97316',
+      medium: '#f59e0b',
+      low: '#10b981',
+      CRITICAL: '#ef4444',
+      HIGH: '#f97316',
+      MEDIUM: '#f59e0b',
+      LOW: '#10b981',
+    };
+
+    return (liveSeverityBreakdown ?? []).map((item) => ({
+      name: item.severity,
+      value: item.count,
+      percentage: item.percentage,
+      color: colors[item.severity] || '#6366f1',
+    }));
   }, [liveSeverityBreakdown]);
+
+  const qualityCategories = React.useMemo<QualityCategory[]>(() => {
+    const totalIncidents = incidentTrendData.reduce((sum, item) => sum + item.incidents, 0);
+    const highSeverityIncidents = (liveDepartmentMetrics ?? []).reduce((sum, item) => sum + item.highSeverityIncidents, 0);
+    const avgClosureRate = (liveDepartmentMetrics ?? []).length > 0
+      ? Math.round((liveDepartmentMetrics ?? []).reduce((sum, item) => sum + (item.capaClosureRate ?? 0), 0) / (liveDepartmentMetrics ?? []).length)
+      : 0;
+    const incidentControl = totalIncidents > 0
+      ? clamp(Math.round(100 - (highSeverityIncidents / totalIncidents) * 100), 0, 100)
+      : 100;
+
+    return [
+      { name: 'Safety Score', score: Math.round(executiveKpis?.safetyScore ?? 0), color: CATEGORY_COLORS[0] },
+      { name: 'Compliance Readiness', score: Math.round(executiveKpis?.compliancePct ?? 0), color: CATEGORY_COLORS[1] },
+      { name: 'CAPA Closure', score: avgClosureRate, color: CATEGORY_COLORS[2] },
+      { name: 'Incident Control', score: incidentControl, color: CATEGORY_COLORS[3] },
+    ].filter((category) => category.score > 0);
+  }, [executiveKpis, incidentTrendData, liveDepartmentMetrics]);
+
+  const qualityTrend = React.useMemo<QualityTrendPoint[]>(() => {
+    return (monthlyTrend ?? []).map((item) => ({
+      month: item.month,
+      score: clamp(Math.round(100 - item.incidents * 4 + item.inspections * 0.6 + item.observations * 0.4), 40, 100),
+    }));
+  }, [monthlyTrend]);
+
+  const complianceSummary = React.useMemo(() => {
+    const departments = liveDepartmentMetrics ?? [];
+    const healthy = departments.filter((item) => (item.capaClosureRate ?? 0) >= 80 && item.highSeverityIncidents === 0).length;
+    const watch = departments.filter((item) => (item.capaClosureRate ?? 0) < 80 || item.highSeverityIncidents > 0).length;
+    const overdue = executiveKpis?.overdueActions ?? 0;
+    const byCategory: ComplianceCategory[] = departments.map((item) => ({
+      category: item.department,
+      compliant: Math.max(item.totalCapas - item.openCapas, 0),
+      total: Math.max(item.totalCapas, 1),
+      rate: Math.round(item.capaClosureRate ?? 0),
+    }));
+
+    return {
+      rate: Math.round(executiveKpis?.compliancePct ?? 0),
+      healthy,
+      watch,
+      overdue,
+      byCategory,
+    };
+  }, [executiveKpis, liveDepartmentMetrics]);
+
+  const baseDepartments = React.useMemo<DepartmentViewModel[]>(() => {
+    return (liveDepartmentMetrics ?? []).map((department, index) => {
+      const closureRate = Math.round(department.capaClosureRate ?? 0);
+      const safetyScore = clamp(
+        Math.round(100 - department.incidents * 5 - department.highSeverityIncidents * 8 - department.openCapas * 2 + closureRate * 0.25),
+        55,
+        99,
+      );
+
+      return {
+        id: department.department,
+        name: department.department,
+        color: DEPT_COLORS[index % DEPT_COLORS.length],
+        summaryLabel: `${department.totalCapas} backend CAPAs tracked`,
+        metrics: {
+          safetyScore,
+          incidents: department.incidents,
+          highSeverityIncidents: department.highSeverityIncidents,
+          openActions: department.openCapas,
+          closureRate,
+          totalCapas: department.totalCapas,
+        },
+      };
+    });
+  }, [liveDepartmentMetrics]);
+
+  const benchmarks = React.useMemo<BenchmarkItem[]>(() => {
+    const benchmarkMap: Record<string, { industryAvg: number; target: number; unit: string }> = {
+      trir: { industryAvg: 1.2, target: 0.8, unit: '' },
+      ltir: { industryAvg: 0.25, target: 0.1, unit: '' },
+      training: { industryAvg: 80, target: 90, unit: '%' },
+      compliance: { industryAvg: 85, target: 90, unit: '%' },
+      'audit-score': { industryAvg: 80, target: 85, unit: '/100' },
+      'capa-closure': { industryAvg: 75, target: 80, unit: '%' },
+    };
+
+    return (liveKPIs ?? [])
+      .filter((kpi) => kpi.value !== null && benchmarkMap[kpi.id])
+      .map((kpi) => ({
+        metric: kpi.label,
+        current: Number(kpi.value),
+        industryAvg: benchmarkMap[kpi.id].industryAvg,
+        target: benchmarkMap[kpi.id].target,
+        unit: benchmarkMap[kpi.id].unit || kpi.unit || '',
+      }));
+  }, [liveKPIs]);
+
+  const monthlyActivity = React.useMemo(() => {
+    return (monthlyTrend ?? []).map((item) => ({
+      period: item.month,
+      completed: item.inspections,
+      observations: item.observations,
+    }));
+  }, [monthlyTrend]);
+
+  const activityFeed = React.useMemo<ActivityEvent[]>(() => {
+    const now = new Date();
+    const topDepartment = [...baseDepartments].sort((a, b) => b.metrics.safetyScore - a.metrics.safetyScore)[0];
+    const topSeverity = [...severityBreakdown].sort((a, b) => b.value - a.value)[0];
+    const latestTrend = qualityTrend[qualityTrend.length - 1];
+
+    return [
+      executiveKpis && {
+        id: 'exec-score',
+        type: executiveKpis.overdueActions > 0 ? 'alert' : 'achievement',
+        title: executiveKpis.overdueActions > 0 ? 'Overdue actions require follow-up' : 'Executive score remains on track',
+        description: executiveKpis.overdueActions > 0
+          ? `${executiveKpis.overdueActions} backend actions are overdue in the current analytics snapshot.`
+          : `Safety score is holding at ${executiveKpis.safetyScore} with ${executiveKpis.openActions} open actions in flight.`,
+        timestamp: now.toISOString(),
+      },
+      topDepartment && {
+        id: 'top-dept',
+        type: 'improvement',
+        title: `${topDepartment.name} leads department performance`,
+        description: `${topDepartment.name} is currently scoring ${topDepartment.metrics.safetyScore}% with ${topDepartment.metrics.openActions} open CAPAs.`,
+        timestamp: new Date(now.getTime() - 30 * 60 * 1000).toISOString(),
+      },
+      topSeverity && {
+        id: 'severity-mix',
+        type: topSeverity.name.toLowerCase().includes('critical') ? 'alert' : 'action',
+        title: `${topSeverity.name} is the primary incident severity bucket`,
+        description: `${topSeverity.value} incidents are currently grouped under ${topSeverity.name.toLowerCase()} severity in the live breakdown.`,
+        timestamp: new Date(now.getTime() - 60 * 60 * 1000).toISOString(),
+      },
+      latestTrend && {
+        id: 'trend-snapshot',
+        type: 'action',
+        title: `${latestTrend.month} operational trend updated`,
+        description: `Composite operational score for ${latestTrend.month} is ${latestTrend.score} based on inspections, observations, and incident totals.`,
+        timestamp: new Date(now.getTime() - 2 * 60 * 60 * 1000).toISOString(),
+      },
+    ].filter((event): event is ActivityEvent => Boolean(event));
+  }, [baseDepartments, executiveKpis, qualityTrend, severityBreakdown]);
+
+  const aiInsights = React.useMemo<InsightItem[]>(() => {
+    const totalIncidents = incidentTrendData.reduce((sum, item) => sum + item.incidents, 0);
+    const highSeverityIncidents = baseDepartments.reduce((sum, item) => sum + item.metrics.highSeverityIncidents, 0);
+    const riskLevel = highSeverityIncidents === 0
+      ? 'Low'
+      : highSeverityIncidents <= Math.max(1, Math.round(totalIncidents * 0.2))
+        ? 'Moderate'
+        : 'High';
+    const flaggedDepartments = baseDepartments.filter((item) => item.metrics.highSeverityIncidents > 0 || item.metrics.openActions > 3).length;
+    const optimizationGap = clamp(100 - Math.round(executiveKpis?.compliancePct ?? 0), 0, 100);
+    const indicatorCoverage = (leadingIndicators?.length ?? 0) + (laggingIndicators?.length ?? 0);
+
+    return [
+      { label: 'Predictive Risk Score', value: riskLevel, icon: Brain, color: riskLevel === 'High' ? 'text-red-400' : riskLevel === 'Moderate' ? 'text-yellow-400' : 'text-green-400' },
+      { label: 'Flagged Departments', value: `${flaggedDepartments}`, icon: ShieldAlert, color: flaggedDepartments > 0 ? 'text-yellow-400' : 'text-green-400' },
+      { label: 'Signal Coverage', value: `${indicatorCoverage} feeds`, icon: Zap, color: 'text-brand-400' },
+    ];
+  }, [baseDepartments, executiveKpis, incidentTrendData, laggingIndicators, leadingIndicators]);
 
   const toggleDepartment = (deptId: string) => {
     setExpandedDept(expandedDept === deptId ? null : deptId);
   };
 
   const toggleDeptSelection = (deptId: string) => {
-    setSelectedDepts(prev => 
-      prev.includes(deptId) 
-        ? prev.filter(id => id !== deptId)
-        : [...prev, deptId]
-    );
+    setSelectedDepts((current) => (
+      current.includes(deptId)
+        ? current.filter((id) => id !== deptId)
+        : [...current, deptId]
+    ));
   };
 
   const clearFilters = () => {
@@ -380,100 +720,57 @@ export const Analytics: React.FC = () => {
 
   const hasActiveFilters = selectedDepts.length > 0 || scoreFilter !== 'all' || sortBy !== 'score' || dateRange !== '30d';
 
-  // Get date range label for display
-  const getDateRangeLabel = () => {
-    const labels: Record<string, string> = {
-      '7d': 'Last 7 Days',
-      '30d': 'Last 30 Days',
-      '90d': 'Last 90 Days',
-      '1y': 'Last Year',
-      'all': 'All Time'
-    };
-    return labels[dateRange];
-  };
-
-  // Filter and sort departments - prefer backend data, fall back to mock
-  const baseDepartments = React.useMemo(() => {
-    if (liveDepartmentMetrics && liveDepartmentMetrics.length > 0) {
-      return liveDepartmentMetrics.map((d: any, idx: number) => ({
-        id: d.department,
-        name: d.department,
-        color: DEPT_COLORS[idx % DEPT_COLORS.length],
-        employees: 0,
-        metrics: {
-          safetyScore: typeof d.safetyScore === 'number' ? d.safetyScore : 90,
-          incidents: d.incidents ?? 0,
-          nearMisses: 0,
-          openActions: (d.openCapas ?? 0),
-          trainingCompletion: d.trainingCompletion ?? 0,
-          complianceRate: d.complianceRate ?? 0,
-        },
-        trend: { incidents: 0, safetyScore: 0 },
-        monthlyIncidents: [],
-      }));
-    }
-    return departmentComparison;
-  }, [liveDepartmentMetrics]);
-
   const filteredDepartments = React.useMemo(() => {
     let result = [...baseDepartments];
-    
-    // Filter by selected departments
+
     if (selectedDepts.length > 0) {
-      result = result.filter(d => selectedDepts.includes(d.id));
+      result = result.filter((department) => selectedDepts.includes(department.id));
     }
-    
-    // Filter by score range
-    if (scoreFilter === 'high') {
-      result = result.filter(d => d.metrics.safetyScore >= 95);
-    } else if (scoreFilter === 'medium') {
-      result = result.filter(d => d.metrics.safetyScore >= 85 && d.metrics.safetyScore < 95);
-    } else if (scoreFilter === 'low') {
-      result = result.filter(d => d.metrics.safetyScore < 85);
+
+    if (scoreFilter !== 'all') {
+      result = result.filter((department) => scoreBucket(department.metrics.safetyScore) === scoreFilter);
     }
-    
-    // Sort
+
     if (sortBy === 'score') {
       result.sort((a, b) => b.metrics.safetyScore - a.metrics.safetyScore);
     } else if (sortBy === 'incidents') {
       result.sort((a, b) => b.metrics.incidents - a.metrics.incidents);
-    } else if (sortBy === 'name') {
+    } else {
       result.sort((a, b) => a.name.localeCompare(b.name));
     }
-    
-    return result;
-  }, [baseDepartments, selectedDepts, scoreFilter, sortBy]);
 
-  // Sort departments by safety score for ranking (always use full list)
+    return result;
+  }, [baseDepartments, scoreFilter, selectedDepts, sortBy]);
+
   const sortedDepartments = React.useMemo(
     () => [...baseDepartments].sort((a, b) => b.metrics.safetyScore - a.metrics.safetyScore),
-    [baseDepartments]
+    [baseDepartments],
   );
+
+  const hasAnyAnalyticsData = kpiCards.length > 0 || incidentTrendData.length > 0 || baseDepartments.length > 0 || severityBreakdown.length > 0;
 
   return (
     <div className="min-h-screen bg-surface-50 pb-24">
-      {/* Header */}
-      <div className="bg-white/80 backdrop-blur-md shadow-sm sticky top-[72px] z-50 px-4 h-16 flex items-center gap-3 safe-top border-b border-surface-200">
-        <button onClick={() => navigate(-1)} className="p-2 -ml-2 hover:bg-surface-100 rounded-full transition-colors">
-          <ArrowLeft className="w-6 h-6 text-surface-600" />
+      <div className="safe-top sticky top-[72px] z-50 flex h-16 items-center gap-3 border-b border-surface-200 bg-white/80 px-4 shadow-sm backdrop-blur-md">
+        <button onClick={() => navigate(-1)} className="-ml-2 rounded-full p-2 transition-colors hover:bg-surface-100">
+          <ArrowLeft className="h-6 w-6 text-surface-600" />
         </button>
-        <h1 className="text-xl font-bold text-brand-900 flex items-center gap-2 tracking-tight">
-          <Activity className="w-6 h-6 text-brand-600" />
+        <h1 className="flex items-center gap-2 text-xl font-bold tracking-tight text-brand-900">
+          <Activity className="h-6 w-6 text-brand-600" />
           Analytics & KPIs
         </h1>
       </div>
 
-      <main className="px-4 py-6 max-w-md mx-auto space-y-6">
-        {/* Global Date Range Filter */}
+      <main className="mx-auto max-w-md space-y-6 px-4 py-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white p-4 rounded-2xl shadow-soft border border-surface-100"
+          className="rounded-2xl border border-surface-100 bg-white p-4 shadow-soft"
         >
-          <div className="flex items-center justify-between mb-3">
+          <div className="mb-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-brand-500" />
-              <span className="font-semibold text-brand-900 text-sm">Date Range</span>
+              <Calendar className="h-5 w-5 text-brand-500" />
+              <span className="text-sm font-semibold text-brand-900">Date Range</span>
             </div>
             <span className="text-xs text-surface-500">{getDateRangeLabel()}</span>
           </div>
@@ -484,11 +781,11 @@ export const Analytics: React.FC = () => {
               { value: '90d', label: '90D' },
               { value: '1y', label: '1Y' },
               { value: 'all', label: 'All' },
-            ].map(option => (
+            ].map((option) => (
               <button
                 key={option.value}
-                onClick={() => setDateRange(option.value as any)}
-                className={`flex-1 py-2 rounded-xl text-xs font-semibold transition-all ${
+                onClick={() => setDateRange(option.value as DateRange)}
+                className={`flex-1 rounded-xl py-2 text-xs font-semibold transition-all ${
                   dateRange === option.value
                     ? 'bg-brand-500 text-white shadow-md'
                     : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
@@ -500,258 +797,294 @@ export const Analytics: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Quality Score Hero */}
-        <QualityScoreGauge score={qualityMetrics.overallScore} previousScore={qualityMetrics.previousScore} />
+        {!hasAnyAnalyticsData && (
+          <SectionEmptyState
+            title="No backend analytics data is currently available"
+            description="This page now depends on backend analytics endpoints. Populate KPI, incident, or department records to restore the dashboard."
+          />
+        )}
 
-        {/* Quality Categories */}
+        {executiveKpis ? (
+          <QualityScoreGauge score={Math.round(executiveKpis.safetyScore)} previousScore={previousSafetyScore} />
+        ) : (
+          <SectionEmptyState
+            title="Executive analytics are unavailable"
+            description="The backend executive KPI endpoint did not return a current safety score snapshot."
+          />
+        )}
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white p-5 rounded-3xl shadow-soft border border-surface-100"
+          className="rounded-3xl border border-surface-100 bg-white p-5 shadow-soft"
         >
-          <h3 className="font-bold text-brand-900 mb-4 flex items-center gap-2">
-            <Shield className="w-5 h-5 text-brand-500" />
-            Quality Breakdown
+          <h3 className="mb-4 flex items-center gap-2 font-bold text-brand-900">
+            <Shield className="h-5 w-5 text-brand-500" />
+            Backend Quality Breakdown
           </h3>
-          <div className="space-y-3">
-            {qualityMetrics.categories.map((cat, i) => (
-              <div key={i} className="space-y-1">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-surface-700 font-medium">{cat.name}</span>
-                  <span className="font-bold text-brand-900">{cat.score}%</span>
+          {qualityCategories.length > 0 ? (
+            <div className="space-y-3">
+              {qualityCategories.map((category, index) => (
+                <div key={category.name} className="space-y-1">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="font-medium text-surface-700">{category.name}</span>
+                    <span className="font-bold text-brand-900">{category.score}%</span>
+                  </div>
+                  <div className="h-2 overflow-hidden rounded-full bg-surface-100">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${category.score}%` }}
+                      transition={{ delay: 0.3 + index * 0.1, duration: 0.6 }}
+                      className="h-full rounded-full"
+                      style={{ backgroundColor: category.color }}
+                    />
+                  </div>
                 </div>
-                <div className="h-2 bg-surface-100 rounded-full overflow-hidden">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    animate={{ width: `${cat.score}%` }}
-                    transition={{ delay: 0.3 + i * 0.1, duration: 0.6 }}
-                    className="h-full rounded-full"
-                    style={{ backgroundColor: cat.color }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <SectionEmptyState
+              title="No derived quality categories are available"
+              description="Add backend KPI, incident, and department analytics data to populate the quality breakdown."
+            />
+          )}
         </motion.div>
 
-        {/* KPI Grid */}
         <div className="grid grid-cols-2 gap-4">
-          {mergedKPIData.map((kpi: any, index: number) => (
-            <KPICard key={kpi.id || index} data={kpi} index={index} />
-          ))}
+          {kpiCards.length > 0 ? (
+            kpiCards.map((kpi, index) => <KPICard key={kpi.id} data={kpi} index={index} />)
+          ) : (
+            <div className="col-span-2">
+              <SectionEmptyState
+                title="No KPI cards are available"
+                description="The backend KPI metrics endpoint returned no business metrics for the current range."
+              />
+            </div>
+          )}
         </div>
 
-        {/* Quality Trend Chart */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-white p-5 rounded-3xl shadow-soft border border-surface-100"
+          className="rounded-3xl border border-surface-100 bg-white p-5 shadow-soft"
         >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-bold text-brand-900 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-brand-500" />
-              Quality Score Trend
+          <div className="mb-6 flex items-center justify-between">
+            <h3 className="flex items-center gap-2 font-bold text-brand-900">
+              <TrendingUp className="h-5 w-5 text-brand-500" />
+              Operational Trend
             </h3>
-            <span className="text-xs font-medium text-surface-500 bg-surface-100 px-2 py-1 rounded-full">{getDateRangeLabel()}</span>
+            <span className="rounded-full bg-surface-100 px-2 py-1 text-xs font-medium text-surface-500">{getDateRangeLabel()}</span>
           </div>
-          <div className="h-56 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={qualityMetrics.monthlyTrend}>
-                <defs>
-                  <linearGradient id="colorQuality" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#14b8a6" stopOpacity={0.2}/>
-                    <stop offset="95%" stopColor="#14b8a6" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#64748b'}} dy={10} />
-                <YAxis domain={[80, 100]} axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#64748b'}} />
-                <Tooltip 
-                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                />
-                <Area type="monotone" dataKey="score" stroke="#14b8a6" fill="url(#colorQuality)" strokeWidth={0} />
-                <Line type="monotone" dataKey="score" stroke="#14b8a6" strokeWidth={3} dot={{ fill: '#14b8a6', strokeWidth: 2, r: 4 }} activeDot={{ r: 6, fill: '#14b8a6' }} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+          {qualityTrend.length > 0 ? (
+            <div className="h-56 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={qualityTrend}>
+                  <defs>
+                    <linearGradient id="colorQuality" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#14b8a6" stopOpacity={0.2} />
+                      <stop offset="95%" stopColor="#14b8a6" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} dy={10} />
+                  <YAxis domain={[40, 100]} axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} />
+                  <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                  <Area type="monotone" dataKey="score" stroke="#14b8a6" fill="url(#colorQuality)" strokeWidth={0} />
+                  <Line type="monotone" dataKey="score" stroke="#14b8a6" strokeWidth={3} dot={{ fill: '#14b8a6', strokeWidth: 2, r: 4 }} activeDot={{ r: 6, fill: '#14b8a6' }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <SectionEmptyState
+              title="No operational trend is available"
+              description="The backend monthly trend endpoint returned no inspection, observation, or incident history for this range."
+            />
+          )}
         </motion.div>
 
-        {/* Compliance Summary */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-white p-5 rounded-3xl shadow-soft border border-surface-100"
+          className="rounded-3xl border border-surface-100 bg-white p-5 shadow-soft"
         >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-brand-900 flex items-center gap-2">
-              <FileCheck className="w-5 h-5 text-brand-500" />
-              Compliance Status
+          <div className="mb-4 flex items-center justify-between">
+            <h3 className="flex items-center gap-2 font-bold text-brand-900">
+              <FileCheck className="h-5 w-5 text-brand-500" />
+              Compliance & Action Status
             </h3>
-            <span className={`text-sm font-bold px-3 py-1 rounded-full ${
+            <span className={`rounded-full px-3 py-1 text-sm font-bold ${
               complianceSummary.rate >= 95 ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'
             }`}>
               {complianceSummary.rate}%
             </span>
           </div>
-          
-          <div className="grid grid-cols-3 gap-3 mb-4">
-            <div className="text-center p-3 bg-emerald-50 rounded-xl">
-              <div className="text-2xl font-bold text-emerald-600">{complianceSummary.compliant}</div>
-              <div className="text-xs text-emerald-700">Compliant</div>
-            </div>
-            <div className="text-center p-3 bg-amber-50 rounded-xl">
-              <div className="text-2xl font-bold text-amber-600">{complianceSummary.inProgress}</div>
-              <div className="text-xs text-amber-700">In Progress</div>
-            </div>
-            <div className="text-center p-3 bg-rose-50 rounded-xl">
-              <div className="text-2xl font-bold text-rose-600">{complianceSummary.overdue}</div>
-              <div className="text-xs text-rose-700">Overdue</div>
-            </div>
-          </div>
-          
-          <div className="space-y-2">
-            {complianceSummary.byCategory.map((cat, i) => (
-              <div key={i} className="flex items-center justify-between text-sm p-2 bg-surface-50 rounded-lg">
-                <span className="font-medium text-surface-700">{cat.category}</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-surface-500">{cat.compliant}/{cat.total}</span>
-                  <span className={`font-bold ${cat.rate >= 95 ? 'text-emerald-600' : 'text-amber-600'}`}>{cat.rate}%</span>
+
+          {executiveKpis || complianceSummary.byCategory.length > 0 ? (
+            <>
+              <div className="mb-4 grid grid-cols-3 gap-3">
+                <div className="rounded-xl bg-emerald-50 p-3 text-center">
+                  <div className="text-2xl font-bold text-emerald-600">{complianceSummary.healthy}</div>
+                  <div className="text-xs text-emerald-700">Healthy</div>
+                </div>
+                <div className="rounded-xl bg-amber-50 p-3 text-center">
+                  <div className="text-2xl font-bold text-amber-600">{complianceSummary.watch}</div>
+                  <div className="text-xs text-amber-700">Watchlist</div>
+                </div>
+                <div className="rounded-xl bg-rose-50 p-3 text-center">
+                  <div className="text-2xl font-bold text-rose-600">{complianceSummary.overdue}</div>
+                  <div className="text-xs text-rose-700">Overdue Actions</div>
                 </div>
               </div>
-            ))}
-          </div>
+
+              <div className="space-y-2">
+                {complianceSummary.byCategory.length > 0 ? (
+                  complianceSummary.byCategory.map((category) => (
+                    <div key={category.category} className="flex items-center justify-between rounded-lg bg-surface-50 p-2 text-sm">
+                      <span className="font-medium text-surface-700">{category.category}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-surface-500">{category.compliant}/{category.total}</span>
+                        <span className={`font-bold ${category.rate >= 80 ? 'text-emerald-600' : 'text-amber-600'}`}>{category.rate}%</span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <SectionEmptyState
+                    title="No department compliance snapshot is available"
+                    description="The backend department metrics endpoint returned no action-closure data."
+                  />
+                )}
+              </div>
+            </>
+          ) : (
+            <SectionEmptyState
+              title="No compliance summary is available"
+              description="The compliance status section depends on backend executive KPIs and department action metrics."
+            />
+          )}
         </motion.div>
 
-        {/* Incidents Trend Chart */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="bg-white p-5 rounded-3xl shadow-soft border border-surface-100"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-bold text-brand-900 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-brand-500" />
-              Incidents Trend
-            </h3>
-            <span className="text-xs font-medium text-surface-500 bg-surface-100 px-2 py-1 rounded-full">{getDateRangeLabel()}</span>
-          </div>
-          <div className="h-56 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={mergedIncidentsByMonth}>
-                <defs>
-                  <linearGradient id="colorIncidents" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1}/>
-                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#64748b'}} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#64748b'}} />
-                <Tooltip 
-                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                  cursor={{ stroke: '#cbd5e1', strokeWidth: 1, strokeDasharray: '4 4' }}
-                />
-                <Area type="monotone" dataKey="incidents" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorIncidents)" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </motion.div>
-
-        {/* Department Comparison - NEW SECTION */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.52 }}
+          className="rounded-3xl border border-surface-100 bg-white p-5 shadow-soft"
+        >
+          <div className="mb-6 flex items-center justify-between">
+            <h3 className="flex items-center gap-2 font-bold text-brand-900">
+              <TrendingUp className="h-5 w-5 text-brand-500" />
+              Incident Trend
+            </h3>
+            <span className="rounded-full bg-surface-100 px-2 py-1 text-xs font-medium text-surface-500">{getDateRangeLabel()}</span>
+          </div>
+          {incidentTrendData.length > 0 ? (
+            <div className="h-56 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={incidentTrendData}>
+                  <defs>
+                    <linearGradient id="colorIncidents" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1} />
+                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} />
+                  <Tooltip
+                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                    cursor={{ stroke: '#cbd5e1', strokeWidth: 1, strokeDasharray: '4 4' }}
+                  />
+                  <Area type="monotone" dataKey="incidents" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorIncidents)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <SectionEmptyState
+              title="No incident trend data is available"
+              description="The backend incident analytics endpoint returned no monthly incident history for this range."
+            />
+          )}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.54 }}
           className="space-y-4"
         >
           <div className="flex items-center justify-between">
-            <h3 className="font-bold text-brand-900 flex items-center gap-2">
-              <Users className="w-5 h-5 text-brand-500" />
+            <h3 className="flex items-center gap-2 font-bold text-brand-900">
+              <Users className="h-5 w-5 text-brand-500" />
               Department Comparison
             </h3>
-            <button 
+            <button
               onClick={() => setShowFilters(!showFilters)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                hasActiveFilters 
-                  ? 'bg-brand-500 text-white' 
-                  : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
+              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
+                hasActiveFilters ? 'bg-brand-500 text-white' : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
               }`}
             >
-              <SlidersHorizontal className="w-4 h-4" />
+              <SlidersHorizontal className="h-4 w-4" />
               Filter
               {hasActiveFilters && (
-                <span className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center text-xs">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 text-xs">
                   {(selectedDepts.length > 0 ? 1 : 0) + (scoreFilter !== 'all' ? 1 : 0) + (sortBy !== 'score' ? 1 : 0) + (dateRange !== '30d' ? 1 : 0)}
                 </span>
               )}
             </button>
           </div>
 
-          {/* Filter Panel */}
           {showFilters && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="bg-white p-4 rounded-2xl shadow-soft border border-surface-100 space-y-4"
+              className="space-y-4 rounded-2xl border border-surface-100 bg-white p-4 shadow-soft"
             >
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold text-brand-900">Filters</span>
                 {hasActiveFilters && (
-                  <button 
-                    onClick={clearFilters}
-                    className="text-xs text-brand-600 font-medium flex items-center gap-1 hover:text-brand-700"
-                  >
-                    <X className="w-3 h-3" /> Clear All
+                  <button onClick={clearFilters} className="flex items-center gap-1 text-xs font-medium text-brand-600 hover:text-brand-700">
+                    <X className="h-3 w-3" /> Clear All
                   </button>
                 )}
               </div>
-              
-              {/* Department Selection */}
+
               <div>
-                <label className="text-xs text-surface-500 font-medium mb-2 block">Select Departments</label>
+                <label className="mb-2 block text-xs font-medium text-surface-500">Select Departments</label>
                 <div className="flex flex-wrap gap-2">
-                  {departmentComparison.map(dept => (
+                  {baseDepartments.map((department) => (
                     <button
-                      key={dept.id}
-                      onClick={() => toggleDeptSelection(dept.id)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                        selectedDepts.includes(dept.id)
+                      key={department.id}
+                      onClick={() => toggleDeptSelection(department.id)}
+                      className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+                        selectedDepts.includes(department.id)
                           ? 'text-white'
                           : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
                       }`}
-                      style={selectedDepts.includes(dept.id) ? { backgroundColor: dept.color } : {}}
+                      style={selectedDepts.includes(department.id) ? { backgroundColor: department.color } : {}}
                     >
-                      {dept.name}
+                      {department.name}
                     </button>
                   ))}
                 </div>
               </div>
-              
-              {/* Score Range Filter */}
+
               <div>
-                <label className="text-xs text-surface-500 font-medium mb-2 block">Safety Score Range</label>
+                <label className="mb-2 block text-xs font-medium text-surface-500">Safety Score Range</label>
                 <div className="flex gap-2">
                   {[
                     { value: 'all', label: 'All' },
-                    { value: 'high', label: '95%+', color: 'emerald' },
-                    { value: 'medium', label: '85-94%', color: 'amber' },
-                    { value: 'low', label: '<85%', color: 'rose' },
-                  ].map(option => (
+                    { value: 'high', label: '95%+' },
+                    { value: 'medium', label: '85-94%' },
+                    { value: 'low', label: '<85%' },
+                  ].map((option) => (
                     <button
                       key={option.value}
-                      onClick={() => setScoreFilter(option.value as any)}
-                      className={`flex-1 px-2 py-2 rounded-xl text-xs font-medium transition-all ${
-                        scoreFilter === option.value
-                          ? option.value === 'high' ? 'bg-emerald-500 text-white'
-                            : option.value === 'medium' ? 'bg-amber-500 text-white'
-                            : option.value === 'low' ? 'bg-rose-500 text-white'
-                            : 'bg-brand-500 text-white'
-                          : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
+                      onClick={() => setScoreFilter(option.value as 'all' | 'high' | 'medium' | 'low')}
+                      className={`flex-1 rounded-xl px-2 py-2 text-xs font-medium transition-all ${
+                        scoreFilter === option.value ? 'bg-brand-500 text-white' : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
                       }`}
                     >
                       {option.label}
@@ -759,23 +1092,20 @@ export const Analytics: React.FC = () => {
                   ))}
                 </div>
               </div>
-              
-              {/* Sort By */}
+
               <div>
-                <label className="text-xs text-surface-500 font-medium mb-2 block">Sort By</label>
+                <label className="mb-2 block text-xs font-medium text-surface-500">Sort By</label>
                 <div className="flex gap-2">
                   {[
                     { value: 'score', label: 'Safety Score' },
                     { value: 'incidents', label: 'Incidents' },
                     { value: 'name', label: 'Name' },
-                  ].map(option => (
+                  ].map((option) => (
                     <button
                       key={option.value}
-                      onClick={() => setSortBy(option.value as any)}
-                      className={`flex-1 px-2 py-2 rounded-xl text-xs font-medium transition-all ${
-                        sortBy === option.value
-                          ? 'bg-brand-500 text-white'
-                          : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
+                      onClick={() => setSortBy(option.value as 'score' | 'incidents' | 'name')}
+                      className={`flex-1 rounded-xl px-2 py-2 text-xs font-medium transition-all ${
+                        sortBy === option.value ? 'bg-brand-500 text-white' : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
                       }`}
                     >
                       {option.label}
@@ -785,156 +1115,170 @@ export const Analytics: React.FC = () => {
               </div>
             </motion.div>
           )}
-          
-          {/* Department Rankings Summary */}
-          <div className="bg-gradient-to-br from-brand-50 to-white p-4 rounded-2xl border border-brand-100">
-            <div className="flex items-center gap-2 mb-3">
-              <Award className="w-4 h-4 text-brand-600" />
-              <span className="text-sm font-semibold text-brand-900">Top Performers</span>
-            </div>
-            <div className="flex gap-2 overflow-x-auto pb-1">
-              {sortedDepartments.slice(0, 3).map((dept, i) => (
-                <div 
-                  key={dept.id}
-                  className="flex items-center gap-2 px-3 py-2 bg-white rounded-xl border border-surface-100 flex-shrink-0"
-                >
-                  <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${
-                    i === 0 ? 'bg-amber-100 text-amber-700' : i === 1 ? 'bg-surface-200 text-surface-600' : 'bg-orange-100 text-orange-700'
-                  }`}>
-                    {i + 1}
-                  </span>
-                  <span className="text-sm font-medium text-brand-900">{dept.name}</span>
-                  <span className="text-xs font-bold text-emerald-600">{dept.metrics.safetyScore}%</span>
-                </div>
-              ))}
-            </div>
-          </div>
 
-          {/* Results Count */}
-          {hasActiveFilters && (
-            <div className="text-xs text-surface-500 flex items-center gap-2">
-              <Filter className="w-3 h-3" />
-              Showing {filteredDepartments.length} of {departmentComparison.length} departments
+          {sortedDepartments.length > 0 ? (
+            <div className="rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-50 to-white p-4">
+              <div className="mb-3 flex items-center gap-2">
+                <Award className="h-4 w-4 text-brand-600" />
+                <span className="text-sm font-semibold text-brand-900">Top Performers</span>
+              </div>
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {sortedDepartments.slice(0, 3).map((department, index) => (
+                  <div key={department.id} className="flex flex-shrink-0 items-center gap-2 rounded-xl border border-surface-100 bg-white px-3 py-2">
+                    <span className={`flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold ${
+                      index === 0 ? 'bg-amber-100 text-amber-700' : index === 1 ? 'bg-surface-200 text-surface-600' : 'bg-orange-100 text-orange-700'
+                    }`}>
+                      {index + 1}
+                    </span>
+                    <span className="text-sm font-medium text-brand-900">{department.name}</span>
+                    <span className="text-xs font-bold text-emerald-600">{department.metrics.safetyScore}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <SectionEmptyState
+              title="No department analytics are available"
+              description="The department comparison section now depends entirely on backend department metrics."
+            />
+          )}
+
+          {hasActiveFilters && baseDepartments.length > 0 && (
+            <div className="flex items-center gap-2 text-xs text-surface-500">
+              <Filter className="h-3 w-3" />
+              Showing {filteredDepartments.length} of {baseDepartments.length} departments
             </div>
           )}
 
-          {/* Department Cards */}
           {filteredDepartments.length > 0 ? (
-            filteredDepartments.map((dept, index) => (
+            filteredDepartments.map((department, index) => (
               <DepartmentCard
-                key={dept.id}
-                dept={dept}
-                isExpanded={expandedDept === dept.id}
-                onToggle={() => toggleDepartment(dept.id)}
+                key={department.id}
+                dept={department}
+                isExpanded={expandedDept === department.id}
+                onToggle={() => toggleDepartment(department.id)}
                 index={index}
               />
             ))
-          ) : (
-            <div className="bg-white p-8 rounded-2xl shadow-soft border border-surface-100 text-center">
-              <Filter className="w-10 h-10 text-surface-300 mx-auto mb-3" />
-              <p className="text-surface-600 font-medium">No departments match your filters</p>
-              <p className="text-surface-400 text-sm mt-1">Try adjusting your filter criteria</p>
-              <button 
-                onClick={clearFilters}
-                className="mt-4 px-4 py-2 bg-brand-500 text-white rounded-xl text-sm font-medium hover:bg-brand-600 transition-colors"
-              >
+          ) : baseDepartments.length > 0 ? (
+            <div className="rounded-2xl border border-surface-100 bg-white p-8 text-center shadow-soft">
+              <Filter className="mx-auto mb-3 h-10 w-10 text-surface-300" />
+              <p className="font-medium text-surface-600">No departments match your filters</p>
+              <p className="mt-1 text-sm text-surface-400">Try adjusting your filter criteria.</p>
+              <button onClick={clearFilters} className="mt-4 rounded-xl bg-brand-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-600">
                 Clear Filters
               </button>
             </div>
-          )}
+          ) : null}
         </motion.div>
 
-        {/* Performance Benchmarks */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.55 }}
-          className="bg-white p-5 rounded-3xl shadow-soft border border-surface-100"
+          transition={{ delay: 0.56 }}
+          className="rounded-3xl border border-surface-100 bg-white p-5 shadow-soft"
         >
-          <h3 className="font-bold text-brand-900 mb-4 flex items-center gap-2">
-            <Target className="w-5 h-5 text-brand-500" />
+          <h3 className="mb-4 flex items-center gap-2 font-bold text-brand-900">
+            <Target className="h-5 w-5 text-brand-500" />
             Performance vs Industry
           </h3>
-          <div className="space-y-2">
-            {performanceBenchmarks.map((benchmark, i) => (
-              <BenchmarkRow key={i} benchmark={benchmark} index={i} />
-            ))}
-          </div>
+          {benchmarks.length > 0 ? (
+            <div className="space-y-2">
+              {benchmarks.map((benchmark, index) => (
+                <BenchmarkRow key={`${benchmark.metric}-${index}`} benchmark={benchmark} index={index} />
+              ))}
+            </div>
+          ) : (
+            <SectionEmptyState
+              title="No benchmark comparison is available"
+              description="The benchmark section now reads directly from backend KPI metrics instead of mock industry cards."
+            />
+          )}
         </motion.div>
 
-        {/* Incidents by Type */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="bg-white p-5 rounded-3xl shadow-soft border border-surface-100"
+          className="rounded-3xl border border-surface-100 bg-white p-5 shadow-soft"
         >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-bold text-brand-900 flex items-center gap-2">
-              <PieChartIcon className="w-5 h-5 text-brand-500" />
-              Incidents by Type
+          <div className="mb-6 flex items-center justify-between">
+            <h3 className="flex items-center gap-2 font-bold text-brand-900">
+              <PieChartIcon className="h-5 w-5 text-brand-500" />
+              Incidents by Severity
             </h3>
           </div>
-          <div className="h-56 w-full flex items-center justify-center">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={mergedIncidentsByCategory}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={55}
-                  outerRadius={75}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {mergedIncidentsByCategory.map((entry: any, index: number) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} strokeWidth={0} />
-                  ))}
-                </Pie>
-                <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="grid grid-cols-2 gap-2 mt-4">
-            {mergedIncidentsByCategory.map((entry: any, index: number) => (
-              <div key={index} className="flex items-center gap-2 text-xs">
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.color }} />
-                <span className="text-surface-600">{entry.name}</span>
-                <span className="font-bold text-surface-900 ml-auto">{entry.value}%</span>
+          {severityBreakdown.length > 0 ? (
+            <>
+              <div className="flex h-56 w-full items-center justify-center">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={severityBreakdown}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={55}
+                      outerRadius={75}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {severityBreakdown.map((entry, index) => (
+                        <Cell key={`${entry.name}-${index}`} fill={entry.color} strokeWidth={0} />
+                      ))}
+                    </Pie>
+                    <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                  </PieChart>
+                </ResponsiveContainer>
               </div>
-            ))}
-          </div>
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                {severityBreakdown.map((entry) => (
+                  <div key={entry.name} className="flex items-center gap-2 text-xs">
+                    <div className="h-3 w-3 rounded-full" style={{ backgroundColor: entry.color }} />
+                    <span className="text-surface-600">{entry.name}</span>
+                    <span className="ml-auto font-bold text-surface-900">{entry.value}</span>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <SectionEmptyState
+              title="No severity breakdown is available"
+              description="The backend severity breakdown endpoint returned no incident severity distribution."
+            />
+          )}
         </motion.div>
 
-        {/* Inspections Weekly */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65 }}
-          className="bg-white p-5 rounded-3xl shadow-soft border border-surface-100"
+          className="rounded-3xl border border-surface-100 bg-white p-5 shadow-soft"
         >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-bold text-brand-900 flex items-center gap-2">
-              <BarChart3 className="w-5 h-5 text-brand-500" />
-              Inspections (Weekly)
+          <div className="mb-6 flex items-center justify-between">
+            <h3 className="flex items-center gap-2 font-bold text-brand-900">
+              <BarChart3 className="h-5 w-5 text-brand-500" />
+              Inspection Throughput
             </h3>
           </div>
-          <div className="h-56 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={inspectionCompletionData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#64748b'}} dy={10} />
-                <Tooltip 
-                  cursor={{ fill: '#f8fafc' }}
-                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                />
-                <Bar dataKey="completed" fill="#10b981" radius={[4, 4, 0, 0]} barSize={20} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          {monthlyActivity.length > 0 ? (
+            <div className="h-56 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={monthlyActivity}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <XAxis dataKey="period" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} dy={10} />
+                  <Tooltip cursor={{ fill: '#f8fafc' }} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                  <Bar dataKey="completed" fill="#10b981" radius={[4, 4, 0, 0]} barSize={20} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <SectionEmptyState
+              title="No inspection throughput is available"
+              description="The throughput chart depends on backend monthly trend data instead of mock weekly inspection counts."
+            />
+          )}
         </motion.div>
 
-        {/* Recent Quality Events */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -942,58 +1286,64 @@ export const Analytics: React.FC = () => {
           className="space-y-3"
         >
           <div className="flex items-center justify-between">
-            <h3 className="font-bold text-brand-900 flex items-center gap-2">
-              <Clock className="w-5 h-5 text-brand-500" />
+            <h3 className="flex items-center gap-2 font-bold text-brand-900">
+              <Clock className="h-5 w-5 text-brand-500" />
               Recent Activity
             </h3>
-            <button className="text-brand-600 text-sm font-medium flex items-center gap-1">
-              View All <ChevronRight className="w-4 h-4" />
+            <button className="flex items-center gap-1 text-sm font-medium text-brand-600">
+              View All <ChevronRight className="h-4 w-4" />
             </button>
           </div>
-          {qualityEvents.map((event, index) => (
-            <QualityEventCard key={event.id} event={event} index={index} />
-          ))}
+          {activityFeed.length > 0 ? (
+            activityFeed.map((event, index) => <QualityEventCard key={event.id} event={event} index={index} />)
+          ) : (
+            <SectionEmptyState
+              title="No recent activity is available"
+              description="Recent activity cards are now synthesized from backend analytics snapshots and require current KPI or incident data."
+            />
+          )}
         </motion.div>
 
-        {/* AI Advanced Analytics */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="bg-gradient-to-br from-brand-900 to-brand-950 p-6 rounded-[2.5rem] shadow-xl text-white relative overflow-hidden"
+          className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-900 to-brand-950 p-6 text-white shadow-xl"
         >
           <div className="relative z-10">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 bg-white/10 backdrop-blur-md rounded-xl flex items-center justify-center border border-white/20">
-                <Sparkles className="w-6 h-6 text-brand-300" />
+            <div className="mb-6 flex items-center gap-2">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 backdrop-blur-md">
+                <Sparkles className="h-6 w-6 text-brand-300" />
               </div>
               <div>
-                <h3 className="font-bold text-lg">AI Safety Insights</h3>
-                <p className="text-brand-300 text-xs">Advanced Pattern Recognition</p>
+                <h3 className="text-lg font-bold">AI Safety Insights</h3>
+                <p className="text-xs text-brand-300">Derived from live analytics signals</p>
               </div>
             </div>
 
-            <div className="space-y-4">
-              {[
-                { label: 'Predictive Risk Score', value: 'Low', icon: Brain, color: 'text-green-400' },
-                { label: 'Anomaly Detection', value: '2 Flagged', icon: ShieldAlert, color: 'text-yellow-400' },
-                { label: 'Optimization Potential', value: '+15%', icon: Zap, color: 'text-brand-400' },
-              ].map((insight, i) => (
-                <div key={i} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
-                  <div className="flex items-center gap-3">
-                    <insight.icon className={`w-5 h-5 ${insight.color}`} />
-                    <span className="text-sm font-medium text-brand-100">{insight.label}</span>
+            {aiInsights.length > 0 ? (
+              <div className="space-y-4">
+                {aiInsights.map((insight) => (
+                  <div key={insight.label} className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <div className="flex items-center gap-3">
+                      <insight.icon className={`h-5 w-5 ${insight.color}`} />
+                      <span className="text-sm font-medium text-brand-100">{insight.label}</span>
+                    </div>
+                    <span className="font-bold">{insight.value}</span>
                   </div>
-                  <span className="font-bold">{insight.value}</span>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-brand-100">
+                AI insights are waiting for backend analytics inputs before a summary can be generated.
+              </div>
+            )}
 
-            <button className="w-full mt-6 py-3 bg-white text-brand-900 rounded-xl font-bold text-sm hover:bg-brand-50 transition-all">
-              Generate Detailed AI Report
+            <button className="mt-6 w-full rounded-xl bg-white py-3 text-sm font-bold text-brand-900 transition-all hover:bg-brand-50">
+              Refresh AI Summary
             </button>
           </div>
-          <Sparkles className="absolute right-[-20px] bottom-[-20px] w-48 h-48 text-white/5 rotate-12" />
+          <Sparkles className="absolute bottom-[-20px] right-[-20px] h-48 w-48 rotate-12 text-white/5" />
         </motion.div>
       </main>
     </div>

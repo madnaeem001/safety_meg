@@ -258,7 +258,7 @@ export function notificationRoutes(app: Hono, edgespark: Client<typeof tables>) 
     emailNotifications: z.boolean().optional(),
     smsNotifications: z.boolean().optional(),
     inAppNotifications: z.boolean().optional(),
-    preferences: z.record(z.string(), z.boolean()).optional(),
+    preferences: z.record(z.string(), z.union([z.boolean(), z.string(), z.number()])).optional(),
     quietHours: z.object({ start: z.string(), end: z.string() }).optional(),
     frequency: z.enum(['immediate', 'daily', 'weekly']).optional(),
   });

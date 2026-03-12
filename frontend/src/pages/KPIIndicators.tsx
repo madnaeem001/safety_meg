@@ -7,9 +7,9 @@ import {
   Users, Shield, Zap, Award, LineChart, ArrowUpRight, ArrowDownRight, Info,
   FileText, Bell, Settings, Eye, MessageSquare, ClipboardCheck, HardHat
 } from 'lucide-react';
-import { exportWeeklyReportPDF, exportWeeklyReportExcel, generateMockWeeklyData } from '../utils/exports/weeklySafetyReport';
+import { buildWeeklySafetyReportData, exportWeeklyReportPDF, exportWeeklyReportExcel } from '../utils/exports/weeklySafetyReport';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RePieChart, Pie, Cell, BarChart, Bar, Legend, RadialBarChart, RadialBar, LineChart as ReLineChart, Line } from 'recharts';
-import { useKPIDashboard, useKPIReadings, useKPIDepartmentComparison, useKPIIncidentBreakdown } from '../api/hooks/useAPIHooks';
+import { useKPIDashboard, useKPIDepartmentComparison, useKPIIncidentBreakdown } from '../api/hooks/useAPIHooks';
 
 // Leading Indicators (Proactive measures)
 const LEADING_INDICATORS = [
@@ -359,7 +359,6 @@ export const KPIIndicators: React.FC = () => {
 
   // ── Real API Data ─────────────────────────────────────────────────────
   const { data: kpiDashboardData } = useKPIDashboard();
-  const { data: kpiReadings } = useKPIReadings();
   const { data: deptComparisonRaw } = useKPIDepartmentComparison();
   const { data: incidentBreakdownRaw } = useKPIIncidentBreakdown();
 
@@ -427,6 +426,58 @@ export const KPIIndicators: React.FC = () => {
       : INCIDENT_BREAKDOWN
   , [incidentBreakdownRaw]);
 
+  const previousLeadingScore = useMemo(() => {
+    const priorValues = leadingIndicators
+      .map((indicator) => {
+        const priorPoint = indicator.data?.[indicator.data.length - 2];
+        return priorPoint ? Math.min((priorPoint.value / indicator.target) * 100, 100) : null;
+      })
+      .filter((value): value is number => value !== null);
+
+    if (priorValues.length === 0) {
+      return overviewStats.leadingScore;
+    }
+
+    return Math.round(priorValues.reduce((sum, value) => sum + value, 0) / priorValues.length);
+  }, [leadingIndicators, overviewStats.leadingScore]);
+
+  const weeklyReportData = useMemo(() => buildWeeklySafetyReportData({
+    overview: overviewStats,
+    previousLeadingScore,
+    leadingIndicators: leadingIndicators.slice(0, 6).map(indicator => ({
+      name: indicator.name,
+      current: indicator.current,
+      target: indicator.target,
+    })),
+    laggingIndicators: laggingIndicators.slice(0, 6).map(indicator => ({
+      name: indicator.name,
+      current: indicator.current,
+      target: indicator.target,
+      benchmark: indicator.benchmark,
+    })),
+    incidentBreakdown: incidentBreakdown.map(item => ({
+      name: item.name,
+      value: item.value,
+    })),
+  }), [incidentBreakdown, laggingIndicators, leadingIndicators, overviewStats, previousLeadingScore]);
+
+  const weeklyReportSections = useMemo(() => {
+    const toolboxSnapshot = weeklyReportData.toolboxTalks[0];
+    const trainingSnapshot = weeklyReportData.trainingRecords[0];
+    const inspectionSnapshot = weeklyReportData.inspections[0];
+
+    return [
+      { icon: Shield, title: 'Executive Summary', desc: `${weeklyReportData.summary.safetyScore}% safety score, TRIR ${weeklyReportData.summary.trir}, DART ${weeklyReportData.summary.dart}` },
+      { icon: AlertTriangle, title: 'Incident Summary', desc: `${weeklyReportData.summary.totalIncidents} live incident categories in the current reporting window` },
+      { icon: Eye, title: 'Near Miss Reports', desc: `${weeklyReportData.summary.nearMisses} near-miss items represented in the current incident mix` },
+      { icon: TrendingUp, title: 'KPI Analysis', desc: `${weeklyReportData.kpis.leadingIndicators.length} leading and ${weeklyReportData.kpis.laggingIndicators.length} lagging indicators included` },
+      { icon: MessageSquare, title: 'Toolbox Talks', desc: toolboxSnapshot ? `${toolboxSnapshot.attendees}% participation snapshot from live KPI data` : 'No toolbox talk KPI snapshot available for this period' },
+      { icon: Users, title: 'Training Records', desc: trainingSnapshot ? trainingSnapshot.status : 'No training compliance snapshot available for this period' },
+      { icon: ClipboardCheck, title: 'Inspection Results', desc: inspectionSnapshot ? `${inspectionSnapshot.score}% inspection completion with ${inspectionSnapshot.findings} related findings` : 'No inspection KPI snapshot available for this period' },
+      { icon: HardHat, title: 'CAPA Status', desc: `${weeklyReportData.summary.openCAPAs} open CAPA items represented in the current KPI dataset` },
+    ];
+  }, [weeklyReportData]);
+
   const calculateProgress = (current: number, target: number) => {
     return Math.min((current / target) * 100, 100);
   };
@@ -492,7 +543,7 @@ export const KPIIndicators: React.FC = () => {
                 <option value="ytd">Year to Date</option>
               </select>
               <button 
-                onClick={() => exportWeeklyReportPDF(generateMockWeeklyData())}
+                onClick={() => exportWeeklyReportPDF(weeklyReportData)}
                 className="flex items-center gap-2 px-3 py-2 rounded-xl bg-indigo-500 text-white hover:bg-indigo-600 transition-colors text-sm font-medium"
               >
                 <Download className="w-4 h-4" />
@@ -832,29 +883,31 @@ export const KPIIndicators: React.FC = () => {
 
               {/* Report Summary */}
               <div className="bg-white dark:bg-surface-800 rounded-2xl p-6 shadow-soft border border-surface-100 dark:border-surface-700">
-                <h3 className="font-semibold text-brand-900 dark:text-white mb-4">Report Period: Jan 22 - Jan 29, 2026</h3>
+                <h3 className="font-semibold text-brand-900 dark:text-white mb-4">
+                  Report Period: {weeklyReportData.reportPeriod.startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} - {weeklyReportData.reportPeriod.endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                </h3>
                 
                 {/* Quick Stats Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                   <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl p-4">
                     <div className="text-xs text-emerald-600 dark:text-emerald-400 mb-1">Safety Score</div>
-                    <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-300">94%</div>
-                    <div className="text-xs text-emerald-600">+2% from last week</div>
+                    <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-300">{weeklyReportData.summary.safetyScore}%</div>
+                    <div className="text-xs text-emerald-600">Derived from live leading KPI performance</div>
                   </div>
                   <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4">
                     <div className="text-xs text-blue-600 dark:text-blue-400 mb-1">Total Incidents</div>
-                    <div className="text-2xl font-bold text-blue-700 dark:text-blue-300">3</div>
-                    <div className="text-xs text-blue-600">-2 from last week</div>
+                    <div className="text-2xl font-bold text-blue-700 dark:text-blue-300">{weeklyReportData.summary.totalIncidents}</div>
+                    <div className="text-xs text-blue-600">Based on current incident breakdown dataset</div>
                   </div>
                   <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-4">
                     <div className="text-xs text-amber-600 dark:text-amber-400 mb-1">Near Misses</div>
-                    <div className="text-2xl font-bold text-amber-700 dark:text-amber-300">8</div>
-                    <div className="text-xs text-amber-600">+3 reported</div>
+                    <div className="text-2xl font-bold text-amber-700 dark:text-amber-300">{weeklyReportData.summary.nearMisses}</div>
+                    <div className="text-xs text-amber-600">Pulled from current incident category mix</div>
                   </div>
                   <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4">
                     <div className="text-xs text-purple-600 dark:text-purple-400 mb-1">Toolbox Talks</div>
-                    <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">5</div>
-                    <div className="text-xs text-purple-600">98% avg sign-off</div>
+                    <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">{weeklyReportData.toolboxTalks[0]?.attendees ?? 0}%</div>
+                    <div className="text-xs text-purple-600">Live participation snapshot from KPI data</div>
                   </div>
                 </div>
 
@@ -862,16 +915,7 @@ export const KPIIndicators: React.FC = () => {
                 <div className="space-y-4">
                   <h4 className="font-semibold text-brand-900 dark:text-white">Report Includes:</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {[
-                      { icon: Shield, title: 'Executive Summary', desc: 'Overall safety score, TRIR, DART, LTI status' },
-                      { icon: AlertTriangle, title: 'Incident Summary', desc: '3 incidents with status and severity breakdown' },
-                      { icon: Eye, title: 'Near Miss Reports', desc: '8 near misses with hazard types and actions' },
-                      { icon: TrendingUp, title: 'KPI Analysis', desc: 'Leading & lagging indicators with trends' },
-                      { icon: MessageSquare, title: 'Toolbox Talks', desc: '5 sessions with attendance and topics' },
-                      { icon: Users, title: 'Training Records', desc: 'Completions and upcoming due dates' },
-                      { icon: ClipboardCheck, title: 'Inspection Results', desc: '3 inspections with scores and findings' },
-                      { icon: HardHat, title: 'CAPA Status', desc: '5 open corrective actions in progress' },
-                    ].map((section, idx) => (
+                    {weeklyReportSections.map((section, idx) => (
                       <div key={idx} className="flex items-start gap-3 p-3 bg-surface-50 dark:bg-surface-700/50 rounded-xl">
                         <div className="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0">
                           <section.icon className="w-4 h-4 text-indigo-600" />
@@ -888,14 +932,14 @@ export const KPIIndicators: React.FC = () => {
                 {/* Export Buttons */}
                 <div className="flex flex-wrap gap-3 mt-6 pt-6 border-t border-surface-200 dark:border-surface-700">
                   <button
-                    onClick={() => exportWeeklyReportPDF(generateMockWeeklyData())}
+                    onClick={() => exportWeeklyReportPDF(weeklyReportData)}
                     className="flex items-center gap-2 px-4 py-2.5 bg-indigo-500 text-white rounded-xl font-medium hover:bg-indigo-600 transition-colors"
                   >
                     <Download className="w-4 h-4" />
                     Download PDF Report
                   </button>
                   <button
-                    onClick={() => exportWeeklyReportExcel(generateMockWeeklyData())}
+                    onClick={() => exportWeeklyReportExcel(weeklyReportData)}
                     className="flex items-center gap-2 px-4 py-2.5 bg-emerald-500 text-white rounded-xl font-medium hover:bg-emerald-600 transition-colors"
                   >
                     <Download className="w-4 h-4" />

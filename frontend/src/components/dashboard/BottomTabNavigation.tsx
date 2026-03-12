@@ -40,7 +40,7 @@ export const BottomTabNavigation: React.FC = () => {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 safe-area-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-30 safe-area-bottom">
       {/* Gradient overlay for visual lift */}
       <div className="absolute inset-x-0 -top-8 h-8 bg-gradient-to-t from-slate-950/95 to-transparent pointer-events-none" />
       

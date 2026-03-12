@@ -390,6 +390,7 @@ export const SafetyAudit: React.FC = () => {
                     </div>
                     <button
                       onClick={() => setShowCreateAuditForm((current) => !current)}
+                      aria-label="Toggle create audit form"
                       className="p-2 rounded-xl bg-surface-100 text-surface-600"
                     >
                       <ChevronDown className={`w-4 h-4 transition-transform ${showCreateAuditForm ? 'rotate-180' : ''}`} />
