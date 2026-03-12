@@ -133,6 +133,15 @@ const PageLoader = () => (
   </div>
 );
 
+// Scroll to top on every route change
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [pathname]);
+  return null;
+}
+
 // Gesture Navigation Provider - enables swipe between main pages
 const GestureNavigationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Enable swipe navigation
@@ -151,6 +160,7 @@ function AnimatedRoutes() {
   
   return (
     <GestureNavigationProvider>
+      <ScrollToTop />
       {/* Swipe navigation visual feedback */}
       <SwipeIndicator show={true} />
       
