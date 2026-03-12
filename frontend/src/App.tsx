@@ -263,14 +263,24 @@ function AnimatedRoutes() {
   );
 }
 
+function AuthAwareWidgets() {
+  const { isAuthenticated } = useAuthStore();
+  if (!isAuthenticated) return null;
+  return (
+    <>
+      <AISafetyAssistant />
+      <FeedbackWidget />
+      <OnboardingWalkthrough />
+    </>
+  );
+}
+
 function App() {
   return (
     <Router>
       <AnimatedRoutes />
       <PWAInstaller />
-      <AISafetyAssistant />
-      <FeedbackWidget />
-      <OnboardingWalkthrough />
+      <AuthAwareWidgets />
     </Router>
   );
 }

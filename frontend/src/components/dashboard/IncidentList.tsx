@@ -84,7 +84,7 @@ export const IncidentList: React.FC<IncidentListProps> = ({ incidents, isLoading
         <motion.button
           whileHover={{ scale: 1.015 }}
           whileTap={{ scale: 0.985 }}
-          onClick={() => navigate('/incidents/new')}
+          onClick={() => navigate('/report-incident')}
           className="w-full py-3.5 flex items-center justify-center gap-2.5 bg-gradient-to-r from-rose-500 to-orange-500 hover:from-rose-600 hover:to-orange-600 text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-rose-500/20 hover:shadow-rose-500/30"
         >
           <Plus className="w-4.5 h-4.5" strokeWidth={2.5} />
