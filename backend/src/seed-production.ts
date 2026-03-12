@@ -449,17 +449,19 @@ seed('contractors', 'contractors', () => {
 // ── 15. INVESTIGATIONS ─────────────────────────────────────────────────────
 // Schema: incident_id, investigation_date, investigator, findings, root_cause_analysis, status, created_at, updated_at (secs)
 seed('investigations', 'investigations', () => {
-  const incidentIds = db.prepare('SELECT id FROM incidents LIMIT 10').all() as any[];
+  const incidentIds = db.prepare('SELECT id FROM incidents').all() as any[];
   if (!incidentIds.length) return;
+  // Helper: safely get incident id by index, cycling if not enough rows
+  const iid = (i: number) => incidentIds[i % incidentIds.length].id;
   const stmt = db.prepare(`INSERT INTO investigations
     (incident_id, investigation_date, investigator, findings, root_cause_analysis, status, created_at, updated_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
   const t = db.transaction(() => {
-    stmt.run(incidentIds[0].id, daysAgo(4),  'Maria Santos',   'Anti-slip matting was missing following cleaning activities. No hazard notification was posted.',                                'Root cause (5-Why): lack of housekeeping procedure for wet floor management. Corrective action: procedure updated, matting replaced.',         'Closed',      secsAgo(5),  secsAgo(2));
-    stmt.run(incidentIds[2].id, daysAgo(17), 'Sarah Chen',     'Chemical transfer hose connection not double-checked per SOP. Berm contained spillage. Volume estimated 2L.',                 'Root cause: procedure shortcut under time pressure. Contributing factor: inadequate supervision. SOP to be revised with mandatory double-check.', 'Open',       secsAgo(18), secsAgo(5));
-    stmt.run(incidentIds[5].id, daysAgo(44), 'Mohammed Ali',   'Temperature interlock setpoint was 3°C below design specification following last maintenance activity.',                        'Root cause: change management failure — maintenance log not updated and engineering review bypassed. Procedure being revised.',               'In Progress', secsAgo(45), secsAgo(10));
-    stmt.run(incidentIds[8].id, daysAgo(71), 'Nadia Petrov',   'Panel access procedure did not mandate de-energisation. Technician believed panel safe via visual inspection only.',          'Root cause: procedural gap. No written safe-work method for this panel type. Immediate stop-work issued, arc flash study commissioned.',      'Open',        secsAgo(72), secsAgo(3));
-    stmt.run(incidentIds[9].id, daysAgo(84), 'Maria Santos',   'Laceration caused by exposed sharp edge on conveyor frame section. Guard removed for maintenance and not replaced.',          'Root cause: machine guarding reinstatement not included in maintenance job card. Job card template updated.',                                  'Closed',      secsAgo(85), secsAgo(80));
+    stmt.run(iid(0), daysAgo(4),  'Maria Santos',  'Anti-slip matting was missing following cleaning activities. No hazard notification was posted.',                              'Root cause (5-Why): lack of housekeeping procedure for wet floor management. Corrective action: procedure updated, matting replaced.',            'Closed',      secsAgo(5),  secsAgo(2));
+    stmt.run(iid(1), daysAgo(17), 'Sarah Chen',    'Chemical transfer hose connection not double-checked per SOP. Berm contained spillage. Volume estimated 2L.',               'Root cause: procedure shortcut under time pressure. Contributing factor: inadequate supervision. SOP to be revised with mandatory double-check.', 'Open',        secsAgo(18), secsAgo(5));
+    stmt.run(iid(2), daysAgo(44), 'Mohammed Ali',  'Temperature interlock setpoint was 3°C below design specification following last maintenance activity.',                      'Root cause: change management failure — maintenance log not updated and engineering review bypassed. Procedure being revised.',                   'In Progress', secsAgo(45), secsAgo(10));
+    stmt.run(iid(3), daysAgo(71), 'Nadia Petrov',  'Panel access procedure did not mandate de-energisation. Technician believed panel safe via visual inspection only.',        'Root cause: procedural gap. No written safe-work method for this panel type. Immediate stop-work issued, arc flash study commissioned.',        'Open',        secsAgo(72), secsAgo(3));
+    stmt.run(iid(4), daysAgo(84), 'Maria Santos',  'Laceration caused by exposed sharp edge on conveyor frame section. Guard removed for maintenance and not replaced.',        'Root cause: machine guarding reinstatement not included in maintenance job card. Job card template updated.',                                    'Closed',      secsAgo(85), secsAgo(80));
   });
   t();
 });
