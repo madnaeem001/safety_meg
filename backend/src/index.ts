@@ -80,6 +80,8 @@ export async function createApp(edgespark: any): Promise<Hono> {
         'http://127.0.0.1:5173',
         'http://127.0.0.1:4173',
         'http://localhost:3000',
+        'https://safetymeg.com',         // Naya domain
+    'https://www.safetymeg.com',
         ...(extraOrigin ? [extraOrigin] : []),
       ];
       if (!origin || allowed.includes(origin) || origin.endsWith('.youware.com') || origin.endsWith('.railway.app') || origin.endsWith('.vercel.app') || origin.endsWith('.netlify.app')) {
