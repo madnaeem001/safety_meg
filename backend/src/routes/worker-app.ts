@@ -19,17 +19,14 @@
 
 import { Hono } from 'hono';
 import { verify } from 'hono/jwt';
-import Database from 'better-sqlite3';
 import { z } from 'zod';
-import { resolve } from 'path';
+import { getSharedDb } from '../db';
+import { env } from '../config/env';
 
-const isProdRoute = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
-const dbPath = isProdRoute ? '/data/local.sqlite' : resolve(process.cwd(), 'local.sqlite');
-function getDb() { return new Database(dbPath); }
+function getDb() { return getSharedDb(); }
 const nowSec = () => Math.floor(Date.now() / 1000);
 
-const JWT_SECRET =
-  process.env.JWT_SECRET || 'safetymeg-jwt-secret-2025-change-in-production';
+const JWT_SECRET = env.JWT_SECRET;
 
 // ── Schema ─────────────────────────────────────────────────────────────────────
 
@@ -94,7 +91,7 @@ function initOnce() {
   if (_initialized) return;
   _initialized = true;
   const db = getDb();
-  try { ensureSchema(db); } finally { db.close(); }
+  ensureSchema(db);
 }
 
 // ── Auth helper ────────────────────────────────────────────────────────────────
@@ -253,7 +250,7 @@ export function workerAppRoutes(app: Hono) {
       const completed = (db.prepare("SELECT COUNT(*) as n FROM worker_tasks WHERE user_id=? AND status='completed'").get(userId) as any).n;
       const overdue   = (db.prepare("SELECT COUNT(*) as n FROM worker_tasks WHERE user_id=? AND status='blocked'").get(userId) as any).n;
       return c.json({ success: true, data: { total, pending, completed, overdue } });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // POST /api/worker-app/tasks/seed  — static path must come before /:id
@@ -282,7 +279,7 @@ export function workerAppRoutes(app: Hono) {
         );
       }
       return c.json({ success: true, message: 'Tasks seeded', count: DEFAULT_TASKS.length, seeded: true });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // GET /api/worker-app/tasks
@@ -295,7 +292,7 @@ export function workerAppRoutes(app: Hono) {
       ensureSchema(db);
       const rows = db.prepare('SELECT * FROM worker_tasks WHERE user_id=? ORDER BY created_at ASC').all(userId) as any[];
       return c.json({ success: true, data: rows.map(mapTask) });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // PUT /api/worker-app/tasks/:id/checklist/:itemId  — more specific, must come before /:id/status
@@ -331,7 +328,7 @@ export function workerAppRoutes(app: Hono) {
 
       const updated = db.prepare('SELECT * FROM worker_tasks WHERE id=? AND user_id=?').get(taskId, userId) as any;
       return c.json({ success: true, data: mapTask(updated) });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // PUT /api/worker-app/tasks/:id/status
@@ -361,7 +358,7 @@ export function workerAppRoutes(app: Hono) {
 
       const updated = db.prepare('SELECT * FROM worker_tasks WHERE id=? AND user_id=?').get(taskId, userId) as any;
       return c.json({ success: true, data: mapTask(updated) });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   /* ===================================================================
@@ -392,7 +389,7 @@ export function workerAppRoutes(app: Hono) {
           syncStatus:  r.sync_status,
         })),
       });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // POST /api/worker-app/reports
@@ -433,7 +430,7 @@ export function workerAppRoutes(app: Hono) {
           syncStatus:  'synced',
         },
       }, 201);
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   /* ===================================================================
@@ -460,6 +457,6 @@ export function workerAppRoutes(app: Hono) {
           status: r.status,
         })),
       });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 }

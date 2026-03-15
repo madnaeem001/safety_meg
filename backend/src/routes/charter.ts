@@ -1,15 +1,13 @@
 import { Hono } from 'hono';
 import Database from 'better-sqlite3';
 import { z } from 'zod';
+import { createLogger } from '../services/logger';
+import { DB_PATH } from '../config/env';
 
-const isProdRoute = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
-const sqlite = new Database(isProdRoute ? '/data/local.sqlite' : 'local.sqlite');
+const sqlite = new Database(DB_PATH);
 sqlite.pragma('journal_mode = WAL');
 
-const logger = {
-  info: (msg: string, meta?: object) => console.log(`[CHARTER] ${msg}`, meta ?? ''),
-  error: (msg: string, meta?: object) => console.error(`[CHARTER ERROR] ${msg}`, meta ?? ''),
-};
+const logger = createLogger('Charter');
 
 // ── AUTO-MIGRATE ──────────────────────────────────────────────────────────────
 

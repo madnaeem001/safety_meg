@@ -1,14 +1,12 @@
 import { Hono, Context } from 'hono';
-import Database from 'better-sqlite3';
 import { z } from 'zod';
 import { verify } from 'hono/jwt';
-import { resolve } from 'path';
+import { getSharedDb } from '../db';
+import { env } from '../config/env';
 
-const isProdRoute = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
-const dbPath = isProdRoute ? '/data/local.sqlite' : resolve(process.cwd(), 'local.sqlite');
-function getDb() { return new Database(dbPath); }
+function getDb() { return getSharedDb(); }
 
-const JWT_SECRET = process.env.JWT_SECRET || 'safetymeg-jwt-secret-2025-change-in-production';
+const JWT_SECRET = env.JWT_SECRET;
 
 // ── Schema init (once per process) ────────────────────────────────────────────
 
@@ -34,7 +32,6 @@ function initOnce() {
       CREATE INDEX IF NOT EXISTS idx_form_configs_user ON form_configs(user_id);
     `);
   } finally {
-    db.close();
   }
 }
 
@@ -132,7 +129,7 @@ export function formConfiguratorRoutes(app: Hono) {
         .all(userId);
       const data = rows.map(mapRow);
       return c.json({ success: true, data, count: data.length });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // POST /api/form-configs — create new form config
@@ -153,7 +150,7 @@ export function formConfiguratorRoutes(app: Hono) {
       `).run(d.clientId, userId, d.name, d.description, d.category, JSON.stringify(d.fields), d.status, ts, ts);
       const created = db.prepare('SELECT * FROM form_configs WHERE id = ?').get(result.lastInsertRowid) as any;
       return c.json({ success: true, data: mapRow(created) }, 201);
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // GET /api/form-configs/:id — fetch single form config (ownership enforced)
@@ -167,7 +164,7 @@ export function formConfiguratorRoutes(app: Hono) {
         .get(c.req.param('id'), userId) as any;
       if (!row) return c.json({ success: false, error: 'Form config not found' }, 404);
       return c.json({ success: true, data: mapRow(row) });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // PUT /api/form-configs/:id — update form config (ownership enforced)
@@ -201,7 +198,7 @@ export function formConfiguratorRoutes(app: Hono) {
       db.prepare(`UPDATE form_configs SET ${setClauses.join(', ')} WHERE id = ?`).run(...params);
       const updated = db.prepare('SELECT * FROM form_configs WHERE id = ?').get(c.req.param('id')) as any;
       return c.json({ success: true, data: mapRow(updated) });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // DELETE /api/form-configs/:id — delete form config (ownership enforced)
@@ -216,6 +213,6 @@ export function formConfiguratorRoutes(app: Hono) {
       if (!existing) return c.json({ success: false, error: 'Form config not found' }, 404);
       db.prepare('DELETE FROM form_configs WHERE id = ?').run(c.req.param('id'));
       return c.json({ success: true, message: 'Form config deleted' });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 }

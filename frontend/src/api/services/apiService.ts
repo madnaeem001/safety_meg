@@ -1714,8 +1714,12 @@ export const authApiService = {
   changePassword: (currentPassword: string, newPassword: string) =>
     api.post<{ message: string }>('/auth/change-password', { currentPassword, newPassword }),
 
-  listUsers: () =>
-    api.get<AuthTokenResponse['user'][]>('/auth/users'),
+  forgotPassword: (email: string) =>
+    api.post<{ success: boolean; message: string }>('/auth/forgot-password', { email }),
+
+  resetPassword: (token: string, newPassword: string) =>
+    api.post<{ success: boolean; message: string }>('/auth/reset-password', { token, newPassword }),
+
 };
 
 // ============================================

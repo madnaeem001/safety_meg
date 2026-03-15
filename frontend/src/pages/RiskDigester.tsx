@@ -3,7 +3,7 @@ import { KPIWidget } from '../components/safety/risk-digester/KPIWidget';
 import { EmissionsChart } from '../components/safety/risk-digester/EmissionsChart';
 import { CAPATable } from '../components/safety/risk-digester/CAPATable';
 import { StandardsReference } from '../components/safety/risk-digester/StandardsReference';
-import { SAFETY_KPIS, SafetyKPI } from '../data/mockRiskDigester';
+import { SafetyKPI } from '../data/mockRiskDigester';
 import { motion } from 'framer-motion';
 import { ShieldAlert, Activity, Wind, ClipboardList } from 'lucide-react';
 import { useRiskStats, useKPIMetricsAnalytics } from '../api/hooks/useAPIHooks';
@@ -14,7 +14,7 @@ export const RiskDigester: React.FC = () => {
   const { data: kpiMetrics } = useKPIMetricsAnalytics();
 
   const safetyKPIs = useMemo<SafetyKPI[]>(() => {
-    if (!kpiMetrics) return SAFETY_KPIS;
+    if (!kpiMetrics) return [];
     const raw = kpiMetrics as any;
     // Try extracting KPIs from various backend shapes
     if (Array.isArray(raw) && raw.length > 0) {
@@ -26,10 +26,9 @@ export const RiskDigester: React.FC = () => {
         trend: (k.changeDirection || (Number(k.change ?? 0) > 0 ? 'up' : Number(k.change ?? 0) < 0 ? 'down' : 'stable')) as 'up' | 'down' | 'stable',
         icon: k.icon || 'shield',
       }));
-      const byLabel = new Set(converted.map(c => c.label));
-      return [...converted, ...SAFETY_KPIS.filter(k => !byLabel.has(k.label))];
+      return converted;
     }
-    return SAFETY_KPIS;
+    return [];
   }, [kpiMetrics]);
 
   const complianceScore = (riskStats as any)?.complianceRate ?? 98.2;

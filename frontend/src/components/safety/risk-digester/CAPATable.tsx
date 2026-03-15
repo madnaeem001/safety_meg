@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CAPA_LIST } from '../../../data/mockRiskDigester';
+
+import { type CAPA } from '../../../data/mockRiskDigester';
 import { CheckCircle2, Clock, AlertCircle, ArrowUpRight } from 'lucide-react';
 
 export const CAPATable: React.FC = () => {
@@ -49,7 +50,7 @@ export const CAPATable: React.FC = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-surface-50">
-            {CAPA_LIST.map((capa, index) => (
+            {([] as CAPA[]).map((capa, index) => (
               <motion.tr 
                 key={capa.id}
                 initial={{ opacity: 0, x: -10 }}

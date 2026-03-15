@@ -212,10 +212,10 @@ const DroppableColumn: React.FC<{
 // --- Main Component ---
 
 export const JiraBoard: React.FC = () => {
-  const [tasks, setTasks] = useState<ProjectTask[]>(INITIAL_TASKS);
+  const [tasks, setTasks] = useState<ProjectTask[]>([]);
   const [lifecyclePhase, setLifecyclePhase] = useState<string>('execution');
   const [viewMode, setViewMode] = useState<ViewMode>('board');
-  const [activeSprint, setActiveSprint] = useState<Sprint | null>(SPRINTS.find(s => s.status === 'active') || null);
+  const [activeSprint, setActiveSprint] = useState<Sprint | null>(null);
   const [selectedTask, setSelectedTask] = useState<ProjectTask | null>(null);
 
   // ── Real API Data ──────────────────────────────────────────────────────────
@@ -252,11 +252,7 @@ export const JiraBoard: React.FC = () => {
         updatedAt: t.updatedAt ? (typeof t.updatedAt === 'number' ? new Date(t.updatedAt).toISOString() : String(t.updatedAt)) : new Date().toISOString(),
         dueDate: t.dueDate || '',
       }));
-      const existingIds = new Set(INITIAL_TASKS.map(t => t.id));
-      const newTasks = converted.filter(c => !existingIds.has(c.id));
-      if (newTasks.length > 0) {
-        setTasks(prev => [...prev, ...newTasks]);
-      }
+      setTasks(converted);
     }
   }, [backendTasks]); // eslint-disable-line react-hooks/exhaustive-deps
 

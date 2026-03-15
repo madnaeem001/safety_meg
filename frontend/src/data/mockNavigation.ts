@@ -196,8 +196,14 @@ export const STORAGE_KEYS = {
 };
 
 // Helper functions
+// Synchronous access for UI code: prefer an in-memory runtime cache, then localStorage, then defaults
 export const loadNotificationSettings = (): NotificationSettings => {
   try {
+    // runtime cache populated by `fetchNotificationSettings` or save
+    // @ts-ignore - allow attaching a runtime cache to window for quick reads
+    const cached = (window as any).__NOTIFICATION_SETTINGS_CACHE as NotificationSettings | undefined;
+    if (cached) return cached;
+
     const stored = localStorage.getItem(STORAGE_KEYS.NOTIFICATION_SETTINGS);
     return stored ? JSON.parse(stored) : DEFAULT_NOTIFICATION_SETTINGS;
   } catch {
@@ -206,15 +212,104 @@ export const loadNotificationSettings = (): NotificationSettings => {
 };
 
 export const saveNotificationSettings = (settings: NotificationSettings): void => {
-  localStorage.setItem(STORAGE_KEYS.NOTIFICATION_SETTINGS, JSON.stringify(settings));
+  try {
+    localStorage.setItem(STORAGE_KEYS.NOTIFICATION_SETTINGS, JSON.stringify(settings));
+    // update runtime cache
+    // @ts-ignore
+    (window as any).__NOTIFICATION_SETTINGS_CACHE = settings;
+  } catch (err) {
+    // ignore storage errors
+  }
+  // best-effort: attempt to persist to backend in background if service is available
+  try {
+    // dynamic import to avoid circular deps during module initialization
+    import('../api/services/apiService').then(({ notificationApiService }) => {
+      const payload = {
+        // userId should be supplied by caller flow; backend will infer if omitted
+        emailNotifications: settings.emailNotifications,
+        inAppNotifications: settings.pushNotifications,
+        preferences: {
+          safetyAlerts: settings.safetyAlerts,
+          trainingReminders: settings.trainingReminders,
+          complianceUpdates: settings.complianceUpdates,
+          auditNotifications: settings.auditNotifications,
+          systemAlerts: settings.systemAlerts,
+          soundEnabled: settings.soundEnabled,
+          soundType: settings.soundType,
+          badgeAnimationSpeed: settings.badgeAnimationSpeed,
+        },
+      };
+      // fire-and-forget
+      notificationApiService.updateSettings(payload).catch(() => {});
+    }).catch(() => {});
+  } catch {
+    // noop
+  }
+};
+
+// Async helpers to fetch/update settings from backend. Use these from pages/hooks.
+export const fetchNotificationSettings = async (userId?: string): Promise<NotificationSettings> => {
+  try {
+    const { notificationApiService } = await import('../api/services/apiService');
+    const res = await notificationApiService.getSettings(userId);
+    const prefs = (res && (res as any).data && (res as any).data.preferences) || {};
+
+    const mapped: NotificationSettings = {
+      ...DEFAULT_NOTIFICATION_SETTINGS,
+      safetyAlerts: typeof prefs.safetyAlerts === 'boolean' ? prefs.safetyAlerts : DEFAULT_NOTIFICATION_SETTINGS.safetyAlerts,
+      trainingReminders: typeof prefs.trainingReminders === 'boolean' ? prefs.trainingReminders : DEFAULT_NOTIFICATION_SETTINGS.trainingReminders,
+      complianceUpdates: typeof prefs.complianceUpdates === 'boolean' ? prefs.complianceUpdates : DEFAULT_NOTIFICATION_SETTINGS.complianceUpdates,
+      auditNotifications: typeof prefs.auditNotifications === 'boolean' ? prefs.auditNotifications : DEFAULT_NOTIFICATION_SETTINGS.auditNotifications,
+      systemAlerts: typeof prefs.systemAlerts === 'boolean' ? prefs.systemAlerts : DEFAULT_NOTIFICATION_SETTINGS.systemAlerts,
+      soundEnabled: typeof prefs.soundEnabled === 'boolean' ? prefs.soundEnabled : DEFAULT_NOTIFICATION_SETTINGS.soundEnabled,
+      soundType: typeof prefs.soundType === 'string' ? prefs.soundType as any : DEFAULT_NOTIFICATION_SETTINGS.soundType,
+      badgeAnimationSpeed: typeof prefs.badgeAnimationSpeed === 'number' ? prefs.badgeAnimationSpeed : DEFAULT_NOTIFICATION_SETTINGS.badgeAnimationSpeed,
+    };
+
+    // persist to local storage + cache
+    try {
+      localStorage.setItem(STORAGE_KEYS.NOTIFICATION_SETTINGS, JSON.stringify(mapped));
+      // @ts-ignore
+      (window as any).__NOTIFICATION_SETTINGS_CACHE = mapped;
+    } catch {}
+
+    return mapped;
+  } catch (err) {
+    return loadNotificationSettings();
+  }
+};
+
+export const persistNotificationSettings = async (settings: NotificationSettings, userId?: string): Promise<void> => {
+  saveNotificationSettings(settings);
+  try {
+    const { notificationApiService } = await import('../api/services/apiService');
+    const payload: any = {
+      userId,
+      emailNotifications: settings.emailNotifications,
+      inAppNotifications: settings.pushNotifications,
+      preferences: {
+        safetyAlerts: settings.safetyAlerts,
+        trainingReminders: settings.trainingReminders,
+        complianceUpdates: settings.complianceUpdates,
+        auditNotifications: settings.auditNotifications,
+        systemAlerts: settings.systemAlerts,
+        soundEnabled: settings.soundEnabled,
+        soundType: settings.soundType,
+        badgeAnimationSpeed: settings.badgeAnimationSpeed,
+      },
+    };
+    await notificationApiService.updateSettings(payload);
+  } catch (err) {
+    // best-effort only
+  }
 };
 
 export const loadUserProfile = (): UserProfile => {
   try {
     const stored = localStorage.getItem(STORAGE_KEYS.USER_PROFILE);
-    return stored ? JSON.parse(stored) : DEFAULT_USER_PROFILE;
+    return stored ? JSON.parse(stored) : { ...DEFAULT_USER_PROFILE, id: '', firstName: '', lastName: '', email: '', certifications: [] };
   } catch {
-    return DEFAULT_USER_PROFILE;
+    return { ...DEFAULT_USER_PROFILE, id: '', firstName: '', lastName: '', email: '', certifications: [] };
   }
 };
 
@@ -225,9 +320,9 @@ export const saveUserProfile = (profile: UserProfile): void => {
 export const loadNotifications = (): Notification[] => {
   try {
     const stored = localStorage.getItem(STORAGE_KEYS.NOTIFICATIONS);
-    return stored ? JSON.parse(stored) : MOCK_NOTIFICATIONS;
+    return stored ? JSON.parse(stored) : [];
   } catch {
-    return MOCK_NOTIFICATIONS;
+    return [];
   }
 };
 

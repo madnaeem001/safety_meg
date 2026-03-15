@@ -23,13 +23,15 @@ import {
   ArrowDownRight,
 } from 'lucide-react';
 import {
-  mockEPAReportData,
-  mockEPAMetrics,
-  EPAReportData,
-  EPAMetric,
-  mockScheduledInspections,
+  type EPAReportData,
+  type EPAMetric,
 } from '../data/mockScheduling';
 import { useEnvironmentalMetrics, useInspectionSchedule, useInspectionStats } from '../api/hooks/useAPIHooks';
+
+const EMPTY_EPA_DATA: EPAReportData = { period: '', inspectionsCompleted: 0, inspectionsPassed: 0, inspectionsFailed: 0, complianceRate: 0, issuesIdentified: 0, issuesResolved: 0, avgResolutionDays: 0 };
+const mockEPAReportData: EPAReportData[] = [];
+const mockEPAMetrics: EPAMetric[] = [];
+const mockScheduledInspections: { type: string }[] = [];
 
 const categoryIcons: Record<string, React.ReactNode> = {
   'Air Quality': <Wind className="w-5 h-5" />,
@@ -58,16 +60,16 @@ export const EPAReportingDashboard: React.FC = () => {
     if (envMetrics) {
       return {
         period: selectedPeriod,
-        complianceRate: envMetrics.complianceRate ?? mockEPAReportData[0].complianceRate,
-        inspectionsCompleted: inspectionStats?.inspections?.completed ?? mockEPAReportData[0].inspectionsCompleted,
-        inspectionsPassed: inspectionStats?.inspections?.passed ?? mockEPAReportData[0].inspectionsPassed,
-        inspectionsFailed: inspectionStats?.inspections?.failed ?? mockEPAReportData[0].inspectionsFailed,
-        issuesIdentified: inspectionStats?.inspections?.overdue ?? mockEPAReportData[0].issuesIdentified,
-        issuesResolved: inspectionStats?.inspections?.completed ?? mockEPAReportData[0].issuesResolved,
-        avgResolutionDays: mockEPAReportData[0].avgResolutionDays,
+        complianceRate: envMetrics.complianceRate ?? EMPTY_EPA_DATA.complianceRate,
+        inspectionsCompleted: inspectionStats?.inspections?.completed ?? EMPTY_EPA_DATA.inspectionsCompleted,
+        inspectionsPassed: inspectionStats?.inspections?.passed ?? EMPTY_EPA_DATA.inspectionsPassed,
+        inspectionsFailed: inspectionStats?.inspections?.failed ?? EMPTY_EPA_DATA.inspectionsFailed,
+        issuesIdentified: inspectionStats?.inspections?.overdue ?? EMPTY_EPA_DATA.issuesIdentified,
+        issuesResolved: inspectionStats?.inspections?.completed ?? EMPTY_EPA_DATA.issuesResolved,
+        avgResolutionDays: EMPTY_EPA_DATA.avgResolutionDays,
       };
     }
-    return mockEPAReportData.find(d => d.period === selectedPeriod) || mockEPAReportData[0];
+    return mockEPAReportData.find(d => d.period === selectedPeriod) ?? EMPTY_EPA_DATA;
   }, [envMetrics, inspectionStats, selectedPeriod]);
 
   const previousPeriodData = useMemo(() => {
@@ -92,7 +94,7 @@ export const EPAReportingDashboard: React.FC = () => {
   const overallCompliance = useMemo(() => {
     if (envMetrics?.complianceRate) return Math.round(envMetrics.complianceRate);
     const compliant = mockEPAMetrics.filter(m => m.status === 'compliant').length;
-    return Math.round((compliant / mockEPAMetrics.length) * 100);
+    return mockEPAMetrics.length > 0 ? Math.round((compliant / mockEPAMetrics.length) * 100) : 0;
   }, [envMetrics]);
 
   const EPA_TYPES = new Set(['epa', 'swppp', 'stormwater']);

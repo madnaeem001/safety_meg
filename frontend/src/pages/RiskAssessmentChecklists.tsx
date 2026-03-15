@@ -468,27 +468,12 @@ export const RiskAssessmentChecklists: React.FC = () => {
       if (checklist && checklist.categories.length > 0) {
         setSelectedCategory(checklist.categories[0]);
       }
-      // Load saved progress from localStorage
-      const savedProgress = localStorage.getItem(`checklist_progress_${selectedIndustry}`);
-      if (savedProgress) {
-        setCheckedItems(new Set(JSON.parse(savedProgress)));
-      } else {
-        setCheckedItems(new Set());
-      }
+      setCheckedItems(new Set());
       setIsLoading(false);
     }, 600);
     return () => clearTimeout(timer);
   }, [selectedIndustry]);
 
-  // Save progress to localStorage
-  useEffect(() => {
-    if (!isLoading && currentChecklist) {
-      localStorage.setItem(
-        `checklist_progress_${selectedIndustry}`,
-        JSON.stringify([...checkedItems])
-      );
-    }
-  }, [checkedItems, selectedIndustry, isLoading, currentChecklist]);
 
   const toggleItem = (itemId: string) => {
     setCheckedItems((prev) => {

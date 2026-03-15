@@ -1,9 +1,10 @@
 import { Hono } from 'hono';
 import Database from 'better-sqlite3';
 import { z } from 'zod';
+import { createLogger } from '../services/logger';
+import { DB_PATH } from '../config/env';
 
-const isProdRoute = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
-const sqlite = new Database(isProdRoute ? '/data/local.sqlite' : 'local.sqlite');
+const sqlite = new Database(DB_PATH);
 sqlite.pragma('journal_mode = WAL');
 
 // ── Ensure retrospective tables exist ────────────────────────────────────────
@@ -120,10 +121,7 @@ sqlite.exec(`
   CREATE INDEX IF NOT EXISTS idx_project_rfi_project ON project_rfi(project_id);
 `);
 
-const logger = {
-  info: (msg: string, meta?: object) => console.log(`[PROJECTS] ${msg}`, meta ?? ''),
-  error: (msg: string, meta?: object) => console.error(`[PROJECTS ERROR] ${msg}`, meta ?? ''),
-};
+const logger = createLogger('Projects');
 
 // ── VALIDATION SCHEMAS ────────────────────────────────────────────────────
 

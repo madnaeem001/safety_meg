@@ -24,7 +24,7 @@ import {
   Split,
   Activity
 } from 'lucide-react';
-import { useVisualAuditResults, useDeleteVisualAuditMutation } from '../api/hooks/useAPIHooks';
+import { useVisualAuditResults, useDeleteVisualAuditMutation, useSaveVisualAuditMutation } from '../api/hooks/useAPIHooks';
 
 /* ================================================================
    AI VISUAL AUDIT HISTORY
@@ -66,20 +66,52 @@ export const AIVisualAuditHistory: React.FC = () => {
 
   const { data: backendResults } = useVisualAuditResults();
   const deleteAuditMutation = useDeleteVisualAuditMutation();
+  const saveAuditMutation = useSaveVisualAuditMutation();
 
   useEffect(() => {
     if (!backendResults) return;
     if (backendResults.length === 0) {
-      // Fallback to localStorage on first load before any backend data
+      // No backend rows yet — attempt a best-effort migration from localStorage
       try {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
           const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed)) {
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            // Show local items immediately
             setAudits(parsed.map((r: any) => ({ ...r, timestamp: new Date(r.timestamp) })));
+            // Attempt to push each item to backend (idempotent best-effort)
+            (async () => {
+              for (const entry of parsed) {
+                try {
+                  const payload: any = {
+                    id: entry.id,
+                    type: entry.type,
+                    mediaType: entry.mediaType,
+                    analysis: entry.analysis,
+                    suggestions: entry.suggestions || [],
+                    status: entry.status || 'warning',
+                    hazards: entry.hazards,
+                    ppeInventory: entry.ppeInventory,
+                    voiceNotes: entry.voiceNotes,
+                    locationLat: entry.location?.lat,
+                    locationLng: entry.location?.lng,
+                    standard: entry.standard,
+                  };
+                  // use mutateAsync so failures don't stop the loop
+                  // @ts-ignore
+                  await saveAuditMutation.mutateAsync(payload);
+                } catch (e) {
+                  // ignore individual failures
+                }
+              }
+              // If migration attempted, clear localStorage to avoid duplicate shows
+              try { localStorage.removeItem(STORAGE_KEY); } catch {}
+            })();
           }
         }
-      } catch { localStorage.removeItem(STORAGE_KEY); }
+      } catch {
+        localStorage.removeItem(STORAGE_KEY);
+      }
       return;
     }
     // Enrich backend results with current-session blob URLs from localStorage

@@ -496,7 +496,7 @@ const MilestoneCard: React.FC<{ milestone: Milestone; tasks: ProjectTask[] }> = 
 };
 
 export const ProjectManagement: React.FC = () => {
-  const [localTasks, setLocalTasks] = useState<ProjectTask[]>(INITIAL_TASKS);
+  const [localTasks, setLocalTasks] = useState<ProjectTask[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState<ProjectTask | null>(null);
   const [activeView, setActiveView] = useState<'kanban' | 'sprint' | 'backlog' | 'velocity' | 'schedule' | 'rfi' | 'milestones' | 'retrospectives' | 'releases' | 'settings' | 'automation' | 'ai-workflows' | 'ai-task-analysis' | 'ai-security' | 'ai-resource-planning' | 'ai-risk-matrix' | 'ai-dependency-analyzer' | 'photo-docs'>('kanban');
@@ -527,7 +527,7 @@ export const ProjectManagement: React.FC = () => {
         status: e.status as TaskStatus,
       }));
     }
-    return EPICS;
+    return [];
   }, [backendEpics]);
 
   // ── Milestones (backend-owned) ──────────────────────────────────────────
@@ -596,10 +596,7 @@ export const ProjectManagement: React.FC = () => {
         tags: [],
         issueType: 'task' as IssueType,
       }));
-      // Merge: backend tasks override mock tasks by id; append backlog-only mock tasks
-      const merged = [...backendMapped];
-      localTasks.filter(lt => lt.status === 'backlog' && !backendMapped.find(b => b.title === lt.title)).forEach(lt => merged.push(lt));
-      return merged;
+      return backendMapped;
     }
     return localTasks;
   }, [backendTasks, localTasks]);

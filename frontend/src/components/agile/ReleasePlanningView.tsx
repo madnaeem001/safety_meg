@@ -26,9 +26,9 @@ interface ReleasePlanningViewProps {
 }
 
 export function ReleasePlanningView({ 
-  tasks = INITIAL_TASKS, 
-  epics = EPICS,
-  sprints = SPRINTS 
+  tasks = [] as ProjectTask[], 
+  epics = [] as Epic[],
+  sprints = [] as Sprint[]
 }: ReleasePlanningViewProps) {
   const { data: releases = [], loading, error, refetch } = useReleases();
   const createRelease = useCreateRelease();

@@ -7,7 +7,7 @@ import {
   Calendar, Award, Edit2, Save, X, Camera, Check, Upload, Crop, ZoomIn, ZoomOut,
   Sun, Moon, Monitor, Palette, Shield
 } from 'lucide-react';
-import { UserProfile as UserProfileType, loadUserProfile, saveUserProfile } from '../data/mockNavigation';
+import { UserProfile as UserProfileType, loadUserProfile, saveUserProfile, DEFAULT_USER_PROFILE } from '../data/mockNavigation';
 import { useTheme } from '../components/ThemeProvider';
 import { useRBAC } from '../hooks/useRBAC';
 import { UserRole } from '../services/rbacService';
@@ -28,7 +28,25 @@ export const UserProfile: React.FC = () => {
   const { theme, setTheme } = useTheme();
   const { role, setRole } = useRBAC();
   const { user, updateProfile } = useAuthStore();
-  const [profile, setProfile] = useState<UserProfileType>(loadUserProfile());
+  // Build initial profile from auth user; fall back to stored prefs, then empty defaults
+  const initialProfile = (): UserProfileType => {
+    const stored = loadUserProfile();
+    if (user) {
+      const nameParts = (user.fullName || '').split(' ');
+      return {
+        ...DEFAULT_USER_PROFILE,
+        ...stored,
+        id: String(user.id ?? stored.id),
+        firstName: nameParts[0] || stored.firstName,
+        lastName: nameParts.slice(1).join(' ') || stored.lastName,
+        email: user.email || stored.email,
+        role: user.role || stored.role,
+        department: user.department || stored.department,
+      };
+    }
+    return stored;
+  };
+  const [profile, setProfile] = useState<UserProfileType>(initialProfile);
   const [isEditing, setIsEditing] = useState(false);
   const [editedProfile, setEditedProfile] = useState<UserProfileType>(profile);
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -44,23 +62,25 @@ export const UserProfile: React.FC = () => {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
 
   useEffect(() => {
-    const base = loadUserProfile();
-    // Overlay real auth user data on top of the mock profile
+    const stored = loadUserProfile();
+    // Overlay real auth user data on top of any stored preferences
     if (user) {
       const nameParts = (user.fullName || '').split(' ');
       const patched: UserProfileType = {
-        ...base,
-        firstName: nameParts[0] || base.firstName,
-        lastName: nameParts.slice(1).join(' ') || base.lastName,
-        email: user.email || base.email,
-        role: user.role || base.role,
-        department: user.department || base.department,
+        ...DEFAULT_USER_PROFILE,
+        ...stored,
+        id: String(user.id ?? stored.id),
+        firstName: nameParts[0] || stored.firstName,
+        lastName: nameParts.slice(1).join(' ') || stored.lastName,
+        email: user.email || stored.email,
+        role: user.role || stored.role,
+        department: user.department || stored.department,
       };
       setProfile(patched);
       setEditedProfile(patched);
     } else {
-      setProfile(base);
-      setEditedProfile(base);
+      setProfile(stored);
+      setEditedProfile(stored);
     }
   }, [user]);
 

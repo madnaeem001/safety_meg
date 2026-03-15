@@ -1,5 +1,9 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { createLogger } from "./services/logger";
+import { env } from "./config/env";
+import { getAIStatus, getAIMetrics } from "./services/aiService";
+import { getSharedDb } from "./db";
 import { aiRoutes } from "./routes/ai";
 import { notificationRoutes } from "./routes/notifications";
 import { safetyRoutes } from "./routes/safety";
@@ -65,7 +69,24 @@ import { formConfiguratorRoutes } from "./routes/form-configurator";
 import { organizationSettingsRoutes } from "./routes/organization-settings";
 import { pilotProgramRoutes } from "./routes/pilot-program";
 import { predictiveSafetyRoutes } from "./routes/predictive-safety";
+import { webhooksRoutes } from "./routes/webhooks";
 import { ZodError } from "zod";
+
+const appLogger = createLogger('App');
+
+/**
+ * Shared API error response factory.
+ * All error responses should use this shape so clients get a consistent structure.
+ */
+export function apiError(
+  c: any,
+  status: number,
+  message: string,
+  details?: unknown
+) {
+  const requestId = c.res?.headers?.get('X-Request-ID') ?? 'unknown';
+  return c.json({ success: false, error: message, requestId, ...(details ? { details } : {}) }, status);
+}
 
 export async function createApp(edgespark: any): Promise<Hono> {
   const app = new Hono();
@@ -133,18 +154,27 @@ export async function createApp(edgespark: any): Promise<Hono> {
 
   // ── REQUEST ID ────────────────────────────────────────────────────────────
   app.use('*', async (c, next) => {
-    const requestId = Math.random().toString(36).slice(2, 10);
+    const requestId =
+      c.req.header('X-Request-ID') || Math.random().toString(36).slice(2, 10);
+    (c as any).set('requestId', requestId);
     c.header('X-Request-ID', requestId);
     await next();
   });
 
   // 1. Global Error Handler (The Safety Net)
   app.onError((err, c) => {
-    console.error("System Error Catch:", err);
+    const requestId: string = (c as any).get('requestId') ?? 'unknown';
     if (err instanceof ZodError) {
-      return c.json({ success: false, error: 'Validation Failed', issues: err.issues }, 400);
+      return c.json(
+        { success: false, error: 'Validation Failed', issues: err.issues, requestId },
+        400
+      );
     }
-    return c.json({ success: false, error: 'Internal Server Error', message: err.message }, 500);
+    appLogger.error('Unhandled error', err, { requestId, path: c.req.path });
+    return c.json(
+      { success: false, error: 'Internal Server Error', message: err.message, requestId },
+      500
+    );
   });
 
   // Root endpoint
@@ -191,14 +221,38 @@ export async function createApp(edgespark: any): Promise<Hono> {
     });
   });
 
-  // Health check
-  app.get('/api/public/health', (c) => {
+  // Health check (P3-04 — real dependency probes)
+  app.get('/api/public/health', async (c) => {
+    let dbStatus: 'ok' | 'error' = 'ok';
+    try {
+      getSharedDb().prepare('SELECT 1').get();
+    } catch {
+      dbStatus = 'error';
+    }
+
+    const aiStatus = await getAIStatus();
+    const emailConfigured = Boolean(process.env.RESEND_API_KEY);
+    const overall = dbStatus === 'ok' ? 'ok' : 'degraded';
+
     return c.json({
-      status: 'ok',
+      status: overall,
       timestamp: new Date().toISOString(),
       platform: 'SafetyMEG',
       version: '2.0.0',
-      features: ['auth', 'rbac', 'cors', 'rate-limiting', 'ehs-modules']
+      dependencies: {
+        db: dbStatus,
+        ai: aiStatus,
+        email: emailConfigured ? 'configured' : 'not_configured',
+      },
+    });
+  });
+
+  // Metrics endpoint (P3-05 — AI observability)
+  app.get('/api/metrics', (c) => {
+    const ai = getAIMetrics();
+    return c.json({
+      timestamp: new Date().toISOString(),
+      ai,
     });
   });
 
@@ -268,6 +322,7 @@ export async function createApp(edgespark: any): Promise<Hono> {
   organizationSettingsRoutes(app);
   pilotProgramRoutes(app);
   predictiveSafetyRoutes(app);
+  webhooksRoutes(app);
 
   return app;
 }

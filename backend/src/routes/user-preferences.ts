@@ -11,16 +11,14 @@
 
 import { Hono } from 'hono';
 import { verify } from 'hono/jwt';
-import Database from 'better-sqlite3';
 import { z } from 'zod';
-import { resolve } from 'path';
+import { getSharedDb } from '../db';
+import { env } from '../config/env';
 
-const isProdRoute = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
-const dbPath = isProdRoute ? '/data/local.sqlite' : resolve(process.cwd(), 'local.sqlite');
-function getDb() { return new Database(dbPath); }
+function getDb() { return getSharedDb(); }
 const now = () => Math.floor(Date.now() / 1000);
 
-const JWT_SECRET = process.env.JWT_SECRET || 'safetymeg-jwt-secret-2025-change-in-production';
+const JWT_SECRET = env.JWT_SECRET;
 
 const SUPPORTED_LANGUAGES = ['en', 'es', 'fr'] as const;
 
@@ -42,7 +40,7 @@ function initOnce() {
   if (_initialized) return;
   _initialized = true;
   const db = getDb();
-  try { ensureSchema(db); } finally { db.close(); }
+  ensureSchema(db);
 }
 
 // ── Validation ────────────────────────────────────────────────────────────────
@@ -94,9 +92,7 @@ export function userPreferencesRoutes(app: Hono) {
           preferredLanguage: row?.preferred_language ?? 'en',
         },
       });
-    } finally {
-      db.close();
-    }
+    } catch (err) { throw err; }
   });
 
   /**
@@ -142,8 +138,6 @@ export function userPreferencesRoutes(app: Hono) {
         success: true,
         data: { preferredLanguage: v.preferredLanguage },
       });
-    } finally {
-      db.close();
-    }
+    } catch (err) { throw err; }
   });
 }

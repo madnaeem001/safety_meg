@@ -3,19 +3,17 @@ import { sign, verify } from 'hono/jwt';
 import Database from 'better-sqlite3';
 import { z } from 'zod';
 import { createHash, randomBytes } from 'crypto';
+import { sendSystemEmail } from '../services/email';
+import { env, DB_PATH } from '../config/env';
+import { createLogger } from '../services/logger';
 
-const isProdAuth = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
-const sqlite = new Database(isProdAuth ? '/data/local.sqlite' : 'local.sqlite');
+const sqlite = new Database(DB_PATH);
 sqlite.pragma('journal_mode = WAL');
 
-const logger = {
-  info: (msg: string, meta?: object) => console.log(`[AUTH] ${msg}`, meta ?? ''),
-  error: (msg: string, meta?: object) => console.error(`[AUTH ERROR] ${msg}`, meta ?? ''),
-  warn: (msg: string, meta?: object) => console.warn(`[AUTH WARN] ${msg}`, meta ?? ''),
-};
+const logger = createLogger('Auth');
 
 // ── JWT CONFIG ─────────────────────────────────────────────────────────────
-const JWT_SECRET = process.env.JWT_SECRET || 'safetymeg-jwt-secret-2025-change-in-production';
+const JWT_SECRET = env.JWT_SECRET;
 const JWT_EXPIRES_IN = 60 * 60 * 24; // 24 hours in seconds
 const REFRESH_EXPIRES_IN = 60 * 60 * 24 * 30; // 30 days
 
@@ -40,6 +38,15 @@ sqlite.exec(`
     user_id INTEGER NOT NULL,
     token_hash TEXT UNIQUE NOT NULL,
     expires_at INTEGER NOT NULL,
+    created_at INTEGER NOT NULL DEFAULT (unixepoch() * 1000),
+    FOREIGN KEY (user_id) REFERENCES auth_users(id) ON DELETE CASCADE
+  );
+  CREATE TABLE IF NOT EXISTS password_reset_tokens (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    token_hash TEXT UNIQUE NOT NULL,
+    expires_at INTEGER NOT NULL,
+    used INTEGER NOT NULL DEFAULT 0,
     created_at INTEGER NOT NULL DEFAULT (unixepoch() * 1000),
     FOREIGN KEY (user_id) REFERENCES auth_users(id) ON DELETE CASCADE
   );
@@ -209,6 +216,12 @@ export function authRoutes(app: Hono) {
       const { accessToken, refreshToken, expiresIn } = await generateTokenPair(user.id, user.role, user.email);
 
       logger.info('User registered', { userId: user.id, email: user.email, role: user.role });
+      // Send Welcome Email
+await sendSystemEmail({
+  to: user.email,
+  subject: 'Welcome to SafetyMEG Platform!',
+  html: `<h2>Welcome, ${user.full_name}!</h2><p>Your account has been successfully created. You can now log in to the SafetyMEG Dashboard.</p>`
+});
 
       return c.json({
         success: true,
@@ -368,6 +381,105 @@ export function authRoutes(app: Hono) {
       if (error instanceof SyntaxError) return c.json({ success: false, error: 'Invalid JSON body' }, 400);
       logger.error('Update profile error', { error });
       return c.json({ success: false, error: 'Failed to update profile' }, 500);
+    }
+  });
+
+  app.post('/api/auth/forgot-password', async (c) => {
+    try {
+      const body = await c.req.json();
+      const parsed = z.object({ email: z.string().email() }).safeParse(body);
+      if (!parsed.success) {
+        return c.json({ success: false, error: 'Valid email address is required' }, 400);
+      }
+      const { email } = parsed.data;
+
+      const user = sqlite.prepare('SELECT id, full_name FROM auth_users WHERE email = ?').get(email) as any;
+      if (!user) {
+        // Security best practice: Don't reveal if email exists or not
+        return c.json({ success: true, message: 'If the email exists, a reset link has been sent.' });
+      }
+
+      // Generate a secure cryptographic reset token (48 random bytes = 96 hex chars)
+      const RESET_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
+      const resetToken = randomBytes(48).toString('hex');
+      const resetTokenHash = createHash('sha256').update(resetToken).digest('hex');
+      const resetExpires = now() + RESET_TOKEN_TTL_MS;
+
+      // Invalidate any previous unused tokens for this user
+      sqlite.prepare('DELETE FROM password_reset_tokens WHERE user_id = ?').run(user.id);
+      sqlite.prepare(
+        'INSERT INTO password_reset_tokens (user_id, token_hash, expires_at) VALUES (?, ?, ?)'
+      ).run(user.id, resetTokenHash, resetExpires);
+
+      const appUrl = process.env.FRONTEND_URL || 'https://safetymeg.com';
+      const resetLink = `${appUrl}/#/reset-password?token=${resetToken}`;
+
+      await sendSystemEmail({
+        to: email,
+        subject: 'SafetyMEG - Password Reset Request',
+        html: `<p>Hi ${user.full_name},</p><p>Click the link below to reset your password (valid for 1 hour):</p><a href="${resetLink}">Reset Password</a><p>If you did not request this, please ignore this email.</p>`
+      });
+
+      return c.json({ success: true, message: 'Password reset link sent to email.' });
+    } catch (error) {
+      logger.error('Forgot password error', error);
+      return c.json({ success: false, error: 'Failed to process request' }, 500);
+    }
+  });
+
+  /**
+   * POST /api/auth/reset-password
+   * Consumes a valid password reset token and sets a new password.
+   */
+  app.post('/api/auth/reset-password', async (c) => {
+    try {
+      const body = await c.req.json();
+      const { token, newPassword } = body;
+
+      if (!token || typeof token !== 'string' || token.length < 32) {
+        return c.json({ success: false, error: 'Invalid reset token' }, 400);
+      }
+      if (!newPassword || typeof newPassword !== 'string' || newPassword.length < 8) {
+        return c.json({ success: false, error: 'New password must be at least 8 characters' }, 400);
+      }
+      if (!/[A-Z]/.test(newPassword) || !/[0-9]/.test(newPassword)) {
+        return c.json({ success: false, error: 'Password must contain an uppercase letter and a number' }, 400);
+      }
+
+      const tokenHash = createHash('sha256').update(token).digest('hex');
+      const record = sqlite.prepare(
+        'SELECT * FROM password_reset_tokens WHERE token_hash = ? AND expires_at > ? AND used = 0'
+      ).get(tokenHash, now()) as any;
+
+      if (!record) {
+        return c.json({ success: false, error: 'Reset token is invalid or has expired' }, 400);
+      }
+
+      const newSalt = generateSalt();
+      const newHash = hashPassword(newPassword, newSalt);
+
+      // Update password and mark token as used in one atomic operation
+      const updatePwd = sqlite.prepare(
+        'UPDATE auth_users SET password_hash = ?, salt = ?, updated_at = ? WHERE id = ?'
+      );
+      const markUsed = sqlite.prepare(
+        'UPDATE password_reset_tokens SET used = 1 WHERE token_hash = ?'
+      );
+      const revokeTokens = sqlite.prepare(
+        'DELETE FROM refresh_tokens WHERE user_id = ?'
+      );
+
+      sqlite.transaction(() => {
+        updatePwd.run(newHash, newSalt, now(), record.user_id);
+        markUsed.run(tokenHash);
+        revokeTokens.run(record.user_id);
+      })();
+
+      logger.info('Password reset completed', { userId: record.user_id });
+      return c.json({ success: true, message: 'Password has been reset successfully. Please log in.' });
+    } catch (error) {
+      logger.error('Reset password error', error);
+      return c.json({ success: false, error: 'Failed to reset password' }, 500);
     }
   });
 

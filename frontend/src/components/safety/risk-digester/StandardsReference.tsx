@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { STANDARDS_REFERENCES } from '../../../data/mockRiskDigester';
+
+import { type StandardReference } from '../../../data/mockRiskDigester';
 import { Shield, ExternalLink } from 'lucide-react';
 
 export const StandardsReference: React.FC = () => {
@@ -14,7 +15,7 @@ export const StandardsReference: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {STANDARDS_REFERENCES.map((standard, index) => (
+        {([] as StandardReference[]).map((standard, index) => (
           <motion.a
             key={standard.id}
             href={standard.link}

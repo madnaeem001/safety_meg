@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { EMISSIONS_DATA } from '../../../data/mockRiskDigester';
+
 import { ArrowUpRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,7 +30,7 @@ export const EmissionsChart: React.FC = () => {
       
       <div className="flex-1 w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={EMISSIONS_DATA}>
+          <AreaChart data={[]}>
             <defs>
               <linearGradient id="colorActual" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#5d786c" stopOpacity={0.3}/>

@@ -19,7 +19,6 @@ import {
 } from 'lucide-react';
 import { 
   sensorThresholdDefaults, 
-  mockSensors,
   type IoTSensor,
   type SensorThresholdConfig
 } from '../data/mockSensor';
@@ -72,7 +71,7 @@ export const SensorConfiguration: React.FC = () => {
         lastReading: Date.now(),
       }));
     }
-    return mockSensors;
+    return [];
   }, [backendSensors]);
 
   const getThresholdDefault = (type: IoTSensor['type']) => {

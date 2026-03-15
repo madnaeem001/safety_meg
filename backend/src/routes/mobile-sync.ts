@@ -25,17 +25,14 @@
 
 import { Hono } from 'hono';
 import { verify } from 'hono/jwt';
-import Database from 'better-sqlite3';
 import { z } from 'zod';
-import { resolve } from 'path';
+import { getSharedDb } from '../db';
+import { env } from '../config/env';
 
-const isProdRoute = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
-const dbPath = isProdRoute ? '/data/local.sqlite' : resolve(process.cwd(), 'local.sqlite');
-function getDb() { return new Database(dbPath); }
+function getDb() { return getSharedDb(); }
 const nowSec = () => Math.floor(Date.now() / 1000);
 
-const JWT_SECRET =
-  process.env.JWT_SECRET || 'safetymeg-jwt-secret-2025-change-in-production';
+const JWT_SECRET = env.JWT_SECRET;
 
 // ── Schema ────────────────────────────────────────────────────────────────────
 
@@ -87,7 +84,7 @@ function initOnce() {
   if (_initialized) return;
   _initialized = true;
   const db = getDb();
-  try { ensureSchema(db); } finally { db.close(); }
+  ensureSchema(db);
 }
 
 // ── Auth helper ───────────────────────────────────────────────────────────────
@@ -191,7 +188,7 @@ export function mobileSyncRoutes(app: Hono) {
           version:    r.version,
         })),
       });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // POST /api/sync/queue
@@ -232,7 +229,7 @@ export function mobileSyncRoutes(app: Hono) {
       );
 
       return c.json({ success: true, data: { ...d, userId } }, 201);
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // PUT /api/sync/queue/:id
@@ -294,7 +291,7 @@ export function mobileSyncRoutes(app: Hono) {
           version:    updated.version,
         },
       });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // DELETE /api/sync/queue/:id
@@ -312,7 +309,7 @@ export function mobileSyncRoutes(app: Hono) {
 
       if (result.changes === 0) return c.json({ success: false, error: 'Record not found' }, 404);
       return c.json({ success: true, message: 'Record deleted' });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // POST /api/sync/queue/reset  — clear and re-seed default queue for user
@@ -345,7 +342,7 @@ export function mobileSyncRoutes(app: Hono) {
       }
 
       return c.json({ success: true, message: 'Queue reset to defaults', count: seedRecords.length });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   /* ===================================================================
@@ -376,7 +373,7 @@ export function mobileSyncRoutes(app: Hono) {
           resolved:      parseBool(r.resolved),
         })),
       });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // POST /api/sync/conflicts
@@ -416,7 +413,7 @@ export function mobileSyncRoutes(app: Hono) {
       );
 
       return c.json({ success: true, data: { ...d } }, 201);
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // PUT /api/sync/conflicts/:id  — resolve conflict
@@ -464,7 +461,7 @@ export function mobileSyncRoutes(app: Hono) {
           resolved:      parseBool(updated.resolved),
         },
       });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // DELETE /api/sync/conflicts/:id
@@ -482,7 +479,7 @@ export function mobileSyncRoutes(app: Hono) {
 
       if (result.changes === 0) return c.json({ success: false, error: 'Conflict not found' }, 404);
       return c.json({ success: true, message: 'Conflict deleted' });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   /* ===================================================================
@@ -516,7 +513,7 @@ export function mobileSyncRoutes(app: Hono) {
           createdAt: row.created_at,
         },
       });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // POST /api/sync/test-results  — save a full run
@@ -547,7 +544,7 @@ export function mobileSyncRoutes(app: Hono) {
       `).run(userId, JSON.stringify(results), passed, failed, total, nowSec());
 
       return c.json({ success: true, data: { id: res.lastInsertRowid, passed, failed, total } }, 201);
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   // PUT /api/sync/test-results/:id  — update individual test status in latest run
@@ -601,7 +598,7 @@ export function mobileSyncRoutes(app: Hono) {
       `).run(JSON.stringify(results), passed, failed, runId, userId);
 
       return c.json({ success: true, data: { id: runId, passed, failed, total: results.length, results } });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   /* ===================================================================
@@ -635,6 +632,6 @@ export function mobileSyncRoutes(app: Hono) {
             : { passed: 0, failed: 0, total: 0 },
         },
       });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 }

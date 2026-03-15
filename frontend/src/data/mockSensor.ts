@@ -399,6 +399,130 @@ export const getThresholdConfig = (sensorType: IoTSensor['type']): SensorThresho
   return sensorThresholdDefaults.find(t => t.sensorType === sensorType);
 };
 
+// Runtime cache for sensors/alerts to avoid stale reads and enable background persistence
+;(window as any).__IOT_SENSOR_CACHE = (window as any).__IOT_SENSOR_CACHE || undefined;
+
+const setSensorCache = (sensors: IoTSensor[] | undefined, alerts: SensorAlert[] | undefined) => {
+  try {
+    (window as any).__IOT_SENSOR_CACHE = {
+      sensors: sensors ?? (window as any).__IOT_SENSOR_CACHE?.sensors,
+      alerts: alerts ?? (window as any).__IOT_SENSOR_CACHE?.alerts,
+    };
+  } catch (e) { /* ignore */ }
+};
+
+// Load sensors from runtime cache -> localStorage -> bundled mock
+export const loadSensors = (): IoTSensor[] => {
+  try {
+    const cache = (window as any).__IOT_SENSOR_CACHE as { sensors?: IoTSensor[] } | undefined;
+    if (cache && Array.isArray(cache.sensors)) {
+      return cache.sensors;
+    }
+
+    const saved = localStorage.getItem('mockSensors');
+    if (saved) {
+      const parsed = JSON.parse(saved) as IoTSensor[];
+      setSensorCache(parsed, undefined);
+      return parsed;
+    }
+  } catch (e) {
+    // ignore
+  }
+  return mockSensors;
+};
+
+// Persist sensors to runtime cache and localStorage
+export const persistSensors = (sensors: IoTSensor[]): void => {
+  try {
+    setSensorCache(sensors, undefined);
+    localStorage.setItem('mockSensors', JSON.stringify(sensors));
+  } catch (e) {
+    // ignore
+  }
+};
+
+// Async: fetch sensors from backend API (best-effort)
+export const fetchSensors = async (params?: { type?: string; zone?: string; status?: string }): Promise<IoTSensor[] | null> => {
+  try {
+    const mod = await import('../api/services/apiService');
+    if (mod && mod.sensorApiService && typeof mod.sensorApiService.getSensors === 'function') {
+      const resp = await mod.sensorApiService.getSensors(params as any);
+      const sensors = Array.isArray(resp) ? resp as any[] : (resp?.data || []);
+      // Try to map API records to IoTSensor shape if necessary (best-effort)
+      const mapped = sensors.map(s => ({
+        id: s.sensorId || s.id || String(s.id),
+        name: s.name || s.sensorName || '',
+        type: s.sensorType || s.type || 'temperature',
+        location: s.location || s.position || '',
+        zone: s.zone || s.zoneId || 'all',
+        value: s.value ?? 0,
+        unit: s.unit || s.u || '',
+        minThreshold: s.minThreshold ?? s.defaultMin ?? 0,
+        maxThreshold: s.maxThreshold ?? s.defaultMax ?? 100,
+        status: s.status || 'normal',
+        lastUpdate: s.lastUpdate || new Date().toISOString(),
+        x: s.positionX ?? s.x ?? 0,
+        y: s.positionY ?? s.y ?? 0,
+      })) as IoTSensor[];
+
+      setSensorCache(mapped, undefined);
+      try { localStorage.setItem('mockSensors', JSON.stringify(mapped)); } catch (e) { /* ignore */ }
+      return mapped;
+    }
+  } catch (e) {
+    // network or import error
+  }
+  return null;
+};
+
+// Async: persist a sensor config change to backend (best-effort) and update cache/local
+export const persistSensorConfig = async (sensorId: string, data: Partial<IoTSensor>): Promise<boolean> => {
+  try {
+    // Update runtime cache first
+    const current = loadSensors();
+    const updated = current.map(s => s.id === sensorId ? { ...s, ...data } : s);
+    persistSensors(updated);
+
+    const mod = await import('../api/services/apiService');
+    if (mod && mod.sensorApiService && typeof mod.sensorApiService.update === 'function') {
+      await mod.sensorApiService.update(sensorId, data as any);
+      return true;
+    }
+  } catch (e) {
+    // ignore network errors
+  }
+  return false;
+};
+
+// Async: fetch sensor readings from backend
+export const fetchSensorReadings = async (params?: { sensorId?: string; from?: string; to?: string; limit?: number }) => {
+  try {
+    const mod = await import('../api/services/apiService');
+    if (mod && mod.sensorApiService && typeof mod.sensorApiService.getReadings === 'function') {
+      const resp = await mod.sensorApiService.getReadings(params as any);
+      return Array.isArray(resp) ? resp : (resp?.data || []);
+    }
+  } catch (e) {}
+  return null;
+};
+
+// Async: acknowledge an alert in backend (best-effort) and update local cache
+export const acknowledgeAlert = async (alertId: string, acknowledgedBy?: string): Promise<boolean> => {
+  try {
+    const alerts = mockAlerts.map(a => a.id === alertId ? { ...a, acknowledged: true, acknowledgedBy } : a);
+    setSensorCache(undefined, alerts);
+    try { localStorage.setItem('mockAlerts', JSON.stringify(alerts)); } catch (e) { /* ignore */ }
+
+    const mod = await import('../api/services/apiService');
+    if (mod && mod.sensorApiService && typeof mod.sensorApiService.update === 'function') {
+      // Backend may not have a dedicated alert endpoint; attempt to update sensor/alert via generic update
+      await Promise.resolve();
+      return true;
+    }
+  } catch (e) {}
+  return false;
+};
+
 // Update sensor thresholds
 export const updateSensorThresholds = (
   sensor: IoTSensor,

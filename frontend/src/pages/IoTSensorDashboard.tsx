@@ -47,7 +47,7 @@ import {
   PieChart,
   Pie
 } from 'recharts';
-import { mockSensors, facilityZones, type IoTSensor } from '../data/mockSensor';
+import { facilityZones, type IoTSensor } from '../data/mockSensor';
 import { useSensors, useSensorReadings } from '../api/hooks/useAPIHooks';
 
 /* ================================================================
@@ -111,11 +111,10 @@ export const IoTSensorDashboard: React.FC = () => {
         signal: 100,
         readings: [],
       }));
-      // Merge: backend sensors override mock sensors with same id
-      const backendIds = new Set(converted.map(c => c.id));
-      return [...converted, ...mockSensors.filter((m: IoTSensor) => !backendIds.has(m.id))];
+      // Use backend sensors only; no mock fallback
+      return converted;
     }
-    return mockSensors;
+    return [];
   }, [backendSensors, sensorReadings]);
   const [chartData, setChartData] = useState(generateChartData());
 

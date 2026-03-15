@@ -2,7 +2,6 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
-  sifIndicators,
   type SIFIndicator,
 } from '../data/complianceManagement';
 import FadeContent from '../components/animations/FadeContent';
@@ -43,7 +42,7 @@ const energyTypeIcons: Record<string, string> = {
 
 export const SIFPrecursorDashboard: React.FC = () => {
   const navigate = useNavigate();
-  const [alerts, setAlerts] = useState<SIFIndicator[]>(sifIndicators);
+  const [alerts, setAlerts] = useState<SIFIndicator[]>([]);
   const [selectedPotential, setSelectedPotential] = useState<string>('all');
   const [showAcknowledged, setShowAcknowledged] = useState(false);
   const [expandedAlert, setExpandedAlert] = useState<string | null>(null);
@@ -71,11 +70,7 @@ export const SIFPrecursorDashboard: React.FC = () => {
         recommendations: [],
         acknowledged: p.status !== 'active',
       }));
-      const existingIds = new Set(sifIndicators.map(s => s.id));
-      const newItems = converted.filter(c => !existingIds.has(c.id));
-      if (newItems.length > 0) {
-        setAlerts(prev => [...prev, ...newItems]);
-      }
+      setAlerts(converted);
     }
   }, [backendPrecursors]);
 

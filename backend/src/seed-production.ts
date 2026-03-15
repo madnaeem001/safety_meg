@@ -466,13 +466,50 @@ seed('investigations', 'investigations', () => {
   t();
 });
 
+// ── AI TRAINING & COMPETENCY (moved from ai.ts routes) ──────────────────────
+seed('ai_training_modules', 'ai_training_modules', () => {
+  const ins = db.prepare(`INSERT OR IGNORE INTO ai_training_modules
+    (id,title,category,ai_generated,difficulty,duration,modules_count,completed_count,score,enrolled,description,tags,color,next_lesson,adaptive_score) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`);
+  [
+    ['mod-1','Hazard Recognition Mastery','Core Safety',1,'Intermediate','45 min',12,8,92,347,'AI-curated module covering hazard identification across industrial environments.','["OSHA 1910","Hazard ID","Risk Assessment"]','cyan','Chemical Hazard Indicators',87],
+    ['mod-2','PPE Compliance & Selection','Compliance',1,'Beginner','30 min',8,8,98,521,'Complete PPE training with AI-powered selection guidance and fit testing.','["PPE","ANSI Z87.1","NFPA 70E"]','green','Completed!',98],
+    ['mod-3','Emergency Response Protocol','Emergency',1,'Advanced','60 min',15,5,78,189,'AI-driven emergency simulations with real-time decision feedback.','["Emergency Plans","Evacuation","First Aid"]','red','Fire Suppression Systems',72],
+    ['mod-4','Confined Space Entry','Specialized',0,'Advanced','90 min',18,10,85,134,'Comprehensive confined space training with atmospheric monitoring.','["OSHA 1910.146","Permit Required","Rescue"]','purple','Atmospheric Testing',81],
+    ['mod-5','Machine Guarding & LOTO','Core Safety',1,'Intermediate','50 min',14,3,70,278,'AI-adaptive lockout/tagout procedures with equipment-specific protocols.','["LOTO","OSHA 1910.147","Energy Isolation"]','amber','Energy Source Identification',65],
+    ['mod-6','Chemical Safety & SDS','Compliance',1,'Intermediate','40 min',10,7,88,412,'GHS-aligned chemical hazard communication with AI-powered SDS analysis.','["GHS","HazCom","SDS"]','blue','Corrosive Materials Handling',85],
+  ].forEach(s => ins.run(...s));
+});
+
+seed('ai_learning_paths', 'ai_learning_paths', () => {
+  const ins = db.prepare(`INSERT OR IGNORE INTO ai_learning_paths (id,name,modules_count,duration,progress,certified,color) VALUES (?,?,?,?,?,?,?)`);
+  [
+    ['path-1','New Hire Onboarding',6,'4 hours',100,1,'emerald'],
+    ['path-2','Supervisor Safety',12,'8 hours',67,0,'cyan'],
+    ['path-3','OSHA 30-Hour',30,'30 hours',43,0,'purple'],
+    ['path-4','Environmental Compliance',8,'6 hours',25,0,'blue'],
+  ].forEach(s => ins.run(...s));
+});
+
+seed('ai_competency_scores', 'ai_competency_scores', () => {
+  const ins = db.prepare(`INSERT OR IGNORE INTO ai_competency_scores (id,area,score,trend,benchmark) VALUES (?,?,?,?,?)`);
+  [
+    ['comp-1','Hazard Recognition',92,'+5',78],
+    ['comp-2','Emergency Response',78,'+12',72],
+    ['comp-3','PPE Knowledge',98,'+2',85],
+    ['comp-4','Chemical Safety',85,'+8',74],
+    ['comp-5','Machine Safety',70,'+15',68],
+    ['comp-6','Ergonomics',88,'+3',71],
+  ].forEach(s => ins.run(...s));
+});
+
 // ── SUMMARY ────────────────────────────────────────────────────────────────
-console.log('\n====================================');
+
 console.log('✅ Seed complete! Row counts:');
 const tables = [
   'workers','incidents','capa_records','kpi_metrics','compliance_alerts',
   'risk_register','audits','inspection_schedule','training_courses','employee_training',
   'sensor_configurations','sensor_readings','checklists','contractors','investigations',
+  'ai_training_modules','ai_learning_paths','ai_competency_scores',
 ];
 tables.forEach(t => {
   const n = count(t);

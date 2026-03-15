@@ -97,6 +97,13 @@ const DEFAULT_PREFERENCES: NotificationPreferences = {
 let notifications: PushNotification[] = [];
 let preferences: NotificationPreferences = { ...DEFAULT_PREFERENCES };
 
+// Runtime cache to avoid stale reads and allow background persistence
+;(window as any).__NOTIFICATION_PREFERENCES_CACHE = (window as any).__NOTIFICATION_PREFERENCES_CACHE || undefined;
+
+const setPreferencesCache = (p: NotificationPreferences) => {
+  try { (window as any).__NOTIFICATION_PREFERENCES_CACHE = p; } catch (e) { /* ignore */ }
+};
+
 // Check if browser supports push notifications
 export const isPushSupported = (): boolean => {
   return 'Notification' in window && 'serviceWorker' in navigator && 'PushManager' in window;
@@ -325,6 +332,21 @@ export const updatePreferences = (updates: Partial<NotificationPreferences>): No
   } catch (error) {
     console.error('Error saving preferences:', error);
   }
+
+  // Update runtime cache
+  setPreferencesCache(preferences);
+
+  // Best-effort background persist to backend API (avoid circular imports at module init)
+  void (async () => {
+    try {
+      const mod = await import('../api/services/apiService');
+      if (mod && mod.notificationApiService && typeof mod.notificationApiService.updateSettings === 'function') {
+        await mod.notificationApiService.updateSettings(preferences);
+      }
+    } catch (e) {
+      // swallow network errors - keep local UX consistent
+    }
+  })();
   
   return { ...preferences };
 };
@@ -332,14 +354,58 @@ export const updatePreferences = (updates: Partial<NotificationPreferences>): No
 // Load preferences from localStorage
 export const loadPreferences = (): NotificationPreferences => {
   try {
+    const cache = (window as any).__NOTIFICATION_PREFERENCES_CACHE as NotificationPreferences | undefined;
+    if (cache) {
+      preferences = { ...DEFAULT_PREFERENCES, ...cache };
+      return { ...preferences };
+    }
+
     const saved = localStorage.getItem('notificationPreferences');
     if (saved) {
       preferences = { ...DEFAULT_PREFERENCES, ...JSON.parse(saved) };
+      setPreferencesCache(preferences);
     }
   } catch (error) {
     console.error('Error loading preferences:', error);
   }
   return { ...preferences };
+};
+
+// Async: fetch preferences from backend and update runtime cache
+export const fetchPreferences = async (userId?: string): Promise<NotificationPreferences | null> => {
+  try {
+    const mod = await import('../api/services/apiService');
+    if (mod && mod.notificationApiService && typeof mod.notificationApiService.getSettings === 'function') {
+      const remote = await mod.notificationApiService.getSettings(userId);
+      if (remote) {
+        preferences = { ...DEFAULT_PREFERENCES, ...remote } as NotificationPreferences;
+        setPreferencesCache(preferences);
+        try { localStorage.setItem('notificationPreferences', JSON.stringify(preferences)); } catch (e) { /* ignore */ }
+        return { ...preferences };
+      }
+    }
+  } catch (e) {
+    // network or import error
+  }
+  return null;
+};
+
+// Async: persist preferences to backend and keep local copies in sync
+export const persistPreferences = async (p: NotificationPreferences, userId?: string): Promise<boolean> => {
+  try {
+    preferences = { ...p };
+    setPreferencesCache(preferences);
+    try { localStorage.setItem('notificationPreferences', JSON.stringify(preferences)); } catch (e) { /* ignore */ }
+
+    const mod = await import('../api/services/apiService');
+    if (mod && mod.notificationApiService && typeof mod.notificationApiService.updateSettings === 'function') {
+      await mod.notificationApiService.updateSettings(preferences, userId);
+      return true;
+    }
+  } catch (e) {
+    // network error or import failure
+  }
+  return false;
 };
 
 // Helper: Convert VAPID key

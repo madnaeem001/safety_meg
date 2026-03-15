@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import {
-  ISO_9001_REQUIREMENTS,
+  type ISORequirement,
   Industry,
   RiskLevel
 } from '../data/mockComplianceProcedures';
+
+const ISO_9001_REQUIREMENTS: ISORequirement[] = [];
 import type { ComplianceProcedureRecord } from '../api/services/apiService';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useComplianceProcedures } from '../api/hooks/useAPIHooks';

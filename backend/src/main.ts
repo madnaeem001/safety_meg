@@ -1,4 +1,6 @@
 import 'dotenv/config';
+// env module must load first — exits process if required vars are missing
+import './config/env';
 import { serve } from '@hono/node-server';
 import { createApp } from './index';
 import { edgespark } from './db';

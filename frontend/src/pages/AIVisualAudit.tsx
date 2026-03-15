@@ -324,10 +324,7 @@ const AIVisualAuditContent: React.FC = () => {
     }
   };
 
-  // Save results to localStorage when updated
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(results));
-  }, [results]);
+  // Blob URLs are session-only (not persisted to localStorage) - backend is source of truth for audit results
 
   // Simulate Live AI Monitoring
   useEffect(() => {

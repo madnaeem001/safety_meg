@@ -1,11 +1,9 @@
 import { Hono } from 'hono';
 import Database from 'better-sqlite3';
 import { z } from 'zod';
-import { resolve } from 'path';
+import { DB_PATH } from '../config/env';
 
-const isProdRoute = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
-const dbPath = isProdRoute ? '/data/local.sqlite' : resolve(process.cwd(), 'local.sqlite');
-function getDb() { return new Database(dbPath); }
+function getDb() { return new Database(DB_PATH); }
 
 function mapSsoProvider(row: any) {
   return {

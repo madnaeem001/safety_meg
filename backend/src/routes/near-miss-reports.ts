@@ -16,14 +16,12 @@ import { Hono } from 'hono';
 import { verify } from 'hono/jwt';
 import Database from 'better-sqlite3';
 import { z } from 'zod';
-import { resolve } from 'path';
+import { getSharedDb } from '../db';
+import { env } from '../config/env';
 
-const isProdRoute = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
-const dbPath = isProdRoute ? '/data/local.sqlite' : resolve(process.cwd(), 'local.sqlite');
-function getDb() { return new Database(dbPath); }
+function getDb() { return getSharedDb(); }
 
-const JWT_SECRET =
-  process.env.JWT_SECRET || 'safetymeg-jwt-secret-2025-change-in-production';
+const JWT_SECRET = env.JWT_SECRET;
 
 // ── Schema ────────────────────────────────────────────────────────────────────
 
@@ -71,7 +69,7 @@ function initOnce() {
   if (_initialized) return;
   _initialized = true;
   const db = getDb();
-  try { ensureSchema(db); } finally { db.close(); }
+  ensureSchema(db);
 }
 
 // ── Auth helper ───────────────────────────────────────────────────────────────
@@ -287,7 +285,7 @@ export function nearMissReportRoutes(app: Hono) {
         'SELECT * FROM near_miss_reports WHERE user_id = ? ORDER BY created_at DESC'
       ).all(user.userId) as any[];
       return c.json({ success: true, data: rows.map(rowToReport), count: rows.length });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   /**
@@ -355,7 +353,7 @@ export function nearMissReportRoutes(app: Hono) {
 
       console.info('[NEAR-MISS] Report created', { id: created.id, reportId: d.reportId });
       return c.json({ success: true, data: rowToReport(created) }, 201);
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   /**
@@ -376,7 +374,7 @@ export function nearMissReportRoutes(app: Hono) {
       ).get(id, user.userId) as any;
       if (!row) return c.json({ success: false, error: 'Not found' }, 404);
       return c.json({ success: true, data: rowToReport(row) });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 
   /**
@@ -424,6 +422,6 @@ export function nearMissReportRoutes(app: Hono) {
       const updated = db.prepare('SELECT * FROM near_miss_reports WHERE id = ?').get(id) as any;
       console.info('[NEAR-MISS] CA status updated', { reportId: id, actionId, status: parsed.data.status });
       return c.json({ success: true, data: rowToReport(updated) });
-    } finally { db.close(); }
+    } catch (handlerErr_) { throw handlerErr_; }
   });
 }

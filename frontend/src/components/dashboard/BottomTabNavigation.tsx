@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Home, Shield, Bell, User } from 'lucide-react';
-import { getUnreadCount, loadNotifications, getBadgeAnimationDuration } from '../../data/mockNavigation';
+import { getBadgeAnimationDuration } from '../../data/mockNavigation';
+import { notificationApiService } from '../../api/services/apiService';
 
 interface TabItem {
   icon: React.ElementType;
@@ -20,9 +21,14 @@ const TABS: TabItem[] = [
 export const BottomTabNavigation: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const notifications = loadNotifications();
-  const unreadCount = getUnreadCount(notifications);
+  const [unreadCount, setUnreadCount] = useState(0);
   const animationDuration = getBadgeAnimationDuration();
+
+  useEffect(() => {
+    notificationApiService.getAll({ read: false, limit: 99 })
+      .then((items) => setUnreadCount(Array.isArray(items) ? items.length : 0))
+      .catch(() => setUnreadCount(0));
+  }, [location.pathname]);
 
   const handleTabPress = (path: string) => {
     // Trigger haptic feedback if available

@@ -15,7 +15,10 @@ import {
   TrendingUp,
   BarChart3
 } from 'lucide-react';
-import { PROJECT_SCHEDULE, RFI_REGISTER, ScheduleTask, RFI } from '../../../data/mockProjectManagement';
+import { ScheduleTask, RFI } from '../../../data/mockProjectManagement';
+
+const PROJECT_SCHEDULE: ScheduleTask[] = [];
+const RFI_REGISTER: RFI[] = [];
 
 // Project workflow stages
 type PMStage = 'overview' | 'schedule' | 'rfi' | 'milestones' | 'resources';

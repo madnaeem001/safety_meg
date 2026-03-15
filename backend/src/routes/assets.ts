@@ -2,15 +2,13 @@ import { Hono } from 'hono';
 import Database from 'better-sqlite3';
 import { z } from 'zod';
 import { randomUUID } from 'crypto';
+import { createLogger } from '../services/logger';
+import { DB_PATH } from '../config/env';
 
-const isProdRoute = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
-const sqlite = new Database(isProdRoute ? '/data/local.sqlite' : 'local.sqlite');
+const sqlite = new Database(DB_PATH);
 sqlite.pragma('journal_mode = WAL');
 
-const logger = {
-  info: (msg: string, meta?: object) => console.log(`[ASSETS] ${msg}`, meta ?? ''),
-  error: (msg: string, meta?: object) => console.error(`[ASSETS ERROR] ${msg}`, meta ?? ''),
-};
+const logger = createLogger('Assets');
 
 // ── VALIDATION SCHEMAS ────────────────────────────────────────────────────
 

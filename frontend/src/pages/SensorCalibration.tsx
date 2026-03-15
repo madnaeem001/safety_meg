@@ -24,10 +24,6 @@ import {
   Award,
 } from 'lucide-react';
 import {
-  mockCalibrationSchedule,
-  mockCalibrationRecords,
-  getCalibrationHistory,
-  getCalibrationStats,
   SensorCalibrationSchedule,
   CalibrationRecord,
   CalibrationStatus,
@@ -95,7 +91,7 @@ export const SensorCalibration: React.FC = () => {
         } as SensorCalibrationSchedule;
       });
     }
-    return mockCalibrationSchedule;
+    return [];
   }, [backendSensors]);
 
   const stats = useMemo(() => {
@@ -106,7 +102,7 @@ export const SensorCalibration: React.FC = () => {
       const overdue = calibrationSchedule.filter(s => s.status === 'overdue').length;
       return { total, current, dueSoon, overdue, complianceRate: total > 0 ? Math.round((current / total) * 100) : 0 };
     }
-    return getCalibrationStats();
+    return { total: 0, current: 0, dueSoon: 0, overdue: 0, complianceRate: 0 };
   }, [calibrationSchedule, backendSensors]);
 
   const filteredSchedule = useMemo(() => {
@@ -121,9 +117,7 @@ export const SensorCalibration: React.FC = () => {
   }, [calibrationSchedule, filterStatus, filterType]);
 
   const sortedHistory = useMemo(() => {
-    return [...mockCalibrationRecords].sort((a, b) => 
-      new Date(b.calibrationDate).getTime() - new Date(a.calibrationDate).getTime()
-    );
+    return [];
   }, []);
 
   const getDaysUntilDue = (nextDate: string) => {
@@ -283,7 +277,7 @@ export const SensorCalibration: React.FC = () => {
                 {filteredSchedule.map((schedule, index) => {
                   const isExpanded = expandedId === schedule.sensorId;
                   const daysUntilDue = getDaysUntilDue(schedule.nextCalibrationDate);
-                  const history = getCalibrationHistory(schedule.sensorId);
+                  const history: CalibrationRecord[] = [];
                   const statusInfo = statusConfig[schedule.status];
                   
                   return (

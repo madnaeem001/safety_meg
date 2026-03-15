@@ -3,9 +3,9 @@ import Database from 'better-sqlite3';
 import { z } from 'zod';
 import type { Client } from "@sdk/server-types";
 import { tables } from "@generated";
-import { OpenRouter } from "@openrouter/sdk";
 import { streamText } from "hono/streaming";
 import { createLogger } from "../services/logger";
+import { callAI, getAIStatus, categorizeAIError, getAIMetrics } from "../services/aiService";
 
 const logger = createLogger("AI");
 const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL?.trim() || 'arcee-ai/trinity-large-preview:free';
@@ -182,53 +182,6 @@ sqlite.exec(`
     created_at INTEGER NOT NULL DEFAULT (strftime('%s','now') * 1000)
   );
 `);
-
-// ── Seed helpers ─────────────────────────────────────────────────────────────
-function seedTrainingModules() {
-  const cnt = (sqlite.prepare('SELECT COUNT(*) as c FROM ai_training_modules').get() as any).c;
-  if (cnt > 0) return;
-  const ins = sqlite.prepare(`INSERT OR IGNORE INTO ai_training_modules
-    (id,title,category,ai_generated,difficulty,duration,modules_count,completed_count,score,enrolled,description,tags,color,next_lesson,adaptive_score)
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`);
-  [
-    ['mod-1','Hazard Recognition Mastery','Core Safety',1,'Intermediate','45 min',12,8,92,347,'AI-curated module covering hazard identification across industrial environments.','["OSHA 1910","Hazard ID","Risk Assessment"]','cyan','Chemical Hazard Indicators',87],
-    ['mod-2','PPE Compliance & Selection','Compliance',1,'Beginner','30 min',8,8,98,521,'Complete PPE training with AI-powered selection guidance and fit testing.','["PPE","ANSI Z87.1","NFPA 70E"]','green','Completed!',98],
-    ['mod-3','Emergency Response Protocol','Emergency',1,'Advanced','60 min',15,5,78,189,'AI-driven emergency simulations with real-time decision feedback.','["Emergency Plans","Evacuation","First Aid"]','red','Fire Suppression Systems',72],
-    ['mod-4','Confined Space Entry','Specialized',0,'Advanced','90 min',18,10,85,134,'Comprehensive confined space training with atmospheric monitoring.','["OSHA 1910.146","Permit Required","Rescue"]','purple','Atmospheric Testing',81],
-    ['mod-5','Machine Guarding & LOTO','Core Safety',1,'Intermediate','50 min',14,3,70,278,'AI-adaptive lockout/tagout procedures with equipment-specific protocols.','["LOTO","OSHA 1910.147","Energy Isolation"]','amber','Energy Source Identification',65],
-    ['mod-6','Chemical Safety & SDS','Compliance',1,'Intermediate','40 min',10,7,88,412,'GHS-aligned chemical hazard communication with AI-powered SDS analysis.','["GHS","HazCom","SDS"]','blue','Corrosive Materials Handling',85],
-  ].forEach(s => ins.run(...s));
-}
-
-function seedLearningPaths() {
-  const cnt = (sqlite.prepare('SELECT COUNT(*) as c FROM ai_learning_paths').get() as any).c;
-  if (cnt > 0) return;
-  const ins = sqlite.prepare(`INSERT OR IGNORE INTO ai_learning_paths (id,name,modules_count,duration,progress,certified,color) VALUES (?,?,?,?,?,?,?)`);
-  [
-    ['path-1','New Hire Onboarding',6,'4 hours',100,1,'emerald'],
-    ['path-2','Supervisor Safety',12,'8 hours',67,0,'cyan'],
-    ['path-3','OSHA 30-Hour',30,'30 hours',43,0,'purple'],
-    ['path-4','Environmental Compliance',8,'6 hours',25,0,'blue'],
-  ].forEach(s => ins.run(...s));
-}
-
-function seedCompetencyScores() {
-  const cnt = (sqlite.prepare('SELECT COUNT(*) as c FROM ai_competency_scores').get() as any).c;
-  if (cnt > 0) return;
-  const ins = sqlite.prepare(`INSERT OR IGNORE INTO ai_competency_scores (id,area,score,trend,benchmark) VALUES (?,?,?,?,?)`);
-  [
-    ['comp-1','Hazard Recognition',92,'+5',78],
-    ['comp-2','Emergency Response',78,'+12',72],
-    ['comp-3','PPE Knowledge',98,'+2',85],
-    ['comp-4','Chemical Safety',85,'+8',74],
-    ['comp-5','Machine Safety',70,'+15',68],
-    ['comp-6','Ergonomics',88,'+3',71],
-  ].forEach(s => ins.run(...s));
-}
-
-seedTrainingModules();
-seedLearningPaths();
-seedCompetencyScores();
 
 // ── Validation Schemas ───────────────────────────────────────────────────────
 const AuditAnalysisSchema = z.object({
@@ -479,8 +432,6 @@ export function aiRoutes(app: Hono, edgespark: Client<typeof tables>) {
         });
       }
 
-      const openrouter = new OpenRouter({ apiKey });
-
       const systemPrompt = `You are an expert EHS (Environment, Health & Safety) consultant specializing in ${industry} industry safety compliance.
 Provide concise, actionable safety recommendations based on OSHA, NIOSH, EPA, and ISO 45001 standards.
 Focus on the ${category} category. Be specific and practical.
@@ -493,22 +444,15 @@ ${completedItems ? `Already completed: ${completedItems} items` : ''}
 
 Provide 3-5 specific safety recommendations and best practices.`;
 
-      // Call OpenRouter API
-      const result = await (openrouter as any).chat.send({
-        model: OPENROUTER_MODEL,
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt }
+      const aiResult = await callAI(
+        [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
         ],
-        max_tokens: 500,
-        temperature: 0.7
-      });
+        { maxTokens: 500, temperature: 0.7 }
+      );
 
-      // Extract and parse content
-      const content = result.choices?.[0]?.message?.content;
-      
-      if (!content) {
-        logger.warn('Empty response from AI API');
+      if (aiResult.source === 'fallback') {
         return c.json({
           suggestions: getDefaultSuggestions(industry, category),
           source: 'fallback',
@@ -517,15 +461,13 @@ Provide 3-5 specific safety recommendations and best practices.`;
         });
       }
 
-      // Use flexible parsing to extract suggestions
-      const suggestions = parseAISuggestions(content);
-
+      const suggestions = parseAISuggestions(aiResult.content);
       logger.info('AI suggestions generated successfully', { count: suggestions.length });
 
       return c.json({
         suggestions: suggestions.length > 0 ? suggestions : getDefaultSuggestions(industry, category),
         source: 'ai',
-        model: OPENROUTER_MODEL,
+        model: aiResult.model,
         status: 'success'
       });
 
@@ -533,7 +475,6 @@ Provide 3-5 specific safety recommendations and best practices.`;
       const errorMsg = error instanceof Error ? error.message : String(error);
       logger.error('AI suggestions request failed', error, { industry: requestData.industry, category: requestData.category });
 
-      // Graceful fallback - don't crash, return sensible defaults
       return c.json({
         suggestions: getDefaultSuggestions(requestData.industry, requestData.category),
         source: 'fallback',
@@ -665,8 +606,7 @@ Provide 3-5 specific safety recommendations and best practices.`;
    */
   app.get('/api/ai/status', async (c) => {
     try {
-      const apiKey = process.env.OPENROUTER_API_KEY;
-      const status = apiKey ? 'configured' : 'not_configured';
+      const status = await getAIStatus();
       
       logger.debug('AI status check', { status });
       
@@ -959,8 +899,6 @@ Provide 3-5 specific safety recommendations and best practices.`;
         });
       }
 
-      const openrouter = new OpenRouter({ apiKey });
-
       const systemPrompt = `You are an expert EHS (Environment, Health & Safety) auditor and compliance consultant specializing in occupational safety management systems. Your role is to produce concise, professional audit summaries for safety managers. Be specific, reference relevant standard clauses, and provide actionable recommendations. Keep summaries under 200 words.`;
 
       const userPrompt = `Audit Summary Request:
@@ -975,28 +913,25 @@ ${nonCompliantItems.slice(0, 8).map(item => `• ${item}`).join('\n') || '• No
 
 Provide a professional audit summary with: (1) overall assessment, (2) key risks, (3) prioritized corrective actions, (4) recommended next steps.`;
 
-      const result = await (openrouter as any).chat.send({
-        model: OPENROUTER_MODEL,
-        messages: [
+      const aiResult = await callAI(
+        [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt },
         ],
-        max_tokens: 350,
-        temperature: 0.4,
-      });
+        { maxTokens: 350, temperature: 0.4 }
+      );
 
-      const content: string = result.choices?.[0]?.message?.content;
-      if (!content?.trim()) {
+      if (aiResult.source === 'fallback') {
         return c.json({
           success: true,
           summary: buildFallbackSummary(v.standard, nonCompliantItems.length, v.complianceScore),
           source: 'fallback',
-          model: OPENROUTER_MODEL,
+          model: aiResult.model,
         });
       }
 
       logger.info('AI audit analysis generated', { templateId: v.templateId, score: v.complianceScore });
-      return c.json({ success: true, summary: content.trim(), source: 'ai', model: OPENROUTER_MODEL });
+      return c.json({ success: true, summary: aiResult.content, source: 'ai', model: aiResult.model });
 
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -1281,25 +1216,15 @@ Provide a professional audit summary with: (1) overall assessment, (2) key risks
       let description = '';
       let source = 'fallback';
 
-      const apiKey = process.env.OPENROUTER_API_KEY;
-      if (apiKey) {
-        try {
-          const openrouter = new OpenRouter({ apiKey });
-          const prompt = `Generate a concise, professional EHS training module description (2-3 sentences) for the following:\nTopic: ${v.topic}\nDifficulty: ${v.difficulty}\nAudience: ${v.audience}\nScope: ${v.moduleCount}\nInclude the main learning objectives and the primary regulation or standard covered. Be specific and practical.`;
-          const result = await (openrouter as any).chat.send({
-            model: OPENROUTER_MODEL,
-            messages: [{ role: 'user', content: prompt }],
-            max_tokens: 200,
-            temperature: 0.5,
-          });
-          const content: string = result.choices?.[0]?.message?.content;
-          if (content?.trim()) {
-            description = content.trim();
-            source = 'ai';
-          }
-        } catch (aiErr) {
-          logger.warn('OpenRouter call failed for course generation, using fallback');
-        }
+      const prompt = `Generate a concise, professional EHS training module description (2-3 sentences) for the following:\nTopic: ${v.topic}\nDifficulty: ${v.difficulty}\nAudience: ${v.audience}\nScope: ${v.moduleCount}\nInclude the main learning objectives and the primary regulation or standard covered. Be specific and practical.`;
+      const aiResult = await callAI(
+        [{ role: 'user', content: prompt }],
+        { maxTokens: 200, temperature: 0.5 }
+      );
+
+      if (aiResult.source === 'ai') {
+        description = aiResult.content;
+        source = 'ai';
       }
 
       if (!description) {

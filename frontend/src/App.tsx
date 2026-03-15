@@ -10,7 +10,11 @@ import { SkeletonDark } from './components/dashboard/Skeleton';
 import { useAuthStore } from './store/authStore';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
+import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { AppLayout } from './layouts/AppLayout';
+import { NavigationBar } from './components/dashboard/NavigationBar';
+import { BottomTabNavigation } from './components/dashboard/BottomTabNavigation';
 
 // Eager load Dashboard for fast initial render
 import { Dashboard } from './pages/Dashboard';
@@ -154,6 +158,21 @@ const GestureNavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   return <>{children}</>;
 };
 
+// Renders persistent nav components above the Suspense boundary so that
+// useLocation() always reflects the live route during React 18 concurrent
+// rendering of lazy-loaded pages. This fixes stale active-route highlighting
+// and the drawer-not-closing bug.
+function PersistentNavigation() {
+  const { isAuthenticated } = useAuthStore();
+  if (!isAuthenticated) return null;
+  return (
+    <>
+      <NavigationBar />
+      <BottomTabNavigation />
+    </>
+  );
+}
+
 // Animated Routes wrapper component with swipe indicators
 function AnimatedRoutes() {
   const location = useLocation();
@@ -163,12 +182,18 @@ function AnimatedRoutes() {
       <ScrollToTop />
       {/* Swipe navigation visual feedback */}
       <SwipeIndicator show={true} />
+
+      {/* Navigation is stable and lives ABOVE Suspense so it always has
+          the current location — never frozen by a pending lazy-load. */}
+      <PersistentNavigation />
       
       <Suspense fallback={<PageLoader />}>
         <Routes>
           {/* Public auth routes */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
 
           {/* Protected app routes */}
           <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
@@ -264,7 +289,7 @@ function AnimatedRoutes() {
           <Route path="/offline-sync-test" element={<ProtectedRoute><MobileOfflineSyncTest /></ProtectedRoute>} />
           <Route path="/behavior-based-safety" element={<ProtectedRoute><BehaviorBasedSafety /></ProtectedRoute>} />
           <Route path="/bowtie-analysis" element={<ProtectedRoute><BowTieAnalysis /></ProtectedRoute>} />
-          <Route path="/sso-login" element={<SSOLoginFlow />} />
+          <Route path="/sso-login" element={<AppLayout><SSOLoginFlow /></AppLayout>} />
           {/* Catch-all redirect */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
