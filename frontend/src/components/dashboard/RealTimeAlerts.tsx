@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, AlertCircle, CheckCircle2, Clock, Info, X, ChevronRight, Settings, Volume2, VolumeX, Mail, MessageSquare, Smartphone, Filter, Trash2, Check, AlertTriangle, Shield, Calendar, User, Zap, RefreshCw } from 'lucide-react';
+import { SMButton, SMCard, SMBadge } from '../ui';
+
+const MotionSMCard = motion(SMCard);
 
 interface Alert {
   id: string;
@@ -93,10 +96,10 @@ const MOCK_ALERTS: Alert[] = [
 ];
 
 const ALERT_CONFIG = {
-  critical: { color: 'bg-red-100 text-red-700 border-red-200', icon: AlertCircle, badge: 'bg-red-500' },
-  warning: { color: 'bg-amber-100 text-amber-700 border-amber-200', icon: AlertTriangle, badge: 'bg-amber-500' },
-  info: { color: 'bg-blue-100 text-blue-700 border-blue-200', icon: Info, badge: 'bg-blue-500' },
-  success: { color: 'bg-emerald-100 text-emerald-700 border-emerald-200', icon: CheckCircle2, badge: 'bg-emerald-500' },
+  critical: { color: 'bg-red-100 text-red-700 border-red-200',         icon: AlertCircle,  badge: 'bg-red-500',     badgeVariant: 'danger'  as const },
+  warning:  { color: 'bg-amber-100 text-amber-700 border-amber-200',   icon: AlertTriangle, badge: 'bg-amber-500',   badgeVariant: 'warning' as const },
+  info:     { color: 'bg-blue-100 text-blue-700 border-blue-200',      icon: Info,          badge: 'bg-blue-500',    badgeVariant: 'teal'    as const },
+  success:  { color: 'bg-emerald-100 text-emerald-700 border-emerald-200', icon: CheckCircle2, badge: 'bg-emerald-500', badgeVariant: 'success' as const },
 };
 
 interface RealTimeAlertsProps {
@@ -167,7 +170,7 @@ export const RealTimeAlerts: React.FC<RealTimeAlertsProps> = ({ compact = false,
 
   if (compact) {
     return (
-      <div className="bg-white rounded-2xl shadow-soft border border-surface-100 overflow-hidden">
+      <SMCard className="rounded-2xl overflow-hidden">
         <div className="p-4 border-b border-surface-100 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Bell className="w-5 h-5 text-brand-600" />
@@ -178,12 +181,9 @@ export const RealTimeAlerts: React.FC<RealTimeAlertsProps> = ({ compact = false,
               </span>
             )}
           </div>
-          <button
-            onClick={handleRefresh}
-            className="p-1.5 rounded-lg hover:bg-surface-50 transition-colors"
-          >
-            <RefreshCw className={`w-4 h-4 text-surface-400 ${isRefreshing ? 'animate-spin' : ''}`} />
-          </button>
+          <SMButton variant="icon" size="sm" onClick={handleRefresh}>
+            <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+          </SMButton>
         </div>
         <div className="max-h-64 overflow-y-auto">
           {filteredAlerts.slice(0, 5).map((alert) => {
@@ -209,11 +209,9 @@ export const RealTimeAlerts: React.FC<RealTimeAlertsProps> = ({ compact = false,
           })}
         </div>
         <div className="p-3 bg-surface-50">
-          <button className="w-full text-sm text-brand-600 font-medium hover:text-brand-700">
-            View All Alerts
-          </button>
+          <SMButton variant="ghost" className="w-full text-sm">View All Alerts</SMButton>
         </div>
-      </div>
+      </SMCard>
     );
   }
 
@@ -234,30 +232,27 @@ export const RealTimeAlerts: React.FC<RealTimeAlertsProps> = ({ compact = false,
           <p className="text-surface-500">Automated notifications for hazards, training, compliance, and more</p>
         </div>
         <div className="flex gap-3">
-          <button
+          <SMButton
+            variant={soundEnabled ? 'primary' : 'secondary'}
+            size="sm"
             onClick={() => setSoundEnabled(!soundEnabled)}
-            className={`p-2.5 rounded-xl border transition-all ${
-              soundEnabled
-                ? 'bg-brand-50 border-brand-200 text-brand-600'
-                : 'bg-surface-50 border-surface-200 text-surface-400'
-            }`}
           >
             {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
-          </button>
-          <button
+          </SMButton>
+          <SMButton
+            variant="secondary"
             onClick={handleRefresh}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-surface-200 text-surface-700 font-medium rounded-xl hover:bg-surface-50 transition-all"
+            leftIcon={<RefreshCw className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} />}
           >
-            <RefreshCw className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} />
             Refresh
-          </button>
-          <button
+          </SMButton>
+          <SMButton
+            variant="primary"
             onClick={handleMarkAllRead}
-            className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-br from-brand-600 to-brand-700 text-white font-medium rounded-xl hover:from-brand-700 hover:to-brand-800 transition-all"
+            leftIcon={<Check className="w-5 h-5" />}
           >
-            <Check className="w-5 h-5" />
             Mark All Read
-          </button>
+          </SMButton>
         </div>
       </div>
 
@@ -268,11 +263,11 @@ export const RealTimeAlerts: React.FC<RealTimeAlertsProps> = ({ compact = false,
           { label: 'Unread', value: stats.unread, icon: Mail, color: 'blue' },
           { label: 'Critical', value: stats.critical, icon: AlertCircle, color: 'red' },
         ].map((stat) => (
-          <motion.div
+          <MotionSMCard
             key={stat.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white p-4 rounded-2xl shadow-soft border border-surface-100"
+            className="p-4 rounded-2xl"
           >
             <div className="flex items-center gap-3">
               <div className={`p-2 rounded-xl bg-${stat.color}-50`}>
@@ -283,7 +278,7 @@ export const RealTimeAlerts: React.FC<RealTimeAlertsProps> = ({ compact = false,
                 <div className="text-[10px] font-medium text-surface-500 uppercase tracking-wider">{stat.label}</div>
               </div>
             </div>
-          </motion.div>
+          </MotionSMCard>
         ))}
       </div>
 
@@ -294,17 +289,14 @@ export const RealTimeAlerts: React.FC<RealTimeAlertsProps> = ({ compact = false,
           { id: 'unread', label: 'Unread' },
           { id: 'critical', label: 'Critical & Warnings' },
         ].map((tab) => (
-          <button
+          <SMButton
             key={tab.id}
+            variant={filter === tab.id ? 'primary' : 'secondary'}
+            size="sm"
             onClick={() => setFilter(tab.id as any)}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-              filter === tab.id
-                ? 'bg-brand-600 text-white'
-                : 'bg-white border border-surface-200 text-surface-600 hover:bg-surface-50'
-            }`}
           >
             {tab.label}
-          </button>
+          </SMButton>
         ))}
       </div>
 
@@ -314,12 +306,12 @@ export const RealTimeAlerts: React.FC<RealTimeAlertsProps> = ({ compact = false,
           {filteredAlerts.map((alert) => {
             const AlertIcon = ALERT_CONFIG[alert.type].icon;
             return (
-              <motion.div
+              <MotionSMCard
                 key={alert.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -100 }}
-                className={`bg-white p-5 rounded-2xl shadow-soft border border-surface-100 ${!alert.read ? 'ring-2 ring-brand-100' : ''}`}
+                className={`p-5 rounded-2xl ${!alert.read ? 'ring-2 ring-brand-100' : ''}`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-start gap-4">
@@ -329,13 +321,9 @@ export const RealTimeAlerts: React.FC<RealTimeAlertsProps> = ({ compact = false,
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="font-semibold text-brand-900">{alert.title}</h3>
-                        <span className={`px-2 py-0.5 text-[10px] font-bold rounded-lg ${ALERT_CONFIG[alert.type].color}`}>
-                          {alert.type.toUpperCase()}
-                        </span>
+                        <SMBadge size="sm" variant={ALERT_CONFIG[alert.type].badgeVariant}>{alert.type.toUpperCase()}</SMBadge>
                         {!alert.read && (
-                          <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-bold rounded-lg">
-                            NEW
-                          </span>
+                          <SMBadge size="sm" variant="teal">NEW</SMBadge>
                         )}
                       </div>
                       <p className="text-sm text-surface-600 mb-3">{alert.message}</p>
@@ -363,34 +351,36 @@ export const RealTimeAlerts: React.FC<RealTimeAlertsProps> = ({ compact = false,
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1 shrink-0">
                     {!alert.read && (
-                      <button
+                      <SMButton
+                        variant="icon"
+                        size="sm"
                         onClick={() => handleMarkAsRead(alert.id)}
-                        className="p-2 rounded-lg hover:bg-surface-50 text-surface-400 hover:text-brand-600 transition-colors"
                         title="Mark as read"
                       >
                         <Check className="w-4 h-4" />
-                      </button>
+                      </SMButton>
                     )}
-                    <button
+                    <SMButton
+                      variant="icon"
+                      size="sm"
                       onClick={() => handleDelete(alert.id)}
-                      className="p-2 rounded-lg hover:bg-red-50 text-surface-400 hover:text-red-600 transition-colors"
                       title="Delete"
                     >
                       <Trash2 className="w-4 h-4" />
-                    </button>
+                    </SMButton>
                   </div>
                 </div>
                 
                 {alert.actionable && (
                   <div className="mt-4 pt-4 border-t border-surface-50 flex justify-end">
-                    <button className="text-sm text-brand-600 font-medium flex items-center gap-1 hover:text-brand-700">
-                      Take Action <ChevronRight className="w-4 h-4" />
-                    </button>
+                    <SMButton variant="ghost" size="sm" rightIcon={<ChevronRight className="w-4 h-4" />}>
+                      Take Action
+                    </SMButton>
                   </div>
                 )}
-              </motion.div>
+              </MotionSMCard>
             );
           })}
         </AnimatePresence>

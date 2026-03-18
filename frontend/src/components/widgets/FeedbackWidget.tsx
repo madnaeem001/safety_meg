@@ -28,19 +28,19 @@ export const FeedbackWidget: React.FC = () => {
     }, 2000);
   };
 
-  // Hide widget if sidebar menu is open
-  const isMenuOpen = typeof window !== 'undefined' && document.querySelector('.nav-dropdown') !== null;
   return (
     <>
       {/* Floating Button */}
-      {!isMenuOpen && (
+      {!isOpen && (
         <motion.button
-          whileHover={{ scale: 1.1 }}
+          whileHover={{ scale: 1.06, y: -2 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-44 right-6 z-[10] w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500 text-white shadow-lg shadow-cyan-500/25 flex items-center justify-center hover:shadow-cyan-500/40 transition-shadow"
+          className="fixed bottom-40 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-[1.75rem] border border-accent/30 bg-accent text-white transition-all duration-300 hover:brightness-110"
+          style={{ boxShadow: '0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent), 0 8px 32px color-mix(in srgb, var(--accent) 55%, transparent)' }}
+          aria-label="Open feedback widget"
         >
-          <MessageSquare className="w-5 h-5" />
+          <MessageSquare className="w-6 h-6" />
         </motion.button>
       )}
 
@@ -59,16 +59,18 @@ export const FeedbackWidget: React.FC = () => {
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
-              className="fixed bottom-44 right-6 z-[60] w-[340px] max-h-[480px] rounded-2xl bg-slate-900/95 backdrop-blur-xl border border-cyan-500/20 shadow-2xl overflow-hidden"
+              className="fixed bottom-40 right-5 z-[60] w-[340px] max-h-[480px] overflow-hidden rounded-2xl border border-surface-border bg-surface-overlay shadow-modal backdrop-blur-xl"
             >
               {/* Header */}
-              <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+              <div className="flex items-center justify-between border-b border-surface-border bg-surface-raised p-4">
                 <div className="flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4 text-cyan-400" />
-                  <span className="text-sm font-bold text-white">Send Feedback</span>
+                  <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                    <MessageSquare className="h-4 w-4" />
+                  </div>
+                  <span className="text-sm font-bold text-text-primary">Send Feedback</span>
                 </div>
-                <button onClick={() => setIsOpen(false)} className="p-1 rounded-lg hover:bg-slate-800 transition-colors">
-                  <X className="w-4 h-4 text-slate-400" />
+                <button onClick={() => setIsOpen(false)} className="rounded-lg p-1 transition-colors hover:bg-surface-overlay">
+                  <X className="w-4 h-4 text-text-muted" />
                 </button>
               </div>
 
@@ -76,13 +78,13 @@ export const FeedbackWidget: React.FC = () => {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="p-8 flex flex-col items-center gap-3"
+                  className="flex flex-col items-center gap-3 p-8"
                 >
-                  <div className="w-14 h-14 rounded-full bg-emerald-500/10 flex items-center justify-center">
-                    <CheckCircle2 className="w-7 h-7 text-emerald-400" />
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-success/10 text-success">
+                    <CheckCircle2 className="w-7 h-7" />
                   </div>
-                  <p className="text-sm font-bold text-white">Thank you!</p>
-                  <p className="text-xs text-slate-400 text-center">Your feedback has been submitted. We'll review it shortly.</p>
+                  <p className="text-sm font-bold text-text-primary">Thank you!</p>
+                  <p className="text-center text-xs text-text-muted">Your feedback has been submitted. We'll review it shortly.</p>
                 </motion.div>
               ) : (
                 <div className="p-4 space-y-4">
@@ -97,7 +99,7 @@ export const FeedbackWidget: React.FC = () => {
                           className={`flex-1 py-2 px-2 rounded-xl text-[10px] font-bold flex flex-col items-center gap-1.5 transition-all ${
                             feedbackType === type
                               ? `${tc.bg} ${tc.color} ${tc.border} border`
-                              : 'text-slate-500 border border-slate-700/30 hover:border-slate-600'
+                              : 'border border-surface-border text-text-secondary hover:border-accent/30 hover:bg-surface-raised'
                           }`}
                         >
                           <tc.icon className="w-4 h-4" />
@@ -110,13 +112,13 @@ export const FeedbackWidget: React.FC = () => {
                   {/* Rating */}
                   {feedbackType === 'feedback' && (
                     <div>
-                      <label className="block text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-2">How's your experience?</label>
+                      <label className="mb-2 block text-[10px] font-bold uppercase tracking-wider text-text-muted">How's your experience?</label>
                       <div className="flex gap-1">
                         {[1, 2, 3, 4, 5].map(star => (
                           <button
                             key={star}
                             onClick={() => setRating(star)}
-                            className={`p-1.5 rounded-lg transition-all ${star <= rating ? 'text-amber-400' : 'text-slate-700 hover:text-slate-500'}`}
+                            className={`rounded-lg p-1.5 transition-all ${star <= rating ? 'text-warning' : 'text-text-muted hover:text-text-secondary'}`}
                           >
                             <Star className="w-5 h-5" fill={star <= rating ? 'currentColor' : 'none'} />
                           </button>
@@ -127,14 +129,14 @@ export const FeedbackWidget: React.FC = () => {
 
                   {/* Message */}
                   <div>
-                    <label className="block text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-2">
+                    <label className="mb-2 block text-[10px] font-bold uppercase tracking-wider text-text-muted">
                       {feedbackType === 'bug' ? 'Describe the bug' : feedbackType === 'feature' ? 'Describe your idea' : 'Your feedback'}
                     </label>
                     <textarea
                       value={message}
                       onChange={e => setMessage(e.target.value)}
                       placeholder={feedbackType === 'bug' ? 'What happened? Steps to reproduce...' : feedbackType === 'feature' ? 'I would love to see...' : 'Tell us what you think...'}
-                      className="w-full h-24 px-3 py-2.5 bg-slate-800/60 border border-slate-700/30 rounded-xl text-xs text-white placeholder-slate-600 focus:border-cyan-500/40 focus:outline-none resize-none transition-colors"
+                      className="h-24 w-full resize-none rounded-xl border border-surface-border bg-surface-raised px-3 py-2.5 text-xs text-text-primary transition-colors placeholder:text-text-muted focus:border-accent/40 focus:outline-none"
                     />
                   </div>
 
@@ -142,7 +144,7 @@ export const FeedbackWidget: React.FC = () => {
                   <button
                     onClick={handleSubmit}
                     disabled={!message.trim()}
-                    className="w-full py-2.5 bg-gradient-to-r from-cyan-500 to-purple-500 text-white text-xs font-bold rounded-xl hover:from-cyan-400 hover:to-purple-400 transition-all flex items-center justify-center gap-2 disabled:opacity-30"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent py-2.5 text-xs font-bold text-white transition-all hover:bg-accent-600 disabled:opacity-30"
                   >
                     <Send className="w-3.5 h-3.5" /> Submit Feedback
                   </button>

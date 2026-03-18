@@ -47,6 +47,7 @@ import {
   useSaveAuditFormSessionMutation,
   useAuditAnalysisMutation,
 } from '../api/hooks/useAPIHooks';
+import { SMButton } from '../components/ui';
 
 /* ================================================================
    AI-EMBEDDED AUDIT TEMPLATE FORM
@@ -999,9 +1000,7 @@ export const AIAuditTemplateForm: React.FC = () => {
                             placeholder="Add a category (e.g., PPE, Fall Protection)"
                             className="flex-1 p-3 bg-surface-800/50 border border-surface-700 rounded-xl text-sm text-white placeholder:text-surface-600 focus:outline-none focus:ring-2 focus:ring-brand-500/30"
                           />
-                          <button onClick={handleAddCustomCategory} className="px-4 py-3 bg-brand-500 text-white rounded-xl text-xs font-bold">
-                            <Plus className="w-4 h-4" />
-                          </button>
+                          <SMButton variant="icon" onClick={handleAddCustomCategory}><Plus className="w-4 h-4" /></SMButton>
                         </div>
                       </div>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Info, Shield } from 'lucide-react';
+import { SMCard } from '../../components/ui';
 
 export interface HierarchyControlItem {
   id: string;
@@ -51,7 +52,7 @@ export const HierarchyOfControls: React.FC<HierarchyOfControlsProps> = ({ contro
             >
               <div className={`absolute left-4 top-2 w-4 h-4 rounded-full border-4 border-surface-50 shadow-sm z-10 ${getLevelColor(control.id)}`} />
               
-              <div className="bg-white p-6 rounded-[2rem] shadow-soft border border-surface-100 relative overflow-hidden group">
+              <SMCard className="p-6 relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-surface-50 rounded-full -mr-12 -mt-12 group-hover:bg-surface-100 transition-colors" />
                 
                 <div className="relative z-10">
@@ -72,7 +73,7 @@ export const HierarchyOfControls: React.FC<HierarchyOfControlsProps> = ({ contro
                     ))}
                   </div>
                 </div>
-              </div>
+              </SMCard>
             </motion.div>
           ))}
         </div>

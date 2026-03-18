@@ -5,6 +5,7 @@ import {
   ChevronDown, ChevronUp, Bell, BellRing, AlertCircle, Timer,
   ArrowRight, Shield, Zap, TrendingUp, XCircle, RefreshCw
 } from 'lucide-react';
+import { SMCard, SMBadge } from '../../components/ui';
 
 export interface CAPAAction {
   id: string;
@@ -239,7 +240,7 @@ export const CAPAReminder: React.FC<CAPAReminderProps> = ({
 
   if (compact) {
     return (
-      <div className="bg-white rounded-2xl border border-surface-200 shadow-sm overflow-hidden">
+      <SMCard className="overflow-hidden">
         <div className="p-4 bg-gradient-to-r from-orange-500 to-red-500 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -276,12 +277,12 @@ export const CAPAReminder: React.FC<CAPAReminderProps> = ({
             </div>
           ))}
         </div>
-      </div>
+      </SMCard>
     );
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-surface-200 shadow-lg overflow-hidden">
+    <SMCard className="overflow-hidden">
       {/* Header */}
       <div className="p-6 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white">
         <div className="flex items-center justify-between mb-4">
@@ -526,7 +527,7 @@ export const CAPAReminder: React.FC<CAPAReminderProps> = ({
           ))
         )}
       </div>
-    </div>
+    </SMCard>
   );
 };
 

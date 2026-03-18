@@ -33,6 +33,7 @@ import {
   Sparkles,
   X
 } from 'lucide-react';
+import { SMButton } from '../../components/ui';
 import { CustomReportBuilder } from './CustomReportBuilder';
 
 // Report template types
@@ -886,14 +887,14 @@ export const SafetyReportTemplates: React.FC = () => {
 
               {/* Actions */}
               <div className="flex gap-2">
-                <button
+                <SMButton
+                  variant="primary"
+                  className="flex-1"
+                  leftIcon={<Plus className="w-4 h-4" />}
                   onClick={() => handleGenerateReport(template)}
-                  className="flex-1 py-2.5 bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium 
-                           rounded-xl flex items-center justify-center gap-2 transition-colors"
                 >
-                  <Plus className="w-4 h-4" />
                   Generate
-                </button>
+                </SMButton>
                 <button
                   onClick={() => {
                     setSelectedTemplate(template);

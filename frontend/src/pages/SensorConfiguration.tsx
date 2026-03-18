@@ -153,7 +153,7 @@ export const SensorConfiguration: React.FC = () => {
     <div className="min-h-screen bg-surface-50 pb-20">
       {/* Header */}
       <header className="sticky top-[72px] z-40 bg-white/80 backdrop-blur-xl border-b border-surface-200/60 px-6 py-4">
-        <div className="flex items-center justify-between max-w-5xl mx-auto">
+        <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center gap-4">
             <button onClick={() => navigate(-1)} className="p-2 hover:bg-surface-100 rounded-full transition-colors">
               <ArrowLeft className="w-6 h-6 text-surface-600" />
@@ -196,7 +196,7 @@ export const SensorConfiguration: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <main className="max-w-5xl mx-auto px-6 py-8 space-y-8">
+      <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* Mode Toggle */}
         <div className="flex gap-2">
           <button

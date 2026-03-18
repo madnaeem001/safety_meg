@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Home, Shield, Bell, User } from 'lucide-react';
-import { getBadgeAnimationDuration } from '../../data/mockNavigation';
 import { notificationApiService } from '../../api/services/apiService';
 
 interface TabItem {
@@ -22,7 +21,6 @@ export const BottomTabNavigation: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [unreadCount, setUnreadCount] = useState(0);
-  const animationDuration = getBadgeAnimationDuration();
 
   useEffect(() => {
     notificationApiService.getAll({ read: false, limit: 99 })
@@ -46,19 +44,16 @@ export const BottomTabNavigation: React.FC = () => {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-30 safe-area-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-30 safe-area-bottom md:hidden">
       {/* Gradient overlay for visual lift */}
-      <div className="absolute inset-x-0 -top-8 h-8 bg-gradient-to-t from-slate-950/95 to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 -top-8 h-8 pointer-events-none" style={{ background: 'linear-gradient(to top, var(--surface-base), transparent)' }} />
       
       {/* Main tab bar - modernized with enhanced mobile transitions */}
       <div 
-        className="transition-all duration-300"
+        className="transition-all duration-300 bg-surface-raised border-t border-surface-border shadow-modal"
         style={{ 
-          background: 'rgba(15, 23, 42, 0.92)', 
-          backdropFilter: 'blur(24px) saturate(1.6)',
-          WebkitBackdropFilter: 'blur(24px) saturate(1.6)',
-          borderTop: '1px solid rgba(6, 182, 212, 0.12)',
-          boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.2), 0 0 1px rgba(6, 182, 212, 0.15)',
+          backdropFilter: 'blur(24px) saturate(1.3)',
+          WebkitBackdropFilter: 'blur(24px) saturate(1.3)',
           paddingBottom: 'env(safe-area-inset-bottom, 0px)'
         }}
       >
@@ -77,8 +72,8 @@ export const BottomTabNavigation: React.FC = () => {
                   min-w-[68px] py-2.5 px-3 rounded-xl
                   touch-target transition-all duration-300
                   ${active 
-                    ? 'text-cyan-400' 
-                    : 'text-slate-500 hover:text-slate-300'
+                    ? 'text-accent' 
+                    : 'text-text-secondary hover:text-text-primary hover:bg-surface-overlay'
                   }
                 `}
                 whileTap={{ scale: 0.9 }}
@@ -90,8 +85,7 @@ export const BottomTabNavigation: React.FC = () => {
                 {active && (
                   <motion.div
                     layoutId="activeTabIndicator"
-                    className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-6 h-[3px] rounded-full"
-                    style={{ background: 'linear-gradient(90deg, #06b6d4 0%, #0891b2 100%)', boxShadow: '0 0 8px rgba(6, 182, 212, 0.4)' }}
+                    className="absolute -top-0.5 left-1/2 h-[3px] w-6 -translate-x-1/2 rounded-full bg-accent shadow-[0_0_8px_rgba(0,168,157,0.28)]"
                     initial={false}
                     transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                   />
@@ -105,42 +99,27 @@ export const BottomTabNavigation: React.FC = () => {
                   
                   {/* Notification badge with pulse animation */}
                   {showBadge && (
-                    <motion.span
-                      initial={{ scale: 0 }}
-                      animate={{ 
-                        scale: [1, 1.15, 1],
-                      }}
-                      transition={{
-                        scale: {
-                          duration: animationDuration,
-                          repeat: Infinity,
-                          repeatType: "loop",
-                          ease: "easeInOut",
-                        },
-                      }}
+                    <span
                       className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] 
-                        bg-red-500 text-white text-[10px] font-bold 
+                        bg-danger text-white text-[10px] font-bold 
                         rounded-full flex items-center justify-center px-1
-                        shadow-sm border-2 border-slate-900"
+                        shadow-sm border-2 border-surface-raised"
                     >
-                      {/* Pulse ring animation */}
                       <span 
-                        className="absolute inset-0 rounded-full bg-red-500 opacity-75"
-                        style={{
-                          animation: `ping ${animationDuration}s cubic-bezier(0, 0, 0.2, 1) infinite`
-                        }}
+                        className="absolute inset-0 rounded-full bg-danger opacity-75"
+                        style={{ animation: 'ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite' }}
                       />
                       <span className="relative">
                         {unreadCount > 99 ? '99+' : unreadCount}
                       </span>
-                    </motion.span>
+                    </span>
                   )}
                 </div>
 
                 {/* Label */}
                 <span className={`
-                  mt-1 text-[10px] font-semibold tracking-wide
-                  ${active ? 'text-cyan-400' : 'text-slate-500'}
+                  mt-1 text-xs font-semibold tracking-wide
+                  ${active ? 'text-accent' : 'text-text-secondary'}
                 `}>
                   {tab.label}
                 </span>

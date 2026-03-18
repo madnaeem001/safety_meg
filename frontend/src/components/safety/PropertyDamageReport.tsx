@@ -5,6 +5,7 @@ import {
   CheckCircle2, Plus, Search, Filter, ChevronRight, Camera, Send, 
   ArrowLeft, AlertTriangle, User, Package, Hammer, Factory
 } from 'lucide-react';
+import { SMCard, SMButton, SMBadge } from '../../components/ui';
 
 // Property types for damage reports
 const PROPERTY_TYPES = [
@@ -174,7 +175,7 @@ export const PropertyDamageReport: React.FC<PropertyDamageReportProps> = ({ onNa
         </div>
 
         {/* Property Type Selection */}
-        <div className="bg-white rounded-2xl p-4 border border-surface-100 shadow-soft">
+        <SMCard className="p-4">
           <p className="text-xs font-bold text-surface-400 uppercase tracking-widest mb-3">Property Type</p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {PROPERTY_TYPES.map(type => (
@@ -195,11 +196,11 @@ export const PropertyDamageReport: React.FC<PropertyDamageReportProps> = ({ onNa
               </button>
             ))}
           </div>
-        </div>
+        </SMCard>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Details Section */}
-          <div className="bg-white p-6 rounded-2xl border border-surface-100 shadow-soft space-y-4">
+          <SMCard className="p-6 space-y-4">
             <h3 className="font-bold text-brand-900 flex items-center gap-2">
               <FileText className="w-5 h-5 text-brand-500" />
               Incident Details
@@ -288,10 +289,10 @@ export const PropertyDamageReport: React.FC<PropertyDamageReportProps> = ({ onNa
                 </select>
               </div>
             </div>
-          </div>
+          </SMCard>
 
           {/* Financial Impact Section */}
-          <div className="bg-white p-6 rounded-2xl border border-surface-100 shadow-soft space-y-4">
+          <SMCard className="p-6 space-y-4">
             <h3 className="font-bold text-brand-900 flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-emerald-500" />
               Financial Impact
@@ -332,10 +333,10 @@ export const PropertyDamageReport: React.FC<PropertyDamageReportProps> = ({ onNa
               />
               <span className="text-sm font-medium text-blue-800">Submit Insurance Claim</span>
             </label>
-          </div>
+          </SMCard>
 
           {/* Description Section */}
-          <div className="bg-white p-6 rounded-2xl border border-surface-100 shadow-soft space-y-4">
+          <SMCard className="p-6 space-y-4">
             <h3 className="font-bold text-brand-900">Description & Actions</h3>
 
             <div className="space-y-2">
@@ -371,24 +372,26 @@ export const PropertyDamageReport: React.FC<PropertyDamageReportProps> = ({ onNa
                 className="w-full px-3 py-2.5 bg-surface-50 border border-surface-100 rounded-xl text-sm"
               />
             </div>
-          </div>
+          </SMCard>
 
           {/* Submit Button */}
           <div className="flex gap-3">
-            <button
+            <SMButton
               type="button"
+              variant="secondary"
+              className="flex-1"
               onClick={() => setActiveView('list')}
-              className="flex-1 py-3 px-6 bg-surface-100 text-surface-700 font-semibold rounded-xl hover:bg-surface-200 transition-colors"
             >
               Cancel
-            </button>
-            <button
+            </SMButton>
+            <SMButton
               type="submit"
-              className="flex-1 py-3 px-6 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 transition-colors flex items-center justify-center gap-2"
+              variant="primary"
+              className="flex-1"
+              leftIcon={<Send className="w-5 h-5" />}
             >
-              <Send className="w-5 h-5" />
               Submit Report
-            </button>
+            </SMButton>
           </div>
         </form>
       </motion.div>
@@ -509,12 +512,12 @@ export const PropertyDamageReport: React.FC<PropertyDamageReportProps> = ({ onNa
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-xs font-bold text-surface-400">{report.id}</span>
-                    <span className={`px-2 py-0.5 text-[10px] font-bold uppercase rounded-full ${getSeverityColor(report.severity)}`}>
+                    <SMBadge size="sm" variant={report.severity === 'Total Loss' || report.severity === 'Major' ? 'danger' : report.severity === 'Significant' || report.severity === 'Moderate' ? 'warning' : 'success'}>
                       {report.severity}
-                    </span>
-                    <span className={`px-2 py-0.5 text-[10px] font-bold uppercase rounded-full ${getStatusColor(report.status)}`}>
+                    </SMBadge>
+                    <SMBadge size="sm" variant={report.status === 'resolved' || report.status === 'closed' ? 'success' : report.status === 'open' ? 'teal' : report.status === 'repair-pending' ? 'warning' : 'neutral'}>
                       {report.status.replace('-', ' ')}
-                    </span>
+                    </SMBadge>
                   </div>
                   <h4 className="font-semibold text-surface-800 truncate">{report.title}</h4>
                   <div className="flex items-center gap-4 mt-2 text-xs text-surface-500">

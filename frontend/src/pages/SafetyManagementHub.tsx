@@ -1076,12 +1076,12 @@ export const SafetyManagementHub = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen text-text-primary transition-colors duration-300">
       {/* Main Container */}
       <main className="max-w-[1920px] mx-auto px-4 lg:px-8 py-6 lg:py-10 pb-32">
         <div className="flex items-center gap-4 mb-8">
           <img src="/assets/aigc/images/safetymeg-logo_1770373676_000.png" alt="SafetyMEG Logo" className="h-12 w-auto object-contain" />
-          <h1 className="text-3xl font-bold text-white font-display tracking-tight">SafetyMEG Hub</h1>
+          <h1 className="text-3xl font-bold text-text-primary font-display tracking-tight">SafetyMEG Hub</h1>
         </div>
         <AnimatePresence mode="wait">
           <motion.div

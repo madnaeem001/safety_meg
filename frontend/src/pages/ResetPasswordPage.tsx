@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, Eye, EyeOff, Lock, AlertCircle, Loader2, CheckCircle } from 'lucide-react';
+import { Shield, Eye, EyeOff, Lock, AlertCircle, CheckCircle } from 'lucide-react';
+import { SMButton, SMInput, SMCard } from '../components/ui';
+import { AuthLayout } from '../layouts';
 import { authApiService } from '../api/services/apiService';
 
 export const ResetPasswordPage: React.FC = () => {
@@ -63,28 +65,22 @@ export const ResetPasswordPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-brand-950 flex items-center justify-center p-4">
-      {/* Background effects */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-brand-500/5 blur-[150px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-violet-500/5 blur-[150px] rounded-full" />
-      </div>
-
+    <AuthLayout>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md relative z-10"
+        className="w-full"
       >
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-500/10 border border-brand-500/20 rounded-2xl mb-4">
             <Shield className="w-8 h-8 text-brand-400" />
           </div>
-          <h1 className="text-2xl font-bold text-white">SafetyMEG</h1>
-          <p className="text-slate-400 text-sm mt-1">AI-Powered EHS Platform</p>
+          <h1 className="text-2xl font-bold text-text-primary">SafetyMEG</h1>
+          <p className="text-sm mt-1 text-text-secondary">AI-Powered EHS Platform</p>
         </div>
 
-        <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8 shadow-2xl">
+        <SMCard className="rounded-2xl p-8 shadow-2xl">
           {success ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -94,13 +90,13 @@ export const ResetPasswordPage: React.FC = () => {
               <div className="inline-flex items-center justify-center w-14 h-14 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl mb-4">
                 <CheckCircle className="w-7 h-7 text-emerald-400" />
               </div>
-              <h2 className="text-xl font-semibold text-white mb-2">Password updated!</h2>
-              <p className="text-slate-400 text-sm mb-6">
+              <h2 className="text-xl font-semibold text-text-primary mb-2">Password updated!</h2>
+              <p className="text-text-secondary text-sm mb-6">
                 Your password has been reset successfully. Redirecting you to sign in...
               </p>
               <Link
                 to="/login"
-                className="inline-flex items-center justify-center w-full bg-brand-600 hover:bg-brand-500 text-white font-semibold py-3 rounded-xl transition-all"
+                className="inline-flex items-center justify-center w-full rounded-xl bg-accent px-4 py-3 font-semibold text-text-onAccent transition-colors hover:bg-accent-600"
               >
                 Go to sign in
               </Link>
@@ -108,8 +104,8 @@ export const ResetPasswordPage: React.FC = () => {
           ) : (
             <>
               <div className="mb-6">
-                <h2 className="text-xl font-semibold text-white">Set new password</h2>
-                <p className="text-slate-400 text-sm mt-1">
+                <h2 className="text-xl font-semibold text-text-primary">Set new password</h2>
+                <p className="text-text-secondary text-sm mt-1">
                   Choose a strong password for your account.
                 </p>
               </div>
@@ -138,88 +134,75 @@ export const ResetPasswordPage: React.FC = () => {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* New Password */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                    New Password
-                  </label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      value={newPassword}
-                      onChange={(e) => { setNewPassword(e.target.value); setError(''); }}
-                      placeholder="Min 8 chars, 1 uppercase, 1 number"
-                      className="w-full bg-slate-800/50 border border-slate-700/50 text-white placeholder-slate-500 rounded-xl pl-10 pr-11 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all"
-                      autoComplete="new-password"
-                      disabled={isLoading || !token}
-                    />
+                <SMInput
+                  label="New Password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={newPassword}
+                  onChange={(e) => { setNewPassword(e.target.value); setError(''); }}
+                  placeholder="Min 8 chars, 1 uppercase, 1 number"
+                  leftIcon={<Lock className="w-4 h-4" />}
+                  rightIcon={
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      className="pointer-events-auto text-text-muted hover:text-text-primary transition-colors"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
-                  </div>
-                </div>
+                  }
+                  autoComplete="new-password"
+                  disabled={isLoading || !token}
+                />
 
                 {/* Confirm Password */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                    Confirm New Password
-                  </label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <input
-                      type={showConfirm ? 'text' : 'password'}
-                      value={confirmPassword}
-                      onChange={(e) => { setConfirmPassword(e.target.value); setError(''); }}
-                      placeholder="Re-enter your new password"
-                      className="w-full bg-slate-800/50 border border-slate-700/50 text-white placeholder-slate-500 rounded-xl pl-10 pr-11 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all"
-                      autoComplete="new-password"
-                      disabled={isLoading || !token}
-                    />
+                <SMInput
+                  label="Confirm New Password"
+                  type={showConfirm ? 'text' : 'password'}
+                  value={confirmPassword}
+                  onChange={(e) => { setConfirmPassword(e.target.value); setError(''); }}
+                  placeholder="Re-enter your new password"
+                  leftIcon={<Lock className="w-4 h-4" />}
+                  rightIcon={
                     <button
                       type="button"
                       onClick={() => setShowConfirm(!showConfirm)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                      aria-label={showConfirm ? 'Hide password' : 'Show password'}
+                      className="pointer-events-auto text-text-muted hover:text-text-primary transition-colors"
                     >
                       {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
+                  }
+                  autoComplete="new-password"
                   disabled={isLoading || !token}
-                  className="w-full bg-brand-600 hover:bg-brand-500 disabled:bg-brand-800 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 mt-2"
+                />
+
+                <SMButton
+                  type="submit"
+                  variant="primary"
+                  loading={isLoading}
+                  disabled={!token}
+                  className="w-full mt-2"
                 >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Updating password...
-                    </>
-                  ) : (
-                    'Update password'
-                  )}
-                </button>
+                  {isLoading ? 'Updating password...' : 'Update password'}
+                </SMButton>
               </form>
 
-              <p className="text-center text-slate-500 text-sm mt-5">
+              <p className="text-center text-text-muted text-sm mt-5">
                 Back to{' '}
-                <Link to="/login" className="text-brand-400 hover:text-brand-300 font-medium transition-colors">
+                <Link to="/login" className="text-accent hover:text-accent-600 font-medium transition-colors">
                   Sign in
                 </Link>
               </p>
             </>
           )}
-        </div>
+        </SMCard>
 
-        <p className="text-center text-slate-600 text-xs mt-6">
+        <p className="text-center text-text-muted text-xs mt-6">
           © 2026 SafetyMEG. Enterprise EHS Platform. All rights reserved.
         </p>
       </motion.div>
-    </div>
+    </AuthLayout>
   );
 };
 

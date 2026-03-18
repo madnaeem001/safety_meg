@@ -5,6 +5,7 @@ import { generateText } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 import { motion, AnimatePresence } from 'framer-motion';
 import { jsaApiService } from '../api/services/apiService';
+import { SMButton } from '../components/ui';
 
 // Pre-Task Assessment Template
 interface PreTaskAssessment {
@@ -583,10 +584,7 @@ export const RiskAssessment: React.FC = () => {
               </div>
 
               {/* Submit */}
-              <button className="w-full py-4 bg-brand-600 text-white rounded-2xl font-bold shadow-lg hover:bg-brand-700 transition-all flex items-center justify-center gap-2">
-                <CheckCircle className="w-5 h-5" />
-                Complete Pre-Task Assessment
-              </button>
+              <SMButton variant="primary" className="w-full" leftIcon={<CheckCircle className="w-5 h-5" />}>Complete Pre-Task Assessment</SMButton>
             </motion.div>
           )}
 
@@ -721,10 +719,7 @@ export const RiskAssessment: React.FC = () => {
               </div>
 
               {/* Submit */}
-              <button className="w-full py-4 bg-brand-600 text-white rounded-2xl font-bold shadow-lg hover:bg-brand-700 transition-all flex items-center justify-center gap-2">
-                <CheckCircle className="w-5 h-5" />
-                Complete JSA
-              </button>
+              <SMButton variant="primary" className="w-full" leftIcon={<CheckCircle className="w-5 h-5" />}>Complete JSA</SMButton>
             </motion.div>
           )}
 
@@ -1001,10 +996,7 @@ export const RiskAssessment: React.FC = () => {
                   <Eye className="w-5 h-5" />
                   Preview JSA
                 </button>
-                <button className="flex-1 py-4 bg-brand-600 text-white rounded-2xl font-bold shadow-lg hover:bg-brand-700 transition-all flex items-center justify-center gap-2">
-                  <CheckCircle className="w-5 h-5" />
-                  Complete JSA
-                </button>
+                <SMButton variant="primary" className="flex-1" leftIcon={<CheckCircle className="w-5 h-5" />}>Complete JSA</SMButton>
               </div>
 
               {/* Incident Search Modal */}

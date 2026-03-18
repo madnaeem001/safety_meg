@@ -94,15 +94,15 @@ export const PinchZoomChartWrapper: React.FC<PinchZoomChartWrapperProps> = ({
           exit={{ opacity: 0, y: -10 }}
           className="absolute top-2 right-2 z-10 flex items-center gap-2"
         >
-          <span className="text-xs font-medium text-slate-600 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg shadow-sm">
+          <span className="text-xs font-medium text-text-secondary bg-surface-overlay backdrop-blur-sm px-2 py-1 rounded-lg shadow-sm">
             {Math.round(scale * 100)}%
           </span>
           <button
             onClick={resetZoom}
-            className="p-1.5 rounded-lg bg-white/90 backdrop-blur-sm shadow-sm hover:bg-white transition-colors"
+            className="p-1.5 rounded-lg bg-surface-overlay backdrop-blur-sm shadow-sm hover:bg-surface-raised transition-colors"
             aria-label="Reset zoom"
           >
-            <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
             </svg>
           </button>
@@ -118,7 +118,7 @@ export const PinchZoomChartWrapper: React.FC<PinchZoomChartWrapperProps> = ({
             exit={{ opacity: 0 }}
             className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 pointer-events-none"
           >
-            <span className="text-[10px] text-slate-400 bg-white/80 backdrop-blur-sm px-2 py-1 rounded-full">
+            <span className="text-[10px] text-text-muted bg-surface-overlay backdrop-blur-sm px-2 py-1 rounded-full">
               Pinch to zoom
             </span>
           </motion.div>

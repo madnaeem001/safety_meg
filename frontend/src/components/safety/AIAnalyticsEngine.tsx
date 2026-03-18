@@ -6,6 +6,9 @@ import {
   ChevronDown, ChevronUp, RefreshCw, Lightbulb, Clock, CheckCircle2,
   XCircle, HelpCircle, ThumbsUp, ThumbsDown, MessageSquare, Send
 } from 'lucide-react';
+import { SMButton, SMInput, SMCard, SMBadge } from '../ui';
+
+const MotionSMCard = motion(SMCard);
 
 // Types
 export interface AIInsight {
@@ -122,10 +125,10 @@ const generateMockInsights = (): AIInsight[] => [
 // Severity color mapping
 const getSeverityColors = (severity: AIInsight['severity']) => {
   const colors = {
-    low: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200', icon: 'text-green-500' },
-    medium: { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200', icon: 'text-yellow-500' },
-    high: { bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-200', icon: 'text-orange-500' },
-    critical: { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200', icon: 'text-red-500' }
+    low:      { bg: 'bg-green-50',  text: 'text-green-700',  border: 'border-green-200',  icon: 'text-green-500',  badgeVariant: 'success' as const },
+    medium:   { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200', icon: 'text-yellow-500', badgeVariant: 'warning' as const },
+    high:     { bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-200', icon: 'text-orange-500', badgeVariant: 'warning' as const },
+    critical: { bg: 'bg-red-50',    text: 'text-red-700',    border: 'border-red-200',    icon: 'text-red-500',    badgeVariant: 'danger'  as const }
   };
   return colors[severity];
 };
@@ -184,7 +187,7 @@ export const AIChat: React.FC<AIChatProps> = ({ onAnalyze }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-surface-200 shadow-lg overflow-hidden">
+    <SMCard className="rounded-2xl overflow-hidden">
       {/* Chat Header */}
       <div className="p-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
         <div className="flex items-center gap-3">
@@ -242,14 +245,13 @@ export const AIChat: React.FC<AIChatProps> = ({ onAnalyze }) => {
       {/* Input */}
       <div className="p-4 border-t border-surface-200">
         <div className="flex items-center gap-2">
-          <input
+          <SMInput
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
             placeholder="Ask about safety trends, risks, or compliance..."
-            className="flex-1 px-4 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm
-                       focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="flex-1"
           />
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -266,18 +268,18 @@ export const AIChat: React.FC<AIChatProps> = ({ onAnalyze }) => {
         {/* Quick prompts */}
         <div className="flex flex-wrap gap-2 mt-3">
           {['Show injury trends', 'Risk analysis', 'Compliance status'].map(prompt => (
-            <button
+            <SMButton
               key={prompt}
+              variant="secondary"
+              size="sm"
               onClick={() => setQuery(prompt)}
-              className="px-3 py-1.5 bg-surface-100 hover:bg-surface-200 text-surface-600 
-                         rounded-lg text-xs font-medium transition-colors"
             >
               {prompt}
-            </button>
+            </SMButton>
           ))}
         </div>
       </div>
-    </div>
+    </SMCard>
   );
 };
 
@@ -294,10 +296,10 @@ const InsightCard: React.FC<InsightCardProps> = ({ insight, onAction, onFeedback
   const Icon = getTypeIcon(insight.type);
 
   return (
-    <motion.div
+    <MotionSMCard
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`bg-white rounded-xl border ${colors.border} overflow-hidden`}
+      className={`rounded-xl border ${colors.border} overflow-hidden`}
     >
       <div 
         className={`p-4 cursor-pointer hover:bg-surface-50 transition-colors`}
@@ -310,9 +312,7 @@ const InsightCard: React.FC<InsightCardProps> = ({ insight, onAction, onFeedback
           
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <span className={`px-2 py-0.5 rounded text-xs font-medium uppercase ${colors.bg} ${colors.text}`}>
-                {insight.severity}
-              </span>
+              <SMBadge size="sm" variant={colors.badgeVariant}>{insight.severity}</SMBadge>
               <span className="text-xs text-surface-400 capitalize">{insight.type}</span>
               <span className="text-xs text-surface-400">
                 • {Math.round(insight.confidence * 100)}% confidence
@@ -383,25 +383,19 @@ const InsightCard: React.FC<InsightCardProps> = ({ insight, onAction, onFeedback
               <div className="flex items-center justify-between pt-2 border-t border-surface-100">
                 <span className="text-xs text-surface-400">Was this insight helpful?</span>
                 <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => onFeedback?.(insight, true)}
-                    className="p-1.5 hover:bg-green-50 rounded-lg transition-colors group"
-                  >
-                    <ThumbsUp className="w-4 h-4 text-surface-400 group-hover:text-green-600" />
-                  </button>
-                  <button
-                    onClick={() => onFeedback?.(insight, false)}
-                    className="p-1.5 hover:bg-red-50 rounded-lg transition-colors group"
-                  >
-                    <ThumbsDown className="w-4 h-4 text-surface-400 group-hover:text-red-600" />
-                  </button>
+                  <SMButton variant="icon" size="sm" onClick={() => onFeedback?.(insight, true)}>
+                    <ThumbsUp className="w-4 h-4" />
+                  </SMButton>
+                  <SMButton variant="icon" size="sm" onClick={() => onFeedback?.(insight, false)}>
+                    <ThumbsDown className="w-4 h-4" />
+                  </SMButton>
                 </div>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </MotionSMCard>
   );
 };
 
@@ -465,7 +459,7 @@ export const AIAnalyticsDashboard: React.FC<AIAnalyticsDashboardProps> = ({
 
   if (compact) {
     return (
-      <div className="bg-white rounded-2xl border border-surface-200 shadow-sm overflow-hidden">
+      <SMCard className="rounded-2xl overflow-hidden">
         <div className="p-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -505,7 +499,7 @@ export const AIAnalyticsDashboard: React.FC<AIAnalyticsDashboardProps> = ({
             ))
           )}
         </div>
-      </div>
+      </SMCard>
     );
   }
 
@@ -598,18 +592,14 @@ export const AIAnalyticsDashboard: React.FC<AIAnalyticsDashboardProps> = ({
           { key: 'critical', label: 'Critical/High' },
           { key: 'actionable', label: 'Actionable' }
         ].map(f => (
-          <button
+          <SMButton
             key={f.key}
+            variant={filter === f.key ? 'primary' : 'secondary'}
+            size="sm"
             onClick={() => setFilter(f.key as any)}
-            className={`
-              px-4 py-2 rounded-xl text-sm font-medium transition-all
-              ${filter === f.key 
-                ? 'bg-primary-100 text-primary-700 shadow-sm' 
-                : 'bg-white text-surface-600 hover:bg-surface-100 border border-surface-200'}
-            `}
           >
             {f.label}
-          </button>
+          </SMButton>
         ))}
       </div>
 

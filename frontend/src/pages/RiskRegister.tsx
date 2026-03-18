@@ -21,6 +21,8 @@ import {
   useRiskStats,
   useUpdateRiskRegisterItem,
 } from '../api/hooks/useAPIHooks';
+import { SMAlert, SMBadge, SMButton, SMCard, SMInput, SMSelect, SMStatCard } from '../components/ui';
+import PageContainer from '../layouts/PageContainer';
 import type { CreateRiskRegisterPayload, RiskRegisterItem } from '../api/services/apiService';
 
 type RiskStatusFilter = 'all' | 'Open' | 'Mitigated' | 'Closed' | 'Monitoring';
@@ -34,29 +36,21 @@ const CONTROL_TYPES: Array<NonNullable<CreateRiskRegisterPayload['controlType']>
   'PPE',
 ];
 
-const getRiskTone = (level: string) => {
+const getRiskBadgeVariant = (level: string): 'danger' | 'warning' | 'neutral' | 'success' => {
   switch (level) {
-    case 'Critical':
-      return 'bg-red-50 text-red-700 border-red-200';
-    case 'High':
-      return 'bg-orange-50 text-orange-700 border-orange-200';
-    case 'Medium':
-      return 'bg-amber-50 text-amber-700 border-amber-200';
-    default:
-      return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+    case 'Critical': return 'danger';
+    case 'High': return 'warning';
+    case 'Medium': return 'warning';
+    default: return 'success';
   }
 };
 
-const getStatusTone = (status: string) => {
+const getStatusBadgeVariant = (status: string): 'success' | 'neutral' | 'teal' | 'warning' => {
   switch (status) {
-    case 'Mitigated':
-      return 'bg-emerald-50 text-emerald-700 border-emerald-200';
-    case 'Closed':
-      return 'bg-surface-100 text-surface-700 border-surface-200';
-    case 'Monitoring':
-      return 'bg-blue-50 text-blue-700 border-blue-200';
-    default:
-      return 'bg-orange-50 text-orange-700 border-orange-200';
+    case 'Mitigated': return 'success';
+    case 'Closed': return 'neutral';
+    case 'Monitoring': return 'teal';
+    default: return 'warning';
   }
 };
 
@@ -73,12 +67,12 @@ const RiskMatrix: React.FC = () => {
   const { data, loading } = useRiskMatrix();
 
   return (
-    <div className="bg-white p-8 rounded-[2.5rem] shadow-soft border border-surface-100">
-      <h3 className="text-xl font-bold text-brand-900 tracking-tight mb-6">Risk Matrix (5x5)</h3>
-      {loading && <div className="text-sm text-surface-500">Loading matrix...</div>}
+    <SMCard className="p-8">
+      <h3 className="text-xl font-bold text-text-primary tracking-tight mb-6">Risk Matrix (5x5)</h3>
+      {loading && <div className="text-sm text-text-muted">Loading matrix...</div>}
       {data && (
         <div className="grid grid-cols-6 gap-2">
-          <div className="col-span-1 flex flex-col justify-between py-8 text-[10px] font-bold text-surface-400 uppercase tracking-widest">
+          <div className="col-span-1 flex flex-col justify-between py-8 text-xs font-bold text-text-muted uppercase tracking-widest">
             <span>High</span>
             <span>Severity</span>
             <span>Low</span>
@@ -90,28 +84,28 @@ const RiskMatrix: React.FC = () => {
                   key={`${rowIndex}-${colIndex}`}
                   className={`aspect-square rounded-xl flex flex-col items-center justify-center text-white font-bold shadow-sm ${
                     cell.level === 'Critical'
-                      ? 'bg-accent-500'
+                      ? 'bg-danger'
                       : cell.level === 'High'
-                        ? 'bg-orange-500'
+                        ? 'bg-warning'
                         : cell.level === 'Medium'
                           ? 'bg-amber-500'
-                          : 'bg-emerald-500'
+                          : 'bg-success'
                   }`}
                 >
                   <span className="text-lg leading-none">{cell.score}</span>
-                  <span className="text-[10px] uppercase tracking-widest opacity-80">{cell.level}</span>
+                  <span className="text-xs uppercase tracking-widest opacity-80">{cell.level}</span>
                 </div>
               ))
             ))}
           </div>
-          <div className="col-start-2 col-span-5 flex justify-between px-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest mt-2">
+          <div className="col-start-2 col-span-5 flex justify-between px-4 text-xs font-bold text-text-muted uppercase tracking-widest mt-2">
             <span>Low</span>
             <span>Likelihood</span>
             <span>High</span>
           </div>
         </div>
       )}
-    </div>
+    </SMCard>
   );
 };
 
@@ -201,53 +195,29 @@ export const RiskRegister: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 pb-32">
-
-
-      <main className="max-w-7xl mx-auto px-6 py-12 space-y-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-            <div className="flex items-center gap-2 text-brand-500 font-bold text-[10px] uppercase tracking-[0.3em] mb-2">
-              <ShieldAlert className="w-4 h-4" />
-              Enterprise Risk Management
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-brand-900 tracking-tighter leading-none">Risk Register</h1>
-            <p className="text-surface-500 mt-4 max-w-xl text-lg">
-              Live risk matrix, register records, and mitigation workflow backed by the risk service.
-            </p>
-          </motion.div>
-          <button
-            onClick={() => setShowCreateForm((current) => !current)}
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-brand-900 text-white font-bold shadow-button"
-          >
-            <Plus className="w-4 h-4" />
-            Add Risk Item
-          </button>
-        </div>
-
+    <PageContainer
+      title="Risk Register"
+      subtitle="Live risk matrix, register records, and mitigation workflow backed by the risk service."
+      maxWidth="xl"
+      actions={
+        <SMButton variant="primary" leftIcon={<Plus className="w-4 h-4" />} onClick={() => setShowCreateForm((current) => !current)}>Add Risk Item</SMButton>
+      }
+    >
+      <div className="space-y-8">
         {message && (
-          <div className={`rounded-2xl px-4 py-3 text-sm border ${message.toLowerCase().includes('failed') ? 'bg-red-50 text-red-700 border-red-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}`}>
+          <SMAlert
+            variant={message.toLowerCase().includes('failed') ? 'danger' : 'success'}
+            onDismiss={() => setMessage(null)}
+          >
             {message}
-          </div>
+          </SMAlert>
         )}
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
-            <div className="text-[10px] font-bold text-surface-400 uppercase tracking-widest mb-2">Register Total</div>
-            <div className="text-2xl font-bold text-brand-900">{statsLoading ? '...' : stats?.register.total ?? 0}</div>
-          </div>
-          <div className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
-            <div className="text-[10px] font-bold text-surface-400 uppercase tracking-widest mb-2">Open Risks</div>
-            <div className="text-2xl font-bold text-orange-600">{statsLoading ? '...' : stats?.register.open ?? 0}</div>
-          </div>
-          <div className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
-            <div className="text-[10px] font-bold text-surface-400 uppercase tracking-widest mb-2">Mitigated</div>
-            <div className="text-2xl font-bold text-emerald-600">{statsLoading ? '...' : stats?.register.mitigated ?? 0}</div>
-          </div>
-          <div className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
-            <div className="text-[10px] font-bold text-surface-400 uppercase tracking-widest mb-2">Critical Assessments</div>
-            <div className="text-2xl font-bold text-red-600">{statsLoading ? '...' : stats?.assessments.critical ?? 0}</div>
-          </div>
+          <SMStatCard label="Register Total" value={statsLoading ? '...' : String(stats?.register.total ?? 0)} loading={statsLoading} />
+          <SMStatCard label="Open Risks" value={statsLoading ? '...' : String(stats?.register.open ?? 0)} variant="warning" loading={statsLoading} />
+          <SMStatCard label="Mitigated" value={statsLoading ? '...' : String(stats?.register.mitigated ?? 0)} variant="success" loading={statsLoading} />
+          <SMStatCard label="Critical Assessments" value={statsLoading ? '...' : String(stats?.assessments.critical ?? 0)} variant="danger" loading={statsLoading} />
         </div>
 
         <AnimatePresence>
@@ -257,33 +227,24 @@ export const RiskRegister: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               onSubmit={handleCreateRisk}
-              className="bg-white p-6 rounded-[2.5rem] shadow-soft border border-surface-100 grid grid-cols-1 md:grid-cols-2 gap-4"
+              className="bg-surface-raised p-6 rounded-2xl shadow-soft border border-surface-border grid grid-cols-1 md:grid-cols-2 gap-4"
             >
-              <input value={createForm.riskCode} onChange={(event) => setCreateForm((current) => ({ ...current, riskCode: event.target.value }))} className="px-4 py-3 rounded-xl border border-surface-200 text-sm outline-none focus:border-brand-400" placeholder="Risk code" required />
-              <input value={createForm.hazard} onChange={(event) => setCreateForm((current) => ({ ...current, hazard: event.target.value }))} className="px-4 py-3 rounded-xl border border-surface-200 text-sm outline-none focus:border-brand-400" placeholder="Hazard" required />
-              <textarea value={createForm.consequence} onChange={(event) => setCreateForm((current) => ({ ...current, consequence: event.target.value }))} className="md:col-span-2 px-4 py-3 rounded-xl border border-surface-200 text-sm outline-none focus:border-brand-400 resize-none" rows={2} placeholder="Consequence" required />
+              <SMInput value={createForm.riskCode} onChange={(event) => setCreateForm((current) => ({ ...current, riskCode: event.target.value }))} placeholder="Risk code" required />
+              <SMInput value={createForm.hazard} onChange={(event) => setCreateForm((current) => ({ ...current, hazard: event.target.value }))} placeholder="Hazard" required />
+              <SMInput as="textarea" value={createForm.consequence} onChange={(event) => setCreateForm((current) => ({ ...current, consequence: event.target.value }))} className="md:col-span-2" rows={2} placeholder="Consequence" required />
               <div className="grid grid-cols-2 gap-3">
-                <label className="text-sm text-surface-500">
-                  <span className="block mb-2">Likelihood</span>
-                  <input type="number" min={1} max={5} value={createForm.likelihood} onChange={(event) => setCreateForm((current) => ({ ...current, likelihood: Number(event.target.value) }))} className="w-full px-4 py-3 rounded-xl border border-surface-200 outline-none focus:border-brand-400" />
-                </label>
-                <label className="text-sm text-surface-500">
-                  <span className="block mb-2">Severity</span>
-                  <input type="number" min={1} max={5} value={createForm.severity} onChange={(event) => setCreateForm((current) => ({ ...current, severity: Number(event.target.value) }))} className="w-full px-4 py-3 rounded-xl border border-surface-200 outline-none focus:border-brand-400" />
-                </label>
+                <SMInput type="number" label="Likelihood" min={1} max={5} value={String(createForm.likelihood)} onChange={(event) => setCreateForm((current) => ({ ...current, likelihood: Number(event.target.value) }))} />
+                <SMInput type="number" label="Severity" min={1} max={5} value={String(createForm.severity)} onChange={(event) => setCreateForm((current) => ({ ...current, severity: Number(event.target.value) }))} />
               </div>
-              <select value={createForm.controlType} onChange={(event) => setCreateForm((current) => ({ ...current, controlType: event.target.value as CreateRiskRegisterPayload['controlType'] }))} className="px-4 py-3 rounded-xl border border-surface-200 text-sm outline-none focus:border-brand-400">
-                {CONTROL_TYPES.map((type) => <option key={type} value={type}>{type}</option>)}
-              </select>
-              <input value={createForm.responsiblePerson} onChange={(event) => setCreateForm((current) => ({ ...current, responsiblePerson: event.target.value }))} className="px-4 py-3 rounded-xl border border-surface-200 text-sm outline-none focus:border-brand-400" placeholder="Responsible person" />
-              <input value={createForm.department} onChange={(event) => setCreateForm((current) => ({ ...current, department: event.target.value }))} className="px-4 py-3 rounded-xl border border-surface-200 text-sm outline-none focus:border-brand-400" placeholder="Department" />
-              <input value={createForm.location} onChange={(event) => setCreateForm((current) => ({ ...current, location: event.target.value }))} className="px-4 py-3 rounded-xl border border-surface-200 text-sm outline-none focus:border-brand-400" placeholder="Location" />
-              <input type="date" value={createForm.targetDate} onChange={(event) => setCreateForm((current) => ({ ...current, targetDate: event.target.value }))} className="px-4 py-3 rounded-xl border border-surface-200 text-sm outline-none focus:border-brand-400" />
-              <textarea value={createForm.mitigation} onChange={(event) => setCreateForm((current) => ({ ...current, mitigation: event.target.value }))} className="md:col-span-2 px-4 py-3 rounded-xl border border-surface-200 text-sm outline-none focus:border-brand-400 resize-none" rows={3} placeholder="Mitigation plan" />
-              <button type="submit" disabled={createRisk.loading} className="md:col-span-2 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-900 text-white font-bold disabled:opacity-60">
-                <Plus className="w-4 h-4" />
+              <SMSelect value={createForm.controlType} onChange={(event) => setCreateForm((current) => ({ ...current, controlType: event.target.value as CreateRiskRegisterPayload['controlType'] }))} options={CONTROL_TYPES.map((type) => ({ value: type, label: type }))} placeholder="Control type" />
+              <SMInput value={createForm.responsiblePerson} onChange={(event) => setCreateForm((current) => ({ ...current, responsiblePerson: event.target.value }))} placeholder="Responsible person" />
+              <SMInput value={createForm.department} onChange={(event) => setCreateForm((current) => ({ ...current, department: event.target.value }))} placeholder="Department" />
+              <SMInput value={createForm.location} onChange={(event) => setCreateForm((current) => ({ ...current, location: event.target.value }))} placeholder="Location" />
+              <SMInput type="date" label="Target Date" value={createForm.targetDate} onChange={(event) => setCreateForm((current) => ({ ...current, targetDate: event.target.value }))} />
+              <SMInput as="textarea" value={createForm.mitigation} onChange={(event) => setCreateForm((current) => ({ ...current, mitigation: event.target.value }))} className="md:col-span-2" rows={3} placeholder="Mitigation plan" />
+              <SMButton variant="primary" type="submit" className="md:col-span-2 w-full" loading={createRisk.loading} leftIcon={<Plus className="w-4 h-4" />}>
                 {createRisk.loading ? 'Saving...' : 'Create Risk Item'}
-              </button>
+              </SMButton>
             </motion.form>
           )}
         </AnimatePresence>
@@ -294,11 +255,11 @@ export const RiskRegister: React.FC = () => {
           </div>
 
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white p-8 rounded-[2.5rem] shadow-soft border border-surface-100 overflow-hidden">
+            <SMCard className="p-8 overflow-hidden">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                 <div>
-                  <h3 className="text-xl font-bold text-brand-900 tracking-tight">Active Risks</h3>
-                  <p className="text-sm text-surface-500 mt-1">Backend register items sorted by current risk score.</p>
+                  <h3 className="text-xl font-bold text-text-primary tracking-tight">Active Risks</h3>
+                  <p className="text-sm text-text-muted mt-1">Backend register items sorted by current risk score.</p>
                 </div>
                 <div className="flex flex-wrap gap-3">
                   <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-50 border border-surface-200 text-sm text-surface-500">
@@ -320,9 +281,9 @@ export const RiskRegister: React.FC = () => {
                       <option value="Critical">Critical</option>
                     </select>
                   </div>
-                  <button onClick={() => refetch()} className="text-[10px] font-bold text-brand-600 uppercase tracking-widest hover:text-brand-700 transition-colors flex items-center gap-1">
-                    Refresh <ArrowUpRight className="w-3 h-3" />
-                  </button>
+                  <SMButton variant="ghost" size="sm" onClick={() => refetch()} rightIcon={<ArrowUpRight className="w-3 h-3" />}>
+                    Refresh
+                  </SMButton>
                 </div>
               </div>
 
@@ -330,10 +291,10 @@ export const RiskRegister: React.FC = () => {
                 <table className="w-full text-left">
                   <thead>
                     <tr className="border-b border-surface-50">
-                      <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest">Hazard</th>
-                      <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest text-center">L x S</th>
-                      <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest text-center">Score</th>
-                      <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest">Status</th>
+                      <th className="pb-4 text-xs font-semibold text-text-muted uppercase tracking-widest">Hazard</th>
+                      <th className="pb-4 text-xs font-semibold text-text-muted uppercase tracking-widest text-center">L x S</th>
+                      <th className="pb-4 text-xs font-semibold text-text-muted uppercase tracking-widest text-center">Score</th>
+                      <th className="pb-4 text-xs font-semibold text-text-muted uppercase tracking-widest">Status</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-surface-50">
@@ -343,23 +304,23 @@ export const RiskRegister: React.FC = () => {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.03 }}
-                        className={`group transition-colors cursor-pointer ${selectedRiskId === risk.id ? 'bg-brand-50/70' : 'hover:bg-surface-50/50'}`}
+                        className={`group transition-colors cursor-pointer ${selectedRiskId === risk.id ? 'bg-accent-50/70' : 'hover:bg-surface-50/50'}`}
                         onClick={() => setSelectedRiskId(risk.id)}
                       >
                         <td className="py-4">
-                          <div className="font-bold text-brand-900 text-sm">{risk.hazard}</div>
-                          <div className="text-[10px] text-surface-500 mt-0.5">{risk.consequence}</div>
+                          <div className="font-bold text-text-primary text-sm">{risk.hazard}</div>
+                          <div className="text-xs text-text-muted mt-0.5">{risk.consequence}</div>
                         </td>
                         <td className="py-4 text-center text-xs font-medium text-surface-600">
                           {risk.likelihood} x {risk.severity}
                         </td>
                         <td className="py-4 text-center">
-                          <span className={`text-xs font-bold px-3 py-1 rounded-full border ${getRiskTone(risk.riskLevel)}`}>
+                          <SMBadge variant={getRiskBadgeVariant(risk.riskLevel)} size="sm">
                             {risk.riskScore}
-                          </span>
+                          </SMBadge>
                         </td>
                         <td className="py-4">
-                          <div className="flex items-center gap-2 text-xs font-medium text-surface-600">
+                          <div className="flex items-center gap-2 text-xs font-medium text-text-secondary">
                             {risk.status === 'Mitigated' || risk.status === 'Closed' ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <AlertTriangle className="w-4 h-4 text-orange-500" />}
                             {risk.status}
                           </div>
@@ -368,92 +329,93 @@ export const RiskRegister: React.FC = () => {
                     ))}
                   </tbody>
                 </table>
-                {!itemsLoading && items.length === 0 && <div className="text-sm text-surface-500 py-6">No risk register items found for current filters.</div>}
+                {!itemsLoading && items.length === 0 && <div className="text-sm text-text-muted py-6">No risk register items found for current filters.</div>}
               </div>
-            </div>
+            </SMCard>
 
-            <div className="bg-white p-8 rounded-[2.5rem] shadow-soft border border-surface-100">
+            <SMCard className="p-8">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                 <div>
-                  <h3 className="text-xl font-bold text-brand-900 tracking-tight">Risk Detail</h3>
-                  <p className="text-sm text-surface-500 mt-1">Selected register item detail from backend.</p>
+                  <h3 className="text-xl font-bold text-text-primary tracking-tight">Risk Detail</h3>
+                  <p className="text-sm text-text-muted mt-1">Selected register item detail from backend.</p>
                 </div>
                 {selectedRisk && (
                   <div className="flex gap-2">
                     {(['Monitoring', 'Mitigated', 'Closed'] as RiskRegisterItem['status'][]).map((status) => (
-                      <button
+                      <SMButton
                         key={status}
+                        size="sm"
+                        variant={selectedRisk.status === status ? 'primary' : 'secondary'}
                         onClick={() => handleStatusUpdate(status)}
-                        className={`px-3 py-2 rounded-xl text-xs font-bold border ${selectedRisk.status === status ? getStatusTone(status) : 'bg-white text-surface-600 border-surface-200'}`}
                       >
                         {status}
-                      </button>
+                      </SMButton>
                     ))}
                   </div>
                 )}
               </div>
 
-              {detailLoading && <div className="text-sm text-surface-500">Loading risk detail...</div>}
-              {!selectedRiskId && <div className="text-sm text-surface-500">Select a risk to view full backend detail.</div>}
+              {detailLoading && <div className="text-sm text-text-muted">Loading risk detail...</div>}
+              {!selectedRiskId && <div className="text-sm text-text-muted">Select a risk to view full backend detail.</div>}
 
               {selectedRisk && (
                 <div className="space-y-6">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold border ${getRiskTone(selectedRisk.riskLevel)}`}>{selectedRisk.riskLevel}</span>
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold border ${getStatusTone(selectedRisk.status)}`}>{selectedRisk.status}</span>
-                    <span className="px-3 py-1 rounded-full text-xs font-bold border bg-surface-50 text-surface-700 border-surface-200">{selectedRisk.riskCode}</span>
+                    <SMBadge variant={getRiskBadgeVariant(selectedRisk.riskLevel)}>{selectedRisk.riskLevel}</SMBadge>
+                    <SMBadge variant={getStatusBadgeVariant(selectedRisk.status)}>{selectedRisk.status}</SMBadge>
+                    <SMBadge variant="neutral">{selectedRisk.riskCode}</SMBadge>
                   </div>
 
                   <div>
-                    <h4 className="text-2xl font-bold text-brand-900">{selectedRisk.hazard}</h4>
-                    <p className="text-surface-500 mt-2">{selectedRisk.consequence}</p>
+                    <h4 className="text-2xl font-bold text-text-primary">{selectedRisk.hazard}</h4>
+                    <p className="text-text-muted mt-2">{selectedRisk.consequence}</p>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
                     <div className="p-4 rounded-2xl bg-surface-50 border border-surface-100">
-                      <div className="flex items-center gap-2 text-surface-400 text-[10px] uppercase tracking-widest font-bold"><Activity className="w-3 h-3" />Likelihood</div>
-                      <div className="text-xl font-bold text-brand-900 mt-2">{selectedRisk.likelihood}</div>
-                      <div className="text-xs text-surface-500">{selectedRisk.likelihoodLabel || 'Risk likelihood'}</div>
+                      <div className="flex items-center gap-2 text-text-muted text-xs uppercase tracking-widest font-semibold"><Activity className="w-3 h-3" />Likelihood</div>
+                      <div className="text-xl font-bold text-text-primary mt-2">{selectedRisk.likelihood}</div>
+                      <div className="text-xs text-text-muted">{selectedRisk.likelihoodLabel || 'Risk likelihood'}</div>
                     </div>
                     <div className="p-4 rounded-2xl bg-surface-50 border border-surface-100">
-                      <div className="flex items-center gap-2 text-surface-400 text-[10px] uppercase tracking-widest font-bold"><ShieldAlert className="w-3 h-3" />Severity</div>
-                      <div className="text-xl font-bold text-brand-900 mt-2">{selectedRisk.severity}</div>
-                      <div className="text-xs text-surface-500">{selectedRisk.severityLabel || 'Risk severity'}</div>
+                      <div className="flex items-center gap-2 text-text-muted text-xs uppercase tracking-widest font-semibold"><ShieldAlert className="w-3 h-3" />Severity</div>
+                      <div className="text-xl font-bold text-text-primary mt-2">{selectedRisk.severity}</div>
+                      <div className="text-xs text-text-muted">{selectedRisk.severityLabel || 'Risk severity'}</div>
                     </div>
                     <div className="p-4 rounded-2xl bg-surface-50 border border-surface-100">
-                      <div className="flex items-center gap-2 text-surface-400 text-[10px] uppercase tracking-widest font-bold"><Target className="w-3 h-3" />Owner</div>
-                      <div className="text-xl font-bold text-brand-900 mt-2">{selectedRisk.responsiblePerson || 'Unassigned'}</div>
-                      <div className="text-xs text-surface-500">{selectedRisk.controlType || 'No control type'}</div>
+                      <div className="flex items-center gap-2 text-text-muted text-xs uppercase tracking-widest font-semibold"><Target className="w-3 h-3" />Owner</div>
+                      <div className="text-xl font-bold text-text-primary mt-2">{selectedRisk.responsiblePerson || 'Unassigned'}</div>
+                      <div className="text-xs text-text-muted">{selectedRisk.controlType || 'No control type'}</div>
                     </div>
                     <div className="p-4 rounded-2xl bg-surface-50 border border-surface-100">
-                      <div className="flex items-center gap-2 text-surface-400 text-[10px] uppercase tracking-widest font-bold"><Clock className="w-3 h-3" />Target Date</div>
-                      <div className="text-xl font-bold text-brand-900 mt-2">{formatDate(selectedRisk.targetDate)}</div>
-                      <div className="text-xs text-surface-500">Due for mitigation review</div>
+                      <div className="flex items-center gap-2 text-text-muted text-xs uppercase tracking-widest font-semibold"><Clock className="w-3 h-3" />Target Date</div>
+                      <div className="text-xl font-bold text-text-primary mt-2">{formatDate(selectedRisk.targetDate)}</div>
+                      <div className="text-xs text-text-muted">Due for mitigation review</div>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="p-5 rounded-2xl bg-surface-50 border border-surface-100">
-                      <div className="flex items-center gap-2 text-brand-900 font-bold mb-2"><MapPin className="w-4 h-4" />Location</div>
-                      <div className="text-sm text-surface-600">{selectedRisk.location || 'No location assigned'}</div>
+                      <div className="flex items-center gap-2 text-text-primary font-bold mb-2"><MapPin className="w-4 h-4" />Location</div>
+                      <div className="text-sm text-text-secondary">{selectedRisk.location || 'No location assigned'}</div>
                     </div>
                     <div className="p-5 rounded-2xl bg-surface-50 border border-surface-100">
-                      <div className="flex items-center gap-2 text-brand-900 font-bold mb-2"><User className="w-4 h-4" />Department</div>
-                      <div className="text-sm text-surface-600">{selectedRisk.department || 'No department assigned'}</div>
+                      <div className="flex items-center gap-2 text-text-primary font-bold mb-2"><User className="w-4 h-4" />Department</div>
+                      <div className="text-sm text-text-secondary">{selectedRisk.department || 'No department assigned'}</div>
                     </div>
                   </div>
 
                   <div className="p-5 rounded-2xl bg-surface-50 border border-surface-100">
-                    <div className="text-brand-900 font-bold mb-2">Mitigation Strategy</div>
-                    <div className="text-sm text-surface-600 whitespace-pre-wrap">{selectedRisk.mitigation || 'No mitigation plan recorded yet.'}</div>
+                    <div className="text-text-primary font-bold mb-2">Mitigation Strategy</div>
+                    <div className="text-sm text-text-secondary whitespace-pre-wrap">{selectedRisk.mitigation || 'No mitigation plan recorded yet.'}</div>
                   </div>
                 </div>
               )}
-            </div>
+            </SMCard>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </PageContainer>
   );
 };
 

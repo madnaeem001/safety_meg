@@ -6,6 +6,7 @@ import {
   ChevronRight, ChevronDown, ChevronUp, Calendar, Shield, RefreshCw,
   Eye, Edit2, Trash2, BarChart3, Award, Settings, BookOpen
 } from 'lucide-react';
+import { SMButton } from '../../ui';
 
 // PDCA Phase definitions
 const PDCA_PHASES = [
@@ -356,10 +357,7 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
             className="w-full pl-10 pr-4 py-2.5 bg-surface-50 border border-surface-100 rounded-xl text-sm"
           />
         </div>
-        <button className="px-4 py-2.5 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 transition-colors flex items-center gap-2">
-          <Plus className="w-5 h-5" />
-          New Process
-        </button>
+        <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-5 h-5" />}>New Process</SMButton>
       </div>
 
       {/* PDCA Filter */}
@@ -512,10 +510,7 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="font-bold text-brand-900">Corrective & Preventive Actions</h3>
-        <button className="px-4 py-2.5 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 transition-colors flex items-center gap-2">
-          <Plus className="w-5 h-5" />
-          New CAPA
-        </button>
+        <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-5 h-5" />}>New CAPA</SMButton>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -597,10 +592,7 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="font-bold text-brand-900">Audit Schedule</h3>
-        <button className="px-4 py-2.5 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 transition-colors flex items-center gap-2">
-          <Plus className="w-5 h-5" />
-          Schedule Audit
-        </button>
+        <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-5 h-5" />}>Schedule Audit</SMButton>
       </div>
 
       <div className="space-y-3">

@@ -229,7 +229,7 @@ export const InvestigationReports: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-b from-surface-50 to-surface-100 pb-32">
 
 
-      <main className="max-w-5xl mx-auto px-5 py-8 space-y-8">
+      <main className="max-w-7xl mx-auto px-5 py-8 space-y-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}

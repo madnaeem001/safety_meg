@@ -65,7 +65,7 @@ export const PropertyIncidentReport = () => {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-6 py-8">
         <form onSubmit={handleSubmit} className="space-y-8">
           <section className="bg-white rounded-[2.5rem] p-8 border border-surface-100 shadow-soft space-y-6">
             <div className="flex items-center gap-3 mb-2">

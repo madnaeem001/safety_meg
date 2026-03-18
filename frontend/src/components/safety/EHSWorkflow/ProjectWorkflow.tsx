@@ -16,6 +16,7 @@ import {
   BarChart3
 } from 'lucide-react';
 import { ScheduleTask, RFI } from '../../../data/mockProjectManagement';
+import { SMButton } from '../../ui';
 
 const PROJECT_SCHEDULE: ScheduleTask[] = [];
 const RFI_REGISTER: RFI[] = [];
@@ -210,10 +211,7 @@ export const ProjectWorkflow: React.FC<ProjectWorkflowProps> = () => {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold text-surface-800">Project Schedule</h3>
-        <button className="flex items-center gap-1.5 px-3 py-1.5 bg-brand-600 text-white text-xs font-medium rounded-lg hover:bg-brand-700 transition-colors">
-          <Plus className="w-3 h-3" />
-          Add Task
-        </button>
+        <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-3 h-3" />}>Add Task</SMButton>
       </div>
       
       <div className="bg-white rounded-xl border border-surface-200 overflow-hidden">
@@ -272,10 +270,7 @@ export const ProjectWorkflow: React.FC<ProjectWorkflowProps> = () => {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold text-surface-800">RFI Register</h3>
-        <button className="flex items-center gap-1.5 px-3 py-1.5 bg-brand-600 text-white text-xs font-medium rounded-lg hover:bg-brand-700 transition-colors">
-          <Plus className="w-3 h-3" />
-          New RFI
-        </button>
+        <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-3 h-3" />}>New RFI</SMButton>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -325,10 +320,7 @@ export const ProjectWorkflow: React.FC<ProjectWorkflowProps> = () => {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold text-surface-800">Project Milestones</h3>
-        <button className="flex items-center gap-1.5 px-3 py-1.5 bg-brand-600 text-white text-xs font-medium rounded-lg hover:bg-brand-700 transition-colors">
-          <Plus className="w-3 h-3" />
-          Add Milestone
-        </button>
+        <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-3 h-3" />}>Add Milestone</SMButton>
       </div>
 
       <div className="bg-white rounded-xl border border-surface-200 p-4">
@@ -385,10 +377,7 @@ export const ProjectWorkflow: React.FC<ProjectWorkflowProps> = () => {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold text-surface-800">Resource Allocation</h3>
-        <button className="flex items-center gap-1.5 px-3 py-1.5 bg-brand-600 text-white text-xs font-medium rounded-lg hover:bg-brand-700 transition-colors">
-          <Plus className="w-3 h-3" />
-          Add Resource
-        </button>
+        <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-3 h-3" />}>Add Resource</SMButton>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">

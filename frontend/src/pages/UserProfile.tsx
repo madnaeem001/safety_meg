@@ -225,25 +225,25 @@ export const UserProfile: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 dark:bg-slate-900 pb-24">
+    <div className="min-h-screen text-text-primary pb-24 transition-colors duration-300">
 
       
       {/* Header */}
-      <div className="sticky top-14 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-surface-200/60 dark:border-slate-700/60">
-        <div className="max-w-2xl mx-auto px-4 py-3">
+      <div className="sticky top-14 z-30 bg-surface-raised backdrop-blur-xl border-b border-surface-border/60 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate(-1)}
-              className="p-2 -ml-2 rounded-xl hover:bg-surface-100 dark:hover:bg-slate-800 transition-colors touch-target"
+              className="p-2 -ml-2 rounded-xl hover:bg-surface-overlay transition-colors touch-target"
               aria-label="Go back"
             >
-              <ArrowLeft className="w-5 h-5 text-surface-600 dark:text-surface-300" />
+              <ArrowLeft className="w-5 h-5 text-text-secondary" />
             </button>
-            <h1 className="flex-1 text-lg font-semibold text-slate-900 dark:text-white">Profile</h1>
+            <h1 className="flex-1 text-lg font-semibold text-text-primary">Profile</h1>
             {!isEditing ? (
               <button
                 onClick={() => setIsEditing(true)}
-                className="p-2 rounded-xl hover:bg-surface-100 dark:hover:bg-slate-800 transition-colors touch-target"
+                className="p-2 rounded-xl hover:bg-surface-overlay transition-colors touch-target"
                 aria-label="Edit profile"
               >
                 <Edit2 className="w-5 h-5 text-brand-500" />
@@ -252,7 +252,7 @@ export const UserProfile: React.FC = () => {
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleCancel}
-                  className="p-2 rounded-xl hover:bg-surface-100 dark:hover:bg-slate-800 transition-colors touch-target"
+                  className="p-2 rounded-xl hover:bg-surface-overlay transition-colors touch-target"
                   aria-label="Cancel editing"
                 >
                   <X className="w-5 h-5 text-surface-500" />
@@ -283,7 +283,7 @@ export const UserProfile: React.FC = () => {
         </motion.div>
       )}
 
-      <main className="max-w-2xl mx-auto px-4 py-6">
+      <main className="max-w-7xl mx-auto px-4 py-6">
         {/* Profile Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

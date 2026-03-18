@@ -24,6 +24,8 @@ import {
   Download,
   BarChart3
 } from 'lucide-react';
+import { SMButton } from '../../components/ui';
+import { useToast } from '../../hooks/useToast';
 import { FishboneDiagram } from './FishboneDiagram';
 import { FiveWhysAnalysis } from './FiveWhysAnalysis';
 import { LessonsLearnedPanel } from './LessonsLearnedPanel';
@@ -153,6 +155,7 @@ interface UnifiedInvestigationProps {
 }
 
 export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBack }) => {
+  const toast = useToast();
   const [selectedInvestigation, setSelectedInvestigation] = useState<Investigation | null>(null);
   const [activePhase, setActivePhase] = useState<InvestigationPhase>('overview');
   const [filterStatus, setFilterStatus] = useState<string>('all');
@@ -246,10 +249,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
             <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-white">Witness Statements</h3>
-                <button className="flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-500 rounded-xl text-white text-sm font-medium transition-colors">
-                  <Plus className="w-4 h-4" />
-                  Add Witness
-                </button>
+                <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />}>Add Witness</SMButton>
               </div>
               <div className="space-y-4">
                 {[1, 2].map((i) => (
@@ -340,7 +340,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
             </button>
             <FishboneDiagram
               problemStatement={selectedInvestigation.title}
-              onSave={(data) => console.log('Fishbone saved:', data)}
+              onSave={() => toast.success('Fishbone analysis saved.')}
             />
           </div>
         );
@@ -357,7 +357,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
             </button>
             <FiveWhysAnalysis
               problemStatement={selectedInvestigation.title}
-              onComplete={(analysis) => console.log('5 Whys completed:', analysis)}
+              onComplete={() => toast.success('5 Whys analysis completed.')}
             />
           </div>
         );
@@ -384,13 +384,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
             <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-white">Corrective Actions (CAPA)</h3>
-                <button
-                  onClick={() => setShowAddAction(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-500 rounded-xl text-white text-sm font-medium transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
-                  Add Action
-                </button>
+                <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />} onClick={() => setShowAddAction(true)}>Add Action</SMButton>
               </div>
 
               <div className="space-y-4">
@@ -449,7 +443,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
           <LessonsLearnedPanel
             incidentId={selectedInvestigation.incidentId}
             incidentTitle={selectedInvestigation.title}
-            onSave={(data) => console.log('Lessons saved:', data)}
+            onSave={() => toast.success('Lessons learned saved.')}
           />
         );
 
@@ -484,10 +478,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
             </div>
             <p className="text-sm text-slate-400">{selectedInvestigation.title}</p>
           </div>
-          <button className="flex items-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-500 rounded-xl text-white font-medium transition-colors">
-            <Save className="w-4 h-4" />
-            Save Progress
-          </button>
+          <SMButton variant="primary" leftIcon={<Save className="w-4 h-4" />}>Save Progress</SMButton>
         </div>
 
         {/* Phase Navigation */}
@@ -571,10 +562,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
             <option value="review">Under Review</option>
             <option value="completed">Completed</option>
           </select>
-          <button className="flex items-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-500 rounded-xl text-white font-medium transition-colors">
-            <Plus className="w-4 h-4" />
-            New Investigation
-          </button>
+          <SMButton variant="primary" leftIcon={<Plus className="w-4 h-4" />}>New Investigation</SMButton>
         </div>
       </div>
 

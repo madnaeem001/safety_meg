@@ -14,7 +14,7 @@ export const SkeletonCard: React.FC = () => (
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
-    className="bg-white/95 backdrop-blur-xl p-5 rounded-3xl shadow-card border border-surface-100/40 flex flex-col gap-3.5"
+    className="bg-surface-raised backdrop-blur-xl p-5 rounded-3xl shadow-card border border-surface-border flex flex-col gap-3.5"
   >
     <SkeletonBase className="w-11 h-11 rounded-2xl" />
     <div className="space-y-2">
@@ -47,7 +47,7 @@ export const SkeletonActionCard: React.FC<{ featured?: boolean }> = ({ featured 
     className={`p-5 rounded-3xl h-[140px] flex flex-col justify-between ${
       featured 
         ? 'bg-gradient-to-br from-brand-600/80 to-brand-800/80 col-span-2' 
-        : 'bg-white/95 backdrop-blur-xl shadow-card border border-surface-100/40'
+        : 'bg-surface-raised backdrop-blur-xl shadow-card border border-surface-border'
     }`}
   >
     <SkeletonBase className={`w-11 h-11 rounded-2xl ${featured ? 'bg-white/10' : ''}`} />
@@ -63,7 +63,7 @@ export const SkeletonChart: React.FC<{ height?: string }> = ({ height = 'h-48' }
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
-    className={`bg-white/95 backdrop-blur-xl rounded-3xl p-6 shadow-card border border-surface-100/40 ${height}`}
+    className={`bg-surface-raised backdrop-blur-xl rounded-3xl p-6 shadow-card border border-surface-border ${height}`}
   >
     <div className="flex items-center justify-between mb-4">
       <SkeletonBase className="h-5 w-32" />
@@ -82,7 +82,7 @@ export const SkeletonIncidentCard: React.FC = () => (
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
-    className="bg-white/95 backdrop-blur-xl rounded-3xl p-5 shadow-card border border-surface-100/40"
+    className="bg-surface-raised backdrop-blur-xl rounded-3xl p-5 shadow-card border border-surface-border"
   >
     <div className="flex justify-between mb-3">
       <SkeletonBase className="h-6 w-16 rounded-lg" />
@@ -133,7 +133,7 @@ export const SkeletonChecklist: React.FC = () => (
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
-    className="bg-white/95 backdrop-blur-xl rounded-[2rem] p-6 shadow-card border border-surface-100/40"
+    className="bg-surface-raised backdrop-blur-xl rounded-[2rem] p-6 shadow-card border border-surface-border"
   >
     <div className="flex justify-between items-center mb-6">
       <div className="space-y-2">

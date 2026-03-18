@@ -59,6 +59,8 @@ import {
   useLaggingIndicators,
   useMonthlyTrend,
 } from '../api/hooks/useAPIHooks';
+import { SMButton } from '../components/ui';
+import PageContainer from '../layouts/PageContainer';
 
 const DEPT_COLORS = ['#14b8a6', '#6366f1', '#f59e0b', '#ef4444', '#10b981', '#8b5cf6', '#0ea5e9', '#f97316'];
 const CATEGORY_COLORS = ['#10b981', '#3b82f6', '#14b8a6', '#f59e0b'];
@@ -176,12 +178,12 @@ const SectionEmptyState = ({
   title: string;
   description: string;
 }) => (
-  <div className="rounded-2xl border border-dashed border-surface-200 bg-white p-8 text-center">
-    <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-100 text-surface-400">
+  <div className="rounded-2xl border border-dashed border-surface-200 bg-surface-raised p-8 text-center">
+    <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-100 text-text-muted">
       <Database className="h-5 w-5" />
     </div>
-    <p className="font-medium text-surface-700">{title}</p>
-    <p className="mt-1 text-sm text-surface-500">{description}</p>
+    <p className="font-medium text-text-primary">{title}</p>
+    <p className="mt-1 text-sm text-text-secondary">{description}</p>
   </div>
 );
 
@@ -190,10 +192,10 @@ const KPICard = ({ data, index }: { data: KpiCardData; index: number }) => (
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay: index * 0.08 }}
-    className="rounded-2xl border border-surface-100 bg-white p-4 shadow-soft"
+    className="rounded-2xl border border-surface-100 bg-surface-raised p-4 shadow-soft"
   >
     <div className="mb-2 flex items-start justify-between">
-      <span className="text-sm font-medium text-surface-500">{data.label}</span>
+      <span className="text-sm font-medium text-text-muted">{data.label}</span>
       <div className={`flex items-center rounded-full px-2 py-1 text-xs font-bold ${
         data.trend === 'up' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
       }`}>
@@ -201,8 +203,8 @@ const KPICard = ({ data, index }: { data: KpiCardData; index: number }) => (
         {data.change}
       </div>
     </div>
-    <div className="text-2xl font-bold text-brand-900">{data.value}</div>
-    <div className="mt-1 text-xs text-surface-400">{data.period}</div>
+    <div className="text-2xl font-bold text-text-primary">{data.value}</div>
+    <div className="mt-1 text-xs text-text-muted">{data.period}</div>
   </motion.div>
 );
 
@@ -214,16 +216,16 @@ const QualityScoreGauge = ({ score, previousScore }: { score: number; previousSc
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-900 to-brand-950 p-6 text-white shadow-xl"
+      className="relative overflow-hidden rounded-3xl bg-primary p-6 text-white shadow-xl"
     >
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/20 bg-white/10 backdrop-blur-md">
-            <Award className="h-7 w-7 text-brand-300" />
+            <Award className="h-7 w-7 text-accent-300" />
           </div>
           <div>
             <h3 className="text-lg font-bold">Safety Score</h3>
-            <p className="text-xs text-brand-300">Backend-derived executive KPI</p>
+            <p className="text-xs text-accent-300">Backend-derived executive KPI</p>
           </div>
         </div>
         <div className={`flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-bold ${
@@ -252,7 +254,7 @@ const QualityScoreGauge = ({ score, previousScore }: { score: number; previousSc
         </ResponsiveContainer>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-5xl font-bold">{score}</span>
-          <span className="text-sm text-brand-300">out of 100</span>
+          <span className="text-sm text-accent-300">out of 100</span>
         </div>
       </div>
 
@@ -284,15 +286,15 @@ const QualityEventCard = ({ event, index }: { event: ActivityEvent; index: numbe
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.08 }}
-      className="flex items-start gap-3 rounded-2xl border border-surface-100 bg-white p-4 shadow-soft"
+      className="flex items-start gap-3 rounded-2xl border border-surface-100 bg-surface-raised p-4 shadow-soft"
     >
       <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${colorClass}`}>
         <Icon className="h-5 w-5" />
       </div>
       <div className="min-w-0 flex-1">
-        <h4 className="text-sm font-semibold text-brand-900">{event.title}</h4>
-        <p className="mt-0.5 line-clamp-2 text-xs text-surface-500">{event.description}</p>
-        <span className="mt-1 block text-xs text-surface-400">
+        <h4 className="text-sm font-semibold text-text-primary">{event.title}</h4>
+        <p className="mt-0.5 line-clamp-2 text-xs text-text-secondary">{event.description}</p>
+        <span className="mt-1 block text-xs text-text-muted">
           {new Date(event.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
         </span>
       </div>
@@ -318,14 +320,14 @@ const BenchmarkRow = ({ benchmark, index }: { benchmark: BenchmarkItem; index: n
       <div className="flex items-center gap-3">
         <div className={`h-8 w-2 rounded-full ${isAboveTarget ? 'bg-emerald-500' : 'bg-amber-500'}`} />
         <div>
-          <span className="text-sm font-medium text-brand-900">{benchmark.metric}</span>
-          <div className="text-xs text-surface-500">{benchmark.unit || 'benchmark'}</div>
+          <span className="text-sm font-medium text-text-primary">{benchmark.metric}</span>
+          <div className="text-xs text-text-secondary">{benchmark.unit || 'benchmark'}</div>
         </div>
       </div>
       <div className="flex items-center gap-4">
         <div className="text-right">
-          <div className="font-bold text-brand-900">{benchmark.current}</div>
-          <div className={`text-xs ${isBetterThanIndustry ? 'text-emerald-600' : 'text-surface-500'}`}>
+          <div className="font-bold text-text-primary">{benchmark.current}</div>
+          <div className={`text-xs ${isBetterThanIndustry ? 'text-emerald-600' : 'text-text-secondary'}`}>
             vs {benchmark.industryAvg} avg
           </div>
         </div>
@@ -367,7 +369,7 @@ const DepartmentCard = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08 }}
-      className="overflow-hidden rounded-2xl border border-surface-100 bg-white shadow-soft"
+      className="overflow-hidden rounded-2xl border border-surface-100 bg-surface-raised shadow-soft"
     >
       <button
         onClick={onToggle}
@@ -381,15 +383,15 @@ const DepartmentCard = ({
             <Building2 className="h-5 w-5" style={{ color: dept.color }} />
           </div>
           <div>
-            <h4 className="font-semibold text-brand-900">{dept.name}</h4>
-            <span className="text-xs text-surface-500">{dept.summaryLabel}</span>
+            <h4 className="font-semibold text-text-primary">{dept.name}</h4>
+            <span className="text-xs text-text-secondary">{dept.summaryLabel}</span>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <div className={`rounded-full px-3 py-1.5 text-sm font-bold ${getScoreColor(dept.metrics.safetyScore)}`}>
             {dept.metrics.safetyScore}%
           </div>
-          {isExpanded ? <ChevronDown className="h-5 w-5 rotate-180 text-surface-400" /> : <ChevronDown className="h-5 w-5 text-surface-400" />}
+          {isExpanded ? <ChevronDown className="h-5 w-5 rotate-180 text-text-muted" /> : <ChevronDown className="h-5 w-5 text-text-muted" />}
         </div>
       </button>
 
@@ -403,26 +405,26 @@ const DepartmentCard = ({
           <div className="space-y-4 p-4">
             <div className="grid grid-cols-3 gap-2">
               <div className="rounded-xl bg-surface-50 p-2 text-center">
-                <div className="text-lg font-bold text-brand-900">{dept.metrics.incidents}</div>
-                <div className="text-xs text-surface-500">Incidents</div>
+                <div className="text-lg font-bold text-text-primary">{dept.metrics.incidents}</div>
+                <div className="text-xs text-text-secondary">Incidents</div>
               </div>
               <div className="rounded-xl bg-surface-50 p-2 text-center">
-                <div className="text-lg font-bold text-brand-900">{dept.metrics.highSeverityIncidents}</div>
-                <div className="text-xs text-surface-500">High Severity</div>
+                <div className="text-lg font-bold text-text-primary">{dept.metrics.highSeverityIncidents}</div>
+                <div className="text-xs text-text-secondary">High Severity</div>
               </div>
               <div className="rounded-xl bg-surface-50 p-2 text-center">
-                <div className="text-lg font-bold text-brand-900">{dept.metrics.openActions}</div>
-                <div className="text-xs text-surface-500">Open CAPAs</div>
+                <div className="text-lg font-bold text-text-primary">{dept.metrics.openActions}</div>
+                <div className="text-xs text-text-secondary">Open CAPAs</div>
               </div>
             </div>
 
             <div className="space-y-3">
               <div>
                 <div className="mb-1 flex justify-between text-xs">
-                  <span className="flex items-center gap-1 text-surface-600">
+                  <span className="flex items-center gap-1 text-text-secondary">
                     <Shield className="h-3 w-3" /> Safety score
                   </span>
-                  <span className="font-medium text-brand-900">{dept.metrics.safetyScore}%</span>
+                  <span className="font-medium text-text-primary">{dept.metrics.safetyScore}%</span>
                 </div>
                 <div className="h-1.5 overflow-hidden rounded-full bg-surface-100">
                   <div className="h-full rounded-full" style={{ width: `${dept.metrics.safetyScore}%`, backgroundColor: dept.color }} />
@@ -430,10 +432,10 @@ const DepartmentCard = ({
               </div>
               <div>
                 <div className="mb-1 flex justify-between text-xs">
-                  <span className="flex items-center gap-1 text-surface-600">
+                  <span className="flex items-center gap-1 text-text-secondary">
                     <GraduationCap className="h-3 w-3" /> CAPA closure
                   </span>
-                  <span className="font-medium text-brand-900">{dept.metrics.closureRate}%</span>
+                  <span className="font-medium text-text-primary">{dept.metrics.closureRate}%</span>
                 </div>
                 <div className="h-1.5 overflow-hidden rounded-full bg-surface-100">
                   <div className="h-full rounded-full" style={{ width: `${dept.metrics.closureRate}%`, backgroundColor: dept.color }} />
@@ -441,7 +443,7 @@ const DepartmentCard = ({
               </div>
             </div>
 
-            <div className="rounded-xl bg-surface-50 p-3 text-xs text-surface-600">
+            <div className="rounded-xl bg-surface-50 p-3 text-xs text-text-secondary">
               {dept.metrics.totalCapas} total CAPAs tracked for this department, with {dept.metrics.highSeverityIncidents} high-severity incidents currently influencing the score.
             </div>
           </div>
@@ -695,7 +697,7 @@ export const Analytics: React.FC = () => {
     return [
       { label: 'Predictive Risk Score', value: riskLevel, icon: Brain, color: riskLevel === 'High' ? 'text-red-400' : riskLevel === 'Moderate' ? 'text-yellow-400' : 'text-green-400' },
       { label: 'Flagged Departments', value: `${flaggedDepartments}`, icon: ShieldAlert, color: flaggedDepartments > 0 ? 'text-yellow-400' : 'text-green-400' },
-      { label: 'Signal Coverage', value: `${indicatorCoverage} feeds`, icon: Zap, color: 'text-brand-400' },
+      { label: 'Signal Coverage', value: `${indicatorCoverage} feeds`, icon: Zap, color: 'text-accent-400' },
     ];
   }, [baseDepartments, executiveKpis, incidentTrendData, laggingIndicators, leadingIndicators]);
 
@@ -753,26 +755,26 @@ export const Analytics: React.FC = () => {
     <div className="min-h-screen bg-surface-50 pb-24">
       <div className="safe-top sticky top-[72px] z-50 flex h-16 items-center gap-3 border-b border-surface-200 bg-white/80 px-4 shadow-sm backdrop-blur-md">
         <button onClick={() => navigate(-1)} className="-ml-2 rounded-full p-2 transition-colors hover:bg-surface-100">
-          <ArrowLeft className="h-6 w-6 text-surface-600" />
+          <ArrowLeft className="h-6 w-6 text-text-secondary" />
         </button>
-        <h1 className="flex items-center gap-2 text-xl font-bold tracking-tight text-brand-900">
-          <Activity className="h-6 w-6 text-brand-600" />
+        <h1 className="flex items-center gap-2 text-xl font-bold tracking-tight text-text-primary">
+          <Activity className="h-6 w-6 text-accent" />
           Analytics & KPIs
         </h1>
       </div>
 
-      <main className="mx-auto max-w-md space-y-6 px-4 py-6">
+      <main className="mx-auto max-w-7xl space-y-6 px-4 py-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl border border-surface-100 bg-white p-4 shadow-soft"
+          className="rounded-2xl border border-surface-100 bg-surface-raised p-4 shadow-soft"
         >
           <div className="mb-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-brand-500" />
-              <span className="text-sm font-semibold text-brand-900">Date Range</span>
+              <Calendar className="h-5 w-5 text-accent" />
+              <span className="text-sm font-semibold text-text-primary">Date Range</span>
             </div>
-            <span className="text-xs text-surface-500">{getDateRangeLabel()}</span>
+            <span className="text-xs text-text-secondary">{getDateRangeLabel()}</span>
           </div>
           <div className="flex gap-2">
             {[
@@ -787,8 +789,8 @@ export const Analytics: React.FC = () => {
                 onClick={() => setDateRange(option.value as DateRange)}
                 className={`flex-1 rounded-xl py-2 text-xs font-semibold transition-all ${
                   dateRange === option.value
-                    ? 'bg-brand-500 text-white shadow-md'
-                    : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
+                    ? 'bg-accent text-white shadow-md'
+                    : 'bg-surface-100 text-text-secondary hover:bg-surface-200'
                 }`}
               >
                 {option.label}
@@ -817,10 +819,10 @@ export const Analytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="rounded-3xl border border-surface-100 bg-white p-5 shadow-soft"
+          className="rounded-3xl border border-surface-100 bg-surface-raised p-5 shadow-soft"
         >
-          <h3 className="mb-4 flex items-center gap-2 font-bold text-brand-900">
-            <Shield className="h-5 w-5 text-brand-500" />
+          <h3 className="mb-4 flex items-center gap-2 font-bold text-text-primary">
+            <Shield className="h-5 w-5 text-accent" />
             Backend Quality Breakdown
           </h3>
           {qualityCategories.length > 0 ? (
@@ -828,8 +830,8 @@ export const Analytics: React.FC = () => {
               {qualityCategories.map((category, index) => (
                 <div key={category.name} className="space-y-1">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="font-medium text-surface-700">{category.name}</span>
-                    <span className="font-bold text-brand-900">{category.score}%</span>
+                    <span className="font-medium text-text-primary">{category.name}</span>
+                    <span className="font-bold text-text-primary">{category.score}%</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-surface-100">
                     <motion.div
@@ -868,14 +870,14 @@ export const Analytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="rounded-3xl border border-surface-100 bg-white p-5 shadow-soft"
+          className="rounded-3xl border border-surface-100 bg-surface-raised p-5 shadow-soft"
         >
           <div className="mb-6 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 font-bold text-brand-900">
-              <TrendingUp className="h-5 w-5 text-brand-500" />
+            <h3 className="flex items-center gap-2 font-bold text-text-primary">
+              <TrendingUp className="h-5 w-5 text-accent" />
               Operational Trend
             </h3>
-            <span className="rounded-full bg-surface-100 px-2 py-1 text-xs font-medium text-surface-500">{getDateRangeLabel()}</span>
+            <span className="rounded-full bg-surface-100 px-2 py-1 text-xs font-medium text-text-secondary">{getDateRangeLabel()}</span>
           </div>
           {qualityTrend.length > 0 ? (
             <div className="h-56 w-full">
@@ -908,11 +910,11 @@ export const Analytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="rounded-3xl border border-surface-100 bg-white p-5 shadow-soft"
+          className="rounded-3xl border border-surface-100 bg-surface-raised p-5 shadow-soft"
         >
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 font-bold text-brand-900">
-              <FileCheck className="h-5 w-5 text-brand-500" />
+            <h3 className="flex items-center gap-2 font-bold text-text-primary">
+              <FileCheck className="h-5 w-5 text-accent" />
               Compliance & Action Status
             </h3>
             <span className={`rounded-full px-3 py-1 text-sm font-bold ${
@@ -943,9 +945,9 @@ export const Analytics: React.FC = () => {
                 {complianceSummary.byCategory.length > 0 ? (
                   complianceSummary.byCategory.map((category) => (
                     <div key={category.category} className="flex items-center justify-between rounded-lg bg-surface-50 p-2 text-sm">
-                      <span className="font-medium text-surface-700">{category.category}</span>
+                      <span className="font-medium text-text-primary">{category.category}</span>
                       <div className="flex items-center gap-2">
-                        <span className="text-surface-500">{category.compliant}/{category.total}</span>
+                        <span className="text-text-secondary">{category.compliant}/{category.total}</span>
                         <span className={`font-bold ${category.rate >= 80 ? 'text-emerald-600' : 'text-amber-600'}`}>{category.rate}%</span>
                       </div>
                     </div>
@@ -970,14 +972,14 @@ export const Analytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.52 }}
-          className="rounded-3xl border border-surface-100 bg-white p-5 shadow-soft"
+          className="rounded-3xl border border-surface-100 bg-surface-raised p-5 shadow-soft"
         >
           <div className="mb-6 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 font-bold text-brand-900">
-              <TrendingUp className="h-5 w-5 text-brand-500" />
+            <h3 className="flex items-center gap-2 font-bold text-text-primary">
+              <TrendingUp className="h-5 w-5 text-accent" />
               Incident Trend
             </h3>
-            <span className="rounded-full bg-surface-100 px-2 py-1 text-xs font-medium text-surface-500">{getDateRangeLabel()}</span>
+            <span className="rounded-full bg-surface-100 px-2 py-1 text-xs font-medium text-text-secondary">{getDateRangeLabel()}</span>
           </div>
           {incidentTrendData.length > 0 ? (
             <div className="h-56 w-full">
@@ -1015,14 +1017,14 @@ export const Analytics: React.FC = () => {
           className="space-y-4"
         >
           <div className="flex items-center justify-between">
-            <h3 className="flex items-center gap-2 font-bold text-brand-900">
-              <Users className="h-5 w-5 text-brand-500" />
+            <h3 className="flex items-center gap-2 font-bold text-text-primary">
+              <Users className="h-5 w-5 text-accent" />
               Department Comparison
             </h3>
             <button
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
-                hasActiveFilters ? 'bg-brand-500 text-white' : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
+                hasActiveFilters ? 'bg-accent text-white' : 'bg-surface-100 text-text-secondary hover:bg-surface-200'
               }`}
             >
               <SlidersHorizontal className="h-4 w-4" />
@@ -1040,19 +1042,19 @@ export const Analytics: React.FC = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="space-y-4 rounded-2xl border border-surface-100 bg-white p-4 shadow-soft"
+              className="space-y-4 rounded-2xl border border-surface-100 bg-surface-raised p-4 shadow-soft"
             >
               <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-brand-900">Filters</span>
+                <span className="text-sm font-semibold text-text-primary">Filters</span>
                 {hasActiveFilters && (
-                  <button onClick={clearFilters} className="flex items-center gap-1 text-xs font-medium text-brand-600 hover:text-brand-700">
+                  <button onClick={clearFilters} className="flex items-center gap-1 text-xs font-medium text-accent hover:text-accent">
                     <X className="h-3 w-3" /> Clear All
                   </button>
                 )}
               </div>
 
               <div>
-                <label className="mb-2 block text-xs font-medium text-surface-500">Select Departments</label>
+                <label className="mb-2 block text-xs font-medium text-text-muted">Select Departments</label>
                 <div className="flex flex-wrap gap-2">
                   {baseDepartments.map((department) => (
                     <button
@@ -1061,7 +1063,7 @@ export const Analytics: React.FC = () => {
                       className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
                         selectedDepts.includes(department.id)
                           ? 'text-white'
-                          : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
+                          : 'bg-surface-100 text-text-secondary hover:bg-surface-200'
                       }`}
                       style={selectedDepts.includes(department.id) ? { backgroundColor: department.color } : {}}
                     >
@@ -1072,7 +1074,7 @@ export const Analytics: React.FC = () => {
               </div>
 
               <div>
-                <label className="mb-2 block text-xs font-medium text-surface-500">Safety Score Range</label>
+                <label className="mb-2 block text-xs font-medium text-text-muted">Safety Score Range</label>
                 <div className="flex gap-2">
                   {[
                     { value: 'all', label: 'All' },
@@ -1084,7 +1086,7 @@ export const Analytics: React.FC = () => {
                       key={option.value}
                       onClick={() => setScoreFilter(option.value as 'all' | 'high' | 'medium' | 'low')}
                       className={`flex-1 rounded-xl px-2 py-2 text-xs font-medium transition-all ${
-                        scoreFilter === option.value ? 'bg-brand-500 text-white' : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
+                        scoreFilter === option.value ? 'bg-accent text-white' : 'bg-surface-100 text-text-secondary hover:bg-surface-200'
                       }`}
                     >
                       {option.label}
@@ -1094,7 +1096,7 @@ export const Analytics: React.FC = () => {
               </div>
 
               <div>
-                <label className="mb-2 block text-xs font-medium text-surface-500">Sort By</label>
+                <label className="mb-2 block text-xs font-medium text-text-muted">Sort By</label>
                 <div className="flex gap-2">
                   {[
                     { value: 'score', label: 'Safety Score' },
@@ -1105,7 +1107,7 @@ export const Analytics: React.FC = () => {
                       key={option.value}
                       onClick={() => setSortBy(option.value as 'score' | 'incidents' | 'name')}
                       className={`flex-1 rounded-xl px-2 py-2 text-xs font-medium transition-all ${
-                        sortBy === option.value ? 'bg-brand-500 text-white' : 'bg-surface-100 text-surface-600 hover:bg-surface-200'
+                        sortBy === option.value ? 'bg-accent text-white' : 'bg-surface-100 text-text-secondary hover:bg-surface-200'
                       }`}
                     >
                       {option.label}
@@ -1117,20 +1119,20 @@ export const Analytics: React.FC = () => {
           )}
 
           {sortedDepartments.length > 0 ? (
-            <div className="rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-50 to-white p-4">
+            <div className="rounded-2xl border border-accent-100 bg-accent-50 p-4">
               <div className="mb-3 flex items-center gap-2">
-                <Award className="h-4 w-4 text-brand-600" />
-                <span className="text-sm font-semibold text-brand-900">Top Performers</span>
+                <Award className="h-4 w-4 text-accent" />
+                <span className="text-sm font-semibold text-text-primary">Top Performers</span>
               </div>
               <div className="flex gap-2 overflow-x-auto pb-1">
                 {sortedDepartments.slice(0, 3).map((department, index) => (
-                  <div key={department.id} className="flex flex-shrink-0 items-center gap-2 rounded-xl border border-surface-100 bg-white px-3 py-2">
+                  <div key={department.id} className="flex flex-shrink-0 items-center gap-2 rounded-xl border border-surface-100 bg-surface-raised px-3 py-2">
                     <span className={`flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold ${
-                      index === 0 ? 'bg-amber-100 text-amber-700' : index === 1 ? 'bg-surface-200 text-surface-600' : 'bg-orange-100 text-orange-700'
+                      index === 0 ? 'bg-amber-100 text-amber-700' : index === 1 ? 'bg-surface-200 text-text-secondary' : 'bg-orange-100 text-orange-700'
                     }`}>
                       {index + 1}
                     </span>
-                    <span className="text-sm font-medium text-brand-900">{department.name}</span>
+                    <span className="text-sm font-medium text-text-primary">{department.name}</span>
                     <span className="text-xs font-bold text-emerald-600">{department.metrics.safetyScore}%</span>
                   </div>
                 ))}
@@ -1144,7 +1146,7 @@ export const Analytics: React.FC = () => {
           )}
 
           {hasActiveFilters && baseDepartments.length > 0 && (
-            <div className="flex items-center gap-2 text-xs text-surface-500">
+            <div className="flex items-center gap-2 text-xs text-text-secondary">
               <Filter className="h-3 w-3" />
               Showing {filteredDepartments.length} of {baseDepartments.length} departments
             </div>
@@ -1161,13 +1163,11 @@ export const Analytics: React.FC = () => {
               />
             ))
           ) : baseDepartments.length > 0 ? (
-            <div className="rounded-2xl border border-surface-100 bg-white p-8 text-center shadow-soft">
+            <div className="rounded-2xl border border-surface-100 bg-surface-raised p-8 text-center shadow-soft">
               <Filter className="mx-auto mb-3 h-10 w-10 text-surface-300" />
-              <p className="font-medium text-surface-600">No departments match your filters</p>
-              <p className="mt-1 text-sm text-surface-400">Try adjusting your filter criteria.</p>
-              <button onClick={clearFilters} className="mt-4 rounded-xl bg-brand-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-600">
-                Clear Filters
-              </button>
+              <p className="font-medium text-text-secondary">No departments match your filters</p>
+              <p className="mt-1 text-sm text-text-muted">Try adjusting your filter criteria.</p>
+              <SMButton variant="primary" size="sm" className="mt-4" onClick={clearFilters}>Clear Filters</SMButton>
             </div>
           ) : null}
         </motion.div>
@@ -1176,10 +1176,10 @@ export const Analytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.56 }}
-          className="rounded-3xl border border-surface-100 bg-white p-5 shadow-soft"
+          className="rounded-3xl border border-surface-100 bg-surface-raised p-5 shadow-soft"
         >
-          <h3 className="mb-4 flex items-center gap-2 font-bold text-brand-900">
-            <Target className="h-5 w-5 text-brand-500" />
+          <h3 className="mb-4 flex items-center gap-2 font-bold text-text-primary">
+            <Target className="h-5 w-5 text-accent" />
             Performance vs Industry
           </h3>
           {benchmarks.length > 0 ? (
@@ -1200,11 +1200,11 @@ export const Analytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="rounded-3xl border border-surface-100 bg-white p-5 shadow-soft"
+          className="rounded-3xl border border-surface-100 bg-surface-raised p-5 shadow-soft"
         >
           <div className="mb-6 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 font-bold text-brand-900">
-              <PieChartIcon className="h-5 w-5 text-brand-500" />
+            <h3 className="flex items-center gap-2 font-bold text-text-primary">
+              <PieChartIcon className="h-5 w-5 text-accent" />
               Incidents by Severity
             </h3>
           </div>
@@ -1234,7 +1234,7 @@ export const Analytics: React.FC = () => {
                 {severityBreakdown.map((entry) => (
                   <div key={entry.name} className="flex items-center gap-2 text-xs">
                     <div className="h-3 w-3 rounded-full" style={{ backgroundColor: entry.color }} />
-                    <span className="text-surface-600">{entry.name}</span>
+                    <span className="text-text-secondary">{entry.name}</span>
                     <span className="ml-auto font-bold text-surface-900">{entry.value}</span>
                   </div>
                 ))}
@@ -1252,11 +1252,11 @@ export const Analytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65 }}
-          className="rounded-3xl border border-surface-100 bg-white p-5 shadow-soft"
+          className="rounded-3xl border border-surface-100 bg-surface-raised p-5 shadow-soft"
         >
           <div className="mb-6 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 font-bold text-brand-900">
-              <BarChart3 className="h-5 w-5 text-brand-500" />
+            <h3 className="flex items-center gap-2 font-bold text-text-primary">
+              <BarChart3 className="h-5 w-5 text-accent" />
               Inspection Throughput
             </h3>
           </div>
@@ -1286,11 +1286,11 @@ export const Analytics: React.FC = () => {
           className="space-y-3"
         >
           <div className="flex items-center justify-between">
-            <h3 className="flex items-center gap-2 font-bold text-brand-900">
-              <Clock className="h-5 w-5 text-brand-500" />
+            <h3 className="flex items-center gap-2 font-bold text-text-primary">
+              <Clock className="h-5 w-5 text-accent" />
               Recent Activity
             </h3>
-            <button className="flex items-center gap-1 text-sm font-medium text-brand-600">
+            <button className="flex items-center gap-1 text-sm font-medium text-accent">
               View All <ChevronRight className="h-4 w-4" />
             </button>
           </div>
@@ -1308,16 +1308,16 @@ export const Analytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-900 to-brand-950 p-6 text-white shadow-xl"
+          className="relative overflow-hidden rounded-[2.5rem] bg-primary p-6 text-white shadow-xl"
         >
           <div className="relative z-10">
             <div className="mb-6 flex items-center gap-2">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 backdrop-blur-md">
-                <Sparkles className="h-6 w-6 text-brand-300" />
+                <Sparkles className="h-6 w-6 text-accent-300" />
               </div>
               <div>
                 <h3 className="text-lg font-bold">AI Safety Insights</h3>
-                <p className="text-xs text-brand-300">Derived from live analytics signals</p>
+                <p className="text-xs text-accent-300">Derived from live analytics signals</p>
               </div>
             </div>
 
@@ -1327,25 +1327,25 @@ export const Analytics: React.FC = () => {
                   <div key={insight.label} className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
                     <div className="flex items-center gap-3">
                       <insight.icon className={`h-5 w-5 ${insight.color}`} />
-                      <span className="text-sm font-medium text-brand-100">{insight.label}</span>
+                      <span className="text-sm font-medium text-white/80">{insight.label}</span>
                     </div>
                     <span className="font-bold">{insight.value}</span>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-brand-100">
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/80">
                 AI insights are waiting for backend analytics inputs before a summary can be generated.
               </div>
             )}
 
-            <button className="mt-6 w-full rounded-xl bg-white py-3 text-sm font-bold text-brand-900 transition-all hover:bg-brand-50">
+            <button className="mt-6 w-full rounded-xl bg-white py-3 text-sm font-bold text-text-primary transition-all hover:bg-brand-50">
               Refresh AI Summary
             </button>
           </div>
           <Sparkles className="absolute bottom-[-20px] right-[-20px] h-48 w-48 rotate-12 text-white/5" />
         </motion.div>
-      </main>
-    </div>
+      </div>
+    </PageContainer>
   );
 };

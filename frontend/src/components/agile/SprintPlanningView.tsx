@@ -8,6 +8,7 @@ import {
 import { ProjectTask, Sprint, TaskStatus, IssueType } from '../../data/mockProjectManagement';
 import { hapticFeedback } from '../../utils/mobileFeatures';
 import { useProjectSprints, useProjectEpics } from '../../api/hooks/useAPIHooks';
+import { SMCard } from '../../components/ui';
 
 interface EpicDisplay {
   id: string;
@@ -284,7 +285,7 @@ export const SprintPlanningView: React.FC<SprintPlanningViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Sprint Overview Header */}
-      <div className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100">
+      <SMCard className="p-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div>
             <h3 className="text-xl font-bold text-brand-900">Sprint Planning</h3>
@@ -342,7 +343,7 @@ export const SprintPlanningView: React.FC<SprintPlanningViewProps> = ({
             <div className="text-lg font-bold text-amber-900">{tasksBySprint.backlog?.length || 0} items</div>
           </div>
         </div>
-      </div>
+      </SMCard>
 
       {/* Sprint columns */}
       <div className="overflow-x-auto pb-4 -mx-4 px-4">

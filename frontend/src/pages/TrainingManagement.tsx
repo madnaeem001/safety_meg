@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  GraduationCap,
   Users,
   AlertTriangle,
-  CheckCircle2,
   Clock,
   BookOpen,
-  Filter,
   Calendar,
   ShieldCheck,
   TrendingUp,
@@ -26,6 +23,8 @@ import {
   useTrainingExpiring,
   useAssignTraining,
 } from '../api/hooks/useAPIHooks';
+import { SMCard, SMButton, SMSkeleton, SMBadge, SMAlert, SMInput, SMSelect } from '../components/ui';
+import PageContainer from '../layouts/PageContainer';
 
 type TrainingTab = 'dashboard' | 'courses' | 'expiring' | 'ai';
 
@@ -54,14 +53,10 @@ const ROLE_OPTIONS = [
   'Contractor',
 ] as const;
 
-const getPriorityColor = (daysUntilExpiration: number) => {
-  if (daysUntilExpiration <= 7) {
-    return 'bg-red-50 text-red-700 border-red-200';
-  }
-  if (daysUntilExpiration <= 14) {
-    return 'bg-amber-50 text-amber-700 border-amber-200';
-  }
-  return 'bg-blue-50 text-blue-700 border-blue-200';
+const getPriorityBadgeVariant = (daysUntilExpiration: number): 'danger' | 'warning' | 'neutral' => {
+  if (daysUntilExpiration <= 7) return 'danger';
+  if (daysUntilExpiration <= 14) return 'warning';
+  return 'neutral';
 };
 
 const formatDate = (value?: string | null) => {
@@ -128,29 +123,8 @@ export const TrainingManagement: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-surface-50 to-surface-100 pb-32">
-
-
-      <main className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8 space-y-8">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-3"
-        >
-          <div className="flex items-center gap-4 mb-4">
-            <img src="/logo.png" alt="SafetyMEG" className="w-12 h-12 object-contain" />
-            <div className="flex items-center gap-2 text-brand-500 font-bold text-[10px] uppercase tracking-[0.3em]">
-              <GraduationCap className="w-4 h-4" />
-              Training & Compliance
-            </div>
-          </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-brand-900 tracking-tight">
-            Training Management
-          </h1>
-          <p className="text-surface-500 max-w-3xl">
-            Backend-connected training operations for course governance, expiring certifications, and compliance tracking.
-          </p>
-        </motion.div>
+    <PageContainer title="Training Management" maxWidth="xl">
+      <div className="space-y-8">
 
         <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
           {[
@@ -159,18 +133,15 @@ export const TrainingManagement: React.FC = () => {
             { id: 'expiring', label: 'Expiring Records', icon: AlertTriangle },
             { id: 'ai', label: 'AI Training Studio', icon: Sparkles },
           ].map((tab) => (
-            <button
+            <SMButton
               key={tab.id}
+              variant={activeTab === tab.id ? 'primary' : 'secondary'}
+              size="sm"
               onClick={() => setActiveTab(tab.id as TrainingTab)}
-              className={`px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
-                activeTab === tab.id
-                  ? 'bg-brand-900 text-white shadow-lg'
-                  : 'bg-white text-brand-700 border border-surface-200 hover:bg-surface-50'
-              }`}
+              leftIcon={<tab.icon className="w-4 h-4" />}
             >
-              <tab.icon className="w-4 h-4" />
               {tab.label}
-            </button>
+            </SMButton>
           ))}
         </div>
 
@@ -189,173 +160,184 @@ export const TrainingManagement: React.FC = () => {
               {activeTab === 'dashboard' && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                    <div className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
+                    <SMCard className="p-5">
                       <div className="flex items-center gap-2 mb-2">
-                        <Users className="w-5 h-5 text-brand-500" />
-                        <span className="text-xs font-bold text-surface-500 uppercase tracking-wider">Employees</span>
+                        <Users className="w-5 h-5 text-accent" />
+                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Employees</span>
                       </div>
-                      <div className="text-2xl font-bold text-brand-900">{compliance?.uniqueEmployees ?? 0}</div>
-                    </div>
-                    <div className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
+                      <div className="text-2xl font-bold text-text-primary">{compliance?.uniqueEmployees ?? 0}</div>
+                    </SMCard>
+                    <SMCard className="p-5">
                       <div className="flex items-center gap-2 mb-2">
-                        <BookOpen className="w-5 h-5 text-brand-500" />
-                        <span className="text-xs font-bold text-surface-500 uppercase tracking-wider">Records</span>
+                        <BookOpen className="w-5 h-5 text-accent" />
+                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Records</span>
                       </div>
-                      <div className="text-2xl font-bold text-brand-900">{compliance?.totalRecords ?? 0}</div>
-                    </div>
-                    <div className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
+                      <div className="text-2xl font-bold text-text-primary">{compliance?.totalRecords ?? 0}</div>
+                    </SMCard>
+                    <SMCard className="p-5">
                       <div className="flex items-center gap-2 mb-2">
                         <ShieldCheck className="w-5 h-5 text-emerald-500" />
                         <span className="text-xs font-bold text-surface-500 uppercase tracking-wider">Current</span>
                       </div>
                       <div className="text-2xl font-bold text-emerald-600">{compliance?.current ?? 0}</div>
-                    </div>
-                    <div className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
+                    </SMCard>
+                    <SMCard className="p-5">
                       <div className="flex items-center gap-2 mb-2">
                         <Clock className="w-5 h-5 text-amber-500" />
                         <span className="text-xs font-bold text-surface-500 uppercase tracking-wider">Expiring</span>
                       </div>
                       <div className="text-2xl font-bold text-amber-600">{compliance?.expiringSoon ?? 0}</div>
-                    </div>
-                    <div className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
+                    </SMCard>
+                    <SMCard className="p-5">
                       <div className="flex items-center gap-2 mb-2">
                         <AlertCircle className="w-5 h-5 text-red-500" />
                         <span className="text-xs font-bold text-surface-500 uppercase tracking-wider">Expired</span>
                       </div>
                       <div className="text-2xl font-bold text-red-600">{compliance?.expired ?? 0}</div>
-                    </div>
-                    <div className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
+                    </SMCard>
+                    <SMCard className="p-5">
                       <div className="flex items-center gap-2 mb-2">
-                        <TrendingUp className="w-5 h-5 text-brand-500" />
-                        <span className="text-xs font-bold text-surface-500 uppercase tracking-wider">Compliance</span>
+                        <TrendingUp className="w-5 h-5 text-accent" />
+                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Compliance</span>
                       </div>
-                      <div className="text-2xl font-bold text-brand-900">{compliance?.complianceRate ?? 0}%</div>
-                    </div>
+                      <div className="text-2xl font-bold text-text-primary">{compliance?.complianceRate ?? 0}%</div>
+                    </SMCard>
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-6">
-                    <div className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100 space-y-4">
+                    <SMCard className="p-6 space-y-4">
                       <div className="flex items-center gap-2">
-                        <AlertTriangle className="w-5 h-5 text-amber-500" />
-                        <h3 className="font-bold text-brand-900">Next 30 Days Risk Window</h3>
+                        <AlertTriangle className="w-5 h-5 text-warning" />
+                        <h3 className="font-bold text-text-primary">Next 30 Days Risk Window</h3>
                       </div>
                       {expiringLoading ? (
-                        <p className="text-sm text-surface-500">Loading expiring training records...</p>
+                        <div className="space-y-3">
+                          {Array.from({ length: 3 }).map((_, index) => (
+                            <div key={index} className="p-4 rounded-2xl border border-surface-border bg-surface-raised flex items-start justify-between gap-3">
+                              <div className="flex-1 space-y-2.5">
+                                <SMSkeleton className="h-4 w-40 rounded-lg" />
+                                <SMSkeleton className="h-3 w-56 rounded-lg" />
+                                <div className="flex flex-wrap gap-3">
+                                  <SMSkeleton className="h-3 w-20 rounded-lg" />
+                                  <SMSkeleton className="h-3 w-24 rounded-lg" />
+                                  <SMSkeleton className="h-3 w-28 rounded-lg" />
+                                </div>
+                              </div>
+                              <SMSkeleton className="h-6 w-20 rounded-full" />
+                            </div>
+                          ))}
+                        </div>
                       ) : filteredExpiring.length > 0 ? (
                         <div className="space-y-3">
                           {filteredExpiring.slice(0, 5).map((record) => (
                             <div key={record.id} className="p-4 rounded-2xl border border-surface-100 bg-surface-50 flex items-start justify-between gap-3">
                               <div>
-                                <p className="font-semibold text-brand-900">{record.employeeName}</p>
-                                <p className="text-sm text-surface-500">{record.courseName}</p>
-                                <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-surface-400">
+                                <p className="font-semibold text-text-primary">{record.employeeName}</p>
+                                <p className="text-sm text-text-secondary">{record.courseName}</p>
+                                <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-text-muted">
                                   <span className="flex items-center gap-1"><User className="w-3.5 h-3.5" />{record.role}</span>
                                   <span className="flex items-center gap-1"><Building2 className="w-3.5 h-3.5" />{record.department || 'N/A'}</span>
                                   <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />{formatDate(record.expirationDate)}</span>
                                 </div>
                               </div>
-                              <span className={`px-3 py-1 rounded-full border text-[10px] font-bold uppercase ${getPriorityColor(record.daysUntilExpiration)}`}>
+                              <SMBadge variant={getPriorityBadgeVariant(record.daysUntilExpiration)} size="sm">
                                 {record.daysUntilExpiration}d left
-                              </span>
+                              </SMBadge>
                             </div>
                           ))}
                         </div>
                       ) : (
-                        <p className="text-sm text-surface-500">No expiring records found for the current filter.</p>
+                        <p className="text-sm text-text-muted">No expiring records found for the current filter.</p>
                       )}
-                    </div>
+                    </SMCard>
 
-                    <div className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100 space-y-4">
+                    <SMCard className="p-6 space-y-4">
                       <div className="flex items-center gap-2">
-                        <Send className="w-5 h-5 text-brand-500" />
-                        <h3 className="font-bold text-brand-900">Quick Assignment</h3>
+                        <Send className="w-5 h-5 text-accent" />
+                        <h3 className="font-bold text-text-primary">Quick Assignment</h3>
                       </div>
                       <form onSubmit={handleAssignmentSubmit} className="space-y-3">
-                        <input
+                        <SMInput
                           value={assignmentForm.employeeId}
                           onChange={(event) => setAssignmentForm((current) => ({ ...current, employeeId: event.target.value }))}
                           placeholder="Employee ID"
-                          className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm outline-none focus:border-brand-400"
                           required
                         />
-                        <input
+                        <SMInput
                           value={assignmentForm.courseCode}
                           onChange={(event) => setAssignmentForm((current) => ({ ...current, courseCode: event.target.value }))}
                           placeholder="Course code"
-                          className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm outline-none focus:border-brand-400"
                           required
                         />
-                        <input
+                        <SMInput
                           value={assignmentForm.assignedBy}
                           onChange={(event) => setAssignmentForm((current) => ({ ...current, assignedBy: event.target.value }))}
                           placeholder="Assigned by"
-                          className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm outline-none focus:border-brand-400"
                           required
                         />
                         <div className="grid grid-cols-2 gap-3">
-                          <input
+                          <SMInput
                             type="date"
                             value={assignmentForm.dueDate}
                             onChange={(event) => setAssignmentForm((current) => ({ ...current, dueDate: event.target.value }))}
-                            className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm outline-none focus:border-brand-400"
                           />
-                          <select
+                          <SMSelect
                             value={assignmentForm.priority}
                             onChange={(event) => setAssignmentForm((current) => ({ ...current, priority: event.target.value as 'Low' | 'Normal' | 'High' | 'Critical' }))}
-                            className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm outline-none focus:border-brand-400"
                           >
                             <option value="Low">Low</option>
                             <option value="Normal">Normal</option>
                             <option value="High">High</option>
                             <option value="Critical">Critical</option>
-                          </select>
+                          </SMSelect>
                         </div>
-                        <textarea
+                        <SMInput
+                          as="textarea"
                           value={assignmentForm.reason}
                           onChange={(event) => setAssignmentForm((current) => ({ ...current, reason: event.target.value }))}
                           placeholder="Reason or trigger"
                           rows={3}
-                          className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm outline-none focus:border-brand-400 resize-none"
                         />
-                        <button
+                        <SMButton
+                          variant="primary"
                           type="submit"
-                          disabled={assignTraining.loading}
-                          className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-900 text-white text-sm font-bold disabled:opacity-60"
+                          className="w-full"
+                          loading={assignTraining.loading}
+                          leftIcon={assignTraining.loading ? <Clock className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
                         >
-                          {assignTraining.loading ? <Clock className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
                           {assignTraining.loading ? 'Assigning...' : 'Assign Training'}
-                        </button>
+                        </SMButton>
                       </form>
                       {assignmentMessage && (
-                        <div className={`rounded-xl px-4 py-3 text-sm ${assignTraining.error ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}`}>
+                        <SMAlert variant={assignTraining.error ? 'danger' : 'success'}>
                           {assignmentMessage}
-                        </div>
+                        </SMAlert>
                       )}
-                    </div>
+                    </SMCard>
                   </div>
 
-                  <div className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100">
+                  <SMCard className="p-6">
                     <div className="flex items-center gap-2 mb-4">
-                      <FileBadge className="w-5 h-5 text-brand-500" />
-                      <h3 className="font-bold text-brand-900">Operational Notes</h3>
+                        <FileBadge className="w-5 h-5 text-accent" />
+                        <h3 className="font-bold text-text-primary">Operational Notes</h3>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                       <div className="p-4 rounded-2xl bg-surface-50 border border-surface-100">
-                        <div className="text-xs font-bold text-surface-400 uppercase tracking-wider mb-2">Overdue Assignments</div>
-                        <div className="text-2xl font-bold text-brand-900">{compliance?.overdueAssignments ?? 0}</div>
+                        <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Overdue Assignments</div>
+                        <div className="text-2xl font-bold text-text-primary">{compliance?.overdueAssignments ?? 0}</div>
                       </div>
                       <div className="p-4 rounded-2xl bg-surface-50 border border-surface-100">
-                        <div className="text-xs font-bold text-surface-400 uppercase tracking-wider mb-2">Course Library</div>
-                        <div className="text-2xl font-bold text-brand-900">{courses.length}</div>
+                        <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Course Library</div>
+                        <div className="text-2xl font-bold text-text-primary">{courses.length}</div>
                       </div>
                       <div className="p-4 rounded-2xl bg-surface-50 border border-surface-100">
-                        <div className="text-xs font-bold text-surface-400 uppercase tracking-wider mb-2">Backend Sync</div>
-                        <div className="text-sm text-surface-600">
+                        <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Backend Sync</div>
+                        <div className="text-sm text-text-secondary">
                           Courses, compliance, expiring records, and assignments now use backend endpoints.
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </SMCard>
                 </motion.div>
               )}
 
@@ -364,103 +346,115 @@ export const TrainingManagement: React.FC = () => {
                   <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
                     <div className="flex flex-wrap gap-2">
                       {COURSE_CATEGORIES.map((category) => (
-                        <button
+                        <SMButton
                           key={category}
+                          variant={filterCategory === category ? 'primary' : 'secondary'}
+                          size="sm"
                           onClick={() => setFilterCategory(category)}
-                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                            filterCategory === category
-                              ? 'bg-brand-100 text-brand-700'
-                              : 'bg-white text-surface-500 border border-surface-200'
-                          }`}
                         >
                           {category}
-                        </button>
+                        </SMButton>
                       ))}
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white border border-surface-200 text-sm text-surface-500">
-                        <Filter className="w-4 h-4" />
-                        <select
-                          value={filterRole}
-                          onChange={(event) => setFilterRole(event.target.value as (typeof ROLE_OPTIONS)[number])}
-                          className="bg-transparent outline-none"
-                        >
-                          {ROLE_OPTIONS.map((role) => (
-                            <option key={role} value={role}>{role}</option>
-                          ))}
-                        </select>
-                      </div>
-                      <button
-                        onClick={() => refetchCourses()}
-                        className="px-4 py-2 rounded-xl bg-brand-900 text-white text-sm font-bold"
+                      <SMSelect
+                        value={filterRole}
+                        onChange={(event) => setFilterRole(event.target.value as (typeof ROLE_OPTIONS)[number])}
                       >
-                        Refresh
-                      </button>
+                        {ROLE_OPTIONS.map((role) => (
+                          <option key={role} value={role}>{role}</option>
+                        ))}
+                      </SMSelect>
+                      <SMButton variant="primary" size="sm" onClick={() => refetchCourses()}>Refresh</SMButton>
                     </div>
                   </div>
 
                   {coursesLoading ? (
-                    <div className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100 text-surface-500">
-                      Loading training courses from backend...
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                      {Array.from({ length: 3 }).map((_, index) => (
+                        <SMCard key={index} className="overflow-hidden">
+                          <div className="p-5 space-y-4">
+                            <div className="flex items-start justify-between gap-3">
+                              <SMSkeleton className="h-11 w-11 rounded-2xl" />
+                              <SMSkeleton className="h-3 w-16 rounded-lg" />
+                            </div>
+                            <div className="space-y-2">
+                              <SMSkeleton className="h-5 w-2/3 rounded-lg" />
+                              <SMSkeleton rows={2} className="h-4 w-full rounded-lg" gap="gap-2" />
+                            </div>
+                            <div className="flex gap-2">
+                              <SMSkeleton className="h-6 w-24 rounded-full" />
+                              <SMSkeleton className="h-6 w-20 rounded-full" />
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                              <SMSkeleton className="h-16 w-full rounded-xl" />
+                              <SMSkeleton className="h-16 w-full rounded-xl" />
+                            </div>
+                          </div>
+                          <div className="px-5 py-4 bg-surface-50 border-t border-surface-100">
+                            <SMSkeleton className="h-3 w-28 rounded-lg mb-3" />
+                            <div className="flex gap-2 flex-wrap">
+                              <SMSkeleton className="h-6 w-20 rounded-full" />
+                              <SMSkeleton className="h-6 w-24 rounded-full" />
+                            </div>
+                          </div>
+                        </SMCard>
+                      ))}
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                       {courses.map((course) => (
-                        <div key={course.id} className="bg-white rounded-2xl border border-surface-200 shadow-soft overflow-hidden">
+                        <SMCard key={course.id} className="overflow-hidden">
                           <div className="p-5 space-y-4">
                             <div className="flex items-start justify-between gap-3">
-                              <div className="w-11 h-11 rounded-2xl bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-700">
+                              <div className="w-11 h-11 rounded-2xl bg-accent-50 border border-accent-100 flex items-center justify-center text-accent">
                                 <BookOpen className="w-5 h-5" />
                               </div>
-                              <span className="text-[10px] font-bold text-surface-400 uppercase tracking-[0.2em]">
+                              <span className="text-xs font-bold text-text-muted uppercase tracking-[0.2em]">
                                 {course.courseCode}
                               </span>
                             </div>
                             <div>
-                              <h3 className="font-bold text-brand-900 leading-tight">{course.title}</h3>
-                              <p className="text-sm text-surface-500 mt-2 min-h-[40px]">
+                              <h3 className="font-bold text-text-primary leading-tight">{course.title}</h3>
+                              <p className="text-sm text-text-secondary mt-2 min-h-[40px]">
                                 {course.description || 'No backend description available for this course yet.'}
                               </p>
                             </div>
                             <div className="flex flex-wrap gap-2">
-                              <span className="px-2.5 py-1 rounded-full bg-brand-50 text-brand-700 text-[10px] font-bold uppercase">
-                                {course.category}
-                              </span>
+                              <SMBadge variant="teal">{course.category}</SMBadge>
                               {course.deliveryMethod && (
-                                <span className="px-2.5 py-1 rounded-full bg-surface-100 text-surface-600 text-[10px] font-bold uppercase">
-                                  {course.deliveryMethod}
-                                </span>
+                                <SMBadge variant="neutral">{course.deliveryMethod}</SMBadge>
                               )}
                             </div>
                             <div className="grid grid-cols-2 gap-3 text-sm">
                               <div className="p-3 rounded-xl bg-surface-50 border border-surface-100">
-                                <div className="text-[10px] font-bold text-surface-400 uppercase tracking-wider">Duration</div>
-                                <div className="font-semibold text-brand-900 mt-1">{course.durationHours}h</div>
+                                <div className="text-xs font-bold text-text-muted uppercase tracking-wider">Duration</div>
+                                <div className="font-semibold text-text-primary mt-1">{course.durationHours}h</div>
                               </div>
                               <div className="p-3 rounded-xl bg-surface-50 border border-surface-100">
-                                <div className="text-[10px] font-bold text-surface-400 uppercase tracking-wider">Validity</div>
-                                <div className="font-semibold text-brand-900 mt-1">
+                                <div className="text-xs font-bold text-text-muted uppercase tracking-wider">Validity</div>
+                                <div className="font-semibold text-text-primary mt-1">
                                   {course.validityMonths > 0 ? `${course.validityMonths} mo` : 'One-time'}
                                 </div>
                               </div>
                             </div>
                           </div>
                           <div className="px-5 py-4 bg-surface-50 border-t border-surface-100">
-                            <div className="text-[10px] font-bold text-surface-400 uppercase tracking-wider mb-2">Required Roles</div>
+                            <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Required Roles</div>
                             <div className="flex flex-wrap gap-2">
                               {course.requiredForRoles.length > 0 ? (
                                 course.requiredForRoles.map((role) => (
-                                  <span key={`${course.id}-${role}`} className="px-2.5 py-1 rounded-full bg-white border border-surface-200 text-xs text-surface-600">
+                                  <span key={`${course.id}-${role}`} className="px-2.5 py-1 rounded-full bg-white border border-surface-200 text-xs text-text-secondary">
                                     {role}
                                   </span>
                                 ))
                               ) : (
-                                <span className="text-xs text-surface-400">No role mapping available.</span>
+                                <span className="text-xs text-text-muted">No role mapping available.</span>
                               )}
                             </div>
                           </div>
-                        </div>
+                        </SMCard>
                       ))}
                     </div>
                   )}
@@ -471,66 +465,71 @@ export const TrainingManagement: React.FC = () => {
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
                   <div className="flex flex-wrap gap-2">
                     {ROLE_OPTIONS.map((role) => (
-                      <button
+                      <SMButton
                         key={role}
+                        variant={filterRole === role ? 'primary' : 'secondary'}
+                        size="sm"
                         onClick={() => setFilterRole(role)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                          filterRole === role
-                            ? 'bg-brand-100 text-brand-700'
-                            : 'bg-white text-surface-500 border border-surface-200'
-                        }`}
                       >
                         {role}
-                      </button>
+                      </SMButton>
                     ))}
                   </div>
 
-                  <div className="bg-white rounded-2xl border border-surface-200 shadow-soft overflow-hidden">
+                  <div className="bg-surface-raised rounded-2xl border border-surface-200 shadow-soft overflow-hidden">
                     <table className="w-full text-left border-collapse">
                       <thead className="bg-surface-50 border-b border-surface-200">
                         <tr>
-                          <th className="px-6 py-4 text-xs font-bold text-surface-500 uppercase tracking-wider">Employee</th>
-                          <th className="px-6 py-4 text-xs font-bold text-surface-500 uppercase tracking-wider">Role / Dept</th>
-                          <th className="px-6 py-4 text-xs font-bold text-surface-500 uppercase tracking-wider">Course</th>
-                          <th className="px-6 py-4 text-xs font-bold text-surface-500 uppercase tracking-wider">Expiration</th>
-                          <th className="px-6 py-4 text-xs font-bold text-surface-500 uppercase tracking-wider">Priority</th>
+                          <th className="px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider">Employee</th>
+                          <th className="px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider">Role / Dept</th>
+                          <th className="px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider">Course</th>
+                          <th className="px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider">Expiration</th>
+                          <th className="px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider">Priority</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-surface-100">
-                        {filteredExpiring.map((record) => (
+                        {expiringLoading ? Array.from({ length: 5 }).map((_, index) => (
+                          <tr key={index}>
+                            <td className="px-6 py-4"><SMSkeleton className="h-12 w-full rounded-xl" /></td>
+                            <td className="px-6 py-4"><SMSkeleton className="h-12 w-full rounded-xl" /></td>
+                            <td className="px-6 py-4"><SMSkeleton className="h-12 w-full rounded-xl" /></td>
+                            <td className="px-6 py-4"><SMSkeleton className="h-12 w-full rounded-xl" /></td>
+                            <td className="px-6 py-4"><SMSkeleton className="h-12 w-full rounded-xl" /></td>
+                          </tr>
+                        )) : filteredExpiring.map((record) => (
                           <tr key={record.id} className="hover:bg-surface-50/50 transition-colors">
                             <td className="px-6 py-4">
                               <div className="flex items-center gap-3">
-                                <div className="w-9 h-9 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-xs">
+                                <div className="w-9 h-9 rounded-full bg-accent-100 flex items-center justify-center text-accent font-bold text-xs">
                                   {record.employeeName.split(' ').map((name) => name[0]).join('').slice(0, 2)}
                                 </div>
                                 <div>
-                                  <div className="font-medium text-brand-900">{record.employeeName}</div>
-                                  <div className="text-[10px] font-bold text-surface-400 uppercase">{record.employeeId}</div>
+                                  <div className="font-medium text-text-primary">{record.employeeName}</div>
+                                  <div className="text-xs font-bold text-text-muted uppercase">{record.employeeId}</div>
                                 </div>
                               </div>
                             </td>
                             <td className="px-6 py-4">
-                              <div className="text-sm text-brand-900">{record.role}</div>
-                              <div className="text-[10px] font-bold text-surface-400 uppercase">{record.department || 'N/A'}</div>
+                              <div className="text-sm text-text-primary">{record.role}</div>
+                              <div className="text-xs font-bold text-text-muted uppercase">{record.department || 'N/A'}</div>
                             </td>
                             <td className="px-6 py-4">
-                              <div className="text-sm text-brand-900">{record.courseName}</div>
-                              <div className="text-[10px] font-bold text-surface-400 uppercase">{record.courseCode}</div>
+                              <div className="text-sm text-text-primary">{record.courseName}</div>
+                              <div className="text-xs font-bold text-text-muted uppercase">{record.courseCode}</div>
                             </td>
-                            <td className="px-6 py-4 text-sm text-surface-600">{formatDate(record.expirationDate)}</td>
+                            <td className="px-6 py-4 text-sm text-text-secondary">{formatDate(record.expirationDate)}</td>
                             <td className="px-6 py-4">
-                              <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border ${getPriorityColor(record.daysUntilExpiration)}`}>
-                                {record.daysUntilExpiration <= 7 ? <AlertCircle className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
+                              <SMBadge variant={getPriorityBadgeVariant(record.daysUntilExpiration)} size="sm">
+                                {record.daysUntilExpiration <= 7 ? <AlertCircle className="w-3 h-3 mr-1" /> : <Clock className="w-3 h-3 mr-1" />}
                                 {record.daysUntilExpiration} days
-                              </span>
+                              </SMBadge>
                             </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                     {!expiringLoading && filteredExpiring.length === 0 && (
-                      <div className="px-6 py-8 text-sm text-surface-500">No expiring records matched the current role filter.</div>
+                      <div className="px-6 py-8 text-sm text-text-muted">No expiring records matched the current role filter.</div>
                     )}
                   </div>
                 </motion.div>
@@ -540,10 +539,10 @@ export const TrainingManagement: React.FC = () => {
         </AnimatePresence>
 
         {complianceLoading && activeTab !== 'ai' && (
-          <div className="text-sm text-surface-400">Refreshing training compliance data...</div>
+          <div className="text-sm text-text-muted">Refreshing training compliance data...</div>
         )}
-      </main>
-    </div>
+      </div>
+    </PageContainer>
   );
 };
 

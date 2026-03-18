@@ -4,6 +4,7 @@ import { IncidentCard } from './IncidentCard';
 import { Plus, ArrowRight, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { SMButton, SMCard, SMSkeleton } from '../../components/ui';
 
 interface IncidentListProps {
   incidents: Incident[];
@@ -14,52 +15,53 @@ export const IncidentList: React.FC<IncidentListProps> = ({ incidents, isLoading
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-[0_8px_32px_rgba(0,0,0,0.10)] overflow-hidden">
+    <SMCard className="rounded-2xl overflow-hidden">
       {/* Header */}
-      <div className="relative flex items-center justify-between px-5 py-4 border-b border-slate-100 bg-gradient-to-r from-slate-800 to-slate-900 overflow-hidden">
+      <div className="relative flex items-center justify-between gap-3 px-4 sm:px-5 py-4 border-b border-surface-border bg-surface-raised overflow-hidden">
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(circle at 100% 50%, rgba(239,68,68,0.12) 0%, transparent 55%)' }} />
-        <div className="flex items-center gap-3 relative">
+        <div className="flex items-center gap-3 relative min-w-0 flex-1">
           <div className="w-9 h-9 rounded-xl bg-rose-500/20 border border-rose-500/30 flex items-center justify-center">
             <AlertTriangle className="w-4 h-4 text-rose-400" />
           </div>
-          <div>
-            <h2 className="text-sm font-bold text-white tracking-tight">Recent Incidents</h2>
-            <p className="text-[10px] text-slate-400 font-mono uppercase tracking-widest">Live Safety Feed</p>
+          <div className="min-w-0">
+            <h2 className="text-sm font-bold text-text-primary tracking-tight truncate">Recent Incidents</h2>
+            <p className="text-xs text-text-muted font-mono uppercase tracking-widest truncate">Live Safety Feed</p>
           </div>
           {!isLoading && (
-            <span className="ml-1 px-2 py-0.5 bg-rose-500/20 border border-rose-500/30 text-rose-300 text-[10px] font-bold rounded-full">
+            <span className="ml-1 px-2 py-0.5 bg-rose-500/20 border border-rose-500/30 text-rose-300 text-xs font-bold rounded-full shrink-0">
               {incidents.length}
             </span>
           )}
         </div>
-        <motion.button
-          whileHover={{ x: 3 }}
+        <SMButton
+          variant="ghost"
+          size="sm"
+          className="shrink-0"
           onClick={() => navigate('/incidents')}
-          className="text-[11px] font-bold text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1 relative"
+          rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
         >
           View All
-          <ArrowRight className="w-3.5 h-3.5" />
-        </motion.button>
+        </SMButton>
       </div>
 
       {/* Cards */}
-      <div className="p-4 space-y-3 bg-white">
+      <div className="p-4 space-y-3 bg-transparent">
         {isLoading ? (
           Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="rounded-2xl border border-slate-100 p-4 flex gap-3">
-              <div className="w-1.5 h-full rounded-full bg-slate-200 animate-pulse shrink-0" />
+            <div key={i} className="rounded-2xl border border-surface-border bg-surface-raised p-4 flex gap-3">
+              <SMSkeleton className="h-20 w-1.5 rounded-full shrink-0" />
               <div className="flex-1 space-y-2">
                 <div className="flex justify-between">
-                  <div className="h-4 w-16 bg-slate-100 rounded-lg animate-pulse" />
-                  <div className="h-4 w-12 bg-slate-100 rounded-lg animate-pulse" />
+                  <SMSkeleton className="h-4 w-16 rounded-lg" />
+                  <SMSkeleton className="h-4 w-12 rounded-lg" />
                 </div>
-                <div className="h-4 w-3/4 bg-slate-100 rounded animate-pulse" />
-                <div className="h-3 w-1/2 bg-slate-100 rounded animate-pulse" />
+                <SMSkeleton className="h-4 w-3/4 rounded-lg" />
+                <SMSkeleton className="h-3 w-1/2 rounded-lg" />
               </div>
             </div>
           ))
         ) : incidents.length === 0 ? (
-          <div className="py-10 text-center text-slate-400 text-xs">
+          <div className="py-10 text-center text-text-muted text-xs">
             <AlertTriangle className="w-8 h-8 mx-auto mb-2 opacity-30" />
             No incidents recorded
           </div>
@@ -81,16 +83,15 @@ export const IncidentList: React.FC<IncidentListProps> = ({ incidents, isLoading
 
       {/* Footer CTA */}
       <div className="px-4 pb-4">
-        <motion.button
-          whileHover={{ scale: 1.015 }}
-          whileTap={{ scale: 0.985 }}
+        <SMButton
+          variant="primary"
+          className="w-full"
+          leftIcon={<Plus className="w-4 h-4" strokeWidth={2.5} />}
           onClick={() => navigate('/report-incident')}
-          className="w-full py-3.5 flex items-center justify-center gap-2.5 bg-gradient-to-r from-rose-500 to-orange-500 hover:from-rose-600 hover:to-orange-600 text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-rose-500/20 hover:shadow-rose-500/30"
         >
-          <Plus className="w-4.5 h-4.5" strokeWidth={2.5} />
           Report New Incident
-        </motion.button>
+        </SMButton>
       </div>
-    </div>
+    </SMCard>
   );
 };

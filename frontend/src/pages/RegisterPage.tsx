@@ -9,11 +9,10 @@ import {
   Lock,
   User,
   Building2,
-  Briefcase,
   AlertCircle,
-  Loader2,
-  ChevronDown,
 } from 'lucide-react';
+import { SMButton, SMInput, SMSelect, SMCard } from '../components/ui';
+import { AuthLayout } from '../layouts';
 import { useAuthStore, type RegisterPayload } from '../store/authStore';
 
 const ROLES = [
@@ -104,30 +103,24 @@ export const RegisterPage: React.FC = () => {
   const displayError = localError || error;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-brand-950 flex items-center justify-center p-4">
-      {/* Background effects */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-brand-500/5 blur-[150px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-violet-500/5 blur-[150px] rounded-full" />
-      </div>
-
+    <AuthLayout>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-lg relative z-10 py-8"
+        className="w-full py-8"
       >
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-500/10 border border-brand-500/20 rounded-2xl mb-4">
             <Shield className="w-8 h-8 text-brand-400" />
           </div>
-          <h1 className="text-2xl font-bold text-white">SafetyMEG</h1>
-          <p className="text-slate-400 text-sm mt-1">AI-Powered EHS Platform</p>
+          <h1 className="text-2xl font-bold text-text-primary">SafetyMEG</h1>
+          <p className="text-sm mt-1 text-text-secondary">AI-Powered EHS Platform</p>
         </div>
 
         {/* Card */}
-        <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8 shadow-2xl">
-          <h2 className="text-xl font-semibold text-white mb-6">Create your account</h2>
+        <SMCard className="rounded-2xl p-8 shadow-2xl">
+          <h2 className="text-xl font-semibold text-text-primary mb-6">Create your account</h2>
 
           {displayError && (
             <motion.div
@@ -142,123 +135,81 @@ export const RegisterPage: React.FC = () => {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Full Name */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                Full Name
-              </label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => { setFullName(e.target.value); clearFieldError(); }}
-                  placeholder="John Smith"
-                  className="w-full bg-slate-800/50 border border-slate-700/50 text-white placeholder-slate-500 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all"
-                  autoComplete="name"
-                  disabled={isLoading}
-                />
-              </div>
-            </div>
+            <SMInput
+              label="Full Name"
+              type="text"
+              value={fullName}
+              onChange={(e) => { setFullName(e.target.value); clearFieldError(); }}
+              placeholder="John Smith"
+              leftIcon={<User className="w-4 h-4" />}
+              autoComplete="name"
+              disabled={isLoading}
+            />
 
             {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => { setEmail(e.target.value); clearFieldError(); }}
-                  placeholder="you@company.com"
-                  className="w-full bg-slate-800/50 border border-slate-700/50 text-white placeholder-slate-500 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all"
-                  autoComplete="email"
-                  disabled={isLoading}
-                />
-              </div>
-            </div>
+            <SMInput
+              label="Email Address"
+              type="email"
+              value={email}
+              onChange={(e) => { setEmail(e.target.value); clearFieldError(); }}
+              placeholder="you@company.com"
+              leftIcon={<Mail className="w-4 h-4" />}
+              autoComplete="email"
+              disabled={isLoading}
+            />
 
             {/* Role */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                Role
-              </label>
-              <div className="relative">
-                <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                <select
-                  value={role}
-                  onChange={(e) => setRole(e.target.value as RegisterPayload['role'])}
-                  className="w-full bg-slate-800/50 border border-slate-700/50 text-white rounded-xl pl-10 pr-10 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all appearance-none cursor-pointer"
-                  disabled={isLoading}
-                >
-                  {ROLES.map((r) => (
-                    <option key={r.value} value={r.value} className="bg-slate-800">
-                      {r.label}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
-              </div>
-            </div>
+            <SMSelect
+              label="Role"
+              value={role}
+              onChange={(e) => setRole(e.target.value as RegisterPayload['role'])}
+              options={ROLES.map((r) => ({ value: r.value, label: r.label }))}
+              disabled={isLoading}
+            />
 
             {/* Department & Organization row */}
             <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                  Department <span className="text-slate-600 font-normal">(optional)</span>
-                </label>
-                <div className="relative">
-                  <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                  <input
-                    type="text"
-                    value={department}
-                    onChange={(e) => setDepartment(e.target.value)}
-                    placeholder="e.g. Operations"
-                    className="w-full bg-slate-800/50 border border-slate-700/50 text-white placeholder-slate-500 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all"
-                    disabled={isLoading}
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                  Organization <span className="text-slate-600 font-normal">(optional)</span>
-                </label>
-                <input
-                  type="text"
-                  value={organization}
-                  onChange={(e) => setOrganization(e.target.value)}
-                  placeholder="e.g. SafetyMEG"
-                  className="w-full bg-slate-800/50 border border-slate-700/50 text-white placeholder-slate-500 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all"
-                  disabled={isLoading}
-                />
-              </div>
+              <SMInput
+                label="Department (optional)"
+                type="text"
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                placeholder="e.g. Operations"
+                leftIcon={<Building2 className="w-4 h-4" />}
+                disabled={isLoading}
+              />
+              <SMInput
+                label="Organization (optional)"
+                type="text"
+                value={organization}
+                onChange={(e) => setOrganization(e.target.value)}
+                placeholder="e.g. SafetyMEG"
+                disabled={isLoading}
+              />
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => { setPassword(e.target.value); clearFieldError(); }}
-                  placeholder="Min. 8 characters"
-                  className="w-full bg-slate-800/50 border border-slate-700/50 text-white placeholder-slate-500 rounded-xl pl-10 pr-11 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all"
-                  autoComplete="new-password"
-                  disabled={isLoading}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
+              <SMInput
+                label="Password"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); clearFieldError(); }}
+                placeholder="Min. 8 characters"
+                leftIcon={<Lock className="w-4 h-4" />}
+                rightIcon={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    className="pointer-events-auto text-text-muted hover:text-text-primary transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                }
+                autoComplete="new-password"
+                disabled={isLoading}
+              />
               {password && (
                 <div className="mt-2 flex gap-1">
                   {[...Array(4)].map((_, i) => {
@@ -275,7 +226,7 @@ export const RegisterPage: React.FC = () => {
                             : strength === 2 ? 'bg-amber-500'
                             : strength === 3 ? 'bg-brand-500'
                             : 'bg-emerald-500'
-                            : 'bg-slate-700'
+                            : 'bg-surface-border'
                         }`}
                       />
                     );
@@ -285,67 +236,54 @@ export const RegisterPage: React.FC = () => {
             </div>
 
             {/* Confirm Password */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                <input
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  value={confirmPassword}
-                  onChange={(e) => { setConfirmPassword(e.target.value); clearFieldError(); }}
-                  placeholder="Re-enter password"
-                  className={`w-full bg-slate-800/50 border text-white placeholder-slate-500 rounded-xl pl-10 pr-11 py-3 text-sm focus:outline-none focus:ring-2 transition-all ${
-                    confirmPassword && password !== confirmPassword
-                      ? 'border-red-500/50 focus:ring-red-500/30'
-                      : 'border-slate-700/50 focus:ring-brand-500/50 focus:border-brand-500/50'
-                  }`}
-                  autoComplete="new-password"
-                  disabled={isLoading}
-                />
+            <SMInput
+              label="Confirm Password"
+              type={showConfirmPassword ? 'text' : 'password'}
+              value={confirmPassword}
+              onChange={(e) => { setConfirmPassword(e.target.value); clearFieldError(); }}
+              placeholder="Re-enter password"
+              error={confirmPassword && password !== confirmPassword ? 'Passwords do not match' : undefined}
+              leftIcon={<Lock className="w-4 h-4" />}
+              rightIcon={
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                  aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                  className="pointer-events-auto text-text-muted hover:text-text-primary transition-colors"
                 >
                   {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
-              </div>
-            </div>
+              }
+              autoComplete="new-password"
+              disabled={isLoading}
+            />
 
             {/* Submit */}
-            <button
+            <SMButton
               type="submit"
-              disabled={isLoading}
-              className="w-full bg-brand-600 hover:bg-brand-500 disabled:bg-brand-800 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 mt-2"
+              variant="primary"
+              loading={isLoading}
+              className="w-full mt-2"
             >
-              {isLoading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Creating account...
-                </>
-              ) : (
-                'Create account'
-              )}
-            </button>
+              {isLoading ? 'Creating account...' : 'Create account'}
+            </SMButton>
           </form>
 
           {/* Sign in link */}
-          <p className="text-center text-slate-500 text-sm mt-5">
+          <p className="text-center text-text-muted text-sm mt-5">
             Already have an account?{' '}
-            <Link to="/login" className="text-brand-400 hover:text-brand-300 font-medium transition-colors">
+            <Link to="/login" className="text-accent hover:text-accent-600 font-medium transition-colors">
               Sign in
             </Link>
           </p>
-        </div>
+        </SMCard>
 
         {/* Footer */}
-        <p className="text-center text-slate-600 text-xs mt-6">
+        <p className="text-center text-text-muted text-xs mt-6">
           © 2025 SafetyMEG. Enterprise EHS Platform. All rights reserved.
         </p>
       </motion.div>
-    </div>
+    </AuthLayout>
   );
 };
 

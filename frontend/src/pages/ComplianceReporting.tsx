@@ -53,6 +53,7 @@ import type {
   ComplianceMetricRecord,
   RegulatoryRequirementRecord,
 } from '../api/services/apiService';
+import { SMButton } from '../components/ui';
 
 // Type aliases matching component interface names
 type ComplianceReport = ComplianceReportRecord;
@@ -377,10 +378,7 @@ export const ComplianceReporting: React.FC = () => {
             <option key={key} value={key}>{conf.label}</option>
           ))}
         </select>
-        <button className="px-4 py-2.5 bg-brand-500 text-white rounded-xl text-sm font-medium flex items-center gap-2 hover:bg-brand-600 transition-colors">
-          <Plus className="w-4 h-4" />
-          New Report
-        </button>
+        <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />}>New Report</SMButton>
       </div>
 
       {/* Reports Grid */}
@@ -561,10 +559,7 @@ export const ComplianceReporting: React.FC = () => {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold text-surface-900 dark:text-white">Scheduled Reports</h3>
-        <button className="px-4 py-2 bg-brand-500 text-white rounded-xl text-sm font-medium flex items-center gap-2 hover:bg-brand-600 transition-colors">
-          <Plus className="w-4 h-4" />
-          Add Schedule
-        </button>
+        <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />}>Add Schedule</SMButton>
       </div>
       
       {allScheduledReports.map((schedule) => (
@@ -711,10 +706,7 @@ export const ComplianceReporting: React.FC = () => {
         </div>
 
         {/* Generate Button */}
-        <button className="w-full py-4 bg-brand-500 text-white font-medium rounded-xl hover:bg-brand-600 transition-colors flex items-center justify-center gap-2">
-          <RefreshCw className="w-5 h-5" />
-          Generate Report Now
-        </button>
+        <SMButton variant="primary" className="w-full" leftIcon={<RefreshCw className="w-5 h-5" />}>Generate Report Now</SMButton>
       </div>
     );
   };

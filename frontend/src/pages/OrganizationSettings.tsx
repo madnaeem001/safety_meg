@@ -20,6 +20,7 @@ import {
   Plus,
   Trash2,
 } from 'lucide-react';
+import { SMButton } from '../components/ui';
 
 interface Organization {
   id: string;
@@ -301,9 +302,7 @@ export const OrganizationSettings: React.FC = () => {
                 </motion.div>
 
                 <motion.div variants={itemVariants}>
-                  <button className="w-full py-3 bg-brand-500 text-white rounded-xl font-medium hover:bg-brand-600 transition-colors">
-                    Save Changes
-                  </button>
+                  <SMButton variant="primary" className="w-full">Save Changes</SMButton>
                 </motion.div>
               </motion.div>
             )}
@@ -323,10 +322,7 @@ export const OrganizationSettings: React.FC = () => {
                     <h3 className="font-semibold text-surface-900 dark:text-white">Team Members</h3>
                     <p className="text-sm text-surface-500">{teamMembers.length} of {organization.plan === 'enterprise' ? 'Unlimited' : organization.plan === 'professional' ? '25' : '5'} users</p>
                   </div>
-                  <button className="flex items-center gap-2 px-4 py-2 bg-brand-500 text-white rounded-lg font-medium hover:bg-brand-600 transition-colors">
-                    <Plus className="w-4 h-4" />
-                    Invite
-                  </button>
+                  <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />}>Invite</SMButton>
                 </motion.div>
 
                 <motion.div variants={containerVariants} className="space-y-2">

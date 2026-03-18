@@ -28,6 +28,7 @@ import {
   BBSObservation,
   ComplianceObligation
 } from '../../../data/mockEHSWorkflow';
+import { SMButton } from '../../ui';
 
 interface DetailModalProps {
   isOpen: boolean;
@@ -677,10 +678,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
               >
                 Close
               </button>
-              <button className="px-4 py-2 text-sm font-medium text-white bg-brand-600 rounded-lg hover:bg-brand-700 transition-colors flex items-center gap-2">
-                <ExternalLink className="w-4 h-4" />
-                Open Full View
-              </button>
+              <SMButton variant="primary" size="sm" leftIcon={<ExternalLink className="w-4 h-4" />}>Open Full View</SMButton>
             </div>
           </motion.div>
         </>

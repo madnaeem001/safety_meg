@@ -75,15 +75,15 @@ export const NotificationCenter: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 pb-24">
+    <div className="min-h-screen text-text-primary pb-24 transition-colors duration-300">
       {/* Header */}
-      <div className="bg-white border-b border-surface-200 sticky top-[72px] z-50 safe-top">
+      <div className="bg-surface-raised border-b border-surface-border sticky top-[72px] z-50 safe-top transition-colors duration-300">
         <div className="px-4 py-4">
           <div className="flex items-center justify-between">
-            <button onClick={() => navigate(-1)} className="p-2 -ml-2 hover:bg-surface-100 rounded-full transition-colors">
-              <ArrowLeft className="w-6 h-6 text-surface-600" />
+            <button onClick={() => navigate(-1)} className="p-2 -ml-2 hover:bg-surface-overlay rounded-full transition-colors">
+              <ArrowLeft className="w-6 h-6 text-text-secondary" />
             </button>
-            <h1 className="text-xl font-bold text-brand-900 flex items-center gap-2">
+            <h1 className="text-xl font-bold text-text-primary flex items-center gap-2">
               <Bell className="w-6 h-6 text-brand-600" />
               Notifications
               {unreadCount > 0 && (
@@ -91,14 +91,14 @@ export const NotificationCenter: React.FC = () => {
               )}
             </h1>
             <div className="flex items-center gap-2">
-              <button onClick={() => refetch()} className="p-2 hover:bg-surface-100 rounded-full transition-colors">
-                <RefreshCw className="w-5 h-5 text-surface-600" />
+              <button onClick={() => refetch()} className="p-2 hover:bg-surface-overlay rounded-full transition-colors">
+                <RefreshCw className="w-5 h-5 text-text-secondary" />
               </button>
               <button 
                 onClick={() => setSoundEnabled(v => !v)}
-                className="p-2 hover:bg-surface-100 rounded-full transition-colors"
+                className="p-2 hover:bg-surface-overlay rounded-full transition-colors"
               >
-                {soundEnabled ? <Volume2 className="w-5 h-5 text-surface-600" /> : <VolumeX className="w-5 h-5 text-surface-400" />}
+                {soundEnabled ? <Volume2 className="w-5 h-5 text-text-secondary" /> : <VolumeX className="w-5 h-5 text-text-muted" />}
               </button>
             </div>
           </div>

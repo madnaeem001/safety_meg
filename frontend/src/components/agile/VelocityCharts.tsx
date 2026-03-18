@@ -5,8 +5,11 @@ import {
   LineChart, Line, Area, AreaChart, Legend, ComposedChart
 } from 'recharts';
 import { TrendingUp, Target, Check, AlertTriangle, BarChart3, Activity } from 'lucide-react';
+import { SMCard } from '../../components/ui';
 import { ProjectTask } from '../../data/mockProjectManagement';
 import { useProjectSprints, useVelocityHistory, useRecordVelocity } from '../../api/hooks/useAPIHooks';
+
+const MotionSMCard = motion(SMCard);
 
 interface VelocityChartsProps {
   tasks: ProjectTask[];
@@ -50,10 +53,10 @@ const StatCard: React.FC<{
   trend?: { value: number; positive: boolean };
   color: string;
 }> = ({ icon: Icon, label, value, trend, color }) => (
-  <motion.div
+  <MotionSMCard
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
-    className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100"
+    className="p-5"
   >
     <div className="flex items-start justify-between">
       <div className={`p-3 rounded-xl ${color}`}>
@@ -70,7 +73,7 @@ const StatCard: React.FC<{
       <div className="text-3xl font-bold text-brand-900">{value}</div>
       <div className="text-xs text-surface-500 uppercase tracking-wider mt-1">{label}</div>
     </div>
-  </motion.div>
+  </MotionSMCard>
 );
 
 export const VelocityCharts: React.FC<VelocityChartsProps> = ({ tasks, projectDbId }) => {
@@ -230,11 +233,11 @@ export const VelocityCharts: React.FC<VelocityChartsProps> = ({ tasks, projectDb
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Velocity Chart */}
-        <motion.div
+        <MotionSMCard
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100"
+          className="p-6"
         >
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -284,14 +287,14 @@ export const VelocityCharts: React.FC<VelocityChartsProps> = ({ tasks, projectDb
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </motion.div>
+        </MotionSMCard>
 
         {/* Burn Down Chart */}
-        <motion.div
+        <MotionSMCard
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100"
+          className="p-6"
         >
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -347,14 +350,14 @@ export const VelocityCharts: React.FC<VelocityChartsProps> = ({ tasks, projectDb
               </LineChart>
             </ResponsiveContainer>
           </div>
-        </motion.div>
+        </MotionSMCard>
 
         {/* Issue Distribution */}
-        <motion.div
+        <MotionSMCard
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100"
+          className="p-6"
         >
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -391,14 +394,14 @@ export const VelocityCharts: React.FC<VelocityChartsProps> = ({ tasks, projectDb
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </motion.div>
+        </MotionSMCard>
 
         {/* Cumulative Flow */}
-        <motion.div
+        <MotionSMCard
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100"
+          className="p-6"
         >
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -437,7 +440,7 @@ export const VelocityCharts: React.FC<VelocityChartsProps> = ({ tasks, projectDb
               </AreaChart>
             </ResponsiveContainer>
           </div>
-        </motion.div>
+        </MotionSMCard>
       </div>
     </div>
   );

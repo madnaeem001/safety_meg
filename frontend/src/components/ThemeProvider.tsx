@@ -1,127 +1,111 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { useEffect, ReactNode } from 'react';
+import { useThemeStore, ThemeMode, ResolvedTheme } from '../store/useThemeStore';
 
-type Theme = 'light' | 'dark' | 'system';
-type ResolvedTheme = 'light' | 'dark';
+// ─────────────────────────────────────────────────────────────────────────────
+// ThemeProvider
+//
+// A pure-effects component: no state of its own.
+// All theme state lives in the Zustand store (useThemeStore) so it is
+// preserved across navigation without any Context drilling.
+//
+// Responsibilities:
+//   1. Apply / remove the `.dark` class on <html> whenever resolvedTheme
+//      changes.  The initial class was already stamped by the anti-flicker
+//      inline script in index.html, so no first-paint FOUC occurs.
+//   2. Keep resolvedTheme in sync when the OS preference changes and the
+//      user has chosen 'system' mode.
+//   3. Update the <meta name="theme-color"> for mobile browser chrome.
+// ─────────────────────────────────────────────────────────────────────────────
 
-interface ThemeContextType {
-  theme: Theme;
+// Re-export types so callers that imported from this file keep working
+export type { ThemeMode as Theme, ResolvedTheme };
+
+interface ThemeContextValue {
+  theme: ThemeMode;
   resolvedTheme: ResolvedTheme;
   toggleTheme: () => void;
-  setTheme: (theme: Theme) => void;
+  setTheme: (mode: ThemeMode) => void;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+// Thin React Context — only consumed by legacy `useTheme()` callers.
+// New code should import `useThemeStore` directly.
+const ThemeContext = React.createContext<ThemeContextValue | undefined>(undefined);
 
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
+export const useTheme = (): ThemeContextValue => {
+  const ctx = React.useContext(ThemeContext);
+  if (!ctx) throw new Error('useTheme must be used within a ThemeProvider');
+  return ctx;
+};
+
+const META_COLORS: Record<ResolvedTheme, string> = {
+  dark:  '#0D2137', // primary.800 — Deep Navy
+  light: '#FFFFFF',
 };
 
 interface ThemeProviderProps {
   children: ReactNode;
 }
 
-const getSystemTheme = (): ResolvedTheme => {
-  if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    return 'dark';
-  }
-  return 'light';
-};
-
-const THEME_STORAGE_KEY = 'theme';
-
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    // Check localStorage first
-    const stored = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-    if (stored && ['light', 'dark', 'system'].includes(stored)) return stored;
-    return 'dark'; // Default to dark for futuristic theme
-  });
-  
-  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => {
-    const stored = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-    if (stored === 'light') return 'light';
-    if (stored === 'dark') return 'dark';
-    return 'dark'; // Default dark for futuristic theme
-  });
+  const { theme, resolvedTheme, setTheme, toggleTheme, _setResolvedTheme } =
+    useThemeStore();
 
-  // Listen to system preference changes
+  // 1. Sync OS preference when theme === 'system'
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    const handleChange = (e: MediaQueryListEvent) => {
-      if (theme === 'system') {
-        setResolvedTheme(e.matches ? 'dark' : 'light');
-      }
-    };
+    if (theme !== 'system') return;
 
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [theme]);
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = (e: MediaQueryListEvent) =>
+      _setResolvedTheme(e.matches ? 'dark' : 'light');
 
-  // Listen to localStorage changes from other tabs
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, [theme, _setResolvedTheme]);
+
+  // 2. Sync cross-tab changes (another tab toggled the theme)
   useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === THEME_STORAGE_KEY && e.newValue) {
-        const newTheme = e.newValue as Theme;
-        if (['light', 'dark', 'system'].includes(newTheme)) {
-          setThemeState(newTheme);
+    const handler = (e: StorageEvent) => {
+      if (e.key !== 'safetymeg-theme' || !e.newValue) return;
+      try {
+        const persisted = JSON.parse(e.newValue);
+        const mode = persisted?.state?.theme as ThemeMode | undefined;
+        if (mode && ['light', 'dark', 'system'].includes(mode)) {
+          setTheme(mode);
         }
+      } catch {
+        // ignore malformed data
       }
     };
+    window.addEventListener('storage', handler);
+    return () => window.removeEventListener('storage', handler);
+  }, [setTheme]);
 
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
-
-  // Update resolved theme when theme changes
-  useEffect(() => {
-    if (theme === 'system') {
-      setResolvedTheme(getSystemTheme());
-    } else {
-      setResolvedTheme(theme);
-    }
-  }, [theme]);
-
-  // Apply theme to document
+  // 3. Apply .dark class and meta theme-color on every resolvedTheme change
   useEffect(() => {
     const root = document.documentElement;
-    
-    // Smooth transition for theme change
-    root.style.transition = 'background-color 0.3s ease, color 0.3s ease';
-    
     if (resolvedTheme === 'dark') {
       root.classList.add('dark');
-      // Update meta theme-color for mobile browsers
-      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#0f172a');
     } else {
       root.classList.remove('dark');
-      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#faf9f7');
     }
-    
-    localStorage.setItem(THEME_STORAGE_KEY, theme);
-  }, [theme, resolvedTheme]);
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute('content', META_COLORS[resolvedTheme]);
+  }, [resolvedTheme]);
 
-  const toggleTheme = () => {
-    setThemeState(prev => {
-      if (prev === 'light') return 'dark';
-      if (prev === 'dark') return 'system';
-      return 'light'; // system -> light
-    });
-  };
-
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
+  const contextValue: ThemeContextValue = {
+    theme,
+    resolvedTheme,
+    toggleTheme,
+    setTheme,
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, toggleTheme, setTheme }}>
+    <ThemeContext.Provider value={contextValue}>
       {children}
     </ThemeContext.Provider>
   );
 };
 
 export default ThemeProvider;
+

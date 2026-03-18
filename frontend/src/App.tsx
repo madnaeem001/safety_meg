@@ -13,8 +13,8 @@ import { RegisterPage } from './pages/RegisterPage';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { AppLayout } from './layouts/AppLayout';
-import { NavigationBar } from './components/dashboard/NavigationBar';
 import { BottomTabNavigation } from './components/dashboard/BottomTabNavigation';
+import { SMToastProvider } from './components/ui';
 
 // Eager load Dashboard for fast initial render
 import { Dashboard } from './pages/Dashboard';
@@ -129,10 +129,10 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
 // Loading fallback component
 const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center bg-surface-50 dark:bg-surface-900">
+  <div className="min-h-screen flex items-center justify-center bg-surface-base">
     <div className="flex flex-col items-center gap-4">
-      <div className="w-10 h-10 border-3 border-brand-200 border-t-brand-500 rounded-full animate-spin" />
-      <p className="text-sm text-surface-500 dark:text-surface-400">Loading...</p>
+      <div className="w-10 h-10 border-3 border-accent/20 border-t-accent rounded-full animate-spin" />
+      <p className="text-sm text-text-muted">Loading...</p>
     </div>
   </div>
 );
@@ -148,9 +148,32 @@ function ScrollToTop() {
 
 // Gesture Navigation Provider - enables swipe between main pages
 const GestureNavigationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Enable swipe navigation
+  const [isMobileScreen, setIsMobileScreen] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(max-width: 767px)').matches;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+    const updateIsMobile = (event: MediaQueryListEvent | MediaQueryList) => {
+      setIsMobileScreen(event.matches);
+    };
+
+    updateIsMobile(mediaQuery);
+
+    if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', updateIsMobile);
+      return () => mediaQuery.removeEventListener('change', updateIsMobile);
+    }
+
+    mediaQuery.addListener(updateIsMobile);
+    return () => mediaQuery.removeListener(updateIsMobile);
+  }, []);
+
   useSwipeNavigation({ 
-    enabled: true,
+    enabled: isMobileScreen,
     threshold: 80,
     velocityThreshold: 0.3,
   });
@@ -158,16 +181,13 @@ const GestureNavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   return <>{children}</>;
 };
 
-// Renders persistent nav components above the Suspense boundary so that
-// useLocation() always reflects the live route during React 18 concurrent
-// rendering of lazy-loaded pages. This fixes stale active-route highlighting
-// and the drawer-not-closing bug.
+// Renders persistent mobile-only bottom navigation above the Suspense boundary
+// so route highlighting stays current during lazy page transitions.
 function PersistentNavigation() {
   const { isAuthenticated } = useAuthStore();
   if (!isAuthenticated) return null;
   return (
     <>
-      <NavigationBar />
       <BottomTabNavigation />
     </>
   );
@@ -181,7 +201,7 @@ function AnimatedRoutes() {
     <GestureNavigationProvider>
       <ScrollToTop />
       {/* Swipe navigation visual feedback */}
-      <SwipeIndicator show={true} />
+      <SwipeIndicator show={false} />
 
       {/* Navigation is stable and lives ABOVE Suspense so it always has
           the current location — never frozen by a pending lazy-load. */}
@@ -289,7 +309,7 @@ function AnimatedRoutes() {
           <Route path="/offline-sync-test" element={<ProtectedRoute><MobileOfflineSyncTest /></ProtectedRoute>} />
           <Route path="/behavior-based-safety" element={<ProtectedRoute><BehaviorBasedSafety /></ProtectedRoute>} />
           <Route path="/bowtie-analysis" element={<ProtectedRoute><BowTieAnalysis /></ProtectedRoute>} />
-          <Route path="/sso-login" element={<AppLayout><SSOLoginFlow /></AppLayout>} />
+          <Route path="/sso-login" element={<ProtectedRoute><SSOLoginFlow /></ProtectedRoute>} />
           {/* Catch-all redirect */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
@@ -313,6 +333,7 @@ function AuthAwareWidgets() {
 function App() {
   return (
     <Router>
+      <SMToastProvider />
       <AnimatedRoutes />
       <PWAInstaller />
       <AuthAwareWidgets />

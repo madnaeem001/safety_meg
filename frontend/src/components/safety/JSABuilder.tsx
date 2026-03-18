@@ -8,6 +8,7 @@ import {
   Globe, BookOpen, Image as ImageIcon, Upload,
   CheckSquare, ListChecks
 } from 'lucide-react';
+import { SMCard, SMButton } from '../../components/ui';
 
 interface JSAStep {
   id: string;
@@ -203,7 +204,7 @@ export const JSABuilder: React.FC<JSABuilderProps> = ({ onSave, onCancel, initia
 
   if (showTemplates) {
     return (
-      <div className="bg-white rounded-2xl shadow-sm border border-surface-200 overflow-hidden">
+      <SMCard>
         <div className="bg-surface-50 px-6 py-4 border-b border-surface-200 flex justify-between items-center">
           <div>
             <h2 className="text-xl font-bold text-surface-900">Select a Template</h2>
@@ -243,12 +244,12 @@ export const JSABuilder: React.FC<JSABuilderProps> = ({ onSave, onCancel, initia
             </button>
           ))}
         </div>
-      </div>
+      </SMCard>
     );
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-surface-200 overflow-hidden">
+    <SMCard>
       {/* Header */}
       <div className="bg-surface-50 px-6 py-4 border-b border-surface-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="flex items-center gap-4">
@@ -267,19 +268,8 @@ export const JSABuilder: React.FC<JSABuilderProps> = ({ onSave, onCancel, initia
           </div>
         </div>
         <div className="flex gap-2 w-full md:w-auto">
-          <button 
-            onClick={onCancel}
-            className="flex-1 md:flex-none px-4 py-2 text-surface-600 hover:bg-surface-100 rounded-lg transition-colors font-bold text-sm"
-          >
-            Cancel
-          </button>
-          <button 
-            onClick={handleSave}
-            className="flex-1 md:flex-none px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-colors flex items-center justify-center gap-2 font-bold text-sm shadow-lg shadow-brand-200"
-          >
-            <Save className="w-4 h-4" />
-            Save JSA
-          </button>
+          <SMButton variant="ghost" className="flex-1 md:flex-none" onClick={onCancel}>Cancel</SMButton>
+          <SMButton variant="primary" className="flex-1 md:flex-none" leftIcon={<Save className="w-4 h-4" />} onClick={handleSave}>Save JSA</SMButton>
         </div>
       </div>
 
@@ -647,6 +637,6 @@ export const JSABuilder: React.FC<JSABuilderProps> = ({ onSave, onCancel, initia
           <div className="absolute top-0 right-0 w-96 h-96 bg-brand-500/10 rounded-full -mr-48 -mt-48 blur-3xl" />
         </div>
       </div>
-    </div>
+    </SMCard>
   );
 };

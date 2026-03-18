@@ -20,6 +20,7 @@ import {
 import { useChemicals } from '../api/hooks/useAPIHooks';
 import type { ChemicalRecord } from '../api/services/apiService';
 import FadeContent from '../components/animations/FadeContent';
+import { SMButton } from '../components/ui';
 
 export const ChemicalSDSManagement = () => {
   const navigate = useNavigate();
@@ -52,9 +53,7 @@ export const ChemicalSDSManagement = () => {
               <p className="text-sm text-surface-500">Inventory & Safety Data Sheets</p>
             </div>
           </div>
-          <button className="p-2 bg-brand-600 text-white rounded-xl shadow-button hover:bg-brand-700 transition-all active:scale-95">
-            <Plus className="w-6 h-6" />
-          </button>
+          <SMButton variant="icon"><Plus className="w-6 h-6" /></SMButton>
         </div>
       </header>
 
@@ -270,10 +269,7 @@ export const ChemicalSDSManagement = () => {
                 </div>
 
                 <div className="flex gap-4">
-                  <button className="flex-1 bg-brand-600 text-white py-4 rounded-2xl font-bold shadow-button hover:bg-brand-700 transition-all flex items-center justify-center gap-2">
-                    <Download className="w-5 h-5" />
-                    Download SDS
-                  </button>
+                  <SMButton variant="primary" className="flex-1" leftIcon={<Download className="w-5 h-5" />}>Download SDS</SMButton>
                   <button className="flex-1 bg-white border border-surface-200 text-surface-700 py-4 rounded-2xl font-bold hover:bg-surface-50 transition-all flex items-center justify-center gap-2">
                     <ExternalLink className="w-5 h-5" />
                     Manufacturer Site

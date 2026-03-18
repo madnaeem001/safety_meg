@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { EmissionLogItem } from '../../../../api/hooks/useAPIHooks';
 import { Database, Download, Filter } from 'lucide-react';
+import { SMButton } from '../../../ui';
 
 interface EmissionLog {
   id: string;
@@ -47,10 +48,7 @@ export const EmissionHistoryTable: React.FC<EmissionHistoryTableProps> = ({ logs
           <button className="p-3 bg-surface-50 rounded-2xl border border-surface-100 hover:bg-surface-100 transition-colors">
             <Filter className="w-4 h-4 text-surface-600" />
           </button>
-          <button className="flex items-center gap-2 px-5 py-3 bg-brand-900 text-white rounded-2xl shadow-glow hover:bg-brand-800 transition-colors text-xs font-bold uppercase tracking-widest">
-            <Download className="w-4 h-4" />
-            Export CSV
-          </button>
+          <SMButton variant="primary" size="sm" leftIcon={<Download className="w-4 h-4" />}>Export CSV</SMButton>
         </div>
       </div>
 

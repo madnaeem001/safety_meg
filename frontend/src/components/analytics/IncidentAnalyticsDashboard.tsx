@@ -35,6 +35,7 @@ import {
   CheckCircle2,
   XCircle
 } from 'lucide-react';
+import { SMButton } from '../ui';
 
 // Types
 interface IncidentData {
@@ -577,11 +578,7 @@ export const IncidentAnalyticsDashboard: React.FC = () => {
           </button>
 
           {/* Export Button */}
-          <button className="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-medium 
-                           rounded-xl flex items-center gap-2 transition-colors">
-            <Download className="w-4 h-4" />
-            <span className="hidden sm:inline">Export</span>
-          </button>
+          <SMButton variant="primary" size="sm" leftIcon={<Download className="w-4 h-4" />}><span className="hidden sm:inline">Export</span></SMButton>
         </div>
       </div>
 

@@ -19,6 +19,7 @@ import {
   ChevronDown,
   RefreshCw
 } from 'lucide-react';
+import { SMButton } from '../../components/ui';
 import {
   LineChart,
   Line,
@@ -178,10 +179,7 @@ export const InjuryTrendAnalytics: React.FC<InjuryTrendAnalyticsProps> = ({
             <Filter className="w-4 h-4" />
             Filters
           </button>
-          <button className="flex items-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-500 rounded-xl text-white font-medium transition-colors">
-            <Download className="w-4 h-4" />
-            Export
-          </button>
+          <SMButton variant="primary" leftIcon={<Download className="w-4 h-4" />}>Export</SMButton>
         </div>
       </div>
 

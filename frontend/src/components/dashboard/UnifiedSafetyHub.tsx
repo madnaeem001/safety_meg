@@ -122,21 +122,21 @@ export const UnifiedSafetyHub: React.FC<UnifiedSafetyHubProps> = ({ onNavigate }
   // Helper functions
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical': return 'bg-red-100 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800/30';
-      case 'high': return 'bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/30 dark:text-orange-400 dark:border-orange-800/30';
-      case 'medium': return 'bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800/30';
-      case 'low': return 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800/30';
-      default: return 'bg-surface-100 text-surface-600 border-surface-200';
+      case 'critical': return 'bg-red-100 text-red-700 border-red-200';
+      case 'high': return 'bg-orange-100 text-orange-700 border-orange-200';
+      case 'medium': return 'bg-amber-100 text-amber-700 border-amber-200';
+      case 'low': return 'bg-green-100 text-green-700 border-green-200';
+      default: return 'bg-surface-sunken text-text-secondary border-surface-border';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'open': return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
-      case 'investigating': return 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400';
-      case 'resolved': case 'closed': return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
-      case 'capa-pending': return 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400';
-      default: return 'bg-surface-100 text-surface-600';
+      case 'open': return 'bg-blue-100 text-blue-700';
+      case 'investigating': return 'bg-purple-100 text-purple-700';
+      case 'resolved': case 'closed': return 'bg-green-100 text-green-700';
+      case 'capa-pending': return 'bg-amber-100 text-amber-700';
+      default: return 'bg-surface-sunken text-text-secondary';
     }
   };
 
@@ -152,11 +152,11 @@ export const UnifiedSafetyHub: React.FC<UnifiedSafetyHubProps> = ({ onNavigate }
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'incident': return 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400';
-      case 'vehicle': return 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400';
-      case 'property': return 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400';
-      case 'injury': return 'bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400';
-      default: return 'bg-surface-100 text-surface-600';
+      case 'incident': return 'bg-red-100 text-red-600';
+      case 'vehicle': return 'bg-blue-100 text-blue-600';
+      case 'property': return 'bg-orange-100 text-orange-600';
+      case 'injury': return 'bg-pink-100 text-pink-600';
+      default: return 'bg-surface-sunken text-text-secondary';
     }
   };
 
@@ -169,7 +169,7 @@ export const UnifiedSafetyHub: React.FC<UnifiedSafetyHubProps> = ({ onNavigate }
         className="space-y-6 md:space-y-8"
       >
         {/* Hero Section with Key Stats */}
-        <motion.div variants={itemVariants} className="relative overflow-hidden bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-3xl p-6 md:p-8 text-white">
+        <motion.div variants={itemVariants} className="relative overflow-hidden bg-surface-raised border border-surface-border backdrop-blur-xl rounded-3xl p-6 md:p-8 text-text-primary">
           {/* Subtle gradient orbs */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute -top-24 -right-24 w-64 h-64 bg-brand-500/20 rounded-full blur-3xl" />
@@ -185,8 +185,8 @@ export const UnifiedSafetyHub: React.FC<UnifiedSafetyHubProps> = ({ onNavigate }
                   <DNAIcon className="w-12 h-12 text-brand-400" />
                 </div>
                 <div>
-                  <h1 className="text-3xl md:text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-300">SafetyMEG</h1>
-                  <p className="text-slate-400 text-sm md:text-base">Intelligent Safety Management</p>
+                  <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-text-primary">SafetyMEG</h1>
+                  <p className="text-text-secondary text-sm md:text-base">Intelligent Safety Management</p>
                 </div>
               </div>
               <div className="hidden md:flex items-center gap-2">
@@ -201,63 +201,63 @@ export const UnifiedSafetyHub: React.FC<UnifiedSafetyHubProps> = ({ onNavigate }
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
             <motion.div 
               whileHover={{ scale: 1.02, y: -2 }}
-              className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10 hover:border-brand-500/30 transition-colors cursor-default"
+              className="bg-surface-sunken backdrop-blur-sm rounded-2xl p-4 border border-surface-border hover:border-brand-500/30 transition-colors cursor-default"
             >
               <div className="flex items-center gap-2 mb-2">
                 <Shield className="w-4 h-4 text-brand-400" />
-                <span className="text-xs text-slate-400 font-medium">Safety Score</span>
+                <span className="text-xs text-text-muted font-medium">Safety Score</span>
               </div>
-              <p className="text-2xl md:text-3xl font-bold text-white">{quickStats.safetyScore}%</p>
+              <p className="text-2xl md:text-3xl font-bold text-text-primary">{quickStats.safetyScore}%</p>
             </motion.div>
             <motion.div 
               whileHover={{ scale: 1.02, y: -2 }}
-              className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10 hover:border-amber-500/30 transition-colors cursor-default"
+              className="bg-surface-sunken backdrop-blur-sm rounded-2xl p-4 border border-surface-border hover:border-amber-500/30 transition-colors cursor-default"
             >
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle className="w-4 h-4 text-amber-400" />
-                <span className="text-xs text-slate-400 font-medium">Open Issues</span>
+                <span className="text-xs text-text-muted font-medium">Open Issues</span>
               </div>
-              <p className="text-2xl md:text-3xl font-bold text-white">{quickStats.openIncidents}</p>
+              <p className="text-2xl md:text-3xl font-bold text-text-primary">{quickStats.openIncidents}</p>
             </motion.div>
             <motion.div 
               whileHover={{ scale: 1.02, y: -2 }}
-              className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10 hover:border-emerald-500/30 transition-colors cursor-default"
+              className="bg-surface-sunken backdrop-blur-sm rounded-2xl p-4 border border-surface-border hover:border-emerald-500/30 transition-colors cursor-default"
             >
               <div className="flex items-center gap-2 mb-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span className="text-xs text-slate-400 font-medium">Days Safe</span>
+                <span className="text-xs text-text-muted font-medium">Days Safe</span>
               </div>
-              <p className="text-2xl md:text-3xl font-bold text-white">{quickStats.daysSafe}</p>
+              <p className="text-2xl md:text-3xl font-bold text-text-primary">{quickStats.daysSafe}</p>
             </motion.div>
             <motion.div 
               whileHover={{ scale: 1.02, y: -2 }}
-              className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10 hover:border-cyan-500/30 transition-colors cursor-default"
+              className="bg-surface-sunken backdrop-blur-sm rounded-2xl p-4 border border-surface-border hover:border-cyan-500/30 transition-colors cursor-default"
             >
               <div className="flex items-center gap-2 mb-2">
                 <ClipboardCheck className="w-4 h-4 text-cyan-400" />
-                <span className="text-xs text-slate-400 font-medium">Compliance</span>
+                <span className="text-xs text-text-muted font-medium">Compliance</span>
               </div>
-              <p className="text-2xl md:text-3xl font-bold text-white">{quickStats.complianceRate}%</p>
+              <p className="text-2xl md:text-3xl font-bold text-text-primary">{quickStats.complianceRate}%</p>
             </motion.div>
             <motion.div 
               whileHover={{ scale: 1.02, y: -2 }}
-              className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10 hover:border-orange-500/30 transition-colors cursor-default"
+              className="bg-surface-sunken backdrop-blur-sm rounded-2xl p-4 border border-surface-border hover:border-orange-500/30 transition-colors cursor-default"
             >
               <div className="flex items-center gap-2 mb-2">
                 <Target className="w-4 h-4 text-orange-400" />
-                <span className="text-xs text-slate-400 font-medium">Pending CAPAs</span>
+                <span className="text-xs text-text-muted font-medium">Pending CAPAs</span>
               </div>
-              <p className="text-2xl md:text-3xl font-bold text-white">{quickStats.pendingCAPAs}</p>
+              <p className="text-2xl md:text-3xl font-bold text-text-primary">{quickStats.pendingCAPAs}</p>
             </motion.div>
             <motion.div 
               whileHover={{ scale: 1.02, y: -2 }}
-              className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10 hover:border-purple-500/30 transition-colors cursor-default"
+              className="bg-surface-sunken backdrop-blur-sm rounded-2xl p-4 border border-surface-border hover:border-purple-500/30 transition-colors cursor-default"
             >
               <div className="flex items-center gap-2 mb-2">
                 <Calendar className="w-4 h-4 text-purple-400" />
-                <span className="text-xs text-slate-400 font-medium">Inspections Due</span>
+                <span className="text-xs text-text-muted font-medium">Inspections Due</span>
               </div>
-              <p className="text-2xl md:text-3xl font-bold text-white">{quickStats.upcomingInspections}</p>
+              <p className="text-2xl md:text-3xl font-bold text-text-primary">{quickStats.upcomingInspections}</p>
             </motion.div>
           </div>
         </div>
@@ -266,8 +266,8 @@ export const UnifiedSafetyHub: React.FC<UnifiedSafetyHubProps> = ({ onNavigate }
       {/* Extended KPI Metrics */}
       <motion.div variants={itemVariants}>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-white tracking-tight">Performance Metrics</h2>
-          <button className="text-xs text-brand-600 dark:text-brand-400 font-semibold hover:underline flex items-center gap-1 transition-colors">
+          <h2 className="text-lg md:text-xl font-bold text-text-primary tracking-tight">Performance Metrics</h2>
+          <button className="text-xs text-brand-600 font-semibold hover:underline flex items-center gap-1 transition-colors">
             View Details <ArrowRight className="w-3 h-3" />
           </button>
         </div>
@@ -288,7 +288,7 @@ export const UnifiedSafetyHub: React.FC<UnifiedSafetyHubProps> = ({ onNavigate }
       {/* AI & Analytics Section */}
       <motion.div variants={itemVariants}>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-lg md:text-xl font-bold text-text-primary tracking-tight flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-brand-500" />
             AI & Analytics
           </h2>
@@ -301,13 +301,13 @@ export const UnifiedSafetyHub: React.FC<UnifiedSafetyHubProps> = ({ onNavigate }
 
       {/* Quick Actions */}
       <motion.div variants={itemVariants}>
-        <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-white tracking-tight mb-4">Quick Actions</h2>
+        <h2 className="text-lg md:text-xl font-bold text-text-primary tracking-tight mb-4">Quick Actions</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {[
-            { label: 'Report Incident', icon: AlertTriangle, color: 'bg-red-50 hover:bg-red-100 border-red-200/60 text-red-700 dark:bg-red-900/20 dark:hover:bg-red-900/30 dark:border-red-800/30 dark:text-red-400', iconColor: 'text-red-500 dark:text-red-400', route: '/report-incident' },
-            { label: 'Injury Report', icon: Heart, color: 'bg-rose-50 hover:bg-rose-100 border-rose-200/60 text-rose-700 dark:bg-rose-900/20 dark:hover:bg-rose-900/30 dark:border-rose-800/30 dark:text-rose-400', iconColor: 'text-rose-500 dark:text-rose-400', route: '/injury-report' },
-            { label: 'Vehicle Incident', icon: Car, color: 'bg-slate-50 hover:bg-slate-100 border-slate-200/60 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:border-slate-700/50 dark:text-slate-300', iconColor: 'text-slate-500 dark:text-slate-400', route: '/vehicle-incident' },
-            { label: 'Safety Audit', icon: ClipboardCheck, color: 'bg-brand-50 hover:bg-brand-100 border-brand-200/60 text-brand-700 dark:bg-brand-900/20 dark:hover:bg-brand-900/30 dark:border-brand-800/30 dark:text-brand-400', iconColor: 'text-brand-500 dark:text-brand-400', route: '/safety-audit' },
+            { label: 'Report Incident', icon: AlertTriangle, color: 'bg-red-50 hover:bg-red-100 border-red-200/60 text-red-700', iconColor: 'text-red-500', route: '/report-incident' },
+            { label: 'Injury Report', icon: Heart, color: 'bg-rose-50 hover:bg-rose-100 border-rose-200/60 text-rose-700', iconColor: 'text-rose-500', route: '/injury-report' },
+            { label: 'Vehicle Incident', icon: Car, color: 'bg-surface-raised hover:bg-surface-overlay border-surface-border text-text-primary', iconColor: 'text-text-secondary', route: '/vehicle-incident' },
+            { label: 'Safety Audit', icon: ClipboardCheck, color: 'bg-brand-50 hover:bg-brand-100 border-brand-200/60 text-brand-700', iconColor: 'text-brand-500', route: '/safety-audit' },
           ].map((action, i) => (
             <motion.button
               key={action.label}
@@ -324,12 +324,12 @@ export const UnifiedSafetyHub: React.FC<UnifiedSafetyHubProps> = ({ onNavigate }
       </motion.div>
 
       {/* Unified Reports Section */}
-      <motion.div variants={itemVariants} className="bg-white dark:bg-slate-800/90 rounded-2xl md:rounded-3xl border border-surface-200/50 dark:border-slate-700/50 shadow-card overflow-hidden backdrop-blur-sm">
-        <div className="p-4 md:p-6 border-b border-surface-100 dark:border-slate-700/50">
+      <motion.div variants={itemVariants} className="bg-surface-raised rounded-2xl md:rounded-3xl border border-surface-border shadow-card overflow-hidden backdrop-blur-sm">
+        <div className="p-4 md:p-6 border-b border-surface-border">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-white tracking-tight">All Reports</h2>
-              <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Unified view of all safety reports</p>
+              <h2 className="text-lg md:text-xl font-bold text-text-primary tracking-tight">All Reports</h2>
+              <p className="text-xs text-text-muted mt-0.5">Unified view of all safety reports</p>
             </div>
             <div className="flex items-center gap-2 md:gap-3">
               {/* Search */}
@@ -340,22 +340,22 @@ export const UnifiedSafetyHub: React.FC<UnifiedSafetyHubProps> = ({ onNavigate }
                   placeholder="Search reports..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full md:w-48 pl-9 pr-3 py-2 text-sm bg-surface-50 dark:bg-slate-700 border border-surface-200 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500/30"
+                  className="w-full md:w-48 pl-9 pr-3 py-2 text-sm bg-surface-sunken border border-surface-border rounded-xl text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-500/30"
                 />
               </div>
               {/* Filter */}
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`p-2 rounded-xl border transition-colors ${showFilters ? 'bg-brand-50 border-brand-200 text-brand-600 dark:bg-brand-900/30 dark:border-brand-800/30 dark:text-brand-400' : 'bg-surface-50 border-surface-200 text-surface-500 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-400'}`}
+                className={`p-2 rounded-xl border transition-colors ${showFilters ? 'bg-brand-50 border-brand-200 text-brand-600' : 'bg-surface-sunken border-surface-border text-text-muted'}`}
               >
                 <Filter className="w-4 h-4" />
               </button>
               {/* View Toggle */}
-              <div className="flex bg-surface-100 dark:bg-slate-700 rounded-lg p-1">
-                <button onClick={() => setViewMode('grid')} className={`p-1.5 rounded ${viewMode === 'grid' ? 'bg-white dark:bg-slate-600 shadow text-brand-600 dark:text-brand-400' : 'text-surface-400 dark:text-slate-500'}`}>
+              <div className="flex bg-surface-sunken rounded-lg p-1 border border-surface-border">
+                <button onClick={() => setViewMode('grid')} className={`p-1.5 rounded ${viewMode === 'grid' ? 'bg-surface-overlay shadow text-brand-600' : 'text-text-muted'}`}>
                   <LayoutGrid className="w-4 h-4" />
                 </button>
-                <button onClick={() => setViewMode('list')} className={`p-1.5 rounded ${viewMode === 'list' ? 'bg-white dark:bg-slate-600 shadow text-brand-600 dark:text-brand-400' : 'text-surface-400 dark:text-slate-500'}`}>
+                <button onClick={() => setViewMode('list')} className={`p-1.5 rounded ${viewMode === 'list' ? 'bg-surface-overlay shadow text-brand-600' : 'text-text-muted'}`}>
                   <List className="w-4 h-4" />
                 </button>
               </div>
@@ -378,7 +378,7 @@ export const UnifiedSafetyHub: React.FC<UnifiedSafetyHubProps> = ({ onNavigate }
                     className={`px-3 py-1.5 text-xs font-semibold rounded-full transition-colors capitalize ${
                       typeFilter === type
                         ? 'bg-brand-600 text-white'
-                        : 'bg-surface-100 text-surface-600 hover:bg-surface-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'
+                        : 'bg-surface-sunken text-text-secondary hover:bg-surface-overlay'
                     }`}
                   >
                     {type === 'all' ? 'All Types' : type}
@@ -403,7 +403,7 @@ export const UnifiedSafetyHub: React.FC<UnifiedSafetyHubProps> = ({ onNavigate }
                     transition={{ delay: i * 0.05 }}
                     whileHover={{ y: -2 }}
                     onClick={() => handleNav('/report-incident')}
-                    className="group bg-surface-50 dark:bg-slate-700/50 hover:bg-white dark:hover:bg-slate-700 p-4 md:p-5 rounded-2xl border border-surface-100 dark:border-slate-600/50 hover:border-brand-200 dark:hover:border-brand-700/50 hover:shadow-card cursor-pointer transition-all"
+                    className="group bg-surface-raised hover:bg-surface-overlay p-4 md:p-5 rounded-2xl border border-surface-border hover:border-brand-200 hover:shadow-card cursor-pointer transition-all"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-3">
@@ -411,21 +411,21 @@ export const UnifiedSafetyHub: React.FC<UnifiedSafetyHubProps> = ({ onNavigate }
                           <TypeIcon className="w-5 h-5" />
                         </div>
                         <div>
-                          <p className="font-bold text-surface-800 dark:text-white text-sm">{report.id}</p>
-                          <p className="text-xs text-surface-400 dark:text-slate-400">{report.date}</p>
+                          <p className="font-bold text-text-primary text-sm">{report.id}</p>
+                          <p className="text-xs text-text-muted">{report.date}</p>
                         </div>
                       </div>
                       <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded border ${getSeverityColor(report.severity)}`}>
                         {report.severity}
                       </span>
                     </div>
-                    <h4 className="font-bold text-surface-800 dark:text-white mb-2 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors line-clamp-1">{report.title}</h4>
+                    <h4 className="font-bold text-text-primary mb-2 group-hover:text-brand-600 transition-colors line-clamp-1">{report.title}</h4>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 bg-surface-200 dark:bg-slate-600 rounded-full flex items-center justify-center">
-                          <Users className="w-3 h-3 text-surface-500 dark:text-slate-400" />
+                        <div className="w-6 h-6 bg-surface-sunken rounded-full flex items-center justify-center">
+                          <Users className="w-3 h-3 text-text-muted" />
                         </div>
-                        <span className="text-xs text-surface-500 dark:text-slate-400">{report.assignee}</span>
+                        <span className="text-xs text-text-secondary">{report.assignee}</span>
                       </div>
                       <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded ${getStatusColor(report.status)}`}>
                         {report.status.replace('-', ' ')}
@@ -446,22 +446,22 @@ export const UnifiedSafetyHub: React.FC<UnifiedSafetyHubProps> = ({ onNavigate }
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.03 }}
                     onClick={() => handleNav('/report-incident')}
-                    className="flex items-center justify-between p-4 bg-surface-50 dark:bg-slate-700/50 hover:bg-white dark:hover:bg-slate-700 rounded-xl border border-surface-100 dark:border-slate-600/50 hover:border-brand-200 dark:hover:border-brand-700/50 cursor-pointer transition-all"
+                    className="flex items-center justify-between p-4 bg-surface-raised hover:bg-surface-overlay rounded-xl border border-surface-border hover:border-brand-200 cursor-pointer transition-all"
                   >
                     <div className="flex items-center gap-4">
                       <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${getTypeColor(report.type)}`}>
                         <TypeIcon className="w-5 h-5" />
                       </div>
                       <div>
-                        <p className="font-bold text-surface-800 dark:text-white">{report.id}</p>
-                        <p className="text-sm text-surface-500 dark:text-slate-400">{report.title}</p>
+                        <p className="font-bold text-text-primary">{report.id}</p>
+                        <p className="text-sm text-text-secondary">{report.title}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
-                      <span className="text-xs text-surface-400 dark:text-slate-500 hidden md:block">{report.date}</span>
+                      <span className="text-xs text-text-muted hidden md:block">{report.date}</span>
                       <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded border ${getSeverityColor(report.severity)}`}>{report.severity}</span>
                       <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded ${getStatusColor(report.status)}`}>{report.status.replace('-', ' ')}</span>
-                      <ChevronRight className="w-4 h-4 text-surface-400 dark:text-slate-500" />
+                      <ChevronRight className="w-4 h-4 text-text-muted" />
                     </div>
                   </motion.div>
                 );
@@ -471,9 +471,9 @@ export const UnifiedSafetyHub: React.FC<UnifiedSafetyHubProps> = ({ onNavigate }
 
           {filteredReports.length === 0 && (
             <div className="text-center py-12">
-              <Search className="w-12 h-12 text-surface-300 dark:text-slate-600 mx-auto mb-3" />
-              <p className="text-surface-500 dark:text-slate-400 font-medium">No reports found</p>
-              <p className="text-xs text-surface-400 dark:text-slate-500 mt-1">Try adjusting your search or filters</p>
+              <Search className="w-12 h-12 text-text-muted/40 mx-auto mb-3" />
+              <p className="text-text-secondary font-medium">No reports found</p>
+              <p className="text-xs text-text-muted mt-1">Try adjusting your search or filters</p>
             </div>
           )}
         </div>
@@ -485,7 +485,7 @@ export const UnifiedSafetyHub: React.FC<UnifiedSafetyHubProps> = ({ onNavigate }
           onClick={() => handleNav('/report-incident')}
           whileHover={{ scale: 1.02, y: -2 }}
           whileTap={{ scale: 0.98 }}
-          className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 dark:from-brand-600 dark:to-brand-700 dark:hover:from-brand-500 dark:hover:to-brand-600 text-white font-bold rounded-2xl shadow-premium hover:shadow-soft-xl transition-all duration-300"
+          className="flex items-center gap-2 px-8 py-4 bg-surface-raised border border-surface-border hover:bg-surface-overlay text-text-primary font-bold rounded-2xl shadow-premium hover:shadow-soft-xl transition-all duration-300"
         >
           <Plus className="w-5 h-5" />
           New Safety Report

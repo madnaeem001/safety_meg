@@ -4,6 +4,7 @@ import {
   Target, ChevronDown, ChevronRight, CheckCircle2, AlertTriangle, 
   Users, Settings, BookOpen, Lightbulb, Brain, Plus, X
 } from 'lucide-react';
+import { SMCard, SMButton } from '../../components/ui';
 
 // TapRoot Root Cause Categories based on TapRoot methodology
 const TAPROOT_CATEGORIES = {
@@ -207,7 +208,7 @@ export const TapRootAnalysis: React.FC<TapRootAnalysisProps> = ({
       </div>
 
       {/* Category Tree */}
-      <div className="bg-white dark:bg-surface-800 rounded-2xl p-5 shadow-soft border border-surface-100 dark:border-surface-700">
+      <SMCard className="p-5">
         <h4 className="font-semibold text-brand-900 dark:text-white mb-4 flex items-center gap-2">
           <Lightbulb className="w-5 h-5 text-amber-500" />
           Root Cause Categories
@@ -271,17 +272,16 @@ export const TapRootAnalysis: React.FC<TapRootAnalysisProps> = ({
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Add Finding Form */}
+        </SMCard>
       {!showAddForm ? (
-        <button
+        <SMButton
+          variant="secondary"
+          className="w-full"
+          leftIcon={<Plus className="w-5 h-5" />}
           onClick={() => setShowAddForm(true)}
-          className="w-full py-3 border-2 border-dashed border-surface-200 dark:border-surface-600 rounded-xl text-surface-500 dark:text-surface-400 hover:border-brand-500 hover:text-brand-500 transition-colors flex items-center justify-center gap-2"
         >
-          <Plus className="w-5 h-5" />
           Add TapRoot Finding
-        </button>
+        </SMButton>
       ) : (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -364,20 +364,21 @@ export const TapRootAnalysis: React.FC<TapRootAnalysisProps> = ({
               />
             </div>
             
-            <button
-              onClick={addFinding}
-              disabled={!selectedCategory || !selectedSubcategory || !specificCause}
-              className="w-full py-2.5 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition-colors disabled:opacity-50"
-            >
-              Add Finding
-            </button>
+          <SMButton
+            variant="primary"
+            className="w-full"
+            onClick={addFinding}
+            disabled={!selectedCategory || !selectedSubcategory || !specificCause}
+          >
+            Add Finding
+          </SMButton>
           </div>
         </motion.div>
       )}
 
       {/* Findings List */}
       {findings.length > 0 && (
-        <div className="bg-white dark:bg-surface-800 rounded-2xl p-5 shadow-soft border border-surface-100 dark:border-surface-700">
+        <SMCard className="p-5">
           <h4 className="font-semibold text-brand-900 dark:text-white mb-4 flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 text-emerald-500" />
             Identified Root Causes ({findings.length})
@@ -418,7 +419,7 @@ export const TapRootAnalysis: React.FC<TapRootAnalysisProps> = ({
               );
             })}
           </div>
-        </div>
+        </SMCard>
       )}
     </div>
   );

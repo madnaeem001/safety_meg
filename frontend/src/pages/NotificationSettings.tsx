@@ -523,7 +523,7 @@ export const NotificationSettings: React.FC = () => {
       
       {/* Header */}
       <div className="sticky top-14 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-surface-200/60 dark:border-slate-700/60">
-        <div className="max-w-2xl mx-auto px-4 py-3">
+        <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate(-1)}
@@ -584,7 +584,7 @@ export const NotificationSettings: React.FC = () => {
         </div>
       </div>
 
-      <main className="max-w-2xl mx-auto px-4 py-4">
+      <main className="max-w-7xl mx-auto px-4 py-4">
         <AnimatePresence mode="wait">
           {activeTab === 'notifications' ? (
             <motion.div

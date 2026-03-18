@@ -6,6 +6,7 @@ import {
   CheckCircle2, Clock, User, FileText, Loader2
 } from 'lucide-react';
 import { aiAssistantService } from '../../api/services/apiService';
+import { SMCard, SMButton, SMBadge } from '../../components/ui';
 
 interface LessonLearned {
   id: string;
@@ -167,7 +168,7 @@ Please provide:
   const progressPercent = actions.length > 0 ? (completedActions / actions.length) * 100 : 0;
 
   return (
-    <div className="bg-white rounded-2xl border border-surface-200 overflow-hidden">
+    <SMCard>
       <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-4">
         <h3 className="font-bold text-white flex items-center gap-2">
           <BookOpen className="w-5 h-5" />
@@ -247,21 +248,12 @@ Please provide:
                             )}
                           </div>
                           <div className="flex items-center gap-2 mt-2">
-                            <span className={`text-xs px-2 py-0.5 rounded-full ${
-                              lesson.priority === 'high' ? 'bg-red-100 text-red-700' :
-                              lesson.priority === 'medium' ? 'bg-amber-100 text-amber-700' :
-                              'bg-emerald-100 text-emerald-700'
-                            }`}>
+                            <SMBadge size="sm" variant={lesson.priority === 'high' ? 'danger' : lesson.priority === 'medium' ? 'warning' : 'success'}>
                               {lesson.priority} priority
-                            </span>
-                            <span className={`text-xs px-2 py-0.5 rounded-full ${
-                              lesson.status === 'verified' ? 'bg-emerald-100 text-emerald-700' :
-                              lesson.status === 'implemented' ? 'bg-blue-100 text-blue-700' :
-                              lesson.status === 'in_progress' ? 'bg-amber-100 text-amber-700' :
-                              'bg-surface-100 text-surface-600'
-                            }`}>
+                            </SMBadge>
+                            <SMBadge size="sm" variant={lesson.status === 'verified' || lesson.status === 'implemented' ? 'success' : lesson.status === 'in_progress' ? 'warning' : 'neutral'}>
                               {lesson.status.replace('_', ' ')}
-                            </span>
+                            </SMBadge>
                           </div>
                         </div>
                       ))}
@@ -313,9 +305,7 @@ Please provide:
                           <option value="medium">Medium Priority</option>
                           <option value="low">Low Priority</option>
                         </select>
-                        <button onClick={addLesson} className="px-4 py-2 bg-brand-600 text-white rounded-lg text-sm font-medium">
-                          Add
-                        </button>
+                        <SMButton variant="primary" size="sm" onClick={addLesson}>Add</SMButton>
                         <button onClick={() => setShowAddLesson(false)} className="px-4 py-2 bg-surface-200 rounded-lg text-sm">
                           Cancel
                         </button>
@@ -466,9 +456,7 @@ Please provide:
                         className="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm"
                       />
                       <div className="flex gap-2">
-                        <button onClick={addAction} className="flex-1 px-4 py-2 bg-brand-600 text-white rounded-lg text-sm font-medium">
-                          Add Action
-                        </button>
+                        <SMButton variant="primary" size="sm" className="flex-1" onClick={addAction}>Add Action</SMButton>
                         <button onClick={() => setShowAddAction(false)} className="px-4 py-2 bg-surface-200 rounded-lg text-sm">
                           Cancel
                         </button>
@@ -490,7 +478,8 @@ Please provide:
         </AnimatePresence>
 
         {/* AI Analysis Button */}
-        <button
+        <SMButton
+          variant="primary"
           type="button"
           disabled={aiLoading}
           onClick={async () => {
@@ -514,11 +503,12 @@ Please provide:
               setAiLoading(false);
             }
           }}
-          className="w-full mt-4 px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:from-emerald-600 hover:to-teal-600 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full mt-4"
+          loading={aiLoading}
+          leftIcon={<Sparkles className="w-4 h-4" />}
         >
-          {aiLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
           {aiLoading ? 'Analysing...' : 'AI Analyse & Suggest'}
-        </button>
+        </SMButton>
         {aiError && (
           <p className="text-xs text-red-600 text-center mt-2">{aiError}</p>
         )}
@@ -548,7 +538,7 @@ Please provide:
           </div>
         )}
       </div>
-    </div>
+    </SMCard>
   );
 };
 

@@ -8,6 +8,7 @@ import type { ProjectTask, TaskStatus, TaskPriority, IssueType } from '../../typ
 import { useProjectSprints, useProjectEpics } from '../../api/hooks/useAPIHooks';
 import { SprintRecord, EpicRecord } from '../../api/services/apiService';
 import { hapticFeedback } from '../../utils/mobileFeatures';
+import { SMCard } from '../../components/ui';
 
 interface BacklogManagementProps {
   tasks: ProjectTask[];
@@ -243,7 +244,7 @@ export const BacklogManagement: React.FC<BacklogManagementProps> = ({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100">
+      <SMCard className="p-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div>
             <h3 className="text-xl font-bold text-brand-900">Backlog Management</h3>
@@ -317,7 +318,7 @@ export const BacklogManagement: React.FC<BacklogManagementProps> = ({
             <option value="storyPoints">Sort by Story Points</option>
           </select>
         </div>
-      </div>
+      </SMCard>
 
       {/* Bulk actions */}
       {selectedTasks.length > 0 && (

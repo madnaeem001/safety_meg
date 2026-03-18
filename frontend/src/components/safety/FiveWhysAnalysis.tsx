@@ -5,6 +5,7 @@ import {
   ArrowDown, Lightbulb, Target, AlertTriangle, FileText, Loader2
 } from 'lucide-react';
 import { aiAssistantService } from '../../api/services/apiService';
+import { SMCard, SMButton } from '../../components/ui';
 
 interface WhyStep {
   id: string;
@@ -101,7 +102,7 @@ Please provide:
   const rootCause = whys.find(w => w.isRootCause);
 
   return (
-    <div className="bg-white rounded-2xl border border-surface-200 overflow-hidden">
+    <SMCard>
       <div className="bg-gradient-to-r from-amber-500 to-orange-500 p-4">
         <h3 className="font-bold text-white flex items-center gap-2">
           <HelpCircle className="w-5 h-5" />
@@ -312,7 +313,7 @@ Please provide:
         </div>
 
         {/* AI Analysis Button */}
-        <button
+        <SMButton
           type="button"
           disabled={aiLoading}
           onClick={async () => {
@@ -332,11 +333,12 @@ Please provide:
               setAiLoading(false);
             }
           }}
-          className="w-full px-4 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:from-amber-600 hover:to-orange-600 transition-all disabled:opacity-60"
+          className="w-full"
+          loading={aiLoading}
+          leftIcon={<Sparkles className="w-4 h-4" />}
         >
-          {aiLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
           {aiLoading ? 'Analysing...' : 'AI Analyse Root Causes'}
-        </button>
+        </SMButton>
         {aiError && (
           <p className="text-xs text-red-400 text-center">{aiError}</p>
         )}
@@ -380,7 +382,7 @@ Please provide:
           </div>
         </div>
       </div>
-    </div>
+    </SMCard>
   );
 };
 

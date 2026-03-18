@@ -15,6 +15,7 @@ import {
   useTaskComments,
   useAddTaskComment,
 } from '../../api/hooks/useAPIHooks';
+import { SMButton } from '../../components/ui';
 
 interface TaskDetailModalProps {
   task: ProjectTask;
@@ -367,12 +368,13 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
 
                 {isEditing && (
                   <div className="flex gap-2">
-                    <button
+                    <SMButton
+                      variant="primary"
+                      size="sm"
                       onClick={handleSaveEdit}
-                      className="px-4 py-2 bg-brand-600 text-white rounded-xl text-sm font-semibold hover:bg-brand-700"
                     >
                       Save Changes
-                    </button>
+                    </SMButton>
                     <button
                       onClick={() => {
                         setIsEditing(false);
@@ -448,14 +450,15 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                       className="w-full px-4 py-3 border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none text-sm resize-none"
                     />
                     <div className="flex justify-end mt-2">
-                      <button
+                      <SMButton
+                        variant="primary"
+                        size="sm"
+                        leftIcon={<Send className="w-4 h-4" />}
                         onClick={handleAddComment}
                         disabled={!newComment.trim()}
-                        className="px-4 py-2 bg-brand-600 text-white rounded-xl text-sm font-semibold hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                       >
-                        <Send className="w-4 h-4" />
                         Send
-                      </button>
+                      </SMButton>
                     </div>
                   </div>
                 </div>

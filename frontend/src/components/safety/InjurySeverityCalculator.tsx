@@ -5,6 +5,7 @@ import {
   Heart, Activity, Thermometer, Brain, Shield,
   CheckCircle2, XCircle, HelpCircle, Sparkles
 } from 'lucide-react';
+import { SMCard, SMButton, SMBadge } from '../../components/ui';
 
 interface SeverityFactor {
   id: string;
@@ -231,7 +232,7 @@ Please provide:
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-surface-200 overflow-hidden">
+    <SMCard>
       <div className="bg-gradient-to-r from-brand-600 to-brand-700 p-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
@@ -307,9 +308,9 @@ Please provide:
                     <TrendingUp className="w-5 h-5" />
                     Severity Assessment Results
                   </h4>
-                  <span className={`px-3 py-1 rounded-full font-bold text-sm ${getCategoryColor(result.category)}`}>
+                  <SMBadge variant={result.category === 'Critical' || result.category === 'Severe' ? 'danger' : result.category === 'Serious' ? 'warning' : result.category === 'Moderate' ? 'warning' : 'success'}>
                     {result.category}
-                  </span>
+                  </SMBadge>
                 </div>
 
                 {/* Score Visualization */}
@@ -378,14 +379,14 @@ Please provide:
                 </div>
 
                 {/* AI Analysis Button */}
-                <button
-                  type="button"
+                <SMButton
+                  variant="secondary"
+                  className="w-full mt-3"
+                  leftIcon={<Sparkles className="w-4 h-4" />}
                   onClick={() => setShowDetails(!showDetails)}
-                  className="w-full mt-3 px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:from-purple-700 hover:to-indigo-700 transition-all"
                 >
-                  <Sparkles className="w-4 h-4" />
                   {showDetails ? 'Hide AI Analysis Prompt' : 'View AI Analysis Prompt'}
-                </button>
+                </SMButton>
 
                 <AnimatePresence>
                   {showDetails && (
@@ -423,7 +424,7 @@ Please provide:
           </span>
         </div>
       </div>
-    </div>
+    </SMCard>
   );
 };
 

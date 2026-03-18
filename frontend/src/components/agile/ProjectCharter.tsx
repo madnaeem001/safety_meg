@@ -14,6 +14,7 @@ import {
   useAddCharterGoal,
   useDeleteCharterGoal,
 } from '../../api/hooks/useAPIHooks';
+import { SMCard } from '../../components/ui';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -469,7 +470,7 @@ export const ProjectCharter: React.FC = () => {
 
         {/* ── Key Information Grid ── */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <SMCard className="p-6">
             <div className="flex items-center gap-3 mb-4 text-slate-600">
               <Award className="w-5 h-5" />
               <h4 className="font-semibold">Project Sponsor</h4>
@@ -484,17 +485,17 @@ export const ProjectCharter: React.FC = () => {
             ) : (
               <p className="text-lg font-medium text-slate-900">{displaySponsor}</p>
             )}
-          </div>
+          </SMCard>
 
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <SMCard className="p-6">
             <div className="flex items-center gap-3 mb-4 text-slate-600">
               <Users className="w-5 h-5" />
               <h4 className="font-semibold">Key Stakeholders</h4>
             </div>
             <p className="text-lg font-medium text-slate-900">{stakeholders.length} Identified</p>
-          </div>
+          </SMCard>
 
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <SMCard className="p-6">
             <div className="flex items-center gap-3 mb-4 text-slate-600">
               <Flag className="w-5 h-5" />
               <h4 className="font-semibold">Success Metrics</h4>
@@ -510,11 +511,11 @@ export const ProjectCharter: React.FC = () => {
             ) : (
               <p className="text-lg font-medium text-slate-900">{goals.length} Defined Goals</p>
             )}
-          </div>
+          </SMCard>
         </div>
 
         {/* ── Strategic Goals ── */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <SMCard className="overflow-hidden">
           <div className="p-6 border-b border-slate-100 flex justify-between items-center">
             <h3 className="text-lg font-bold text-slate-900">Strategic Goals</h3>
             {isEditing && (
@@ -562,10 +563,10 @@ export const ProjectCharter: React.FC = () => {
               ))
             )}
           </div>
-        </div>
+        </SMCard>
 
         {/* ── Stakeholder Register ── */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <SMCard className="overflow-hidden">
           <div className="p-6 border-b border-slate-100 flex justify-between items-center">
             <h3 className="text-lg font-bold text-slate-900">Stakeholder Register</h3>
             {isEditing && (
@@ -625,7 +626,7 @@ export const ProjectCharter: React.FC = () => {
               </table>
             </div>
           )}
-        </div>
+        </SMCard>
       </div>
     </>
   );

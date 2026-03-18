@@ -49,6 +49,9 @@ import {
   Mail
 } from 'lucide-react';
 import { exportToPDF, ReportTemplates } from '../../utils/exports/compliancePdfExport';
+import { SMButton, SMInput, SMSelect, SMCard, SMBadge } from '../ui';
+
+const MotionSMCard = motion(SMCard);
 
 // Types
 interface InjuryCase {
@@ -275,18 +278,18 @@ const mockInjuryCases: InjuryCase[] = [
 
 // Severity config
 const severityConfig = {
-  minor: { color: 'bg-green-100 text-green-700 border-green-200', label: 'Minor' },
-  moderate: { color: 'bg-amber-100 text-amber-700 border-amber-200', label: 'Moderate' },
-  severe: { color: 'bg-orange-100 text-orange-700 border-orange-200', label: 'Severe' },
-  critical: { color: 'bg-red-100 text-red-700 border-red-200', label: 'Critical' }
+  minor:    { color: 'bg-green-100 text-green-700 border-green-200',  label: 'Minor',    badgeVariant: 'success' as const },
+  moderate: { color: 'bg-amber-100 text-amber-700 border-amber-200', label: 'Moderate', badgeVariant: 'warning' as const },
+  severe:   { color: 'bg-orange-100 text-orange-700 border-orange-200', label: 'Severe', badgeVariant: 'warning' as const },
+  critical: { color: 'bg-red-100 text-red-700 border-red-200',       label: 'Critical', badgeVariant: 'danger'  as const }
 };
 
 const statusConfig = {
-  reported: { color: 'bg-blue-100 text-blue-700', label: 'Reported', icon: FileText },
-  under_review: { color: 'bg-purple-100 text-purple-700', label: 'Under Review', icon: Eye },
-  investigating: { color: 'bg-amber-100 text-amber-700', label: 'Investigating', icon: FileSearch },
-  capa_pending: { color: 'bg-orange-100 text-orange-700', label: 'CAPA Pending', icon: Target },
-  closed: { color: 'bg-green-100 text-green-700', label: 'Closed', icon: CheckCircle2 }
+  reported:      { color: 'bg-blue-100 text-blue-700',   label: 'Reported',     icon: FileText,   badgeVariant: 'teal'    as const },
+  under_review:  { color: 'bg-purple-100 text-purple-700', label: 'Under Review', icon: Eye,        badgeVariant: 'neutral' as const },
+  investigating: { color: 'bg-amber-100 text-amber-700', label: 'Investigating', icon: FileSearch, badgeVariant: 'warning' as const },
+  capa_pending:  { color: 'bg-orange-100 text-orange-700', label: 'CAPA Pending', icon: Target,    badgeVariant: 'warning' as const },
+  closed:        { color: 'bg-green-100 text-green-700', label: 'Closed',        icon: CheckCircle2, badgeVariant: 'success' as const }
 };
 
 const treatmentConfig = {
@@ -359,7 +362,7 @@ export const EnhancedInjuryReport: React.FC = () => {
         ].map((stat) => {
           const Icon = stat.icon;
           return (
-            <div key={stat.label} className="bg-white dark:bg-surface-800 rounded-xl p-4 shadow-sm border border-surface-200 dark:border-surface-700">
+            <SMCard key={stat.label} className="p-4">
               <div className="flex items-center gap-3">
                 <div className={`p-2 rounded-lg ${stat.color}`}>
                   <Icon className="w-5 h-5 text-white" />
@@ -369,49 +372,43 @@ export const EnhancedInjuryReport: React.FC = () => {
                   <p className="text-xs text-surface-500">{stat.label}</p>
                 </div>
               </div>
-            </div>
+            </SMCard>
           );
         })}
       </div>
 
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3">
-        <div className="flex-1 min-w-[200px] relative">
-          <input
-            type="text"
-            placeholder="Search cases..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-4 pr-4 py-2.5 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-xl text-sm"
-          />
-        </div>
-        <select
+        <SMInput
+          type="text"
+          placeholder="Search cases..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="flex-1 min-w-[200px]"
+        />
+        <SMSelect
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="px-4 py-2.5 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-xl text-sm"
-        >
-          <option value="all">All Status</option>
-          {Object.entries(statusConfig).map(([key, conf]) => (
-            <option key={key} value={key}>{conf.label}</option>
-          ))}
-        </select>
-        <select
+          options={[
+            { value: 'all', label: 'All Status' },
+            ...Object.entries(statusConfig).map(([key, conf]) => ({ value: key, label: conf.label }))
+          ]}
+        />
+        <SMSelect
           value={filterSeverity}
           onChange={(e) => setFilterSeverity(e.target.value)}
-          className="px-4 py-2.5 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-xl text-sm"
-        >
-          <option value="all">All Severity</option>
-          {Object.entries(severityConfig).map(([key, conf]) => (
-            <option key={key} value={key}>{conf.label}</option>
-          ))}
-        </select>
-        <button
+          options={[
+            { value: 'all', label: 'All Severity' },
+            ...Object.entries(severityConfig).map(([key, conf]) => ({ value: key, label: conf.label }))
+          ]}
+        />
+        <SMButton
           onClick={() => setViewMode('new')}
-          className="px-4 py-2.5 bg-red-500 text-white rounded-xl text-sm font-medium flex items-center gap-2 hover:bg-red-600 transition-colors"
+          variant="danger"
+          leftIcon={<Plus className="w-4 h-4" />}
         >
-          <Plus className="w-4 h-4" />
           New Case
-        </button>
+        </SMButton>
       </div>
 
       {/* Case List */}
@@ -423,11 +420,11 @@ export const EnhancedInjuryReport: React.FC = () => {
           const StatusIcon = statConf.icon;
           
           return (
-            <motion.div
+            <MotionSMCard
               key={injuryCase.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-5 cursor-pointer hover:shadow-md transition-shadow"
+              className="p-5 cursor-pointer hover:shadow-md transition-shadow"
               onClick={() => {
                 setSelectedCase(injuryCase);
                 setViewMode('detail');
@@ -441,17 +438,10 @@ export const EnhancedInjuryReport: React.FC = () => {
                   <div>
                     <div className="flex items-center gap-2">
                       <h3 className="font-semibold text-surface-900 dark:text-white">{injuryCase.id}</h3>
-                      <span className={`px-2 py-0.5 text-xs rounded-full border ${sevConf.color}`}>
-                        {sevConf.label}
-                      </span>
-                      <span className={`px-2 py-0.5 text-xs rounded-full ${statConf.color} flex items-center gap-1`}>
-                        <StatusIcon className="w-3 h-3" />
-                        {statConf.label}
-                      </span>
+                      <SMBadge size="sm" variant={sevConf.badgeVariant}>{sevConf.label}</SMBadge>
+                      <SMBadge size="sm" variant={statConf.badgeVariant} icon={<StatusIcon className="w-3 h-3" />}>{statConf.label}</SMBadge>
                       {injuryCase.oshaRecordable && (
-                        <span className="px-2 py-0.5 text-xs rounded-full bg-purple-100 text-purple-700">
-                          OSHA
-                        </span>
+                        <SMBadge size="sm" variant="neutral">OSHA</SMBadge>
                       )}
                     </div>
                     <p className="text-sm text-surface-600 dark:text-surface-400 mt-1">
@@ -461,16 +451,13 @@ export const EnhancedInjuryReport: React.FC = () => {
                 </div>
                 {injuryCase.aiAnalysis && (
                   <div className="flex items-center gap-2">
-                    <div className={`px-3 py-1 rounded-lg ${
-                      injuryCase.aiAnalysis.riskScore >= 70 ? 'bg-red-100 text-red-700' :
-                      injuryCase.aiAnalysis.riskScore >= 40 ? 'bg-amber-100 text-amber-700' :
-                      'bg-green-100 text-green-700'
-                    }`}>
-                      <div className="flex items-center gap-1">
-                        <Brain className="w-3 h-3" />
-                        <span className="text-xs font-medium">Risk: {injuryCase.aiAnalysis.riskScore}%</span>
-                      </div>
-                    </div>
+                    <SMBadge size="sm" variant={
+                      injuryCase.aiAnalysis.riskScore >= 70 ? 'danger' :
+                      injuryCase.aiAnalysis.riskScore >= 40 ? 'warning' :
+                      'success'
+                    } icon={<Brain className="w-3 h-3" />}>
+                      Risk: {injuryCase.aiAnalysis.riskScore}%
+                    </SMBadge>
                   </div>
                 )}
               </div>
@@ -504,7 +491,7 @@ export const EnhancedInjuryReport: React.FC = () => {
                   </div>
                 </div>
               )}
-            </motion.div>
+            </MotionSMCard>
           );
         })}
       </div>
@@ -521,7 +508,7 @@ export const EnhancedInjuryReport: React.FC = () => {
     return (
       <div className="space-y-6">
         {/* Header */}
-        <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-6">
+        <SMCard className="p-6">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-start gap-4">
               <div className="p-3 bg-red-100 dark:bg-red-900/20 rounded-xl">
@@ -530,17 +517,10 @@ export const EnhancedInjuryReport: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <h2 className="text-xl font-bold text-surface-900 dark:text-white">{selectedCase.id}</h2>
-                  <span className={`px-2 py-0.5 text-xs rounded-full border ${sevConf.color}`}>
-                    {sevConf.label}
-                  </span>
-                  <span className={`px-2 py-0.5 text-xs rounded-full ${statConf.color}`}>
-                    {statConf.label}
-                  </span>
+                  <SMBadge size="sm" variant={sevConf.badgeVariant}>{sevConf.label}</SMBadge>
+                  <SMBadge size="sm" variant={statConf.badgeVariant}>{statConf.label}</SMBadge>
                   {selectedCase.oshaRecordable && (
-                    <span className="px-2 py-0.5 text-xs rounded-full bg-purple-100 text-purple-700 flex items-center gap-1">
-                      <BadgeAlert className="w-3 h-3" />
-                      OSHA Recordable
-                    </span>
+                    <SMBadge size="sm" variant="neutral" icon={<BadgeAlert className="w-3 h-3" />}>OSHA Recordable</SMBadge>
                   )}
                 </div>
                 <p className="text-surface-600 dark:text-surface-400">
@@ -549,18 +529,15 @@ export const EnhancedInjuryReport: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => handleExportPDF(selectedCase)}
-                className="p-2 hover:bg-surface-100 dark:hover:bg-surface-700 rounded-lg"
-              >
-                <Download className="w-5 h-5 text-surface-500" />
-              </button>
-              <button className="p-2 hover:bg-surface-100 dark:hover:bg-surface-700 rounded-lg">
-                <Printer className="w-5 h-5 text-surface-500" />
-              </button>
-              <button className="p-2 hover:bg-surface-100 dark:hover:bg-surface-700 rounded-lg">
-                <Edit3 className="w-5 h-5 text-surface-500" />
-              </button>
+              <SMButton variant="icon" size="sm" onClick={() => handleExportPDF(selectedCase)}>
+                <Download className="w-5 h-5" />
+              </SMButton>
+              <SMButton variant="icon" size="sm">
+                <Printer className="w-5 h-5" />
+              </SMButton>
+              <SMButton variant="icon" size="sm">
+                <Edit3 className="w-5 h-5" />
+              </SMButton>
             </div>
           </div>
 
@@ -592,7 +569,7 @@ export const EnhancedInjuryReport: React.FC = () => {
               )}
             </div>
           </div>
-        </div>
+        </SMCard>
 
         {/* Tabs */}
         <div className="flex gap-2 overflow-x-auto">
@@ -604,18 +581,15 @@ export const EnhancedInjuryReport: React.FC = () => {
           ].map((tab) => {
             const TabIcon = tab.icon;
             return (
-              <button
+              <SMButton
                 key={tab.id}
+                variant={activeTab === tab.id ? 'primary' : 'secondary'}
+                size="sm"
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
-                  activeTab === tab.id
-                    ? 'bg-red-500 text-white'
-                    : 'bg-white dark:bg-surface-800 text-surface-600 dark:text-surface-400 hover:bg-surface-50 dark:hover:bg-surface-700'
-                }`}
+                leftIcon={<TabIcon className="w-4 h-4" />}
               >
-                <TabIcon className="w-4 h-4" />
                 {tab.label}
-              </button>
+              </SMButton>
             );
           })}
         </div>
@@ -630,23 +604,23 @@ export const EnhancedInjuryReport: React.FC = () => {
               exit={{ opacity: 0, y: -20 }}
               className="space-y-4"
             >
-              <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-5">
+              <SMCard className="p-5">
                 <h3 className="font-semibold text-surface-900 dark:text-white mb-3">Injury Description</h3>
                 <p className="text-surface-600 dark:text-surface-400">{selectedCase.description}</p>
-              </div>
+              </SMCard>
 
-              <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-5">
+              <SMCard className="p-5">
                 <h3 className="font-semibold text-surface-900 dark:text-white mb-3">Immediate Actions Taken</h3>
                 <p className="text-surface-600 dark:text-surface-400">{selectedCase.immediateActions}</p>
-              </div>
+              </SMCard>
 
-              <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-5">
+              <SMCard className="p-5">
                 <h3 className="font-semibold text-surface-900 dark:text-white mb-3">Root Cause</h3>
                 <p className="text-surface-600 dark:text-surface-400">{selectedCase.rootCause}</p>
-              </div>
+              </SMCard>
 
               {selectedCase.witnesses.length > 0 && (
-                <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-5">
+                <SMCard className="p-5">
                   <h3 className="font-semibold text-surface-900 dark:text-white mb-3">Witnesses</h3>
                   <div className="space-y-3">
                     {selectedCase.witnesses.map((witness) => (
@@ -662,18 +636,18 @@ export const EnhancedInjuryReport: React.FC = () => {
                       </div>
                     ))}
                   </div>
-                </div>
+                </SMCard>
               )}
             </motion.div>
           )}
 
           {activeTab === 'timeline' && (
-            <motion.div
+            <MotionSMCard
               key="timeline"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-5"
+              className="p-5"
             >
               <div className="relative">
                 {selectedCase.timeline.map((event, index) => (
@@ -706,7 +680,7 @@ export const EnhancedInjuryReport: React.FC = () => {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </MotionSMCard>
           )}
 
           {activeTab === 'capa' && (
@@ -718,17 +692,17 @@ export const EnhancedInjuryReport: React.FC = () => {
               className="space-y-3"
             >
               {selectedCase.correctiveActions.map((action) => (
-                <div key={action.id} className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-5">
+                <SMCard key={action.id} className="p-5">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <span className={`px-2 py-0.5 text-xs rounded-full ${
-                        action.status === 'completed' ? 'bg-green-100 text-green-700' :
-                        action.status === 'in_progress' ? 'bg-blue-100 text-blue-700' :
-                        action.status === 'overdue' ? 'bg-red-100 text-red-700' :
-                        'bg-gray-100 text-gray-600'
-                      }`}>
+                      <SMBadge size="sm" variant={
+                        action.status === 'completed' ? 'success' :
+                        action.status === 'in_progress' ? 'teal' :
+                        action.status === 'overdue' ? 'danger' :
+                        'neutral'
+                      }>
                         {action.status.replace('_', ' ')}
-                      </span>
+                      </SMBadge>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-surface-500">
                       <Calendar className="w-3 h-3" />
@@ -740,12 +714,15 @@ export const EnhancedInjuryReport: React.FC = () => {
                     <User className="w-4 h-4" />
                     Assigned to: {action.assignee}
                   </div>
-                </div>
+                </SMCard>
               ))}
-              <button className="w-full py-3 border-2 border-dashed border-surface-300 dark:border-surface-600 rounded-xl text-surface-500 font-medium hover:bg-surface-50 dark:hover:bg-surface-700 transition-colors flex items-center justify-center gap-2">
-                <Plus className="w-4 h-4" />
+              <SMButton
+                variant="secondary"
+                className="w-full py-3 border-2 border-dashed"
+                leftIcon={<Plus className="w-4 h-4" />}
+              >
                 Add Corrective Action
-              </button>
+              </SMButton>
             </motion.div>
           )}
 
@@ -770,7 +747,7 @@ export const EnhancedInjuryReport: React.FC = () => {
               </div>
 
               {/* Patterns */}
-              <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-5">
+              <SMCard className="p-5">
                 <h3 className="font-semibold text-surface-900 dark:text-white mb-3 flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-amber-500" />
                   Identified Patterns
@@ -783,10 +760,10 @@ export const EnhancedInjuryReport: React.FC = () => {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </SMCard>
 
               {/* Recommendations */}
-              <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-5">
+              <SMCard className="p-5">
                 <h3 className="font-semibold text-surface-900 dark:text-white mb-3 flex items-center gap-2">
                   <Lightbulb className="w-5 h-5 text-blue-500" />
                   AI Recommendations
@@ -799,10 +776,10 @@ export const EnhancedInjuryReport: React.FC = () => {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </SMCard>
 
               {/* Similar Cases */}
-              <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-5">
+              <SMCard className="p-5">
                 <h3 className="font-semibold text-surface-900 dark:text-white mb-3 flex items-center gap-2">
                   <FileSearch className="w-5 h-5 text-purple-500" />
                   Similar Cases
@@ -814,13 +791,11 @@ export const EnhancedInjuryReport: React.FC = () => {
                         <p className="font-medium text-surface-900 dark:text-white">{similar.id}</p>
                         <p className="text-xs text-surface-500">{similar.summary}</p>
                       </div>
-                      <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">
-                        {similar.similarity}% match
-                      </span>
+                      <SMBadge size="sm" variant="neutral">{similar.similarity}% match</SMBadge>
                     </div>
                   ))}
                 </div>
-              </div>
+              </SMCard>
             </motion.div>
           )}
         </AnimatePresence>
@@ -835,17 +810,19 @@ export const EnhancedInjuryReport: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <button
+              <SMButton
+                variant="ghost"
+                size="sm"
                 onClick={() => {
                   if (viewMode === 'detail') {
                     setViewMode('list');
                     setSelectedCase(null);
                   }
                 }}
-                className="p-2 hover:bg-surface-100 dark:hover:bg-surface-700 rounded-xl transition-colors"
+                className="p-2 rounded-xl"
               >
-                <ArrowLeft className="w-5 h-5 text-surface-600 dark:text-surface-400" />
-              </button>
+                <ArrowLeft className="w-5 h-5" />
+              </SMButton>
               <div>
                 <h1 className="text-xl font-bold text-surface-900 dark:text-white flex items-center gap-2">
                   <Heart className="w-6 h-6 text-red-500" />

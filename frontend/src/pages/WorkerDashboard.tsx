@@ -11,6 +11,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWorker, useWorkerPerformance, useWorkerTrainings } from '../api/hooks/useAPIHooks';
 import { useAuthStore } from '../store/authStore';
+import { SMButton } from '../components/ui';
 
 // Worker Profile
 interface WorkerProfile {
@@ -817,9 +818,7 @@ export const WorkerDashboard: React.FC = () => {
                 )}
                 
                 <div className="flex gap-3">
-                  <button className="flex-1 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors">
-                    {selectedTask.status === 'in_progress' ? 'Continue Task' : 'Start Task'}
-                  </button>
+                  <SMButton variant="primary" className="flex-1">{selectedTask.status === 'in_progress' ? 'Continue Task' : 'Start Task'}</SMButton>
                   <button className="px-4 py-3 bg-surface-100 text-surface-700 rounded-xl font-medium hover:bg-surface-200 transition-colors">
                     View Details
                   </button>

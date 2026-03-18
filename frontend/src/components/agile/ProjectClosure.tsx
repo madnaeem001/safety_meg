@@ -21,6 +21,7 @@ import type {
   ClosureLessonRecord,
   ClosureReportRecord,
 } from '../../api/services/apiService';
+import { SMCard } from '../../components/ui';
 
 // ── Add Deliverable Modal ─────────────────────────────────────────────────────
 
@@ -421,7 +422,7 @@ export const ProjectClosure: React.FC = () => {
       </div>
 
       {/* Content Panel */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm min-h-[400px]">
+      <SMCard className="min-h-[400px]">
 
         {/* ── Deliverables Checklist ── */}
         {activeTab === 'checklist' && (
@@ -629,7 +630,7 @@ export const ProjectClosure: React.FC = () => {
             )}
           </div>
         )}
-      </div>
+      </SMCard>
 
       {/* Modals */}
       {showAddDeliverable && (

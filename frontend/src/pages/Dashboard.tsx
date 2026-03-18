@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 import FadeContent from '../components/animations/FadeContent';
 import BlurText from '../components/animations/BlurText';
 import { useTheme } from '../components/ThemeProvider';
+import { SMCard, SMCardBody, SMCardFooter, SMCardHeader, SMSkeleton, SMStatCard, SMStatusDot } from '../components/ui';
 import { ComplianceAlerts } from '../components/dashboard/ComplianceAlerts';
 import { FeatureGrid } from '../components/dashboard/FeatureGrid';
 import { SafetyAutoPilot } from '../components/safety/SafetyAutoPilot';
@@ -184,7 +185,7 @@ const BusinessMetricCard: React.FC<{ metric: DashboardBusinessMetric; index: num
       initial={{ opacity: 0, y: 24, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className={`relative overflow-hidden p-5 rounded-2xl bg-slate-900/80 backdrop-blur-xl border ${c.border} ${c.glow} group hover:scale-[1.02] transition-all duration-300`}
+      className={`relative overflow-hidden p-5 rounded-2xl bg-surface-raised backdrop-blur-xl border border-surface-border ${c.glow} group hover:scale-[1.02] transition-all duration-300`}
     >
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent animate-scan-line" />
@@ -194,13 +195,13 @@ const BusinessMetricCard: React.FC<{ metric: DashboardBusinessMetric; index: num
           <IconComponent className={`w-5 h-5 ${c.text}`} />
         </div>
         <span className={`text-[10px] font-bold px-2 py-1 rounded-lg flex items-center gap-1 ${
-          isPositive ? 'text-emerald-400 bg-emerald-500/10' : metric.trend === 'neutral' ? 'text-slate-400 bg-slate-500/10' : 'text-red-400 bg-red-500/10'
+          isPositive ? 'text-emerald-400 bg-emerald-500/10' : metric.trend === 'neutral' ? 'text-text-muted bg-surface-sunken' : 'text-red-400 bg-red-500/10'
         }`}>
           <TrendingUp className={`w-3 h-3 ${metric.trend === 'down' ? 'rotate-180' : ''}`} /> {metric.change}
         </span>
       </div>
-      <p className="text-2xl font-black text-white tracking-tight mb-0.5 font-display">{metric.value}</p>
-      <p className="text-[10px] text-slate-500 font-medium">{metric.subtext}</p>
+      <p className="text-2xl font-black text-text-primary tracking-tight mb-0.5 font-display">{metric.value}</p>
+      <p className="text-[10px] text-text-muted font-medium">{metric.subtext}</p>
       <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent ${c.text.replace('text-', 'via-')}/30 to-transparent`} />
     </motion.div>
   );
@@ -212,15 +213,15 @@ const ConversionFunnel: React.FC<{ stages?: DashboardFunnelStage[] }> = ({ stage
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6, delay: 0.2 }}
-    className="bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-purple-500/15 overflow-hidden"
+    className="bg-surface-raised backdrop-blur-xl rounded-2xl border border-surface-border overflow-hidden"
   >
-    <div className="p-5 border-b border-purple-500/10 flex items-center justify-between">
+    <div className="p-5 border-b border-surface-border flex items-center justify-between">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
           <BarChart3 className="w-5 h-5 text-purple-400" />
         </div>
         <div>
-          <h3 className="text-sm font-bold text-white">Workforce Funnel</h3>
+          <h3 className="text-sm font-bold text-text-primary">Workforce Funnel</h3>
           <p className="text-[10px] text-purple-400/60 font-mono uppercase tracking-wider">Real-time</p>
         </div>
       </div>
@@ -229,7 +230,7 @@ const ConversionFunnel: React.FC<{ stages?: DashboardFunnelStage[] }> = ({ stage
           {stages[stages.length - 1]?.value} trained
         </span>
       ) : (
-        <span className="text-[10px] font-bold text-slate-500 bg-slate-700/30 px-2 py-1 rounded-lg">Loading…</span>
+        <span className="text-[10px] font-bold text-text-muted bg-surface-sunken px-2 py-1 rounded-lg">Loading…</span>
       )}
     </div>
     <div className="p-5 space-y-3">
@@ -242,13 +243,13 @@ const ConversionFunnel: React.FC<{ stages?: DashboardFunnelStage[] }> = ({ stage
           className="space-y-1.5"
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-slate-300">{stage.stage}</span>
+            <span className="text-xs font-medium text-text-secondary">{stage.stage}</span>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-white">{stage.value.toLocaleString()}</span>
-              <span className="text-[10px] text-slate-500 font-mono">{stage.pct}%</span>
+              <span className="text-xs font-bold text-text-primary">{stage.value.toLocaleString()}</span>
+              <span className="text-[10px] text-text-muted font-mono">{stage.pct}%</span>
             </div>
           </div>
-          <div className="w-full h-2 rounded-full bg-slate-800/60 overflow-hidden">
+          <div className="w-full h-2 rounded-full bg-surface-sunken overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${stage.pct}%` }}
@@ -262,12 +263,12 @@ const ConversionFunnel: React.FC<{ stages?: DashboardFunnelStage[] }> = ({ stage
         Array.from({ length: 5 }).map((_, i) => (
           <div key={i} className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <div className="h-3 w-32 rounded bg-slate-800/80 animate-pulse" />
-              <div className="h-3 w-14 rounded bg-slate-800/80 animate-pulse" />
+              <div className="h-3 w-32 rounded bg-surface-sunken animate-pulse" />
+              <div className="h-3 w-14 rounded bg-surface-sunken animate-pulse" />
             </div>
-            <div className="w-full h-2 rounded-full bg-slate-800/60">
+            <div className="w-full h-2 rounded-full bg-surface-sunken">
               <div
-                className="h-full rounded-full bg-slate-700/60 animate-pulse"
+                className="h-full rounded-full bg-surface-border animate-pulse"
                 style={{ width: `${85 - i * 10}%` }}
               />
             </div>
@@ -285,76 +286,49 @@ const SystemHealthMonitor: React.FC<{
 }> = ({ services, summary }) => {
   const healthyCount = summary?.healthyCount ?? services?.filter(s => s.status === 'healthy').length ?? 0;
   const degradedCount = summary?.degradedCount ?? (services ? services.filter(s => s.status !== 'healthy').length : 0);
+  const totalCount = summary?.total ?? services?.length ?? 0;
   return (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6, delay: 0.35 }}
-    className="bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-emerald-500/15 overflow-hidden"
+    className=""
   >
-    <div className="p-5 border-b border-emerald-500/10 flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-            <Server className="w-5 h-5 text-emerald-400" />
+    <SMCard className="overflow-hidden rounded-2xl">
+      <SMCardHeader action={<SMStatusDot variant="active" label="Live" pulse size="sm" />}>System Health</SMCardHeader>
+      <SMCardBody className="space-y-2">
+        {services?.length ? services.map((svc, i) => {
+          const SvcIcon = HEALTH_ICON_MAP[svc.icon] ?? Server;
+          return (
+            <motion.div
+              key={svc.name}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 + i * 0.08 }}
+              className="flex items-center gap-3 rounded-xl bg-surface-sunken px-3 py-3"
+            >
+              <SvcIcon className="h-4 w-4 shrink-0 text-text-muted" />
+              <span className="min-w-0 flex-1 truncate text-sm text-text-primary">{svc.name}</span>
+              <span className="text-xs font-mono text-text-muted">{svc.latency}</span>
+              <span className="text-xs font-mono text-text-muted">{svc.uptime}</span>
+              <SMStatusDot variant={svc.status === 'healthy' ? 'success' : 'warning'} size="sm" pulse={svc.status !== 'healthy'} />
+            </motion.div>
+          );
+        }) : Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="flex items-center gap-3 rounded-xl bg-surface-sunken px-3 py-3">
+            <SMSkeleton className="h-4 w-4 rounded-full" />
+            <SMSkeleton className="h-4 flex-1 rounded-md" />
+            <SMSkeleton className="h-3 w-10 rounded-md" />
+            <SMSkeleton className="h-3 w-12 rounded-md" />
+            <SMSkeleton className="h-2 w-2 rounded-full" />
           </div>
-          <div className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 animate-pulse border-2 border-slate-900" />
-        </div>
-        <div>
-          <h3 className="text-sm font-bold text-white">System Health</h3>
-          <p className="text-[10px] text-emerald-400/60 font-mono uppercase tracking-wider">All Services Monitored</p>
-        </div>
-      </div>
-      <div className="flex items-center gap-1.5">
-        <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-        <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Live</span>
-      </div>
-    </div>
-    <div className="p-4 space-y-2">
-      {services?.length ? services.map((svc, i) => {
-        const SvcIcon = HEALTH_ICON_MAP[svc.icon] ?? Server;
-        return (
-          <motion.div
-            key={svc.name}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 + i * 0.08 }}
-            className="flex items-center justify-between p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 hover:border-emerald-500/20 transition-all group"
-          >
-            <div className="flex items-center gap-3">
-              <SvcIcon className="w-4 h-4 text-slate-400 group-hover:text-emerald-400 transition-colors" />
-              <span className="text-xs font-medium text-slate-300">{svc.name}</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-[10px] font-mono text-slate-500">{svc.latency}</span>
-              <span className="text-[10px] font-mono text-slate-500">{svc.uptime}</span>
-              <div className={`w-2 h-2 rounded-full ${svc.status === 'healthy' ? 'bg-emerald-400' : 'bg-amber-400 animate-pulse'}`} />
-            </div>
-          </motion.div>
-        );
-      }) : (
-        // Loading skeleton
-        Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-slate-800/50 border border-slate-700/30">
-            <div className="flex items-center gap-3">
-              <div className="w-4 h-4 rounded bg-slate-700/80 animate-pulse" />
-              <div className="h-3 w-24 rounded bg-slate-700/80 animate-pulse" />
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="h-3 w-10 rounded bg-slate-700/80 animate-pulse" />
-              <div className="h-3 w-12 rounded bg-slate-700/80 animate-pulse" />
-              <div className="w-2 h-2 rounded-full bg-slate-700/80 animate-pulse" />
-            </div>
-          </div>
-        ))
-      )}
-    </div>
-    <div className="p-4 pt-2 border-t border-slate-800/50">
-      <div className="flex items-center justify-between">
-        <span className="text-[10px] text-slate-500 font-mono">{services?.length ?? 0} SERVICES MONITORED</span>
-        <span className="text-[10px] text-emerald-400 font-mono">{healthyCount} HEALTHY{degradedCount > 0 ? ` • ${degradedCount} DEGRADED` : ''}</span>
-      </div>
-    </div>
+        ))}
+      </SMCardBody>
+      <SMCardFooter align="between">
+        <span className="text-[10px] font-mono text-text-muted">{totalCount} SERVICES MONITORED</span>
+        <span className="text-[10px] font-mono text-text-muted">{healthyCount} HEALTHY{degradedCount > 0 ? ` • ${degradedCount} DEGRADED` : ''}</span>
+      </SMCardFooter>
+    </SMCard>
   </motion.div>
   );
 };
@@ -372,49 +346,40 @@ const QuickActionCard: React.FC<{ icon: any; title: string; subtitle: string; on
     whileHover={{ y: -4, scale: 1.02 }}
     whileTap={{ scale: 0.98 }}
     onClick={onClick}
-    className="flex flex-col items-start p-5 rounded-2xl bg-slate-800/60 backdrop-blur-sm border border-cyan-500/10 hover:border-cyan-500/30 shadow-soft hover:shadow-glow transition-all text-left group"
+    className="flex flex-col items-start p-5 rounded-2xl bg-surface-raised backdrop-blur-sm border border-surface-border hover:border-cyan-500/30 shadow-soft hover:shadow-glow transition-all text-left group"
   >
     <div className="p-3 rounded-xl bg-cyan-500/10 mb-4 group-hover:bg-cyan-500/20 transition-colors">
       <Icon className="w-6 h-6 text-cyan-400" />
     </div>
-    <h3 className="font-bold text-white text-sm mb-1">{title}</h3>
-    <p className="text-xs text-slate-400">{subtitle}</p>
+    <h3 className="font-bold text-text-primary text-sm mb-1">{title}</h3>
+    <p className="text-xs text-text-muted">{subtitle}</p>
   </motion.button>
 );
 
 // Futuristic Stat Card
 const FuturisticStatCard: React.FC<{ label: string; value: string; change: string; icon: any; color: string; delay?: number }> = ({ label, value, change, icon: Icon, color, delay = 0 }) => {
-  const colorMap: Record<string, { border: string; bg: string; text: string; glow: string }> = {
-    cyan: { border: 'border-cyan-500/20', bg: 'bg-cyan-500/10', text: 'text-cyan-400', glow: 'shadow-[0_0_15px_rgba(6,182,212,0.15)]' },
-    purple: { border: 'border-purple-500/20', bg: 'bg-purple-500/10', text: 'text-purple-400', glow: 'shadow-[0_0_15px_rgba(168,85,247,0.15)]' },
-    green: { border: 'border-emerald-500/20', bg: 'bg-emerald-500/10', text: 'text-emerald-400', glow: 'shadow-[0_0_15px_rgba(16,185,129,0.15)]' },
-    red: { border: 'border-red-500/20', bg: 'bg-red-500/10', text: 'text-red-400', glow: 'shadow-[0_0_15px_rgba(239,68,68,0.15)]' },
+  const variantMap: Record<string, 'default' | 'accent' | 'success' | 'danger'> = {
+    cyan: 'default',
+    purple: 'accent',
+    green: 'success',
+    red: 'danger',
   };
-  const c = colorMap[color] || colorMap.cyan;
   
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay }}
-      className={`relative overflow-hidden p-5 rounded-2xl bg-slate-900/80 backdrop-blur-xl border ${c.border} ${c.glow} group hover:scale-[1.02] transition-all duration-300`}
+      className="transition-all duration-300 hover:scale-[1.02]"
     >
-      {/* Scan line effect */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent animate-scan-line" />
-      </div>
-      <div className="flex items-start justify-between mb-3">
-        <div className={`p-2.5 rounded-xl ${c.bg}`}>
-          <Icon className={`w-5 h-5 ${c.text}`} />
-        </div>
-        <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-lg flex items-center gap-1">
-          <TrendingUp className="w-3 h-3" /> {change}
-        </span>
-      </div>
-      <p className="text-2xl font-black text-white tracking-tight mb-1 font-display">{value}</p>
-      <p className="text-[11px] text-slate-400 uppercase tracking-widest font-bold">{label}</p>
-      {/* Bottom accent line */}
-      <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent ${c.text.replace('text-', 'via-')}/30 to-transparent`} />
+      <SMStatCard
+        label={label}
+        value={value}
+        change={change}
+        trend="up"
+        icon={<Icon className="h-5 w-5" />}
+        variant={variantMap[color] ?? 'default'}
+      />
     </motion.div>
   );
 };
@@ -429,88 +394,51 @@ const AIPlatformSync: React.FC<{ platforms?: DashboardAIEngine[]; summary?: { on
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6, delay: 0.3 }}
-    className="bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-cyan-500/15 overflow-hidden"
+    className=""
   >
-    <div className="p-5 border-b border-cyan-500/10 flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center">
-            <Radio className="w-5 h-5 text-cyan-400" />
-          </div>
-          <div className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 animate-pulse border-2 border-slate-900" />
-        </div>
-        <div>
-          <h3 className="text-sm font-bold text-white">AI Platform Sync</h3>
-          <p className="text-[10px] text-cyan-400/70 font-mono">
-            {platforms?.length ? (allOnline ? 'ALL SYSTEMS OPERATIONAL' : `${onlineCount}/${total} ONLINE`) : 'CONNECTING…'}
-          </p>
-        </div>
-      </div>
-      <div className="flex items-center gap-1.5">
-        <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-        <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Live</span>
-      </div>
-    </div>
-    <div className="p-4 space-y-2">
-      {platforms?.length ? platforms.map((platform, i) => {
-        const PlatformIcon = AI_ENGINE_ICON_MAP[platform.icon] ?? Brain;
-        return (
-          <motion.div
-            key={platform.name}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 + i * 0.08 }}
-            className="flex items-center justify-between p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 hover:border-cyan-500/20 transition-all group"
-          >
-            <div className="flex items-center gap-3">
-              <PlatformIcon className="w-4 h-4 text-cyan-400/70 group-hover:text-cyan-400 transition-colors" />
-              <span className="text-xs font-medium text-slate-300">{platform.name}</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-[10px] font-mono text-slate-500">{platform.latency}</span>
-              <div className="w-16 h-1.5 rounded-full bg-slate-700/50 overflow-hidden">
+    <SMCard className="overflow-hidden rounded-2xl">
+      <SMCardHeader action={<SMStatusDot variant={allOnline ? 'success' : 'warning'} label="Live" pulse size="sm" />}>AI Platform Sync</SMCardHeader>
+      <SMCardBody className="space-y-2">
+        {platforms?.length ? platforms.map((platform, i) => {
+          const PlatformIcon = AI_ENGINE_ICON_MAP[platform.icon] ?? Brain;
+          const loadBarClass = platform.load > 90 ? 'bg-danger' : platform.load > 70 ? 'bg-warning' : 'bg-accent';
+          return (
+            <motion.div
+              key={platform.name}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 + i * 0.08 }}
+              className="flex items-center gap-3 rounded-xl bg-surface-sunken px-3 py-3"
+            >
+              <PlatformIcon className="h-4 w-4 shrink-0 text-text-muted" />
+              <span className="min-w-0 flex-1 truncate text-sm text-text-primary">{platform.name}</span>
+              <span className="text-xs font-mono text-text-muted">{platform.latency}</span>
+              <div className="w-16 overflow-hidden rounded-full bg-surface-border">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${platform.load}%` }}
                   transition={{ duration: 1, delay: 0.5 + i * 0.1 }}
-                  className={`h-full rounded-full ${
-                    platform.load > 90 ? 'bg-cyan-400' : platform.load > 70 ? 'bg-emerald-400' : 'bg-amber-400'
-                  }`}
+                  className={`h-1.5 rounded-full ${loadBarClass}`}
                 />
               </div>
-              <div className={`w-2 h-2 rounded-full ${
-                platform.status === 'online' ? 'bg-emerald-400' : 'bg-amber-400 animate-pulse'
-              }`} />
-            </div>
-          </motion.div>
-        );
-      }) : (
-        // Loading skeleton
-        Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-slate-800/50 border border-slate-700/30">
-            <div className="flex items-center gap-3">
-              <div className="w-4 h-4 rounded bg-slate-700/80 animate-pulse" />
-              <div className="h-3 w-24 rounded bg-slate-700/80 animate-pulse" />
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="h-3 w-8 rounded bg-slate-700/80 animate-pulse" />
-              <div className="w-16 h-1.5 rounded-full bg-slate-700/80 animate-pulse" />
-              <div className="w-2 h-2 rounded-full bg-slate-700/80 animate-pulse" />
-            </div>
+              <SMStatusDot variant={platform.status === 'online' ? 'success' : 'warning'} size="sm" pulse={platform.status !== 'online'} />
+            </motion.div>
+          );
+        }) : Array.from({ length: 8 }).map((_, i) => (
+          <div key={i} className="flex items-center gap-3 rounded-xl bg-surface-sunken px-3 py-3">
+            <SMSkeleton className="h-4 w-4 rounded-full" />
+            <SMSkeleton className="h-4 flex-1 rounded-md" />
+            <SMSkeleton className="h-3 w-8 rounded-md" />
+            <SMSkeleton className="h-1.5 w-16 rounded-full" />
+            <SMSkeleton className="h-2 w-2 rounded-full" />
           </div>
-        ))
-      )}
-    </div>
-    <div className="p-4 pt-2 border-t border-slate-800/50">
-      <div className="flex items-center justify-between">
-        <span className="text-[10px] text-slate-500 font-mono">
-          {platforms?.length ? `${onlineCount}/${total} AI ENGINES SYNCHRONIZED` : 'LOADING…'}
-        </span>
-        <span className="text-[10px] text-cyan-400 font-mono">
-          {platforms?.length ? `${total} ENGINES • 99.97%` : ''}
-        </span>
-      </div>
-    </div>
+        ))}
+      </SMCardBody>
+      <SMCardFooter align="between">
+        <span className="text-[10px] font-mono text-text-muted">{platforms?.length ? `${onlineCount}/${total} AI ENGINES SYNCHRONIZED` : 'LOADING…'}</span>
+        <span className="text-[10px] font-mono text-text-muted">{platforms?.length ? `${total} ENGINES • 99.97%` : ''}</span>
+      </SMCardFooter>
+    </SMCard>
   </motion.div>
   );
 };
@@ -522,16 +450,16 @@ const LiveDataStream: React.FC<{ events?: DashboardLiveEvent[]; isLoading?: bool
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.5 }}
-      className="bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-cyan-500/15 overflow-hidden"
+      className="bg-surface-raised backdrop-blur-xl rounded-2xl border border-surface-border overflow-hidden"
     >
-      <div className="p-5 border-b border-cyan-500/10 flex items-center justify-between">
+      <div className="p-5 border-b border-surface-border flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
             <Activity className="w-5 h-5 text-purple-400" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-white">Live Data Stream</h3>
-            <p className="text-[10px] text-slate-400 font-mono">REAL-TIME PLATFORM ACTIVITY</p>
+            <h3 className="text-sm font-bold text-text-primary">Live Data Stream</h3>
+            <p className="text-[10px] text-text-muted font-mono">REAL-TIME PLATFORM ACTIVITY</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -543,9 +471,9 @@ const LiveDataStream: React.FC<{ events?: DashboardLiveEvent[]; isLoading?: bool
         {isLoading ? (
           Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="flex items-start gap-3 p-2.5">
-              <div className="w-12 h-3 bg-slate-800 rounded animate-pulse shrink-0 mt-0.5" />
-              <div className="w-1.5 h-1.5 rounded-full bg-slate-700 mt-1.5 shrink-0" />
-              <div className="flex-1 h-3 bg-slate-800 rounded animate-pulse" />
+              <SMSkeleton className="h-3 w-12 rounded-md shrink-0 mt-0.5" />
+              <SMSkeleton className="h-1.5 w-1.5 rounded-full mt-1.5 shrink-0" />
+              <SMSkeleton className="h-3 flex-1 rounded-md" />
             </div>
           ))
         ) : events && events.length > 0 ? (
@@ -555,19 +483,19 @@ const LiveDataStream: React.FC<{ events?: DashboardLiveEvent[]; isLoading?: bool
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.07 }}
-              className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-slate-800/50 transition-colors group"
+              className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-surface-sunken transition-colors group"
             >
-              <span className="text-[10px] font-mono text-slate-600 mt-0.5 shrink-0">
+              <span className="text-[10px] font-mono text-text-muted mt-0.5 shrink-0">
                 {item.timestamp ? new Date(item.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '—'}
               </span>
               <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${
                 item.eventType === 'success' ? 'bg-emerald-400' : item.eventType === 'warning' ? 'bg-amber-400' : 'bg-cyan-400'
               }`} />
-              <p className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors leading-relaxed">{item.message}</p>
+              <p className="text-xs text-text-muted group-hover:text-text-secondary transition-colors leading-relaxed">{item.message}</p>
             </motion.div>
           ))
         ) : (
-          <div className="py-8 text-center text-slate-600 text-xs font-mono">
+          <div className="py-8 text-center text-text-muted text-xs font-mono">
             NO EVENTS YET
           </div>
         )}
@@ -685,7 +613,7 @@ export const Dashboard: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 pb-28">
+      <div className="min-h-screen pb-28">
 
         <div className="pt-8 max-w-5xl mx-auto px-4 md:px-6">
           <DashboardSkeleton />
@@ -695,7 +623,7 @@ export const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen pb-28 transition-colors duration-500" style={{ background: 'linear-gradient(165deg, #020617 0%, #0f172a 35%, #0c1222 70%, #020617 100%)' }}>
+    <div className="min-h-screen pb-28 transition-colors duration-500">
       {/* Futuristic ambient background effects */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <motion.div 
@@ -749,7 +677,7 @@ export const Dashboard: React.FC = () => {
                     delay={100} 
                     animateBy="words"
                     direction="bottom"
-                    className="text-[36px] md:text-[44px] lg:text-[52px] font-bold text-white block leading-[1.1] tracking-tight font-display"
+                    className="text-[36px] md:text-[44px] lg:text-[52px] font-bold text-text-primary block leading-[1.1] tracking-tight font-display"
                   />
                 </div>
               </div>
@@ -767,20 +695,20 @@ export const Dashboard: React.FC = () => {
                   return (
                     <div className="flex -space-x-2">
                       {Array.from({ length: avatarsToShow }, (_, i) => (
-                        <div key={i + 1} className="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-800 overflow-hidden shadow-sm">
+                        <div key={i + 1} className="w-8 h-8 rounded-full border-2 border-surface-border bg-surface-sunken overflow-hidden shadow-sm">
                           <img src={`https://i.pravatar.cc/150?u=${i + 1}`} alt="User" className="w-full h-full object-cover" />
                         </div>
                       ))}
                       {remaining > 0 && (
-                        <div className="w-8 h-8 rounded-full border-2 border-slate-900 bg-cyan-500 flex items-center justify-center text-[10px] font-bold text-white shadow-sm">
+                        <div className="w-8 h-8 rounded-full border-2 border-surface-border bg-cyan-500 flex items-center justify-center text-[10px] font-bold text-white shadow-sm">
                           +{remaining}
                         </div>
                       )}
                     </div>
                   );
                 })()}
-                <p className="text-sm text-slate-400 font-medium">
-                  <span className="text-white font-bold">{liveStats?.platformStats?.activeOperators ?? 16} operators</span> active on site
+                <p className="text-sm text-text-muted font-medium">
+                  <span className="text-text-primary font-bold">{liveStats?.platformStats?.activeOperators ?? 16} operators</span> active on site
                 </p>
               </motion.div>
             </div>
@@ -789,15 +717,15 @@ export const Dashboard: React.FC = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              className="hidden md:flex items-center gap-4 bg-slate-900/80 backdrop-blur-xl p-5 rounded-3xl border border-cyan-500/15 shadow-glow-soft"
+              className="hidden md:flex items-center gap-4 bg-surface-raised backdrop-blur-xl p-5 rounded-3xl border border-surface-border shadow-glow-soft"
             >
               <div className="p-3 bg-cyan-500/10 rounded-2xl">
                 <Activity className="w-8 h-8 text-cyan-400" />
               </div>
               <div>
-                <p className="text-[11px] text-slate-500 uppercase tracking-widest font-bold">Safety Score</p>
+                <p className="text-[11px] text-text-muted uppercase tracking-widest font-bold">Safety Score</p>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-black text-white">{liveStats?.platformStats?.safetyScore ?? 98.5}%</span>
+                  <span className="text-3xl font-black text-text-primary">{liveStats?.platformStats?.safetyScore ?? 98.5}%</span>
                   <span className="text-xs text-emerald-400 font-bold flex items-center bg-emerald-500/10 px-2 py-0.5 rounded-full">
                     <TrendingUp className="w-3 h-3 mr-1" /> {liveStats?.platformStats?.safetyScoreChange ?? '+2.4%'}
                   </span>
@@ -892,14 +820,14 @@ export const Dashboard: React.FC = () => {
                 </motion.div>
                 
                 {/* AI Risk Forecast Widget */}
-                <motion.div variants={itemVariants} className="bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-cyan-500/15 shadow-cyber overflow-hidden">
-                  <div className="p-5 border-b border-cyan-500/10 flex items-center justify-between bg-cyan-500/5">
+                <motion.div variants={itemVariants} className="bg-surface-raised backdrop-blur-xl rounded-2xl border border-surface-border shadow-cyber overflow-hidden">
+                  <div className="p-5 border-b border-surface-border flex items-center justify-between bg-cyan-500/5">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center">
                         <Brain className="w-5 h-5 text-cyan-400" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-bold text-white">AI Risk Forecast</h3>
+                        <h3 className="text-sm font-bold text-text-primary">AI Risk Forecast</h3>
                         <p className="text-[10px] text-cyan-400/60 font-mono uppercase tracking-wider">Next 7 Days</p>
                       </div>
                     </div>
@@ -923,9 +851,9 @@ export const Dashboard: React.FC = () => {
                       ))}
                     </div>
                     <div className="space-y-2">
-                      <p className="text-xs text-slate-400 font-medium">Top Predicted Threat:</p>
-                      <div className="flex items-center justify-between p-2 bg-slate-800/80 rounded-xl border border-slate-700/30">
-                        <span className="text-[11px] font-bold text-white truncate mr-2">
+                      <p className="text-xs text-text-muted font-medium">Top Predicted Threat:</p>
+                      <div className="flex items-center justify-between p-2 bg-surface-sunken rounded-xl border border-surface-border">
+                        <span className="text-[11px] font-bold text-text-primary truncate mr-2">
                           {forecast?.topThreats?.[0]?.threat || 'Analyzing...'}
                         </span>
                         <span className="text-[10px] font-black text-red-400 whitespace-nowrap">

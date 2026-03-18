@@ -205,7 +205,7 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
         return (
           <div className="h-full flex flex-col justify-between">
             <div className="flex items-start justify-between">
-              <div className={`p-2 rounded-lg bg-gradient-to-br ${widget.color} text-white`}>
+              <div className={`p-2 rounded-lg bg-gradient-to-br ${widget.color} text-text-primary`}>
                 {widget.icon}
               </div>
               {widget.data.trend !== undefined && (
@@ -218,10 +218,10 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
               )}
             </div>
             <div className="mt-auto">
-              <p className="text-3xl font-bold text-white">
+              <p className="text-3xl font-bold text-text-primary">
                 {widget.data.value}{widget.data.unit}
               </p>
-              <p className="text-sm text-slate-400 mt-1">{widget.data.label}</p>
+              <p className="text-sm text-text-muted mt-1">{widget.data.label}</p>
             </div>
           </div>
         );
@@ -230,7 +230,7 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
         return (
           <div className="h-full flex flex-col">
             <div className="flex items-center gap-2 mb-4">
-              <div className={`p-2 rounded-lg bg-gradient-to-br ${widget.color} text-white`}>
+              <div className={`p-2 rounded-lg bg-gradient-to-br ${widget.color} text-text-primary`}>
                 {widget.icon}
               </div>
               <span className="text-slate-400 text-sm">{widget.data.label}</span>
@@ -238,7 +238,7 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
             <div className="flex-1 flex items-center">
               <div className="relative w-24 h-24">
                 <svg className="w-full h-full transform -rotate-90">
-                  <circle cx="48" cy="48" r="40" stroke="currentColor" strokeWidth="8" fill="none" className="text-slate-700" />
+                  <circle cx="48" cy="48" r="40" stroke="currentColor" strokeWidth="8" fill="none" className="text-surface-border" />
                   <circle 
                     cx="48" cy="48" r="40" stroke="currentColor" strokeWidth="8" fill="none" 
                     strokeDasharray={`${widget.data.percentage * 2.51} 251`}
@@ -246,12 +246,12 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xl font-bold text-white">{widget.data.percentage}%</span>
+                  <span className="text-xl font-bold text-text-primary">{widget.data.percentage}%</span>
                 </div>
               </div>
               <div className="ml-4">
-                <p className="text-2xl font-bold text-white">{widget.data.current}</p>
-                <p className="text-sm text-slate-400">of {widget.data.total}</p>
+                <p className="text-2xl font-bold text-text-primary">{widget.data.current}</p>
+                <p className="text-sm text-text-muted">of {widget.data.total}</p>
               </div>
             </div>
           </div>
@@ -261,15 +261,15 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
         return (
           <div className="h-full flex flex-col">
             <div className="flex items-center gap-2 mb-3">
-              <div className={`p-2 rounded-lg bg-gradient-to-br ${widget.color} text-white`}>
+              <div className={`p-2 rounded-lg bg-gradient-to-br ${widget.color} text-text-primary`}>
                 {widget.icon}
               </div>
             </div>
             <div className="flex-1 overflow-y-auto space-y-2">
               {widget.data.items.map((item: any) => (
-                <div key={item.id} className="p-3 bg-slate-700/50 rounded-lg">
+                <div key={item.id} className="p-3 bg-surface-sunken rounded-lg">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-white">{item.title}</p>
+                    <p className="text-sm font-medium text-text-primary">{item.title}</p>
                     {item.severity && (
                       <span className={`text-xs px-2 py-0.5 rounded-full ${
                         item.severity === 'high' ? 'bg-red-500/20 text-red-400' :
@@ -280,7 +280,7 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-400 mt-1">{item.date}</p>
+                  <p className="text-xs text-text-muted mt-1">{item.date}</p>
                 </div>
               ))}
             </div>
@@ -313,17 +313,17 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl">
-                <LayoutGrid className="w-6 h-6 text-white" />
+                <LayoutGrid className="w-6 h-6 text-text-primary" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white">Dashboard Widgets</h1>
+                <h1 className="text-2xl font-bold text-text-primary">Dashboard Widgets</h1>
                 <p className="text-slate-400 text-sm">Customizable safety metrics at a glance</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowWidgetLibrary(true)}
-                className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium flex items-center gap-2 transition-colors"
+                className="px-4 py-2 bg-slate-700 hover:bg-surface-sunken text-text-primary rounded-lg font-medium flex items-center gap-2 transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 Add Widget
@@ -332,8 +332,8 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
                 onClick={() => setEditMode(!editMode)}
                 className={`px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors ${
                   editMode 
-                    ? 'bg-pink-600 text-white' 
-                    : 'bg-slate-700 hover:bg-slate-600 text-white'
+                    ? 'bg-pink-600 text-text-primary' 
+                    : 'bg-slate-700 hover:bg-surface-sunken text-text-primary'
                 }`}
               >
                 <Settings className="w-4 h-4" />
@@ -351,7 +351,7 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.05 }}
-              className={`${getWidgetGridClass(widget.size)} bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 relative group ${
+              className={`${getWidgetGridClass(widget.size)} bg-surface-raised border border-surface-border rounded-xl p-4 relative group ${
                 editMode ? 'cursor-move' : 'cursor-pointer hover:border-slate-600'
               }`}
               onClick={() => !editMode && onWidgetClick?.(widget.id)}
@@ -361,9 +361,9 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
                 <div className="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button
                     onClick={(e) => { e.stopPropagation(); changeWidgetSize(widget.id, widget.size === 'small' ? 'medium' : widget.size === 'medium' ? 'large' : 'small'); }}
-                    className="p-1.5 bg-slate-700 hover:bg-slate-600 rounded-lg"
+                    className="p-1.5 bg-slate-700 hover:bg-surface-sunken rounded-lg"
                   >
-                    {widget.size === 'large' ? <Minimize2 className="w-3 h-3 text-white" /> : <Maximize2 className="w-3 h-3 text-white" />}
+                    {widget.size === 'large' ? <Minimize2 className="w-3 h-3 text-text-primary" /> : <Maximize2 className="w-3 h-3 text-text-primary" />}
                   </button>
                   <button
                     onClick={(e) => { e.stopPropagation(); toggleWidgetVisibility(widget.id); }}
@@ -375,7 +375,7 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
               )}
 
               {/* Widget Title */}
-              <h3 className="text-sm font-medium text-slate-400 mb-3">{widget.title}</h3>
+              <h3 className="text-sm font-medium text-text-muted mb-3">{widget.title}</h3>
 
               {/* Widget Content */}
               <div className={`${widget.size === 'small' ? 'h-24' : widget.size === 'medium' ? 'h-32' : 'h-48'}`}>
@@ -403,9 +403,9 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
                 className="bg-slate-800 border border-slate-700 rounded-xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
               >
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold text-white">Widget Library</h3>
-                  <button onClick={() => setShowWidgetLibrary(false)} className="p-2 hover:bg-slate-700 rounded-lg">
-                    <X className="w-5 h-5 text-slate-400" />
+                  <h3 className="text-xl font-bold text-text-primary">Widget Library</h3>
+                  <button onClick={() => setShowWidgetLibrary(false)} className="p-2 hover:bg-surface-sunken rounded-lg">
+                    <X className="w-5 h-5 text-text-muted" />
                   </button>
                 </div>
                 
@@ -415,19 +415,19 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
                       key={widget.id}
                       className={`p-4 rounded-xl border transition-all cursor-pointer ${
                         widget.visible 
-                          ? 'bg-slate-700/50 border-pink-500/50' 
-                          : 'bg-slate-700/30 border-slate-600/50 hover:border-slate-500'
+                          ? 'bg-surface-sunken border-pink-500/50' 
+                          : 'bg-surface-raised border-surface-border hover:border-surface-border'
                       }`}
                       onClick={() => toggleWidgetVisibility(widget.id)}
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <div className={`p-2 rounded-lg bg-gradient-to-br ${widget.color} text-white`}>
+                        <div className={`p-2 rounded-lg bg-gradient-to-br ${widget.color} text-text-primary`}>
                           {widget.icon}
                         </div>
                         {widget.visible && <CheckCircle2 className="w-5 h-5 text-pink-400" />}
                       </div>
-                      <p className="text-white font-medium">{widget.title}</p>
-                      <p className="text-sm text-slate-400">{widget.type} • {widget.size}</p>
+                      <p className="text-text-primary font-medium">{widget.title}</p>
+                      <p className="text-sm text-text-muted">{widget.type} • {widget.size}</p>
                     </div>
                   ))}
                 </div>

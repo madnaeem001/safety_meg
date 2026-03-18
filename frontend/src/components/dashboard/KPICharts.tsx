@@ -61,7 +61,7 @@ const KPICard: React.FC<{
   <motion.div
     variants={cardVariants}
     whileHover={{ y: -4, scale: 1.012 }}
-    className={`relative bg-slate-900/80 backdrop-blur-xl ${compact ? 'p-3.5 md:p-4' : 'p-4 md:p-5'} rounded-2xl flex-1 min-w-0 overflow-hidden transition-all duration-300 border border-slate-700/50`}
+    className={`relative bg-surface-raised backdrop-blur-xl ${compact ? 'p-3.5 md:p-4' : 'p-4 md:p-5'} rounded-2xl flex-1 min-w-0 overflow-hidden transition-all duration-300 border border-surface-border`}
     style={{
       boxShadow: trend === 'up'
         ? '0 0 0 1px rgba(16,185,129,0.08), 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04)'
@@ -107,12 +107,12 @@ const KPICard: React.FC<{
       </div>
     </div>
     <div className="flex items-baseline gap-1.5">
-      <p className={`${compact ? 'text-2xl' : 'text-2xl md:text-[2rem]'} font-black text-white tracking-tight leading-none`}>{value}</p>
+      <p className={`${compact ? 'text-2xl' : 'text-2xl md:text-[2rem]'} font-black text-text-primary tracking-tight leading-none`}>{value}</p>
       {unit && <span className={`text-xs font-semibold ${trend === 'up' ? 'text-emerald-400/70' : 'text-rose-400/70'}`}>{unit}</span>}
     </div>
-    <p className={`${compact ? 'text-[9px]' : 'text-[10px]'} text-slate-400 font-semibold mt-2 uppercase tracking-widest`}>{label}</p>
+    <p className={`${compact ? 'text-[9px]' : 'text-[10px]'} text-text-muted font-semibold mt-2 uppercase tracking-widest`}>{label}</p>
     {description && (
-      <p className="text-[9px] text-slate-500 mt-0.5 line-clamp-1">{description}</p>
+      <p className="text-[9px] text-text-muted mt-0.5 line-clamp-1">{description}</p>
     )}
   </motion.div>
 );
@@ -157,17 +157,17 @@ export const IncidentsTrendChart: React.FC<{ timeRange?: string; data?: Dashboar
     initial="hidden"
     whileInView="visible"
     viewport={{ once: true }}
-    className="bg-slate-900/80 backdrop-blur-xl rounded-2xl p-4 md:p-6 border border-slate-700/50"
+    className="min-w-0 overflow-hidden bg-surface-raised backdrop-blur-xl rounded-2xl p-4 md:p-6 border border-surface-border"
     style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}
   >
     <div className="flex items-center justify-between mb-4">
       <div>
-        <h3 className="text-sm font-bold text-white tracking-tight">Incident Trends</h3>
-        <p className="text-[10px] text-slate-400 mt-0.5">
+        <h3 className="text-sm font-bold text-text-primary tracking-tight">Incident Trends</h3>
+        <p className="text-[10px] text-text-muted mt-0.5">
           {trend > 0 ? `▲ +${trend} vs period start` : trend < 0 ? `▼ ${trend} vs period start` : 'Stable vs period start'}
         </p>
       </div>
-      <div className="flex items-center gap-1 bg-slate-800 border border-slate-700 rounded-lg p-0.5">
+      <div className="flex items-center gap-1 bg-surface-sunken border border-surface-border rounded-lg p-0.5">
         {(['3M', '6M', '1Y'] as const).map(r => (
           <button
             key={r}
@@ -175,7 +175,7 @@ export const IncidentsTrendChart: React.FC<{ timeRange?: string; data?: Dashboar
             className={`text-[10px] font-bold px-2.5 py-1 rounded-md transition-all ${
               range === r
                 ? 'bg-teal-500/20 text-teal-400 border border-teal-500/30'
-                : 'text-slate-500 hover:text-slate-300'
+                : 'text-text-muted hover:text-text-secondary'
             }`}
           >
             {r}
@@ -183,7 +183,7 @@ export const IncidentsTrendChart: React.FC<{ timeRange?: string; data?: Dashboar
         ))}
       </div>
     </div>
-    <motion.div className="h-40 md:h-48" {...chartAnimationProps}>
+    <motion.div className="h-40 md:h-48 w-full min-w-0" {...chartAnimationProps}>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={chartData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
           <defs>
@@ -196,24 +196,24 @@ export const IncidentsTrendChart: React.FC<{ timeRange?: string; data?: Dashboar
             dataKey="name" 
             axisLine={false} 
             tickLine={false} 
-            tick={{ fill: '#64748b', fontSize: 10 }}
+            tick={{ fill: 'var(--text-muted)', fontSize: 10 }}
           />
           <YAxis 
             axisLine={false} 
             tickLine={false} 
-            tick={{ fill: '#64748b', fontSize: 10 }}
+            tick={{ fill: 'var(--text-muted)', fontSize: 10 }}
             allowDecimals={false}
           />
           <Tooltip 
             contentStyle={{ 
-              backgroundColor: 'rgba(15,23,42,0.95)', 
+              backgroundColor: 'var(--surface-overlay)', 
               border: '1px solid rgba(20,184,166,0.2)', 
               borderRadius: '10px',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
-              color: '#e2e8f0',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+              color: 'var(--text-primary)',
               fontSize: '12px',
             }}
-            labelStyle={{ color: '#94a3b8', fontWeight: 600 }}
+            labelStyle={{ color: 'var(--text-muted)', fontWeight: 600 }}
             itemStyle={{ color: '#14b8a6' }}
           />
           <Area 
@@ -225,12 +225,12 @@ export const IncidentsTrendChart: React.FC<{ timeRange?: string; data?: Dashboar
             dot={(props: any) => {
               if (props.payload?.live) {
                 // Real data point — solid bright dot
-                return <circle key={props.key} cx={props.cx} cy={props.cy} r={5} fill="#14b8a6" stroke="#0f172a" strokeWidth={2} />;
+                return <circle key={props.key} cx={props.cx} cy={props.cy} r={5} fill="#14b8a6" stroke="transparent" strokeWidth={2} />;
               }
               // Empty/zero node — small hollow dim dot
-              return <circle key={props.key} cx={props.cx} cy={props.cy} r={2.5} fill="none" stroke="#334155" strokeWidth={1.5} />;
+              return <circle key={props.key} cx={props.cx} cy={props.cy} r={2.5} fill="none" stroke="var(--surface-border)" strokeWidth={1.5} />;
             }}
-            activeDot={{ r: 5, fill: '#2dd4bf', stroke: '#0f172a', strokeWidth: 2 }}
+            activeDot={{ r: 5, fill: '#2dd4bf', stroke: 'transparent', strokeWidth: 2 }}
             animationDuration={1200}
             animationEasing="ease-out"
           />
@@ -248,19 +248,19 @@ export const SafetyScoreTrendChart: React.FC = () => (
     initial="hidden"
     whileInView="visible"
     viewport={{ once: true }}
-    className="bg-white dark:bg-slate-800 rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-card border border-surface-100/40 dark:border-slate-700/50"
+    className="min-w-0 overflow-hidden bg-surface-raised rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-card border border-surface-border"
   >
     <div className="flex items-center justify-between mb-4 md:mb-6">
       <div>
-        <h3 className="text-base md:text-lg font-bold text-slate-800 dark:text-white tracking-tight">Safety Score Trend</h3>
-        <p className="text-[10px] md:text-xs text-surface-400 dark:text-slate-400 mt-0.5">6-month performance</p>
+        <h3 className="text-base md:text-lg font-bold text-text-primary tracking-tight">Safety Score Trend</h3>
+        <p className="text-[10px] md:text-xs text-text-muted mt-0.5">6-month performance</p>
       </div>
-      <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2.5 py-1 rounded-full">
+      <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-500 bg-emerald-500/10 px-2.5 py-1 rounded-full">
         <TrendingUp className="w-3 h-3" />
         +7pts
       </div>
     </div>
-    <motion.div className="h-36 md:h-44" {...chartAnimationProps}>
+    <motion.div className="h-36 md:h-44 w-full min-w-0" {...chartAnimationProps}>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={safetyScoreTrend} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
           <defs>
@@ -273,20 +273,21 @@ export const SafetyScoreTrendChart: React.FC = () => (
             dataKey="month" 
             axisLine={false} 
             tickLine={false} 
-            tick={{ fill: '#94a3b8', fontSize: 10 }}
+            tick={{ fill: 'var(--text-muted)', fontSize: 10 }}
           />
           <YAxis 
             domain={[80, 100]}
             axisLine={false} 
             tickLine={false} 
-            tick={{ fill: '#94a3b8', fontSize: 10 }}
+            tick={{ fill: 'var(--text-muted)', fontSize: 10 }}
           />
           <Tooltip 
             contentStyle={{ 
-              backgroundColor: 'rgba(255,255,255,0.95)', 
-              border: 'none', 
+              backgroundColor: 'var(--surface-overlay)', 
+              border: '1px solid var(--surface-border)', 
               borderRadius: '12px',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+              color: 'var(--text-primary)',
             }}
             formatter={(value: number) => [`${value}%`, 'Score']}
           />
@@ -337,13 +338,13 @@ export const InspectionCompletionChart: React.FC<{ data?: DashboardInspectionTre
     initial="hidden"
     whileInView="visible"
     viewport={{ once: true }}
-    className="bg-slate-900/80 backdrop-blur-xl rounded-2xl p-4 md:p-6 border border-slate-700/50"
+    className="min-w-0 overflow-hidden bg-surface-raised backdrop-blur-xl rounded-2xl p-4 md:p-6 border border-surface-border"
     style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}
   >
     <div className="flex items-center justify-between mb-4">
       <div>
-        <h3 className="text-sm font-bold text-white tracking-tight">Inspections</h3>
-        <p className="text-[10px] text-slate-400 mt-0.5">
+        <h3 className="text-sm font-bold text-text-primary tracking-tight">Inspections</h3>
+        <p className="text-[10px] text-text-muted mt-0.5">
           {totalCompleted > 0
             ? `${totalCompleted} completed${totalScheduled > 0 ? ` of ${totalScheduled} scheduled` : ''}`
             : 'No data yet'}
@@ -356,7 +357,7 @@ export const InspectionCompletionChart: React.FC<{ data?: DashboardInspectionTre
             {completionPct}%
           </div>
         )}
-        <div className="flex items-center gap-1 bg-slate-800 border border-slate-700 rounded-lg p-0.5">
+        <div className="flex items-center gap-1 bg-surface-sunken border border-surface-border rounded-lg p-0.5">
           {(['3M', '6M', '1Y'] as const).map(r => (
             <button
               key={r}
@@ -364,7 +365,7 @@ export const InspectionCompletionChart: React.FC<{ data?: DashboardInspectionTre
               className={`text-[10px] font-bold px-2.5 py-1 rounded-md transition-all ${
                 range === r
                   ? 'bg-teal-500/20 text-teal-400 border border-teal-500/30'
-                  : 'text-slate-500 hover:text-slate-300'
+                  : 'text-text-muted hover:text-text-secondary'
               }`}
             >
               {r}
@@ -373,30 +374,30 @@ export const InspectionCompletionChart: React.FC<{ data?: DashboardInspectionTre
         </div>
       </div>
     </div>
-    <motion.div className="h-36 md:h-44" {...chartAnimationProps}>
+    <motion.div className="h-36 md:h-44 w-full min-w-0" {...chartAnimationProps}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }} barGap={3}>
           <XAxis 
             dataKey="month" 
             axisLine={false} 
             tickLine={false} 
-            tick={{ fill: '#64748b', fontSize: 10 }}
+            tick={{ fill: 'var(--text-muted)', fontSize: 10 }}
           />
           <YAxis 
             axisLine={false} 
             tickLine={false} 
-            tick={{ fill: '#64748b', fontSize: 10 }}
+            tick={{ fill: 'var(--text-muted)', fontSize: 10 }}
             allowDecimals={false}
           />
           <Tooltip 
             contentStyle={{ 
-              backgroundColor: 'rgba(15,23,42,0.95)', 
+              backgroundColor: 'var(--surface-overlay)', 
               border: '1px solid rgba(20,184,166,0.2)', 
               borderRadius: '10px',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
               fontSize: '12px',
             }}
-            labelStyle={{ color: '#94a3b8', fontWeight: 600 }}
+            labelStyle={{ color: 'var(--text-muted)', fontWeight: 600 }}
             formatter={(value: number, name: string) => [value, name === 'scheduled' ? 'Scheduled' : 'Completed']}
           />
           <Bar
@@ -415,7 +416,7 @@ export const InspectionCompletionChart: React.FC<{ data?: DashboardInspectionTre
             {chartData.map((entry, index) => (
               <Cell 
                 key={`cell-${index}`}
-                fill={entry.live ? (entry.scheduled > 0 && entry.completed >= entry.scheduled ? '#10b981' : '#14b8a6') : '#1e293b'}
+                fill={entry.live ? (entry.scheduled > 0 && entry.completed >= entry.scheduled ? '#10b981' : '#14b8a6') : 'var(--surface-border)'}
                 fillOpacity={entry.live ? 0.9 : 0.4}
               />
             ))}
@@ -471,13 +472,13 @@ export const IncidentCategoriesChart: React.FC<{ data?: DashboardSeverityBreakdo
     initial="hidden"
     whileInView="visible"
     viewport={{ once: true }}
-    className="bg-slate-900/80 backdrop-blur-xl rounded-2xl p-4 md:p-6 border border-slate-700/50"
+    className="min-w-0 overflow-hidden bg-surface-raised backdrop-blur-xl rounded-2xl p-4 md:p-6 border border-surface-border"
     style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}
   >
     <div className="flex items-center justify-between mb-4">
       <div>
-        <h3 className="text-sm font-bold text-white tracking-tight">Incident Severity</h3>
-        <p className="text-[10px] text-slate-400 mt-0.5">
+        <h3 className="text-sm font-bold text-text-primary tracking-tight">Incident Severity</h3>
+        <p className="text-[10px] text-text-muted mt-0.5">
           {hasData ? `${total > 0 ? data!.reduce((s,d) => s + (d.count ?? 0), 0) : ''} incidents by severity` : 'No data yet'}
         </p>
       </div>
@@ -489,8 +490,8 @@ export const IncidentCategoriesChart: React.FC<{ data?: DashboardSeverityBreakdo
     </div>
 
     {hasData ? (
-      <div className="flex items-center gap-5">
-        <motion.div className="w-28 h-28 md:w-32 md:h-32 flex-shrink-0" {...chartAnimationProps}>
+      <div className="flex min-w-0 flex-col items-stretch gap-5 md:flex-row md:items-center">
+        <motion.div className="mx-auto h-28 w-28 min-w-[7rem] flex-shrink-0 md:mx-0 md:h-32 md:w-32 md:min-w-[8rem]" {...chartAnimationProps}>
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -510,18 +511,18 @@ export const IncidentCategoriesChart: React.FC<{ data?: DashboardSeverityBreakdo
               </Pie>
               <Tooltip
                 contentStyle={{
-                  backgroundColor: 'rgba(15,23,42,0.95)',
+                  backgroundColor: 'var(--surface-overlay)',
                   border: '1px solid rgba(239,68,68,0.2)',
                   borderRadius: '10px',
                   fontSize: '11px',
                 }}
-                labelStyle={{ color: '#94a3b8' }}
+                labelStyle={{ color: 'var(--text-muted)' }}
                 formatter={(value: number, name: string) => [`${value}%`, name]}
               />
             </PieChart>
           </ResponsiveContainer>
         </motion.div>
-        <div className="flex-1 space-y-2">
+        <div className="flex-1 min-w-0 space-y-2">
           {chartData.map((item, i) => (
             <motion.div
               key={item.name}
@@ -530,25 +531,25 @@ export const IncidentCategoriesChart: React.FC<{ data?: DashboardSeverityBreakdo
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 + i * 0.08 }}
             >
-              <div className="flex items-center gap-2">
+              <div className="flex min-w-0 items-center gap-2">
                 <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
-                <span className="text-[11px] text-slate-300">{item.name}</span>
+                <span className="truncate text-[11px] text-text-secondary">{item.name}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-16 h-1 rounded-full bg-slate-800 overflow-hidden">
+              <div className="flex min-w-0 flex-1 items-center justify-end gap-2 pl-3">
+                <div className="h-1 w-20 min-w-0 rounded-full bg-surface-sunken overflow-hidden md:w-16">
                   <div
                     className="h-full rounded-full"
                     style={{ width: `${item.value}%`, backgroundColor: item.color }}
                   />
                 </div>
-                <span className="text-[11px] font-bold text-white w-8 text-right">{item.value}%</span>
+                <span className="w-9 flex-shrink-0 text-right text-[11px] font-bold text-text-primary">{item.value}%</span>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
     ) : (
-      <div className="flex flex-col items-center justify-center h-28 gap-2 text-slate-600">
+      <div className="flex flex-col items-center justify-center h-28 gap-2 text-text-muted">
         <Activity className="w-8 h-8 opacity-30" />
         <p className="text-[11px]">No incident data recorded yet</p>
       </div>
@@ -571,11 +572,11 @@ export const GeminiAIPanel: React.FC = () => {
 
   const getInsightColor = (type: string) => {
     switch (type) {
-      case 'prediction': return 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400';
-      case 'trend': return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400';
-      case 'anomaly': return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400';
-      case 'recommendation': return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
-      default: return 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400';
+      case 'prediction': return 'bg-amber-500/10 text-amber-500';
+      case 'trend': return 'bg-emerald-500/10 text-emerald-500';
+      case 'anomaly': return 'bg-red-500/10 text-red-500';
+      case 'recommendation': return 'bg-blue-500/10 text-blue-500';
+      default: return 'bg-purple-500/10 text-purple-500';
     }
   };
 
@@ -585,7 +586,7 @@ export const GeminiAIPanel: React.FC = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="bg-gradient-to-br from-purple-50 via-white to-indigo-50 dark:from-slate-800 dark:via-slate-800 dark:to-purple-900/20 rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-card border border-purple-100/60 dark:border-purple-800/30"
+      className="bg-surface-raised rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-card border border-surface-border"
     >
       <div className="flex items-center justify-between mb-4 md:mb-5">
         <div className="flex items-center gap-3">
@@ -593,14 +594,14 @@ export const GeminiAIPanel: React.FC = () => {
             <Brain className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-base md:text-lg font-bold text-slate-800 dark:text-white tracking-tight flex items-center gap-2">
+            <h3 className="text-base md:text-lg font-bold text-text-primary tracking-tight flex items-center gap-2">
               Gemini AI Insights
               <Sparkles className="w-4 h-4 text-brand-500" />
             </h3>
-            <p className="text-[10px] md:text-xs text-surface-400 dark:text-slate-400">Real-time safety intelligence</p>
+            <p className="text-[10px] md:text-xs text-text-muted">Real-time safety intelligence</p>
           </div>
         </div>
-        <span className="text-[10px] font-bold uppercase px-2 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 animate-pulse">
+        <span className="text-[10px] font-bold uppercase px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-500 animate-pulse">
           Live
         </span>
       </div>
@@ -615,7 +616,7 @@ export const GeminiAIPanel: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
               whileHover={{ scale: 1.01 }}
-              className="bg-white/70 dark:bg-slate-700/50 backdrop-blur-sm rounded-xl p-3 md:p-4 border border-surface-100/60 dark:border-slate-600/30 cursor-pointer hover:shadow-md transition-all"
+              className="bg-surface-raised backdrop-blur-sm rounded-xl p-3 md:p-4 border border-surface-border cursor-pointer hover:shadow-md transition-all"
             >
               <div className="flex items-start gap-3">
                 <div className={`p-2 rounded-lg ${getInsightColor(insight.type)}`}>
@@ -623,14 +624,14 @@ export const GeminiAIPanel: React.FC = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2 mb-1">
-                    <h4 className="text-sm font-bold text-surface-800 dark:text-white line-clamp-1">{insight.title}</h4>
-                    <span className="text-[9px] font-semibold text-surface-400 dark:text-slate-500 whitespace-nowrap">
+                    <h4 className="text-sm font-bold text-text-primary line-clamp-1">{insight.title}</h4>
+                    <span className="text-[9px] font-semibold text-text-muted whitespace-nowrap">
                       {insight.confidence}% conf.
                     </span>
                   </div>
-                  <p className="text-xs text-surface-500 dark:text-slate-400 line-clamp-2 mb-2">{insight.description}</p>
+                  <p className="text-xs text-text-muted line-clamp-2 mb-2">{insight.description}</p>
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-brand-100 text-brand-700 dark:bg-brand-900/30 dark:text-brand-400">
+                    <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-brand-500/10 text-brand-500">
                       {insight.action}
                     </span>
                   </div>
@@ -655,7 +656,7 @@ export const PowerBIPanel: React.FC = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className={`bg-gradient-to-br from-amber-50 via-white to-orange-50 dark:from-slate-800 dark:via-slate-800 dark:to-amber-900/20 rounded-2xl md:rounded-3xl shadow-card border border-amber-100/60 dark:border-amber-800/30 ${
+      className={`bg-surface-raised rounded-2xl md:rounded-3xl shadow-card border border-surface-border ${
         isFullscreen ? 'fixed inset-4 z-50 p-4' : 'p-4 md:p-6'
       }`}
     >
@@ -665,17 +666,17 @@ export const PowerBIPanel: React.FC = () => {
             <BarChart3 className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-base md:text-lg font-bold text-slate-800 dark:text-white tracking-tight">
+            <h3 className="text-base md:text-lg font-bold text-text-primary tracking-tight">
               BI Dashboard
             </h3>
-            <p className="text-[10px] md:text-xs text-surface-400 dark:text-slate-400">Embedded analytics</p>
+            <p className="text-[10px] md:text-xs text-text-muted">Embedded analytics</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <select
             value={selectedDashboard.id}
             onChange={(e) => setSelectedDashboard(powerBIDashboards.find(d => d.id === e.target.value) || powerBIDashboards[0])}
-            className="text-xs bg-white dark:bg-slate-700 border border-surface-200 dark:border-slate-600 rounded-lg px-2 py-1.5 text-surface-600 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500/30"
+            className="text-xs bg-surface-sunken border border-surface-border rounded-lg px-2 py-1.5 text-text-primary focus:outline-none focus:ring-2 focus:ring-amber-500/30"
           >
             {powerBIDashboards.map(d => (
               <option key={d.id} value={d.id}>{d.name}</option>
@@ -683,7 +684,7 @@ export const PowerBIPanel: React.FC = () => {
           </select>
           <button
             onClick={() => setIsFullscreen(!isFullscreen)}
-            className="p-2 rounded-lg bg-surface-100 dark:bg-slate-700 hover:bg-surface-200 dark:hover:bg-slate-600 transition-colors"
+            className="p-2 rounded-lg bg-surface-sunken hover:bg-surface-overlay transition-colors"
           >
             {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
           </button>
@@ -691,7 +692,7 @@ export const PowerBIPanel: React.FC = () => {
       </div>
 
       {/* Embedded Dashboard Iframe */}
-      <div className={`bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-surface-200 dark:border-slate-700 ${isFullscreen ? 'h-[calc(100%-80px)]' : 'h-64 md:h-80'}`}>
+      <div className={`bg-surface-raised rounded-xl overflow-hidden border border-surface-border ${isFullscreen ? 'h-[calc(100%-80px)]' : 'h-64 md:h-80'}`}>
         <iframe
           title={selectedDashboard.name}
           src={selectedDashboard.embedUrl}
@@ -714,7 +715,7 @@ export const PowerBIPanel: React.FC = () => {
             className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
               selectedDashboard.id === dashboard.id
                 ? 'bg-amber-500 text-white'
-                : 'bg-white/70 dark:bg-slate-700/50 text-surface-600 dark:text-slate-300 hover:bg-amber-100 dark:hover:bg-amber-900/30'
+                : 'bg-surface-raised text-text-secondary hover:bg-amber-500/10'
             }`}
           >
             {dashboard.name}
@@ -821,10 +822,12 @@ export const AIChatAssistant: React.FC = () => {
       <motion.button
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        whileHover={{ scale: 1.1 }}
+        whileHover={{ scale: 1.06, y: -2 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-24 right-6 z-50 p-4 rounded-full bg-gradient-to-br from-slate-700 to-slate-800 text-white shadow-lg shadow-slate-500/20 hover:shadow-xl hover:shadow-slate-500/30 transition-all duration-300"
+        className="fixed bottom-24 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-[1.75rem] transition-all duration-300 hover:brightness-110"
+        style={{ backgroundColor: '#00A89D', color: '#ffffff', border: '1px solid rgba(0,168,157,0.3)', boxShadow: '0 0 0 4px rgba(0,168,157,0.18), 0 8px 32px rgba(0,168,157,0.55)' }}
+        aria-label="Open AI safety assistant"
       >
         <MessageCircle className="w-6 h-6" />
       </motion.button>
@@ -836,14 +839,14 @@ export const AIChatAssistant: React.FC = () => {
       initial={{ opacity: 0, y: 20, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 20, scale: 0.95 }}
-      className={`fixed z-50 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-surface-200 dark:border-slate-700 overflow-hidden ${
+      className={`fixed z-50 bg-surface-overlay backdrop-blur-xl rounded-2xl shadow-2xl border border-surface-border overflow-hidden ${
         isMinimized 
           ? 'bottom-24 right-6 w-72 h-14' 
           : 'bottom-24 right-6 w-96 max-w-[calc(100vw-48px)] h-[500px] max-h-[calc(100vh-100px)]'
       }`}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-slate-800 to-slate-900 text-white">
+      <div className="flex items-center justify-between px-4 py-3 bg-brand-700 text-white">
         <div className="flex items-center gap-3">
           <div className="p-1.5 rounded-lg bg-white/20">
             <Brain className="w-5 h-5" />
@@ -886,12 +889,12 @@ export const AIChatAssistant: React.FC = () => {
                   className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
                     message.role === 'user'
                       ? 'bg-brand-600 text-white rounded-br-md'
-                      : 'bg-surface-100 dark:bg-slate-700 text-surface-800 dark:text-white rounded-bl-md'
+                      : 'bg-surface-sunken text-text-primary rounded-bl-md'
                   }`}
                 >
                   <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                   <p className={`text-[9px] mt-1 ${
-                    message.role === 'user' ? 'text-brand-200' : 'text-surface-400 dark:text-slate-500'
+                    message.role === 'user' ? 'text-brand-200' : 'text-text-muted'
                   }`}>
                     {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
@@ -904,11 +907,11 @@ export const AIChatAssistant: React.FC = () => {
                 animate={{ opacity: 1 }}
                 className="flex justify-start"
               >
-                <div className="bg-surface-100 dark:bg-slate-700 rounded-2xl rounded-bl-md px-4 py-3">
+                <div className="bg-surface-sunken rounded-2xl rounded-bl-md px-4 py-3">
                   <div className="flex gap-1">
-                    <span className="w-2 h-2 bg-surface-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-2 h-2 bg-surface-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-2 h-2 bg-surface-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    <span className="w-2 h-2 bg-text-muted rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="w-2 h-2 bg-text-muted rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="w-2 h-2 bg-text-muted rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
                 </div>
               </motion.div>
@@ -919,13 +922,13 @@ export const AIChatAssistant: React.FC = () => {
           {/* Quick Actions */}
           {messages.length <= 2 && (
             <div className="px-4 pb-2">
-              <p className="text-[10px] text-surface-400 dark:text-slate-500 mb-2">Quick actions:</p>
+              <p className="text-[10px] text-text-muted mb-2">Quick actions:</p>
               <div className="flex flex-wrap gap-1.5">
                 {quickActions.map((action) => (
                   <button
                     key={action}
                     onClick={() => handleQuickAction(action)}
-                    className="text-[10px] px-2.5 py-1 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-400 hover:bg-brand-100 dark:hover:bg-brand-900/50 transition-colors"
+                    className="text-[10px] px-2.5 py-1 rounded-full bg-brand-500/10 text-brand-500 hover:bg-brand-500/20 transition-colors"
                   >
                     {action}
                   </button>
@@ -935,7 +938,7 @@ export const AIChatAssistant: React.FC = () => {
           )}
 
           {/* Input */}
-          <div className="p-3 border-t border-surface-200 dark:border-slate-700">
+          <div className="p-3 border-t border-surface-border">
             <div className="flex items-center gap-2">
               <input
                 id="chat-input"
@@ -944,7 +947,7 @@ export const AIChatAssistant: React.FC = () => {
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                 placeholder="Ask about safety, compliance, incidents..."
-                className="flex-1 px-4 py-2.5 bg-surface-50 dark:bg-slate-700 border border-surface-200 dark:border-slate-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/30 dark:text-white placeholder:text-surface-400"
+                className="flex-1 px-4 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-500/30 placeholder:text-text-muted"
               />
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -1062,7 +1065,7 @@ export const KPIDashboard: React.FC<{
       </div>
       
       {/* Category chart - full width on mobile, half on tablet */}
-      <div className="md:max-w-md">
+      <div className="w-full min-w-0 md:max-w-md">
         <IncidentCategoriesChart data={severityBreakdown} />
       </div>
     </motion.div>

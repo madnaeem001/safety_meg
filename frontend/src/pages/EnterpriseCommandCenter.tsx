@@ -45,6 +45,7 @@ import {
   Share2,
   WifiOff
 } from 'lucide-react';
+import { SMButton } from '../components/ui';
 
 /* ================================================================
    ENTERPRISE COMMAND CENTER
@@ -100,7 +101,7 @@ export const EnterpriseCommandCenter: React.FC = () => {
   const [viewMode, setViewMode] = useState<'map' | 'list'>('map');
 
   return (
-    <div className="min-h-screen bg-surface-950 text-white pb-20 selection:bg-brand-500/30">
+    <div className="min-h-screen text-text-primary pb-20 selection:bg-brand-500/30 transition-colors duration-300">
       {/* HD Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-brand-500/5 blur-[150px] rounded-full" />
@@ -108,39 +109,39 @@ export const EnterpriseCommandCenter: React.FC = () => {
       </div>
 
       {/* Header */}
-      <header className="sticky top-[72px] z-40 bg-surface-900/60 backdrop-blur-2xl border-b border-surface-800 shrink-0">
+      <header className="sticky top-[72px] z-40 bg-surface-raised backdrop-blur-2xl border-b border-surface-border shrink-0 transition-colors duration-300">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-20">
             <div className="flex items-center gap-4">
               <button 
                 onClick={() => navigate('/')}
-                className="p-2.5 hover:bg-surface-800 rounded-2xl text-surface-400 transition-all group"
+                className="p-2.5 hover:bg-surface-overlay rounded-2xl text-text-secondary transition-all group"
               >
                 <ArrowLeft className="w-6 h-6 group-hover:-translate-x-1 transition-transform" />
               </button>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-500 to-violet-600 flex items-center justify-center shadow-lg shadow-brand-500/20">
-                  <Globe className="w-7 h-7 text-white" />
+                    <Globe className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-black text-white tracking-tight">Enterprise Command Center</h1>
-                  <p className="text-[11px] text-surface-400 uppercase tracking-widest font-bold">Global Safety Operations</p>
+                  <h1 className="text-xl font-black text-text-primary tracking-tight">Enterprise Command Center</h1>
+                  <p className="text-[11px] text-text-secondary uppercase tracking-widest font-bold">Global Safety Operations</p>
                 </div>
               </div>
             </div>
 
             <div className="flex items-center gap-6">
               <div className="text-right hidden sm:block">
-                <p className="text-[10px] text-surface-500 uppercase tracking-widest font-bold mb-1">GPS Coordinates</p>
+                <p className="text-[10px] text-text-muted uppercase tracking-widest font-bold mb-1">GPS Coordinates</p>
                 <div className="flex items-center gap-2 justify-end">
                   <Map className="w-4 h-4 text-brand-400" />
-                  <span className="text-sm font-bold text-white uppercase tracking-wider">
+                  <span className="text-sm font-bold text-text-primary uppercase tracking-wider">
                     {geoLoading ? 'Locating...' : latitude ? `${latitude.toFixed(4)}, ${longitude?.toFixed(4)}` : 'GPS Disabled'}
                   </span>
                 </div>
               </div>
               <div className="text-right hidden sm:block">
-                <p className="text-[10px] text-surface-500 uppercase tracking-widest font-bold mb-1">System Status</p>
+                <p className="text-[10px] text-text-muted uppercase tracking-widest font-bold mb-1">System Status</p>
                 <div className="flex items-center gap-2 justify-end">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                   <span className="text-sm font-bold text-emerald-400 uppercase tracking-wider">AI Engines Active</span>
@@ -165,18 +166,18 @@ export const EnterpriseCommandCenter: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="bg-surface-900/40 backdrop-blur-md border border-surface-800 rounded-3xl p-6 hover:border-brand-500/30 transition-all"
+              className="bg-surface-raised backdrop-blur-md border border-surface-border rounded-3xl p-6 hover:border-brand-500/30 transition-all"
             >
               <div className="flex items-center justify-between mb-4">
-                <div className={`p-3 rounded-2xl bg-surface-800 ${stat.color}`}>
+                <div className={`p-3 rounded-2xl bg-surface-overlay ${stat.color}`}>
                   <stat.icon className="w-6 h-6" />
                 </div>
                 <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-2 py-1 rounded-lg">
                   {stat.trend}
                 </span>
               </div>
-              <p className="text-[10px] text-surface-500 uppercase tracking-widest font-bold mb-1">{stat.label}</p>
-              <h3 className="text-3xl font-black text-white">{stat.value}</h3>
+              <p className="text-[10px] text-text-muted uppercase tracking-widest font-bold mb-1">{stat.label}</p>
+              <h3 className="text-3xl font-black text-text-primary">{stat.value}</h3>
             </motion.div>
           ))}
         </div>
@@ -185,10 +186,10 @@ export const EnterpriseCommandCenter: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-surface-900/40 border border-surface-800 rounded-[2.5rem] p-8 backdrop-blur-md mb-12 relative overflow-hidden group"
+          className="bg-surface-raised border border-surface-border rounded-[2.5rem] p-8 backdrop-blur-md mb-12 relative overflow-hidden group"
         >
           <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform">
-            <Brain className="w-64 h-64 text-white" />
+            <Brain className="w-64 h-64 text-text-primary" />
           </div>
           
           <div className="relative z-10">
@@ -197,36 +198,36 @@ export const EnterpriseCommandCenter: React.FC = () => {
                 <Sparkles className="w-8 h-8" />
               </div>
               <div>
-                <h3 className="text-2xl font-black text-white">AI Strategic Intelligence</h3>
-                <p className="text-sm text-surface-500">Global risk patterns and operational optimization</p>
+                <h3 className="text-2xl font-black text-text-primary">AI Strategic Intelligence</h3>
+                <p className="text-sm text-text-muted">Global risk patterns and operational optimization</p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="p-6 bg-surface-800/30 rounded-3xl border border-surface-700/50">
+              <div className="p-6 bg-surface-sunken rounded-3xl border border-surface-border">
                 <div className="flex items-center gap-2 mb-3">
                   <Target className="w-4 h-4 text-brand-400" />
-                  <h4 className="text-xs font-black text-white uppercase tracking-widest">Risk Hotspot</h4>
+                  <h4 className="text-xs font-black text-text-primary uppercase tracking-widest">Risk Hotspot</h4>
                 </div>
-                <p className="text-sm text-surface-300 leading-relaxed">
+                <p className="text-sm text-text-secondary leading-relaxed">
                   AI has identified a 15% increase in near-misses in the Southeast Asia region related to heavy lifting. Recommended intervention: Regional safety workshop.
                 </p>
               </div>
-              <div className="p-6 bg-surface-800/30 rounded-3xl border border-surface-700/50">
+              <div className="p-6 bg-surface-sunken rounded-3xl border border-surface-border">
                 <div className="flex items-center gap-2 mb-3">
                   <Zap className="w-4 h-4 text-amber-400" />
-                  <h4 className="text-xs font-black text-white uppercase tracking-widest">Efficiency Gain</h4>
+                  <h4 className="text-xs font-black text-text-primary uppercase tracking-widest">Efficiency Gain</h4>
                 </div>
-                <p className="text-sm text-surface-300 leading-relaxed">
+                <p className="text-sm text-text-secondary leading-relaxed">
                   Automated PPE audits have reduced manual inspection time by 420 hours this month across all facilities.
                 </p>
               </div>
-              <div className="p-6 bg-surface-800/30 rounded-3xl border border-surface-700/50">
+              <div className="p-6 bg-surface-sunken rounded-3xl border border-surface-border">
                 <div className="flex items-center gap-2 mb-3">
                   <TrendingUp className="w-4 h-4 text-emerald-400" />
-                  <h4 className="text-xs font-black text-white uppercase tracking-widest">Predictive Success</h4>
+                  <h4 className="text-xs font-black text-text-primary uppercase tracking-widest">Predictive Success</h4>
                 </div>
-                <p className="text-sm text-surface-300 leading-relaxed">
+                <p className="text-sm text-text-secondary leading-relaxed">
                   92% of predicted equipment failures were addressed before downtime occurred, saving an estimated $1.2M in operational costs.
                 </p>
               </div>
@@ -236,29 +237,29 @@ export const EnterpriseCommandCenter: React.FC = () => {
 
         {/* Global Map & Region Selection */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-          <div className="lg:col-span-2 bg-surface-900/40 border border-surface-800 rounded-[2.5rem] p-8 backdrop-blur-md relative overflow-hidden">
+          <div className="lg:col-span-2 bg-surface-raised border border-surface-border rounded-[2.5rem] p-8 backdrop-blur-md relative overflow-hidden">
             <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center opacity-10" />
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-8">
-                <h3 className="text-2xl font-black text-white">Global Operations Map</h3>
-                <div className="flex gap-2 bg-surface-800/50 p-1 rounded-xl border border-surface-700/50">
+                <h3 className="text-2xl font-black text-text-primary">Global Operations Map</h3>
+                <div className="flex gap-2 bg-surface-sunken p-1 rounded-xl border border-surface-border">
                   <button 
                     onClick={() => setViewMode('map')}
-                    className={`px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all ${viewMode === 'map' ? 'bg-brand-500 text-white' : 'text-surface-400 hover:text-white'}`}
+                    className={`px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all ${viewMode === 'map' ? 'bg-brand-500 text-white' : 'text-text-muted hover:text-text-primary'}`}
                   >
                     Map View
                   </button>
                   <button 
                     onClick={() => setViewMode('list')}
-                    className={`px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all ${viewMode === 'list' ? 'bg-brand-500 text-white' : 'text-surface-400 hover:text-white'}`}
+                    className={`px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all ${viewMode === 'list' ? 'bg-brand-500 text-white' : 'text-text-muted hover:text-text-primary'}`}
                   >
                     List View
                   </button>
                 </div>
               </div>
 
-              <div className="aspect-[21/9] bg-surface-800/50 rounded-3xl border border-surface-700/50 flex items-center justify-center relative overflow-hidden">
-                <Globe className="w-32 h-32 text-surface-700 animate-pulse" />
+              <div className="aspect-[21/9] bg-surface-sunken rounded-3xl border border-surface-border flex items-center justify-center relative overflow-hidden">
+                <Globe className="w-32 h-32 text-text-muted animate-pulse" />
                 {globalRegions.map((region, i) => (
                   <motion.button
                     key={region.id}
@@ -279,8 +280,8 @@ export const EnterpriseCommandCenter: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-surface-900/40 border border-surface-800 rounded-[2.5rem] p-8 backdrop-blur-md">
-            <h3 className="text-xl font-bold text-white mb-6">Regional Intelligence</h3>
+          <div className="bg-surface-raised border border-surface-border rounded-[2.5rem] p-8 backdrop-blur-md">
+            <h3 className="text-xl font-bold text-text-primary mb-6">Regional Intelligence</h3>
             <AnimatePresence mode="wait">
               {selectedRegion ? (
                 <motion.div
@@ -292,46 +293,44 @@ export const EnterpriseCommandCenter: React.FC = () => {
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="text-2xl font-black text-white">{selectedRegion.name}</h4>
-                      <p className="text-xs text-surface-500 uppercase tracking-widest font-bold">{selectedRegion.country}</p>
+                      <h4 className="text-2xl font-black text-text-primary">{selectedRegion.name}</h4>
+                      <p className="text-xs text-text-muted uppercase tracking-widest font-bold">{selectedRegion.country}</p>
                     </div>
-                    <div className={`p-3 rounded-2xl bg-surface-800 ${selectedRegion.riskScore > 30 ? 'text-red-400' : 'text-emerald-400'}`}>
+                    <div className={`p-3 rounded-2xl bg-surface-overlay ${selectedRegion.riskScore > 30 ? 'text-red-400' : 'text-emerald-400'}`}>
                       <Activity className="w-6 h-6" />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-surface-800/30 rounded-2xl border border-surface-700/50">
-                      <p className="text-[10px] text-surface-500 uppercase tracking-widest font-bold mb-1">Facilities</p>
-                      <p className="text-lg font-bold text-white">{selectedRegion.facilities}</p>
+                    <div className="p-4 bg-surface-sunken rounded-2xl border border-surface-border">
+                      <p className="text-[10px] text-text-muted uppercase tracking-widest font-bold mb-1">Facilities</p>
+                      <p className="text-lg font-bold text-text-primary">{selectedRegion.facilities}</p>
                     </div>
-                    <div className="p-4 bg-surface-800/30 rounded-2xl border border-surface-700/50">
-                      <p className="text-[10px] text-surface-500 uppercase tracking-widest font-bold mb-1">Compliance</p>
-                      <p className="text-lg font-bold text-white">{selectedRegion.compliance}%</p>
+                    <div className="p-4 bg-surface-sunken rounded-2xl border border-surface-border">
+                      <p className="text-[10px] text-text-muted uppercase tracking-widest font-bold mb-1">Compliance</p>
+                      <p className="text-lg font-bold text-text-primary">{selectedRegion.compliance}%</p>
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <h5 className="text-[10px] font-black text-surface-500 uppercase tracking-widest">Active Risks</h5>
+                    <h5 className="text-[10px] font-black text-text-muted uppercase tracking-widest">Active Risks</h5>
                     <div className="p-4 bg-red-500/10 rounded-2xl border border-red-500/20">
                       <div className="flex items-center gap-3 mb-2">
                         <AlertTriangle className="w-4 h-4 text-red-400" />
-                        <p className="text-xs font-bold text-white">High Risk Detected</p>
+                        <p className="text-xs font-bold text-text-primary">High Risk Detected</p>
                       </div>
-                      <p className="text-[10px] text-surface-400 leading-relaxed">
+                      <p className="text-[10px] text-text-muted leading-relaxed">
                         Unusual incident spike in {selectedRegion.name} manufacturing zones. AI suggests immediate audit.
                       </p>
                     </div>
                   </div>
 
-                  <button className="w-full py-4 bg-brand-500 hover:bg-brand-600 text-white rounded-2xl font-bold uppercase tracking-widest text-xs transition-all shadow-lg shadow-brand-500/20">
-                    View Regional Dashboard
-                  </button>
+                  <SMButton variant="primary" className="w-full">View Regional Dashboard</SMButton>
                 </motion.div>
               ) : (
                 <div className="flex flex-col items-center justify-center h-full py-12 text-center">
-                  <Globe className="w-16 h-16 text-surface-800 mb-4" />
-                  <p className="text-surface-500 text-sm">Select a region on the map to view detailed safety intelligence</p>
+                  <Globe className="w-16 h-16 text-text-muted mb-4" />
+                  <p className="text-text-muted text-sm">Select a region on the map to view detailed safety intelligence</p>
                 </div>
               )}
             </AnimatePresence>
@@ -340,9 +339,9 @@ export const EnterpriseCommandCenter: React.FC = () => {
 
         {/* AI Safety Intelligence Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 bg-surface-900/40 border border-surface-800 rounded-[2.5rem] p-8 backdrop-blur-md relative overflow-hidden group">
+          <div className="lg:col-span-2 bg-surface-raised border border-surface-border rounded-[2.5rem] p-8 backdrop-blur-md relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform">
-              <Brain className="w-40 h-40 text-white" />
+              <Brain className="w-40 h-40 text-text-primary" />
             </div>
             
             <div className="relative z-10">
@@ -351,18 +350,18 @@ export const EnterpriseCommandCenter: React.FC = () => {
                   <Bot className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-black text-white">AI Safety Intelligence</h3>
-                  <p className="text-sm text-surface-500">Real-time predictive risk analysis and global insights</p>
+                  <h3 className="text-2xl font-black text-text-primary">AI Safety Intelligence</h3>
+                  <p className="text-sm text-text-muted">Real-time predictive risk analysis and global insights</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-6 bg-surface-800/30 rounded-3xl border border-surface-700/50">
+                <div className="p-6 bg-surface-sunken rounded-3xl border border-surface-border">
                   <div className="flex items-center gap-3 mb-4">
                     <Zap className="w-5 h-5 text-amber-400" />
-                    <h4 className="text-sm font-bold text-white uppercase tracking-widest">Predictive Alert</h4>
+                    <h4 className="text-sm font-bold text-text-primary uppercase tracking-widest">Predictive Alert</h4>
                   </div>
-                  <p className="text-xs text-surface-400 leading-relaxed mb-4">
+                  <p className="text-xs text-text-muted leading-relaxed mb-4">
                     AI models predict a 15% increase in heat-related risks in the North America region over the next 48 hours.
                   </p>
                   <button className="text-[10px] font-black text-brand-400 uppercase tracking-widest hover:text-brand-300 transition-colors">
@@ -370,12 +369,12 @@ export const EnterpriseCommandCenter: React.FC = () => {
                   </button>
                 </div>
 
-                <div className="p-6 bg-surface-800/30 rounded-3xl border border-surface-700/50">
+                <div className="p-6 bg-surface-sunken rounded-3xl border border-surface-border">
                   <div className="flex items-center gap-3 mb-4">
                     <Globe className="w-5 h-5 text-blue-400" />
-                    <h4 className="text-sm font-bold text-white uppercase tracking-widest">Global Trend</h4>
+                    <h4 className="text-sm font-bold text-text-primary uppercase tracking-widest">Global Trend</h4>
                   </div>
-                  <p className="text-xs text-surface-400 leading-relaxed mb-4">
+                  <p className="text-xs text-text-muted leading-relaxed mb-4">
                     Compliance levels in Africa have improved by 4.2% following the implementation of AI Visual Audits.
                   </p>
                   <button className="text-[10px] font-black text-brand-400 uppercase tracking-widest hover:text-brand-300 transition-colors">
@@ -388,11 +387,11 @@ export const EnterpriseCommandCenter: React.FC = () => {
 
           <div className="bg-gradient-to-br from-brand-600 to-violet-700 rounded-[2.5rem] p-8 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
-              <Sparkles className="w-40 h-40 text-white" />
+              <Sparkles className="w-40 h-40 text-text-primary" />
             </div>
             <div className="relative z-10 h-full flex flex-col justify-between">
               <div>
-                <h3 className="text-3xl font-black text-white mb-4 leading-tight">
+                <h3 className="text-3xl font-black text-text-primary mb-4 leading-tight">
                   Enterprise <br />Safety Auto-Pilot
                 </h3>
                 <p className="text-brand-100 text-sm leading-relaxed mb-8">

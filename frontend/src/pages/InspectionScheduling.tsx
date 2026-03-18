@@ -22,6 +22,7 @@ import {
   useInspectionStats,
   useCreateInspection,
 } from '../api/hooks/useAPIHooks';
+import { SMCard, SMButton } from '../components/ui';
 import type { CreateInspectionPayload } from '../api/services/apiService';
 
 type InspectionTab = 'schedule' | 'sensors';
@@ -175,30 +176,30 @@ export const InspectionScheduling: React.FC = () => {
         )}
 
         <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4">
-          <div className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
+          <SMCard className="p-5">
             <div className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2">Inspections</div>
             <div className="text-2xl font-bold text-brand-900">{statsLoading ? '...' : stats?.inspections.total ?? 0}</div>
-          </div>
-          <div className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
+          </SMCard>
+          <SMCard className="p-5">
             <div className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2">Scheduled</div>
             <div className="text-2xl font-bold text-blue-600">{statsLoading ? '...' : stats?.inspections.scheduled ?? 0}</div>
-          </div>
-          <div className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
+          </SMCard>
+          <SMCard className="p-5">
             <div className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2">In Progress</div>
             <div className="text-2xl font-bold text-amber-600">{statsLoading ? '...' : stats?.inspections.inProgress ?? 0}</div>
-          </div>
-          <div className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
+          </SMCard>
+          <SMCard className="p-5">
             <div className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2">Overdue</div>
             <div className="text-2xl font-bold text-red-600">{statsLoading ? '...' : stats?.inspections.overdue ?? 0}</div>
-          </div>
-          <div className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
+          </SMCard>
+          <SMCard className="p-5">
             <div className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2">Sensors</div>
             <div className="text-2xl font-bold text-brand-900">{statsLoading ? '...' : stats?.sensors.total ?? 0}</div>
-          </div>
-          <div className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
+          </SMCard>
+          <SMCard className="p-5">
             <div className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2">Critical Sensors</div>
             <div className="text-2xl font-bold text-red-600">{statsLoading ? '...' : stats?.sensors.critical ?? 0}</div>
-          </div>
+          </SMCard>
         </div>
 
         <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
@@ -224,19 +225,13 @@ export const InspectionScheduling: React.FC = () => {
         <AnimatePresence mode="wait">
           {activeTab === 'schedule' && (
             <motion.div key="schedule" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="grid grid-cols-1 xl:grid-cols-[1fr_1fr] gap-6">
-              <div className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100 space-y-4">
+              <SMCard className="p-6 space-y-4">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                   <div>
                     <h3 className="font-bold text-brand-900">Inspection Schedule</h3>
                     <p className="text-sm text-surface-500">Live inspections from backend schedule table.</p>
                   </div>
-                  <button
-                    onClick={() => setShowCreateForm((current) => !current)}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-900 text-white text-sm font-bold"
-                  >
-                    <Plus className="w-4 h-4" />
-                    Schedule Inspection
-                  </button>
+                  <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />} onClick={() => setShowCreateForm((current) => !current)}>Schedule Inspection</SMButton>
                 </div>
 
                 {showCreateForm && (
@@ -283,10 +278,9 @@ export const InspectionScheduling: React.FC = () => {
                       </div>
                     </div>
                     <textarea value={formData.notes} onChange={(event) => setFormData((current) => ({ ...current, notes: event.target.value }))} rows={2} className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400 resize-none" placeholder="Notes" />
-                    <button type="submit" disabled={createInspection.loading} className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-900 text-white text-sm font-bold disabled:opacity-60">
-                      {createInspection.loading ? <Clock className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                    <SMButton variant="primary" type="submit" className="w-full" loading={createInspection.loading} leftIcon={createInspection.loading ? <Clock className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}>
                       {createInspection.loading ? 'Scheduling...' : 'Save Inspection'}
-                    </button>
+                    </SMButton>
                   </form>
                 )}
 
@@ -342,9 +336,9 @@ export const InspectionScheduling: React.FC = () => {
                   ))}
                   {!scheduleLoading && scheduleItems.length === 0 && <div className="text-sm text-surface-500">No inspections found for current filters.</div>}
                 </div>
-              </div>
+              </SMCard>
 
-              <div className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100 space-y-4">
+              <SMCard className="p-6 space-y-4">
                 <div>
                   <h3 className="font-bold text-brand-900">Inspection Detail</h3>
                   <p className="text-sm text-surface-500">Selected inspection detail from backend.</p>
@@ -392,7 +386,7 @@ export const InspectionScheduling: React.FC = () => {
                     </div>
                   </div>
                 )}
-              </div>
+              </SMCard>
             </motion.div>
           )}
 
@@ -413,7 +407,7 @@ export const InspectionScheduling: React.FC = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 {sensorItems.map((sensor) => (
-                  <div key={sensor.sensorId} className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
+                  <SMCard key={sensor.sensorId} className="p-5">
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div>
                         <div className="text-xs font-bold text-brand-600 uppercase tracking-wider">{sensor.sensorId}</div>
@@ -436,7 +430,7 @@ export const InspectionScheduling: React.FC = () => {
                         <div className="font-semibold text-brand-900 mt-1">{sensor.maxThreshold ?? 'N/A'}</div>
                       </div>
                     </div>
-                  </div>
+                  </SMCard>
                 ))}
                 {!sensorsLoading && sensorItems.length === 0 && <div className="text-sm text-surface-500">No sensors found for current filter.</div>}
               </div>

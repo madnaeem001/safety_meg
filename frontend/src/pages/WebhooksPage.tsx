@@ -22,6 +22,7 @@ import {
   useWebhooks,
 } from '../api/hooks/useAPIHooks';
 import type { CreateWebhookPayload, WebhookRecord } from '../api/services/apiService';
+import { SMButton } from '../components/ui';
 
 const WEBHOOK_EVENTS = [
   'incident.created',
@@ -263,9 +264,7 @@ export const WebhooksPage: React.FC = () => {
                 <button type="button" onClick={() => setShowCreateForm(false)} className="px-5 py-3 rounded-xl border border-surface-200 text-surface-700 font-bold">
                   Cancel
                 </button>
-                <button type="submit" disabled={createWebhook.loading || formData.events.length === 0} className="px-5 py-3 rounded-xl bg-brand-900 text-white font-bold disabled:opacity-60">
-                  {createWebhook.loading ? 'Saving...' : 'Save Webhook'}
-                </button>
+                <SMButton variant="primary" type="submit" loading={createWebhook.loading} disabled={formData.events.length === 0}>{createWebhook.loading ? 'Saving...' : 'Save Webhook'}</SMButton>
               </div>
             </motion.form>
           )}

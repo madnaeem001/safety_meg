@@ -122,7 +122,7 @@ export const VehicleIncidentReport: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-b from-surface-50 to-surface-100 pb-32">
 
       
-      <div className="bg-white/80 backdrop-blur-md shadow-sm sticky top-20 z-40 px-4 h-16 flex items-center gap-3 border-b border-surface-200 max-w-5xl mx-auto">
+      <div className="bg-white/80 backdrop-blur-md shadow-sm sticky top-20 z-40 px-4 h-16 flex items-center gap-3 border-b border-surface-200 max-w-7xl mx-auto">
         <button onClick={() => navigate(-1)} className="p-2 -ml-2 hover:bg-surface-100 rounded-full">
           <ArrowLeft className="w-6 h-6 text-surface-600" />
         </button>
@@ -132,7 +132,7 @@ export const VehicleIncidentReport: React.FC = () => {
         </h1>
       </div>
 
-      <main className="max-w-5xl mx-auto px-4 py-6 space-y-6">
+      <main className="max-w-7xl mx-auto px-4 py-6 space-y-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Incident Info */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}

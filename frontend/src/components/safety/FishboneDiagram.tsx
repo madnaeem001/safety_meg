@@ -5,6 +5,7 @@ import {
   User, Settings, FileText, Building2, Ruler, Thermometer, Loader2
 } from 'lucide-react';
 import { aiAssistantService } from '../../api/services/apiService';
+import { SMCard, SMButton } from '../../components/ui';
 
 interface FishboneCause {
   id: string;
@@ -108,7 +109,7 @@ Please provide:
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-surface-200 overflow-hidden">
+    <SMCard>
       <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4">
         <h3 className="font-bold text-white flex items-center gap-2">
           <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -232,7 +233,7 @@ Please provide:
         </div>
 
         {/* AI Analysis */}
-        <button
+        <SMButton
           type="button"
           disabled={aiLoading}
           onClick={async () => {
@@ -255,11 +256,12 @@ Please provide:
               setAiLoading(false);
             }
           }}
-          className="w-full px-4 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:from-purple-700 hover:to-indigo-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full"
+          loading={aiLoading}
+          leftIcon={<Sparkles className="w-4 h-4" />}
         >
-          {aiLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
           {aiLoading ? 'Analysing...' : 'AI Analyse Causes'}
-        </button>
+        </SMButton>
         {aiError && (
           <p className="text-xs text-red-600 text-center mt-2">{aiError}</p>
         )}
@@ -288,7 +290,7 @@ Please provide:
           </div>
         )}
       </div>
-    </div>
+    </SMCard>
   );
 };
 

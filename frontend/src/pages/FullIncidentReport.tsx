@@ -450,7 +450,7 @@ export const FullIncidentReport: React.FC = () => {
 
       
       {/* Header */}
-      <div className="no-print bg-surface-100/80 backdrop-blur-md shadow-sm sticky top-20 z-40 px-4 h-16 flex items-center justify-between border-b border-surface-200 max-w-4xl mx-auto">
+      <div className="no-print bg-surface-100/80 backdrop-blur-md shadow-sm sticky top-20 z-40 px-4 h-16 flex items-center justify-between border-b border-surface-200 max-w-7xl mx-auto">
         <div className="flex items-center gap-3">
           <button onClick={() => navigate(-1)} className="p-2 -ml-2 hover:bg-surface-200 rounded-full">
             <ArrowLeft className="w-6 h-6 text-surface-800" />
@@ -482,7 +482,7 @@ export const FullIncidentReport: React.FC = () => {
         </div>
       </div>
 
-      <main ref={printRef} className="print-container max-w-4xl mx-auto px-4 py-6">
+      <main ref={printRef} className="print-container max-w-7xl mx-auto px-4 py-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Section 1: Incident Information */}
           <SectionCard

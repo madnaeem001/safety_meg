@@ -52,6 +52,7 @@ import type {
   ApprovalStepRecord,
   SafetyChecklistItemRecord,
 } from '../api/services/apiService';
+import { SMButton } from '../components/ui';
 
 // Types (aliases to backend record types)
 type Contractor = ContractorRecord;
@@ -467,10 +468,7 @@ export const ContractorPermitManagement: React.FC = () => {
             className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20"
           />
         </div>
-        <button className="px-4 py-2.5 bg-brand-500 text-white rounded-xl text-sm font-medium flex items-center gap-2 hover:bg-brand-600 transition-colors">
-          <Plus className="w-4 h-4" />
-          Add Contractor
-        </button>
+        <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />}>Add Contractor</SMButton>
       </div>
 
       {/* Contractors Grid */}

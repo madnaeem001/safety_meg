@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, AlertTriangle, Camera, Send, CheckCircle2, MapPin, Calendar, Info, Brain, Sparkles, Loader2, User, ClipboardList, ShieldCheck, Heart, Download } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Camera, Send, CheckCircle2, MapPin, Calendar, Info, Brain, Sparkles, User, ClipboardList, ShieldCheck, Heart, Download } from 'lucide-react';
+import { SMButton, SMInput, SMSelect, SMDatePicker, SMCard } from '../components/ui';
+import PageContainer from '../layouts/PageContainer';
 import { motion, AnimatePresence } from 'framer-motion';
+
+const MotionSMCard = motion(SMCard);
 import { BodyDiagram, getBodyPartName } from '../components/safety/BodyDiagram';
 import { exportIncidentReportToPDF, generateReportId } from '../utils/exports/incidentPdfExport';
 import { aiAssistantService, incidentService, type IncidentSubmissionPayload } from '../api/services/apiService';
 import { useWorkers } from '../api/hooks/useAPIHooks';
 import { allInternationalStandards, type InternationalStandard } from '../data/internationalStandards';
+import { useToast } from '../hooks/useToast';
 
 /**
  * List of standard incident types for EHS reporting.
@@ -167,6 +172,7 @@ const buildIncidentPayload = (
  */
 export const IncidentReporting: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useToast();
   const { data: workersData } = useWorkers({ status: 'active' });
   const workers = workersData ?? [];
   const [selectedBodyParts, setSelectedBodyParts] = useState<string[]>([]);
@@ -232,7 +238,6 @@ export const IncidentReporting: React.FC = () => {
   const [aiActionsLoading, setAiActionsLoading] = useState(false);
   const [photoFiles, setPhotoFiles] = useState<File[]>([]);
   const [photoUrls, setPhotoUrls] = useState<string[]>([]);
-  const [showSuccess, setShowSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // AUTO-SUGGEST standards when incident type changes
@@ -247,7 +252,7 @@ export const IncidentReporting: React.FC = () => {
   // AI: Full Incident Analysis (Root Causes + Corrective Actions)
   const handleAISuggest = async () => {
     if (!formData.description) {
-      alert('Please provide an incident description first.');
+      toast.error('Please provide an incident description first.');
       return;
     }
 
@@ -294,7 +299,7 @@ export const IncidentReporting: React.FC = () => {
       }));
     } catch (error) {
       console.error('AI Error:', error);
-      alert('Error generating AI analysis. Please try again.');
+      toast.error('Error generating AI analysis. Please try again.');
     } finally {
       setAiLoading(false);
     }
@@ -391,7 +396,7 @@ export const IncidentReporting: React.FC = () => {
     }
 
     if (validationErrors.length > 0) {
-      alert(validationErrors.join('\n'));
+      toast.error(validationErrors.join(' • '));
       return;
     }
 
@@ -402,7 +407,7 @@ export const IncidentReporting: React.FC = () => {
       await incidentService.create(payload);
       
       setIsSubmitting(false);
-      setShowSuccess(true);
+      toast.success('Incident report submitted. Safety officers have been notified.');
       setTimeout(() => {
         navigate('/');
       }, 2000);
@@ -412,137 +417,109 @@ export const IncidentReporting: React.FC = () => {
       // Show specific backend validation issues if available
       const err = error as { issues?: { message: string }[]; message?: string };
       if (err?.issues?.length) {
-        alert('Please fix the following:\n' + err.issues.map((i: { message: string }) => `• ${i.message}`).join('\n'));
+        toast.error('Please fix the following: ' + err.issues.map((i: { message: string }) => i.message).join(' • '));
       } else {
-        alert(err?.message || 'Failed to submit report. Please try again.');
+        toast.error(err?.message || 'Failed to submit report. Please try again.');
       }
     }
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 pb-24">
-
-      
-      {/* Header */}
-      <div className="bg-white/80 backdrop-blur-md shadow-sm sticky top-20 z-40 px-4 h-16 flex items-center gap-3 safe-top border-b border-surface-200 max-w-md mx-auto">
-        <button onClick={() => navigate(-1)} className="p-2 -ml-2 hover:bg-surface-100 rounded-full transition-colors">
-          <ArrowLeft className="w-6 h-6 text-surface-600" />
-        </button>
-        <img src="/logo.png" alt="SafetyMEG" className="w-8 h-8 object-contain" />
-        <h1 className="text-xl font-bold text-brand-900 flex items-center gap-2 tracking-tight">
-          Report Incident
-        </h1>
-      </div>
-
-      <main className="px-4 py-6 max-w-md mx-auto space-y-6 text-left">
+    <PageContainer
+      title="Report Incident"
+      maxWidth="xl"
+      actions={
+        <SMButton type="button" variant="ghost" size="sm" onClick={() => navigate(-1)} leftIcon={<ArrowLeft className="w-5 h-5" />}>
+          Back
+        </SMButton>
+      }
+    >
+      <div className="space-y-6 text-left">
         {/* API Key Input (Temporary for Demo) */}
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-brand-900 p-6 rounded-[2rem] shadow-glow text-white space-y-4"
+          className="bg-primary p-6 rounded-xl shadow-glow text-white space-y-4"
         >
           <div className="flex items-center gap-3">
             <div className="p-2 bg-white/10 rounded-xl">
-              <Brain className="w-5 h-5 text-brand-300" />
+              <Brain className="w-5 h-5 text-accent-300" />
             </div>
             <h3 className="font-bold tracking-tight">AI Assistance Ready</h3>
           </div>
-          <p className="text-sm text-brand-100/90 leading-relaxed">
+          <p className="text-sm text-white/80 leading-relaxed">
             AI suggestions now route through the backend. Real provider keys can be added later without exposing any secret in the browser.
           </p>
         </motion.div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Incident Details */}
-          <motion.div 
+          <MotionSMCard
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white p-6 rounded-[2.5rem] shadow-soft border border-surface-100 space-y-6"
+            className="p-6 rounded-[2.5rem] shadow-card space-y-6"
           >
             <div className="space-y-4">
-              <div className="flex items-center gap-2 text-brand-900 font-bold">
-                <Info className="w-5 h-5 text-brand-500" />
+              <div className="flex items-center gap-2 text-text-primary font-bold">
+                <Info className="w-5 h-5 text-accent" />
                 <h3>Incident Information</h3>
               </div>
 
               {/* Date and Time Row */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-surface-400 uppercase tracking-widest ml-1">Date</label>
-                  <input
-                    type="date"
-                    required
-                    value={formData.incident_date}
-                    onChange={(e) => setFormData({ ...formData, incident_date: e.target.value })}
-                    className="w-full px-4 py-3 bg-surface-50 border border-surface-100 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all text-sm"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-surface-400 uppercase tracking-widest ml-1">Time</label>
-                  <input
-                    type="time"
-                    value={formData.incident_time}
-                    onChange={(e) => setFormData({ ...formData, incident_time: e.target.value })}
-                    className="w-full px-4 py-3 bg-surface-50 border border-surface-100 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all text-sm"
-                  />
-                </div>
+                <SMDatePicker
+                  label="Date"
+                  required
+                  value={formData.incident_date}
+                  onChange={(e) => setFormData({ ...formData, incident_date: e.target.value })}
+                />
+                <SMInput
+                  type="time"
+                  label="Time"
+                  value={formData.incident_time}
+                  onChange={(e) => setFormData({ ...formData, incident_time: e.target.value })}
+                />
               </div>
 
               {/* Location and Department */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-surface-400 uppercase tracking-widest ml-1">Location</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Area/Zone"
-                    value={formData.location}
-                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                    className="w-full px-4 py-3 bg-surface-50 border border-surface-100 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all text-sm"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-surface-400 uppercase tracking-widest ml-1">Department</label>
-                  <input
-                    type="text"
-                    placeholder="Dept/Unit"
-                    value={formData.department}
-                    onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                    className="w-full px-4 py-3 bg-surface-50 border border-surface-100 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all text-sm"
-                  />
-                </div>
+                <SMInput
+                  label="Location"
+                  type="text"
+                  required
+                  placeholder="Area/Zone"
+                  value={formData.location}
+                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                />
+                <SMInput
+                  label="Department"
+                  type="text"
+                  placeholder="Dept/Unit"
+                  value={formData.department}
+                  onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+                />
               </div>
 
               {/* Industry Sector */}
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-surface-400 uppercase tracking-widest ml-1">Industry Sector</label>
-                <select
-                  value={formData.industry_sector}
-                  onChange={(e) => setFormData({ ...formData, industry_sector: e.target.value })}
-                  className="w-full px-4 py-3 bg-surface-50 border border-surface-100 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all appearance-none text-sm"
-                >
-                  <option value="">Select Sector</option>
-                  {INDUSTRY_SECTORS.map(sector => (
-                    <option key={sector} value={sector}>{sector}</option>
-                  ))}
-                </select>
-              </div>
+              <SMSelect
+                label="Industry Sector"
+                value={formData.industry_sector}
+                onChange={(e) => setFormData({ ...formData, industry_sector: e.target.value })}
+                placeholder="Select Sector"
+                options={INDUSTRY_SECTORS.map(sector => ({ value: sector, label: sector }))}
+              />
 
               <div className="space-y-2">
-                <label className="text-xs font-bold text-surface-400 uppercase tracking-widest ml-1">Incident Type</label>
-                <select
+                <SMSelect
+                  label="Incident Type"
                   required
                   value={formData.incident_type}
                   onChange={(e) => handleIncidentTypeChange(e.target.value)}
-                  className="w-full px-4 py-4 bg-surface-50 border border-surface-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all appearance-none"
-                >
-                  <option value="">Select Type</option>
-                  {INCIDENT_TYPES.map(type => (
-                    <option key={type} value={type}>{type}</option>
-                  ))}
-                </select>
+                  placeholder="Select Type"
+                  options={INCIDENT_TYPES.map(type => ({ value: type, label: type }))}
+                />
                 {formData.incident_type && (
-                  <p className="text-[10px] text-brand-500 ml-1 flex items-center gap-1">
+                  <p className="text-xs text-accent ml-1 flex items-center gap-1">
                     <Sparkles className="w-3 h-3" /> Relevant standards auto-selected below
                   </p>
                 )}
@@ -550,19 +527,19 @@ export const IncidentReporting: React.FC = () => {
 
               {/* International Standards Compliance */}
               <div className="space-y-2">
-                <label className="text-xs font-bold text-surface-400 uppercase tracking-widest ml-1">Applicable International Standards</label>
+                <label className="text-xs font-semibold text-text-muted uppercase tracking-widest ml-1">Applicable International Standards</label>
                 <div className="p-4 bg-surface-50 border border-surface-100 rounded-2xl space-y-3">
-                  <p className="text-xs text-surface-500">Select standards relevant to this incident for automated compliance mapping.</p>
+                  <p className="text-xs text-text-muted">Select standards relevant to this incident for automated compliance mapping.</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto pr-2">
                     {allInternationalStandards.map(std => (
                       <label key={std.id} className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
                         selectedStandards.includes(std.id)
-                          ? 'bg-brand-50 border-brand-200 shadow-sm'
-                          : 'bg-white border-surface-200 hover:border-brand-200'
+                          ? 'bg-accent-50 border-accent-200 shadow-sm'
+                          : 'bg-white border-surface-200 hover:border-accent-200'
                       }`}>
                         <div className={`mt-0.5 w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${
                           selectedStandards.includes(std.id)
-                            ? 'bg-brand-500 border-brand-500'
+                            ? 'bg-accent border-accent'
                             : 'border-surface-300 bg-white'
                         }`}>
                           {selectedStandards.includes(std.id) && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
@@ -574,10 +551,10 @@ export const IncidentReporting: React.FC = () => {
                           onChange={() => handleStandardToggle(std.id)}
                         />
                         <div className="flex-1">
-                          <p className={`text-sm font-bold ${selectedStandards.includes(std.id) ? 'text-brand-900' : 'text-surface-700'}`}>
+                          <p className={`text-sm font-bold ${selectedStandards.includes(std.id) ? 'text-text-primary' : 'text-text-secondary'}`}>
                             {std.code}
                           </p>
-                          <p className="text-xs text-surface-500 line-clamp-1">{std.title}</p>
+                          <p className="text-xs text-text-muted line-clamp-1">{std.title}</p>
                         </div>
                       </label>
                     ))}
@@ -621,55 +598,48 @@ export const IncidentReporting: React.FC = () => {
                     )}
                   </div>
                   
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-accent-600 uppercase tracking-widest ml-1">Injury Type</label>
-                    <select
-                      value={formData.injury_type}
-                      onChange={(e) => setFormData({ ...formData, injury_type: e.target.value })}
-                      className="w-full px-3 py-2.5 bg-white border border-accent-200 rounded-xl focus:ring-2 focus:ring-accent-500 outline-none text-sm"
-                    >
-                      <option value="">Select</option>
-                      {INJURY_TYPES.map(type => (
-                        <option key={type} value={type}>{type}</option>
-                      ))}
-                    </select>
-                  </div>
+                  <SMSelect
+                    label="Injury Type"
+                    value={formData.injury_type}
+                    onChange={(e) => setFormData({ ...formData, injury_type: e.target.value })}
+                    placeholder="Select"
+                    options={INJURY_TYPES.map(type => ({ value: type, label: type }))}
+                  />
                 </motion.div>
               )}
 
               {/* Immediate Actions & Witnesses */}
               <div className="space-y-2">
-                <div className="flex items-center justify-between ml-1">
-                  <label className="text-xs font-bold text-surface-400 uppercase tracking-widest">Immediate Actions Taken</label>
-                  <button
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-text-muted uppercase tracking-widest ml-1">Immediate Actions Taken</span>
+                  <SMButton
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={handleAIImmediateActions}
                     disabled={aiActionsLoading || (!formData.incident_type && !formData.description)}
-                    className="flex items-center gap-1 px-2.5 py-1 bg-brand-50 border border-brand-100 text-brand-600 text-[10px] font-bold rounded-lg hover:bg-brand-100 transition-all disabled:opacity-40"
+                    loading={aiActionsLoading}
+                    leftIcon={<Sparkles className="w-3 h-3" />}
                   >
-                    {aiActionsLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
                     AI Fill
-                  </button>
+                  </SMButton>
                 </div>
-                <textarea
+                <SMInput
+                  as="textarea"
                   rows={2}
                   placeholder="What was done immediately after the incident?"
                   value={formData.immediate_actions}
                   onChange={(e) => setFormData({ ...formData, immediate_actions: e.target.value })}
-                  className="w-full px-4 py-3 bg-surface-50 border border-surface-100 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none transition-all resize-none text-sm"
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-surface-400 uppercase tracking-widest ml-1">Witnesses (Names)</label>
-                <input
-                  type="text"
-                  placeholder="Comma-separated names"
-                  value={formData.witnesses}
-                  onChange={(e) => setFormData({ ...formData, witnesses: e.target.value })}
-                  className="w-full px-4 py-3 bg-surface-50 border border-surface-100 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none transition-all text-sm"
-                />
-              </div>
+              <SMInput
+                label="Witnesses (Names)"
+                type="text"
+                placeholder="Comma-separated names"
+                value={formData.witnesses}
+                onChange={(e) => setFormData({ ...formData, witnesses: e.target.value })}
+              />
 
               {/* Regulatory Reportable */}
               <div className="flex items-center gap-3 p-4 bg-surface-50 rounded-xl">
@@ -678,78 +648,73 @@ export const IncidentReporting: React.FC = () => {
                   id="regulatory"
                   checked={formData.regulatory_reportable}
                   onChange={(e) => setFormData({ ...formData, regulatory_reportable: e.target.checked })}
-                  className="w-5 h-5 text-brand-600 border-surface-300 rounded focus:ring-brand-500"
+                  className="w-5 h-5 text-accent border-surface-300 rounded focus:ring-accent"
                 />
-                <label htmlFor="regulatory" className="text-sm font-medium text-brand-800">
+                <label htmlFor="regulatory" className="text-sm font-medium text-text-primary">
                   OSHA/Regulatory Reportable Incident
                 </label>
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-center justify-between ml-1">
-                  <label className="text-xs font-bold text-surface-400 uppercase tracking-widest">Severity Level</label>
-                  <button
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-text-muted uppercase tracking-widest ml-1">Severity Level</span>
+                  <SMButton
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={handleAISuggestSeverity}
                     disabled={aiSeverityLoading || !formData.description}
-                    className="flex items-center gap-1 px-2.5 py-1 bg-brand-50 border border-brand-100 text-brand-600 text-[10px] font-bold rounded-lg hover:bg-brand-100 transition-all disabled:opacity-40"
+                    loading={aiSeverityLoading}
+                    leftIcon={<Brain className="w-3 h-3" />}
                   >
-                    {aiSeverityLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Brain className="w-3 h-3" />}
                     AI Suggest
-                  </button>
+                  </SMButton>
                 </div>
                 {aiSeverityHint && (
                   <motion.p
                     initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }}
-                    className="text-[10px] text-brand-600 bg-brand-50 border border-brand-100 rounded-lg px-3 py-2 leading-relaxed"
+                    className="text-xs text-accent-700 bg-accent-50 border border-accent-100 rounded-lg px-3 py-2 leading-relaxed"
                   >
                     {aiSeverityHint}
                   </motion.p>
                 )}
                 <div className="grid grid-cols-2 gap-2">
                   {SEVERITY_LEVELS.map(level => (
-                    <button
+                    <SMButton
                       key={level}
                       type="button"
+                      variant={formData.severity === level ? 'primary' : 'secondary'}
                       onClick={() => setFormData({ ...formData, severity: level })}
-                      className={`py-3 rounded-xl text-sm font-bold transition-all border ${
-                        formData.severity === level
-                          ? 'bg-brand-900 text-white border-brand-900 shadow-md'
-                          : 'bg-surface-50 text-surface-500 border-surface-100 hover:border-brand-200'
-                      }`}
                     >
                       {level}
-                    </button>
+                    </SMButton>
                   ))}
+                
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-surface-400 uppercase tracking-widest ml-1">Description</label>
-                <textarea
-                  required
-                  rows={4}
-                  placeholder="Describe what happened in detail..."
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-4 py-4 bg-surface-50 border border-surface-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all resize-none"
-                />
-              </div>
+              <SMInput
+                as="textarea"
+                label="Description"
+                required
+                rows={4}
+                placeholder="Describe what happened in detail..."
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              />
 
               {/* AI Analysis Trigger */}
-              <button
+              <SMButton
                 type="button"
+                variant="secondary"
                 onClick={handleAISuggest}
                 disabled={aiLoading || !formData.description}
-                className="w-full py-4 bg-brand-50 text-brand-600 rounded-2xl border border-brand-100 flex items-center justify-center gap-2 font-bold text-sm hover:bg-brand-100 transition-all disabled:opacity-50"
+                loading={aiLoading}
+                leftIcon={<Sparkles className="w-4 h-4" />}
+                className="w-full py-4"
               >
-                {aiLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Sparkles className="w-4 h-4" />
-                )}
-                AI Root Cause & Action Suggestion
-              </button>
+                AI Root Cause &amp; Action Suggestion
+              </SMButton>
             </div>
 
             {/* AI Results Section */}
@@ -762,77 +727,63 @@ export const IncidentReporting: React.FC = () => {
                   className="space-y-6 pt-6 border-t border-surface-100"
                 >
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-brand-900 font-bold text-sm">
-                      <ShieldCheck className="w-4 h-4 text-brand-500" />
-                      <h4>Root Causes (ISO 14001/OH&S)</h4>
+                    <div className="flex items-center gap-2 text-text-primary font-bold text-sm">
+                      <ShieldCheck className="w-4 h-4 text-accent" />
+                      <h4>Root Causes (ISO 14001/OH&amp;S)</h4>
                     </div>
-                    <textarea
+                    <SMInput
+                      as="textarea"
                       rows={3}
                       value={formData.root_causes}
                       onChange={(e) => setFormData({ ...formData, root_causes: e.target.value })}
-                      className="w-full px-4 py-3 bg-surface-50 border border-surface-100 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition-all"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-brand-900 font-bold text-sm">
-                      <ClipboardList className="w-4 h-4 text-brand-500" />
+                    <div className="flex items-center gap-2 text-text-primary font-bold text-sm">
+                      <ClipboardList className="w-4 h-4 text-accent" />
                       <h4>Corrective Actions</h4>
                     </div>
-                    <textarea
+                    <SMInput
+                      as="textarea"
                       rows={3}
                       value={formData.corrective_actions}
                       onChange={(e) => setFormData({ ...formData, corrective_actions: e.target.value })}
-                      className="w-full px-4 py-3 bg-surface-50 border border-surface-100 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition-all"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-brand-900 font-bold text-sm">
-                      <User className="w-4 h-4 text-brand-500" />
+                    <div className="flex items-center gap-2 text-text-primary font-bold text-sm">
+                      <User className="w-4 h-4 text-accent" />
                       <h4>Assign Action Plan To</h4>
                     </div>
-                    <select
+                    <SMSelect
+                      placeholder="Select Team Member"
                       value={formData.assigned_to}
                       onChange={(e) => setFormData({ ...formData, assigned_to: e.target.value })}
-                      className="w-full px-4 py-3 bg-surface-50 border border-surface-100 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition-all appearance-none"
-                    >
-                        <option value="">Select Team Member</option>
-                        {workers.map(worker => (
-                          <option key={worker.id} value={`${worker.name}${worker.jobTitle ? ` (${worker.jobTitle})` : ''}`}>
-                            {worker.name}{worker.jobTitle ? ` — ${worker.jobTitle}` : ''}{worker.department ? ` · ${worker.department}` : ''}
-                          </option>
-                        ))}
-                        {workers.length === 0 && (
-                          <option disabled>Loading team members...</option>
-                        )}
-                    </select>
+                      options={[
+                        ...workers.map(worker => ({
+                          value: `${worker.name}${worker.jobTitle ? ` (${worker.jobTitle})` : ''}`,
+                          label: `${worker.name}${worker.jobTitle ? ` — ${worker.jobTitle}` : ''}${worker.department ? ` · ${worker.department}` : ''}`
+                        }))
+                      ]}
+                    />
                   </div>
 
                   {/* Due Date and ISO Clause */}
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold text-surface-400 uppercase tracking-widest ml-1">Due Date</label>
-                      <input
-                        type="date"
-                        value={formData.due_date}
-                        onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}
-                        className="w-full px-4 py-3 bg-surface-50 border border-surface-100 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition-all"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold text-surface-400 uppercase tracking-widest ml-1">ISO 9001 Clause</label>
-                      <select
-                        value={formData.iso_clause}
-                        onChange={(e) => setFormData({ ...formData, iso_clause: e.target.value })}
-                        className="w-full px-4 py-3 bg-surface-50 border border-surface-100 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition-all appearance-none"
-                      >
-                        <option value="">Select Clause</option>
-                        {ISO_CLAUSES.map(clause => (
-                          <option key={clause.id} value={clause.id}>{clause.label}</option>
-                        ))}
-                      </select>
-                    </div>
+                    <SMDatePicker
+                      label="Due Date"
+                      value={formData.due_date}
+                      onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}
+                    />
+                    <SMSelect
+                      label="ISO 9001 Clause"
+                      value={formData.iso_clause}
+                      onChange={(e) => setFormData({ ...formData, iso_clause: e.target.value })}
+                      placeholder="Select Clause"
+                      options={ISO_CLAUSES.map(clause => ({ value: clause.id, label: clause.label }))}
+                    />
                   </div>
                 </motion.div>
               )}
@@ -840,8 +791,8 @@ export const IncidentReporting: React.FC = () => {
 
             {/* Photo Upload */}
             <div className="space-y-3">
-              <label className="text-xs font-bold text-surface-400 uppercase tracking-widest ml-1">Evidence Photos (max 5)</label>
-              <label className="w-full py-8 border-2 border-dashed border-surface-200 rounded-2xl flex flex-col items-center justify-center gap-2 text-surface-400 hover:text-brand-500 hover:border-brand-500 transition-all bg-surface-50/50 cursor-pointer">
+              <label className="text-xs font-semibold text-text-muted uppercase tracking-widest ml-1">Evidence Photos (max 5)</label>
+              <label className="w-full py-8 border-2 border-dashed border-surface-200 rounded-2xl flex flex-col items-center justify-center gap-2 text-text-muted hover:text-accent hover:border-accent transition-all bg-surface-50/50 cursor-pointer">
                 <Camera className="w-8 h-8" />
                 <span className="text-sm font-medium">
                   {photoFiles.length > 0 ? `${photoFiles.length} photo${photoFiles.length > 1 ? 's' : ''} selected — tap to add more` : 'Tap to take or upload photos'}
@@ -859,27 +810,33 @@ export const IncidentReporting: React.FC = () => {
                   {photoUrls.map((url, i) => (
                     <div key={i} className="relative group">
                       <img src={url} alt={`Evidence ${i + 1}`} className="w-20 h-20 object-cover rounded-xl border border-surface-200" />
-                      <button
+                      <SMButton
                         type="button"
+                        variant="danger"
+                        size="sm"
                         onClick={() => {
                           const newFiles = photoFiles.filter((_, idx) => idx !== i);
                           URL.revokeObjectURL(photoUrls[i]);
                           setPhotoFiles(newFiles);
                           setPhotoUrls(newFiles.map(f => URL.createObjectURL(f)));
                         }}
-                        className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white rounded-full text-xs font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                      >×</button>
+                        className="absolute -top-1.5 -right-1.5 !w-5 !h-5 !p-0 !rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      >×</SMButton>
                     </div>
                   ))}
                 </div>
               )}
             </div>
-          </motion.div>
+          </MotionSMCard>
 
           {/* Submit Button */}
           <div className="flex gap-3">
-            <motion.button
+            <SMButton
               type="button"
+              variant="secondary"
+              size="lg"
+              className="flex-1"
+              leftIcon={<Download className="w-5 h-5" />}
               onClick={() => {
                 const reportId = generateReportId('incident');
                 exportIncidentReportToPDF({
@@ -906,62 +863,25 @@ export const IncidentReporting: React.FC = () => {
                   generatedDate: new Date().toLocaleString()
                 });
               }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="flex-1 py-5 bg-white text-brand-700 border-2 border-brand-200 rounded-[2rem] font-bold text-lg flex items-center justify-center gap-3 hover:bg-brand-50 transition-colors"
             >
-              <Download className="w-5 h-5" />
               Export PDF
-            </motion.button>
+            </SMButton>
             
-            <motion.button
+            <SMButton
               type="submit"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              variant="primary"
+              size="lg"
+              className="flex-[2]"
               disabled={isSubmitting}
-              className={`flex-[2] py-5 rounded-[2rem] shadow-glow flex items-center justify-center gap-3 text-white font-bold text-lg transition-all ${
-                isSubmitting ? 'bg-surface-400' : 'bg-brand-900'
-              }`}
+              loading={isSubmitting}
+              leftIcon={<Send className="w-5 h-5" />}
             >
-              {isSubmitting ? (
-                <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : (
-                <>
-                  <Send className="w-5 h-5" />
-                  Submit Report
-                </>
-              )}
-            </motion.button>
+              Submit Report
+            </SMButton>
           </div>
         </form>
-      </main>
-
-      {/* Success Overlay */}
-      <AnimatePresence>
-        {showSuccess && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-brand-950/90 backdrop-blur-sm flex items-center justify-center px-6"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="bg-white p-8 rounded-[3rem] text-center space-y-4 max-w-xs w-full"
-            >
-              <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto">
-                <CheckCircle2 className="w-10 h-10 text-emerald-600" />
-              </div>
-              <div className="space-y-2">
-                <h2 className="text-2xl font-bold text-brand-900">Report Submitted</h2>
-                <p className="text-surface-500 text-sm">The incident has been logged and safety officers have been notified.</p>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+      </div>
+    </PageContainer>
   );
 };
 

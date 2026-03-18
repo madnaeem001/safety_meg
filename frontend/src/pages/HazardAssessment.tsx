@@ -9,6 +9,9 @@ import {
   Eye, BarChart3, Users, Zap, ChevronRight
 } from 'lucide-react';
 import { useJsaList, useJsaStats, useCreateJsaMutation } from '../api/hooks/useAPIHooks';
+import { SMButton, SMCard } from '../components/ui';
+
+const MotionSMCard = motion(SMCard);
 
 export const HazardAssessment: React.FC = () => {
   const navigate = useNavigate();
@@ -74,13 +77,7 @@ export const HazardAssessment: React.FC = () => {
           </div>
           
           {!isCreating && (
-            <button
-              onClick={() => setIsCreating(true)}
-              className="px-6 py-3 bg-brand-600 text-white font-bold rounded-2xl hover:bg-brand-700 transition-all shadow-lg flex items-center gap-2"
-            >
-              <Plus className="w-5 h-5" />
-              New JSA
-            </button>
+          <SMButton variant="primary" leftIcon={<Plus className="w-5 h-5" />} onClick={() => setIsCreating(true)}>New JSA</SMButton>
           )}
         </div>
 
@@ -217,7 +214,7 @@ export const HazardAssessment: React.FC = () => {
               <h3 className="text-xl font-bold text-surface-900">Recent Assessments</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {recentAssessments.map((jsa: any, i: number) => (
-                  <motion.div key={jsa.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }} className="bg-white p-5 rounded-2xl border border-surface-200 shadow-sm hover:shadow-md transition-all">
+                  <MotionSMCard key={jsa.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }} className="p-5 hover:shadow-md transition-all">
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-surface-100 rounded-xl flex items-center justify-center">
@@ -244,7 +241,7 @@ export const HazardAssessment: React.FC = () => {
                     <div className="flex items-center gap-1 mt-2 text-[10px] text-surface-400">
                       <Users className="w-3 h-3" /> {jsa.assignee}
                     </div>
-                  </motion.div>
+                  </MotionSMCard>
                 ))}
               </div>
             </div>

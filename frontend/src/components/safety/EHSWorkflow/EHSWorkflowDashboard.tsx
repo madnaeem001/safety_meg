@@ -39,6 +39,7 @@ import {
   BBSObservation,
   ComplianceObligation
 } from '../../../data/mockEHSWorkflow';
+import { SMButton } from '../../ui';
 
 interface EHSWorkflowDashboardProps {
   onBack?: () => void;
@@ -494,9 +495,7 @@ const ReportingDashboard: React.FC<{ metrics: typeof mockMetrics }> = ({ metrics
         <button className="px-4 py-2 text-xs font-medium text-surface-600 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors">
           Export to PDF
         </button>
-        <button className="px-4 py-2 text-xs font-medium text-white bg-brand-600 rounded-lg hover:bg-brand-700 transition-colors">
-          Generate Full Report
-        </button>
+        <SMButton variant="primary" size="sm">Generate Full Report</SMButton>
       </div>
     </div>
   );

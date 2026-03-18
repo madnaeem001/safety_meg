@@ -44,7 +44,7 @@ export const SwipeIndicator: React.FC<SwipeIndicatorProps> = ({ show = true }) =
               >
                 <ChevronLeft className="w-5 h-5 text-brand-600" />
               </motion.div>
-              <span className="text-sm font-medium text-slate-700">{prevPage.label}</span>
+              <span className="text-sm font-medium text-text-secondary">{prevPage.label}</span>
             </div>
           </motion.div>
         )}
@@ -70,7 +70,7 @@ export const SwipeIndicator: React.FC<SwipeIndicatorProps> = ({ show = true }) =
                 boxShadow: '-4px 0 20px rgba(0,0,0,0.1)',
               }}
             >
-              <span className="text-sm font-medium text-slate-700">{nextPage.label}</span>
+              <span className="text-sm font-medium text-text-secondary">{nextPage.label}</span>
               <motion.div
                 animate={{ x: [0, 4, 0] }}
                 transition={{ duration: 0.6, repeat: Infinity }}
@@ -93,7 +93,7 @@ export const SwipeProgressBar: React.FC = () => {
   if (!isSwipePage) return null;
 
   return (
-    <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-lg shadow-soft border border-surface-200/50">
+      <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-4 py-2 rounded-full bg-surface-raised backdrop-blur-lg shadow-soft border border-surface-border">
       {SWIPE_ROUTES.map((route, index) => (
         <motion.div
           key={route.path}
@@ -108,7 +108,7 @@ export const SwipeProgressBar: React.FC = () => {
             className={`w-2 h-2 rounded-full transition-all duration-300 ${
               currentIndex === index
                 ? 'bg-brand-500 w-6'
-                : 'bg-surface-300'
+                : 'bg-text-muted/30'
             }`}
           />
         </motion.div>
@@ -139,7 +139,7 @@ export const PageLabel: React.FC = () => {
           {prevPage.label}
         </span>
       )}
-      <span className="text-sm font-semibold text-slate-700 px-3 py-1 rounded-full bg-white/80 backdrop-blur-sm shadow-sm">
+      <span className="text-sm font-semibold text-text-primary px-3 py-1 rounded-full bg-surface-raised backdrop-blur-sm shadow-sm">
         {currentPage?.label}
       </span>
       {nextPage && (

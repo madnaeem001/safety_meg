@@ -27,6 +27,7 @@ import {
   Share2
 } from 'lucide-react';
 import { aiService } from '../../services/aiService';
+import { SMButton } from '../ui';
 
 /* ================================================================
    AI SAFETY TRAINING GENERATOR
@@ -303,9 +304,7 @@ export const AITrainingGenerator: React.FC = () => {
                         Retake Training
                       </button>
                       {calculateScore() >= 80 && (
-                        <button className="px-6 py-2 bg-brand-600 text-white text-xs font-bold rounded-xl hover:bg-brand-500 transition-all shadow-lg shadow-brand-600/20">
-                          Download Certificate
-                        </button>
+                        <SMButton variant="primary" size="sm">Download Certificate</SMButton>
                       )}
                     </div>
                   </div>
@@ -348,9 +347,7 @@ export const AITrainingGenerator: React.FC = () => {
                   <button className="w-full py-2.5 bg-white text-brand-600 text-xs font-bold rounded-xl hover:bg-brand-50 transition-colors">
                     Assign to All Operators
                   </button>
-                  <button className="w-full py-2.5 bg-brand-500 text-white text-xs font-bold rounded-xl hover:bg-brand-400 transition-colors border border-brand-400">
-                    Select Specific Users
-                  </button>
+                  <SMButton variant="primary" className="w-full">Select Specific Users</SMButton>
                 </div>
               </div>
             </div>

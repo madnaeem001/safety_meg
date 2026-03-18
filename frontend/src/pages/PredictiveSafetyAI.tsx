@@ -47,6 +47,7 @@ import {
   ThumbsUp,
   ThumbsDown,
 } from 'lucide-react';
+import { SMButton } from '../components/ui';
 
 // Types
 interface SafetyPrediction {
@@ -615,9 +616,7 @@ export const PredictiveSafetyAI: React.FC = () => {
                     className="px-6 py-2 bg-surface-800 hover:bg-surface-700 text-white text-sm font-bold rounded-xl transition-colors">
                     Dismiss
                   </button>
-                  <button className="px-6 py-2 bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold rounded-xl transition-colors shadow-lg shadow-brand-600/20">
-                    Create Action Plan
-                  </button>
+                   <SMButton variant="primary" size="sm">Create Action Plan</SMButton>
                 </div>
               </div>
             </motion.div>

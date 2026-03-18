@@ -124,7 +124,7 @@ export const SafetyProcedures: React.FC = () => {
     <div className="min-h-screen bg-surface-50 pb-32">
 
       
-      <main className="max-w-3xl mx-auto">
+      <main className="max-w-7xl mx-auto">
         <div className="px-4 py-8 space-y-12">
           <CompanyHeader companyName={companyName} />
 

@@ -6,6 +6,7 @@ import {
   Activity, Download, Upload, Eye, Edit2, Plus, Search, Filter,
   BookOpen, Clipboard, TrendingUp, Award, RefreshCw
 } from 'lucide-react';
+import { SMButton } from '../../ui';
 
 // OSHA Form types
 const OSHA_FORMS = [
@@ -321,10 +322,7 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
           <Download className="w-5 h-5" />
           Export 300
         </button>
-        <button className="px-4 py-2.5 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 transition-colors flex items-center gap-2">
-          <Plus className="w-5 h-5" />
-          Add Entry
-        </button>
+        <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-5 h-5" />}>Add Entry</SMButton>
       </div>
 
       {/* OSHA 300 Log Table */}

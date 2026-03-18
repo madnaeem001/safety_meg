@@ -32,6 +32,8 @@ import {
   aiAssistantService,
 } from '../api/services/apiService';
 import type { AuditFinding, AuditRecord, CreateAuditFindingPayload, CreateAuditPayload, AISuggestionPayload, AISuggestionResult } from '../api/services/apiService';
+import { SMAlert, SMBadge, SMButton, SMCard, SMInput, SMSelect, SMStatCard } from '../components/ui';
+import PageContainer from '../layouts/PageContainer';
 
 type AuditTab = 'overview' | 'audits' | 'findings';
 type AuditType = CreateAuditPayload['auditType'];
@@ -41,24 +43,24 @@ const AUDIT_TYPES: AuditType[] = ['Safety', 'Environmental', 'Quality', 'Complia
 const FINDING_SEVERITIES: FindingSeverity[] = ['Critical', 'Major', 'Minor', 'Observation'];
 const AUDIT_STATUSES = ['All', 'Scheduled', 'In Progress', 'Completed', 'Cancelled', 'Overdue'] as const;
 
-const getStatusColor = (status: string) => {
+const getStatusBadgeVariant = (status: string): 'success' | 'teal' | 'warning' | 'danger' | 'neutral' => {
   switch (status) {
     case 'Completed':
     case 'Closed':
-      return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+      return 'success';
     case 'In Progress':
-      return 'bg-blue-50 text-blue-700 border-blue-200';
+      return 'teal';
     case 'Scheduled':
-      return 'bg-amber-50 text-amber-700 border-amber-200';
+      return 'warning';
     case 'Overdue':
     case 'Critical':
-      return 'bg-red-50 text-red-700 border-red-200';
+      return 'danger';
     case 'Major':
-      return 'bg-orange-50 text-orange-700 border-orange-200';
+      return 'warning';
     case 'Minor':
-      return 'bg-yellow-50 text-yellow-700 border-yellow-200';
+      return 'warning';
     default:
-      return 'bg-surface-50 text-surface-600 border-surface-200';
+      return 'neutral';
   }
 };
 
@@ -242,44 +244,32 @@ export const SafetyAudit: React.FC = () => {
       label: 'Total Audits',
       value: auditStats?.audits.total ?? 0,
       icon: ClipboardCheck,
-      tone: 'text-brand-900',
+      variant: 'default' as const,
     },
     {
       label: 'In Progress',
       value: auditStats?.audits.inProgress ?? 0,
       icon: Clock,
-      tone: 'text-blue-600',
+      variant: 'accent' as const,
     },
     {
       label: 'Open Findings',
       value: auditStats?.findings.open ?? 0,
       icon: ShieldAlert,
-      tone: 'text-red-600',
+      variant: 'danger' as const,
     },
     {
       label: 'Average Score',
       value: auditStats?.audits.avgScore ?? 0,
       suffix: '%',
       icon: Target,
-      tone: 'text-emerald-600',
+      variant: 'success' as const,
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-surface-50 to-surface-100 pb-32">
-
-
-      <main className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8 space-y-8">
-        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">
-          <div className="flex items-center gap-2 text-brand-500 font-bold text-[10px] uppercase tracking-[0.3em]">
-            <ClipboardCheck className="w-4 h-4" />
-            Audit Operations
-          </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-brand-900 tracking-tight">Safety Audit</h1>
-          <p className="text-surface-500 max-w-3xl">
-            Backend-backed audit planning, open findings tracking, and detail drill-down for operational compliance workflows.
-          </p>
-        </motion.div>
+    <PageContainer title="Safety Audit" subtitle="Backend-backed audit planning, open findings tracking, and detail drill-down for operational compliance workflows." maxWidth="xl">
+      <div className="space-y-8">
 
         <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
           {[
@@ -287,30 +277,31 @@ export const SafetyAudit: React.FC = () => {
             { id: 'audits', label: 'Audits', icon: FileText },
             { id: 'findings', label: 'Open Findings', icon: ShieldAlert },
           ].map((tab) => (
-            <button
+            <SMButton
               key={tab.id}
+              variant={activeTab === tab.id ? 'primary' : 'secondary'}
+              size="sm"
               onClick={() => setActiveTab(tab.id as AuditTab)}
-              className={`px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
-                activeTab === tab.id
-                  ? 'bg-brand-900 text-white shadow-lg'
-                  : 'bg-white text-brand-700 border border-surface-200 hover:bg-surface-50'
-              }`}
+              leftIcon={<tab.icon className="w-4 h-4" />}
             >
-              <tab.icon className="w-4 h-4" />
+              {tab.label}
+            </SMButton>
+          ))}
+        </div>
               {tab.label}
             </button>
           ))}
         </div>
 
         {createAuditMessage && (
-          <div className={`rounded-2xl px-4 py-3 text-sm border ${createAudit.error ? 'bg-red-50 text-red-700 border-red-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}`}>
+          <SMAlert variant={createAudit.error ? 'danger' : 'success'} onDismiss={() => setCreateAuditMessage(null)}>
             {createAuditMessage}
-          </div>
+          </SMAlert>
         )}
         {createFindingMessage && (
-          <div className={`rounded-2xl px-4 py-3 text-sm border ${createAuditFinding.error ? 'bg-red-50 text-red-700 border-red-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}`}>
+          <SMAlert variant={createAuditFinding.error ? 'danger' : 'success'} onDismiss={() => setCreateFindingMessage(null)}>
             {createFindingMessage}
-          </div>
+          </SMAlert>
         )}
 
         <AnimatePresence mode="wait">
@@ -318,31 +309,25 @@ export const SafetyAudit: React.FC = () => {
             <motion.div key="overview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-6">
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {auditCards.map((card) => (
-                  <div key={card.label} className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
-                    <div className="flex items-center gap-2 mb-2">
-                      <card.icon className="w-5 h-5 text-brand-500" />
-                      <span className="text-xs font-bold text-surface-500 uppercase tracking-wider">{card.label}</span>
-                    </div>
-                    <div className={`text-2xl font-bold ${card.tone}`}>
-                      {statsLoading ? '...' : `${card.value}${card.suffix || ''}`}
-                    </div>
-                  </div>
+                  <SMStatCard
+                    key={card.label}
+                    label={card.label}
+                    value={statsLoading ? '...' : `${card.value}${card.suffix || ''}`}
+                    icon={<card.icon className="w-5 h-5" />}
+                    variant={card.variant}
+                    loading={statsLoading}
+                  />
                 ))}
               </div>
 
               <div className="grid grid-cols-1 xl:grid-cols-[1.1fr_0.9fr] gap-6">
-                <div className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100 space-y-4">
+                <SMCard className="p-6 space-y-4">
                   <div className="flex items-center justify-between gap-3">
                     <div>
-                      <h3 className="font-bold text-brand-900">Recent Audits</h3>
-                      <p className="text-sm text-surface-500">Live data from audit scheduling backend.</p>
+                      <h3 className="font-bold text-text-primary">Recent Audits</h3>
+                      <p className="text-sm text-text-muted">Live data from audit scheduling backend.</p>
                     </div>
-                    <button
-                      onClick={() => setActiveTab('audits')}
-                      className="px-4 py-2 rounded-xl bg-brand-900 text-white text-sm font-bold"
-                    >
-                      View All
-                    </button>
+                    <SMButton variant="primary" size="sm" onClick={() => setActiveTab('audits')}>View All</SMButton>
                   </div>
                   <div className="space-y-3">
                     {audits.slice(0, 5).map((audit) => (
@@ -357,36 +342,36 @@ export const SafetyAudit: React.FC = () => {
                         <div className="flex items-start justify-between gap-3">
                           <div>
                             <div className="flex flex-wrap items-center gap-2 mb-1">
-                              <span className="text-xs font-bold text-brand-600">{audit.auditNumber || `Audit #${audit.id}`}</span>
-                              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${getStatusColor(audit.status)}`}>
+                              <span className="text-xs font-bold text-accent-600">{audit.auditNumber || `Audit #${audit.id}`}</span>
+                              <SMBadge variant={getStatusBadgeVariant(audit.status)} size="sm">
                                 {audit.status}
-                              </span>
+                              </SMBadge>
                             </div>
-                            <h4 className="font-semibold text-brand-900">{audit.title}</h4>
-                            <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-surface-500">
+                            <h4 className="font-semibold text-text-primary">{audit.title}</h4>
+                            <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-text-muted">
                               <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{formatDate(audit.scheduledDate)}</span>
                               <span className="flex items-center gap-1"><User className="w-3 h-3" />{audit.leadAuditor}</span>
                               <span className="flex items-center gap-1"><Building2 className="w-3 h-3" />{audit.location}</span>
                             </div>
                           </div>
                           <div className="text-right">
-                            <div className="text-sm font-semibold text-brand-900">{formatScore(audit.overallScore)}</div>
-                            <div className="text-[10px] text-surface-400 uppercase">{audit.auditType}</div>
+                            <div className="text-sm font-semibold text-text-primary">{formatScore(audit.overallScore)}</div>
+                            <div className="text-xs text-text-muted uppercase">{audit.auditType}</div>
                           </div>
                         </div>
                       </button>
                     ))}
                     {!auditsLoading && audits.length === 0 && (
-                      <div className="text-sm text-surface-500">No audits available yet.</div>
+                      <div className="text-sm text-text-muted">No audits available yet.</div>
                     )}
                   </div>
-                </div>
+                </SMCard>
 
-                <div className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100 space-y-4">
+                <SMCard className="p-6 space-y-4">
                   <div className="flex items-center justify-between gap-3">
                     <div>
-                      <h3 className="font-bold text-brand-900">Schedule Audit</h3>
-                      <p className="text-sm text-surface-500">Create a live audit record in backend.</p>
+                      <h3 className="font-bold text-text-primary">Schedule Audit</h3>
+                      <p className="text-sm text-text-muted">Create a live audit record in backend.</p>
                     </div>
                     <button
                       onClick={() => setShowCreateAuditForm((current) => !current)}
@@ -399,99 +384,81 @@ export const SafetyAudit: React.FC = () => {
 
                   {showCreateAuditForm && (
                     <form onSubmit={handleCreateAudit} className="space-y-3">
-                      <input
+                      <SMInput
                         value={auditForm.auditNumber}
                         onChange={(event) => setAuditForm((current) => ({ ...current, auditNumber: event.target.value }))}
-                        className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm outline-none focus:border-brand-400"
                         placeholder="Audit number"
                         required
                       />
-                      <input
+                      <SMInput
                         value={auditForm.title}
                         onChange={(event) => setAuditForm((current) => ({ ...current, title: event.target.value }))}
-                        className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm outline-none focus:border-brand-400"
                         placeholder="Audit title"
                         required
                       />
                       <div className="grid grid-cols-2 gap-3">
-                        <select
+                        <SMSelect
                           value={auditForm.auditType}
                           onChange={(event) => setAuditForm((current) => ({ ...current, auditType: event.target.value as AuditType }))}
-                          className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm outline-none focus:border-brand-400"
-                        >
-                          {AUDIT_TYPES.map((type) => (
-                            <option key={type} value={type}>{type}</option>
-                          ))}
-                        </select>
-                        <input
+                          options={AUDIT_TYPES.map((type) => ({ value: type, label: type }))}
+                        />
+                        <SMInput
                           type="date"
                           value={auditForm.scheduledDate}
                           onChange={(event) => setAuditForm((current) => ({ ...current, scheduledDate: event.target.value }))}
-                          className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm outline-none focus:border-brand-400"
                           required
                         />
                       </div>
-                      <input
+                      <SMInput
                         value={auditForm.location}
                         onChange={(event) => setAuditForm((current) => ({ ...current, location: event.target.value }))}
-                        className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm outline-none focus:border-brand-400"
                         placeholder="Location"
                         required
                       />
                       <div className="grid grid-cols-2 gap-3">
-                        <input
+                        <SMInput
                           value={auditForm.department || ''}
                           onChange={(event) => setAuditForm((current) => ({ ...current, department: event.target.value }))}
-                          className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm outline-none focus:border-brand-400"
                           placeholder="Department"
                         />
-                        <input
+                        <SMInput
                           value={auditForm.industry || ''}
                           onChange={(event) => setAuditForm((current) => ({ ...current, industry: event.target.value }))}
-                          className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm outline-none focus:border-brand-400"
                           placeholder="Industry"
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-3">
-                        <input
+                        <SMInput
                           value={auditForm.leadAuditor}
                           onChange={(event) => setAuditForm((current) => ({ ...current, leadAuditor: event.target.value }))}
-                          className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm outline-none focus:border-brand-400"
                           placeholder="Lead auditor"
                           required
                         />
-                        <input
+                        <SMInput
                           value={auditForm.auditee || ''}
                           onChange={(event) => setAuditForm((current) => ({ ...current, auditee: event.target.value }))}
-                          className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm outline-none focus:border-brand-400"
                           placeholder="Auditee"
                         />
                       </div>
-                      <input
+                      <SMInput
                         type="date"
                         value={auditForm.dueDate || ''}
                         onChange={(event) => setAuditForm((current) => ({ ...current, dueDate: event.target.value }))}
-                        className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm outline-none focus:border-brand-400"
-                        placeholder="Due date"
+                        label="Due date"
                       />
-                      <button
-                        type="submit"
-                        disabled={createAudit.loading}
-                        className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-900 text-white text-sm font-bold disabled:opacity-60"
-                      >
-                        {createAudit.loading ? <Clock className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                      <SMButton variant="primary" type="submit" disabled={createAudit.loading} className="w-full" leftIcon={createAudit.loading ? <Clock className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} loading={createAudit.loading}>
                         {createAudit.loading ? 'Creating...' : 'Create Audit'}
-                      </button>
+                      </SMButton>
                     </form>
                   )}
-                </div>
+                </SMCard>
               </div>
             </motion.div>
           )}
 
           {activeTab === 'audits' && (
             <motion.div key="audits" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="grid grid-cols-1 xl:grid-cols-[1fr_1fr] gap-6">
-              <div className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100 space-y-4">
+              <SMCard className="p-6 space-y-4">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                   <div>
                     <h3 className="font-bold text-brand-900">Audit Register</h3>
@@ -515,120 +482,112 @@ export const SafetyAudit: React.FC = () => {
                     <button
                       key={audit.id}
                       onClick={() => setSelectedAuditId(audit.id)}
-                      className={`w-full text-left p-4 rounded-2xl border transition-colors ${selectedAuditId === audit.id ? 'border-brand-300 bg-brand-50' : 'border-surface-100 bg-surface-50 hover:bg-surface-100'}`}
+                      className={`w-full text-left p-4 rounded-2xl border transition-colors ${selectedAuditId === audit.id ? 'border-accent-300 bg-accent-50' : 'border-surface-100 bg-surface-50 hover:bg-surface-100'}`}
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <div className="flex flex-wrap items-center gap-2 mb-1">
-                            <span className="text-xs font-bold text-brand-600">{audit.auditNumber || `Audit #${audit.id}`}</span>
-                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${getStatusColor(audit.status)}`}>
+                            <span className="text-xs font-bold text-accent-600">{audit.auditNumber || `Audit #${audit.id}`}</span>
+                            <SMBadge variant={getStatusBadgeVariant(audit.status)} size="sm">
                               {audit.status}
-                            </span>
+                            </SMBadge>
                           </div>
-                          <h4 className="font-semibold text-brand-900">{audit.title}</h4>
-                          <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-surface-500">
+                          <h4 className="font-semibold text-text-primary">{audit.title}</h4>
+                          <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-text-muted">
                             <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{formatDate(audit.scheduledDate)}</span>
                             <span className="flex items-center gap-1"><User className="w-3 h-3" />{audit.leadAuditor}</span>
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="text-sm font-semibold text-brand-900">{formatScore(audit.overallScore)}</div>
-                          <div className="text-[10px] text-surface-400 uppercase">{audit.auditType}</div>
+                          <div className="text-sm font-semibold text-text-primary">{formatScore(audit.overallScore)}</div>
+                          <div className="text-xs text-text-muted uppercase">{audit.auditType}</div>
                         </div>
                       </div>
                     </button>
                   ))}
-                  {!auditsLoading && audits.length === 0 && <div className="text-sm text-surface-500">No audits found.</div>}
+                  {!auditsLoading && audits.length === 0 && <div className="text-sm text-text-muted">No audits found.</div>}
                 </div>
-              </div>
+              </SMCard>
 
-              <div className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100 space-y-4">
+              <SMCard className="p-6 space-y-4">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <h3 className="font-bold text-brand-900">Audit Detail</h3>
-                    <p className="text-sm text-surface-500">Selected audit detail and finding creation.</p>
+                    <h3 className="font-bold text-text-primary">Audit Detail</h3>
+                    <p className="text-sm text-text-muted">Selected audit detail and finding creation.</p>
                   </div>
-                  <button
+                  <SMButton
+                    variant="primary"
+                    size="sm"
                     onClick={() => setShowFindingForm((current) => !current)}
                     disabled={!selectedAuditId}
-                    className="px-4 py-2 rounded-xl bg-brand-900 text-white text-sm font-bold disabled:opacity-50"
                   >
                     Add Finding
-                  </button>
+                  </SMButton>
                 </div>
 
                 {showFindingForm && (
-                  <form onSubmit={handleCreateFinding} className="space-y-3 p-4 rounded-2xl border border-surface-100 bg-surface-50">
-                    <input
+                  <form onSubmit={handleCreateFinding} className="space-y-3 rounded-2xl border border-surface-100 bg-surface-50 p-4">
+                    <SMInput
                       value={findingForm.category}
                       onChange={(event) => setFindingForm((current) => ({ ...current, category: event.target.value }))}
-                      className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400"
                       placeholder="Category"
                       required
                     />
-                    <textarea
+                    <SMInput
+                      as="textarea"
                       value={findingForm.finding}
                       onChange={(event) => setFindingForm((current) => ({ ...current, finding: event.target.value }))}
                       rows={3}
-                      className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400 resize-none"
                       placeholder="Finding detail"
                       required
                     />
                     <div className="grid grid-cols-2 gap-3">
-                      <select
+                      <SMSelect
                         value={findingForm.severity}
                         onChange={(event) => setFindingForm((current) => ({ ...current, severity: event.target.value as FindingSeverity }))}
-                        className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400"
-                      >
-                        {FINDING_SEVERITIES.map((severity) => (
-                          <option key={severity} value={severity}>{severity}</option>
-                        ))}
-                      </select>
-                      <input
+                        options={FINDING_SEVERITIES.map((severity) => ({ value: severity, label: severity }))}
+                      />
+                      <SMInput
                         type="date"
                         value={findingForm.dueDate || ''}
                         onChange={(event) => setFindingForm((current) => ({ ...current, dueDate: event.target.value }))}
-                        className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400"
                       />
                     </div>
-                    <input
+                    <SMInput
                       value={findingForm.responsiblePerson || ''}
                       onChange={(event) => setFindingForm((current) => ({ ...current, responsiblePerson: event.target.value }))}
-                      className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400"
                       placeholder="Responsible person"
                     />
-                    <input
+                    <SMInput
                       value={findingForm.regulatoryRef || ''}
                       onChange={(event) => setFindingForm((current) => ({ ...current, regulatoryRef: event.target.value }))}
-                      className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400"
                       placeholder="Regulatory reference"
                     />
-                    <textarea
+                    <SMInput
+                      as="textarea"
                       value={findingForm.recommendation || ''}
                       onChange={(event) => setFindingForm((current) => ({ ...current, recommendation: event.target.value }))}
                       rows={2}
-                      className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400 resize-none"
                       placeholder="Recommendation"
                     />
-                    {/* AI Suggest Button */}
                     <button
                       type="button"
                       onClick={handleAISuggestRecommendation}
                       disabled={aidSuggestLoading}
-                      className="flex items-center gap-2 px-3 py-2 rounded-xl border border-blue-200 bg-blue-50 text-blue-600 text-xs font-semibold hover:bg-blue-100 transition-colors disabled:opacity-50"
+                      className="flex items-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-600 transition-colors hover:bg-blue-100 disabled:opacity-50"
                     >
                       {aidSuggestLoading ? (
-                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
                       ) : (
-                        <Brain className="w-3.5 h-3.5" />
+                        <Brain className="h-3.5 w-3.5" />
                       )}
                       AI Suggest
                     </button>
                     {aidSuggestions.length > 0 && (
-                      <div className="p-3 rounded-xl bg-blue-50 border border-blue-100 space-y-2">
-                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-blue-500 uppercase tracking-wider">
-                          <Sparkles className="w-3 h-3" />
-                          AI Suggestions — click to apply
+                      <div className="space-y-2 rounded-xl border border-blue-100 bg-blue-50 p-3">
+                        <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-blue-500">
+                          <Sparkles className="h-3 w-3" />
+                          AI Suggestions - click to apply
                         </div>
                         <div className="space-y-1.5">
                           {aidSuggestions.map((suggestion, index) => (
@@ -639,7 +598,7 @@ export const SafetyAudit: React.FC = () => {
                                 setFindingForm((current) => ({ ...current, recommendation: suggestion }));
                                 setAidSuggestions([]);
                               }}
-                              className="w-full text-left px-3 py-2 rounded-lg bg-white border border-blue-100 text-xs text-slate-700 hover:bg-blue-50 hover:border-blue-300 transition-colors"
+                              className="w-full rounded-lg border border-blue-100 bg-white px-3 py-2 text-left text-xs text-slate-700 transition-colors hover:border-blue-300 hover:bg-blue-50"
                             >
                               {suggestion}
                             </button>
@@ -647,96 +606,95 @@ export const SafetyAudit: React.FC = () => {
                         </div>
                       </div>
                     )}
-                    <button
+                    <SMButton
+                      variant="primary"
                       type="submit"
                       disabled={createAuditFinding.loading || !selectedAuditId}
-                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-900 text-white text-sm font-bold disabled:opacity-60"
+                      className="w-full"
+                      loading={createAuditFinding.loading}
+                      leftIcon={createAuditFinding.loading ? <Clock className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
                     >
-                      {createAuditFinding.loading ? <Clock className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
                       {createAuditFinding.loading ? 'Saving...' : 'Save Finding'}
-                    </button>
+                    </SMButton>
                   </form>
                 )}
 
-                {auditDetailLoading && <div className="text-sm text-surface-500">Loading audit details...</div>}
-                {!selectedAuditId && <div className="text-sm text-surface-500">Select an audit from the left to inspect live details.</div>}
+                {auditDetailLoading && <div className="text-sm text-text-muted">Loading audit details...</div>}
+                {!selectedAuditId && <div className="text-sm text-text-muted">Select an audit from the left to inspect live details.</div>}
                 {selectedAudit && (
                   <div className="space-y-4">
-                    <div className="p-4 rounded-2xl bg-surface-50 border border-surface-100">
-                      <div className="flex flex-wrap items-center gap-2 mb-2">
-                        <span className="text-xs font-bold text-brand-600">{selectedAudit.auditNumber || `Audit #${selectedAudit.id}`}</span>
-                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${getStatusColor(selectedAudit.status)}`}>
+                    <div className="rounded-2xl border border-surface-100 bg-surface-50 p-4">
+                      <div className="mb-2 flex flex-wrap items-center gap-2">
+                        <span className="text-xs font-bold text-accent-600">{selectedAudit.auditNumber || `Audit #${selectedAudit.id}`}</span>
+                        <SMBadge variant={getStatusBadgeVariant(selectedAudit.status)} size="sm">
                           {selectedAudit.status}
-                        </span>
+                        </SMBadge>
                       </div>
-                      <h4 className="text-xl font-bold text-brand-900">{selectedAudit.title}</h4>
-                      <div className="grid grid-cols-2 gap-3 mt-4 text-sm">
-                        <div className="p-3 rounded-xl bg-white border border-surface-100">
-                          <div className="text-[10px] font-bold text-surface-400 uppercase tracking-wider">Lead Auditor</div>
-                          <div className="font-semibold text-brand-900 mt-1">{selectedAudit.leadAuditor}</div>
+                      <h4 className="text-xl font-bold text-text-primary">{selectedAudit.title}</h4>
+                      <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+                        <div className="rounded-xl border border-surface-100 bg-white p-3">
+                          <div className="text-xs font-semibold uppercase tracking-wider text-text-muted">Lead Auditor</div>
+                          <div className="mt-1 font-semibold text-text-primary">{selectedAudit.leadAuditor}</div>
                         </div>
-                        <div className="p-3 rounded-xl bg-white border border-surface-100">
-                          <div className="text-[10px] font-bold text-surface-400 uppercase tracking-wider">Location</div>
-                          <div className="font-semibold text-brand-900 mt-1">{selectedAudit.location}</div>
+                        <div className="rounded-xl border border-surface-100 bg-white p-3">
+                          <div className="text-xs font-semibold uppercase tracking-wider text-text-muted">Location</div>
+                          <div className="mt-1 font-semibold text-text-primary">{selectedAudit.location}</div>
                         </div>
-                        <div className="p-3 rounded-xl bg-white border border-surface-100">
-                          <div className="text-[10px] font-bold text-surface-400 uppercase tracking-wider">Scheduled</div>
-                          <div className="font-semibold text-brand-900 mt-1">{formatDate(selectedAudit.scheduledDate)}</div>
+                        <div className="rounded-xl border border-surface-100 bg-white p-3">
+                          <div className="text-xs font-semibold uppercase tracking-wider text-text-muted">Scheduled</div>
+                          <div className="mt-1 font-semibold text-text-primary">{formatDate(selectedAudit.scheduledDate)}</div>
                         </div>
-                        <div className="p-3 rounded-xl bg-white border border-surface-100">
-                          <div className="text-[10px] font-bold text-surface-400 uppercase tracking-wider">Score</div>
-                          <div className="font-semibold text-brand-900 mt-1">{formatScore(selectedAudit.overallScore)}</div>
+                        <div className="rounded-xl border border-surface-100 bg-white p-3">
+                          <div className="text-xs font-semibold uppercase tracking-wider text-text-muted">Score</div>
+                          <div className="mt-1 font-semibold text-text-primary">{formatScore(selectedAudit.overallScore)}</div>
                         </div>
                       </div>
-                      {selectedAudit.summary && (
-                        <div className="mt-4 text-sm text-surface-600">{selectedAudit.summary}</div>
-                      )}
+                      {selectedAudit.summary && <div className="mt-4 text-sm text-text-secondary">{selectedAudit.summary}</div>}
                     </div>
 
                     <div>
-                      <h4 className="font-bold text-brand-900 mb-3">Audit Findings</h4>
+                      <h4 className="mb-3 font-bold text-text-primary">Audit Findings</h4>
                       <div className="space-y-3">
                         {(selectedAudit.findings || []).map((finding) => (
-                          <div key={finding.id} className="p-4 rounded-2xl border border-surface-100 bg-white">
+                          <div key={finding.id} className="rounded-2xl border border-surface-100 bg-white p-4">
                             <div className="flex items-start justify-between gap-3">
                               <div>
-                                <div className="flex items-center gap-2 mb-1">
-                                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${getStatusColor(finding.severity)}`}>
-                                    {finding.severity}
-                                  </span>
-                                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${getStatusColor(finding.status)}`}>
-                                    {finding.status}
-                                  </span>
+                                <div className="mb-1 flex items-center gap-2">
+                                  <SMBadge variant={getStatusBadgeVariant(finding.severity)} size="sm">{finding.severity}</SMBadge>
+                                  <SMBadge variant={getStatusBadgeVariant(finding.status)} size="sm">{finding.status}</SMBadge>
                                 </div>
-                                <div className="font-semibold text-brand-900">{finding.category}</div>
-                                <p className="text-sm text-surface-600 mt-1">{finding.finding}</p>
-                                <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-surface-500">
-                                  {finding.responsiblePerson && <span className="flex items-center gap-1"><User className="w-3 h-3" />{finding.responsiblePerson}</span>}
-                                  {finding.dueDate && <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{formatDate(finding.dueDate)}</span>}
+                                <div className="font-semibold text-text-primary">{finding.category}</div>
+                                <p className="mt-1 text-sm text-text-secondary">{finding.finding}</p>
+                                <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-text-muted">
+                                  {finding.responsiblePerson && (
+                                    <span className="flex items-center gap-1"><User className="h-3 w-3" />{finding.responsiblePerson}</span>
+                                  )}
+                                  {finding.dueDate && (
+                                    <span className="flex items-center gap-1"><Calendar className="h-3 w-3" />{formatDate(finding.dueDate)}</span>
+                                  )}
                                 </div>
-                                {/* AI Root Cause & Action Suggestion */}
                                 <button
                                   type="button"
                                   onClick={() => toggleFindingAI(finding)}
-                                  className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-500 hover:text-blue-700 transition-colors"
+                                  className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-500 transition-colors hover:text-blue-700"
                                 >
-                                  <Sparkles className="w-3.5 h-3.5" />
+                                  <Sparkles className="h-3.5 w-3.5" />
                                   AI Root Cause &amp; Action Suggestion
-                                  <ChevronRight className={`w-3 h-3 transition-transform ${findingAI[String(finding.id)]?.open ? 'rotate-90' : ''}`} />
+                                  <ChevronRight className={`h-3 w-3 transition-transform ${findingAI[String(finding.id)]?.open ? 'rotate-90' : ''}`} />
                                 </button>
                                 {findingAI[String(finding.id)]?.open && (
-                                  <div className="mt-2 p-3 rounded-xl bg-blue-50 border border-blue-100 space-y-2">
+                                  <div className="mt-2 space-y-2 rounded-xl border border-blue-100 bg-blue-50 p-3">
                                     {findingAI[String(finding.id)]?.loading ? (
                                       <div className="flex items-center gap-2 text-xs text-blue-500">
-                                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
                                         Analysing with AI...
                                       </div>
                                     ) : (
                                       <ul className="space-y-1.5">
-                                        {(findingAI[String(finding.id)]?.suggestions ?? []).map((s, i) => (
-                                          <li key={i} className="flex items-start gap-2 text-xs text-slate-700">
-                                            <span className="mt-0.5 w-4 h-4 rounded-full bg-blue-200 text-blue-700 flex items-center justify-center font-bold flex-shrink-0">{i + 1}</span>
-                                            {s}
+                                        {(findingAI[String(finding.id)]?.suggestions ?? []).map((suggestion, index) => (
+                                          <li key={index} className="flex items-start gap-2 text-xs text-slate-700">
+                                            <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-blue-200 font-bold text-blue-700">{index + 1}</span>
+                                            {suggestion}
                                           </li>
                                         ))}
                                       </ul>
@@ -744,16 +702,20 @@ export const SafetyAudit: React.FC = () => {
                                   </div>
                                 )}
                               </div>
-                              {finding.regulatoryRef && <span className="text-[10px] text-surface-400 uppercase">{finding.regulatoryRef}</span>}
+                              {finding.regulatoryRef && (
+                                <span className="text-xs uppercase text-text-muted">{finding.regulatoryRef}</span>
+                              )}
                             </div>
                           </div>
                         ))}
-                        {selectedAudit.findings?.length === 0 && <div className="text-sm text-surface-500">No findings recorded for this audit yet.</div>}
+                        {selectedAudit.findings?.length === 0 && (
+                          <div className="text-sm text-text-muted">No findings recorded for this audit yet.</div>
+                        )}
                       </div>
                     </div>
                   </div>
                 )}
-              </div>
+              </SMCard>
             </motion.div>
           )}
 
@@ -761,8 +723,8 @@ export const SafetyAudit: React.FC = () => {
             <motion.div key="findings" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                 <div>
-                  <h3 className="font-bold text-brand-900">Open Findings</h3>
-                  <p className="text-sm text-surface-500">Cross-audit findings directly from backend.</p>
+                  <h3 className="font-bold text-text-primary">Open Findings</h3>
+                  <p className="text-sm text-text-muted">Cross-audit findings directly from backend.</p>
                 </div>
                 <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-50 border border-surface-200 text-sm text-surface-500">
                   <AlertTriangle className="w-4 h-4" />
@@ -781,34 +743,31 @@ export const SafetyAudit: React.FC = () => {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {openFindings.map((finding: AuditFinding) => (
-                  <div key={`${finding.auditId || 'audit'}-${finding.id}`} className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100">
+                  <SMCard key={`${finding.auditId || 'audit'}-${finding.id}`} className="p-5">
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${getStatusColor(finding.severity)}`}>
-                            {finding.severity}
-                          </span>
-                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${getStatusColor(finding.status)}`}>
-                            {finding.status}
-                          </span>
+                          <SMBadge variant={getStatusBadgeVariant(finding.severity)} size="sm">{finding.severity}</SMBadge>
+                          <SMBadge variant={getStatusBadgeVariant(finding.status)} size="sm">{finding.status}</SMBadge>
                         </div>
-                        <h4 className="font-bold text-brand-900">{finding.category}</h4>
-                        <p className="text-xs text-surface-400 mt-1">{finding.auditNumber || `Audit #${finding.auditId}`}</p>
+                        <h4 className="font-bold text-text-primary">{finding.category}</h4>
+                        <p className="text-xs text-text-muted mt-1">{finding.auditNumber || `Audit #${finding.auditId}`}</p>
                       </div>
                       {finding.auditId && (
-                        <button
+                        <SMButton
+                          size="sm"
+                          variant="secondary"
                           onClick={() => {
                             setSelectedAuditId(finding.auditId || null);
                             setActiveTab('audits');
                           }}
-                          className="px-3 py-1.5 rounded-xl bg-surface-100 text-surface-600 text-xs font-bold"
                         >
                           Open Audit
-                        </button>
+                        </SMButton>
                       )}
                     </div>
-                    <p className="text-sm text-surface-600">{finding.finding}</p>
-                    <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-surface-500">
+                    <p className="text-sm text-text-secondary">{finding.finding}</p>
+                    <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-text-muted">
                       {finding.responsiblePerson && <span className="flex items-center gap-1"><User className="w-3 h-3" />{finding.responsiblePerson}</span>}
                       {finding.dueDate && <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{formatDate(finding.dueDate)}</span>}
                       {finding.regulatoryRef && <span className="flex items-center gap-1"><Building2 className="w-3 h-3" />{finding.regulatoryRef}</span>}
@@ -842,21 +801,21 @@ export const SafetyAudit: React.FC = () => {
                         )}
                       </div>
                     )}
-                  </div>
+                  </SMCard>
                 ))}
                 {!findingsLoading && openFindings.length === 0 && (
-                  <div className="text-sm text-surface-500">No open findings found for the selected severity filter.</div>
+                  <div className="text-sm text-text-muted">No open findings found for the selected severity filter.</div>
                 )}
               </div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        <div className="text-xs text-surface-400">
+        <div className="text-xs text-text-muted">
           Current live scope: audit stats, audit list, audit details, open findings, audit creation, and finding creation are backend-driven.
         </div>
-      </main>
-    </div>
+      </div>
+    </PageContainer>
   );
 };
 
