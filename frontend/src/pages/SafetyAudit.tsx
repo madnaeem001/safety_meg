@@ -288,10 +288,6 @@ export const SafetyAudit: React.FC = () => {
             </SMButton>
           ))}
         </div>
-              {tab.label}
-            </button>
-          ))}
-        </div>
 
         {createAuditMessage && (
           <SMAlert variant={createAudit.error ? 'danger' : 'success'} onDismiss={() => setCreateAuditMessage(null)}>

@@ -1,10 +1,7 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
-  ArrowLeft,
   TrendingUp,
   TrendingDown,
-  Activity,
   PieChart as PieChartIcon,
   BarChart3,
   Award,
@@ -454,7 +451,7 @@ const DepartmentCard = ({
 };
 
 export const Analytics: React.FC = () => {
-  const navigate = useNavigate();
+
   const [expandedDept, setExpandedDept] = React.useState<string | null>(null);
   const [showFilters, setShowFilters] = React.useState(false);
   const [selectedDepts, setSelectedDepts] = React.useState<string[]>([]);
@@ -752,18 +749,8 @@ export const Analytics: React.FC = () => {
   const hasAnyAnalyticsData = kpiCards.length > 0 || incidentTrendData.length > 0 || baseDepartments.length > 0 || severityBreakdown.length > 0;
 
   return (
-    <div className="min-h-screen bg-surface-50 pb-24">
-      <div className="safe-top sticky top-[72px] z-50 flex h-16 items-center gap-3 border-b border-surface-200 bg-white/80 px-4 shadow-sm backdrop-blur-md">
-        <button onClick={() => navigate(-1)} className="-ml-2 rounded-full p-2 transition-colors hover:bg-surface-100">
-          <ArrowLeft className="h-6 w-6 text-text-secondary" />
-        </button>
-        <h1 className="flex items-center gap-2 text-xl font-bold tracking-tight text-text-primary">
-          <Activity className="h-6 w-6 text-accent" />
-          Analytics & KPIs
-        </h1>
-      </div>
-
-      <main className="mx-auto max-w-7xl space-y-6 px-4 py-6">
+    <PageContainer title="Analytics & KPIs" maxWidth="xl">
+      <div className="space-y-6 pb-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -1339,9 +1326,9 @@ export const Analytics: React.FC = () => {
               </div>
             )}
 
-            <button className="mt-6 w-full rounded-xl bg-white py-3 text-sm font-bold text-text-primary transition-all hover:bg-brand-50">
+            <SMButton variant="secondary" className="mt-6 w-full" onClick={() => {}}>
               Refresh AI Summary
-            </button>
+            </SMButton>
           </div>
           <Sparkles className="absolute bottom-[-20px] right-[-20px] h-48 w-48 rotate-12 text-white/5" />
         </motion.div>
