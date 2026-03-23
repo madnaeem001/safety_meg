@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { SMButton } from '../components/ui';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useCreateIncident } from '../api/hooks/useAPIHooks';
@@ -407,16 +408,16 @@ export const FullIncidentReport: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-surface-50 flex items-center justify-center">
+      <div className="min-h-screen bg-surface-base flex items-center justify-center">
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="bg-white p-8 rounded-3xl text-center space-y-4 max-w-sm mx-4"
+          className="bg-surface-raised p-8 rounded-3xl text-center space-y-4 max-w-sm mx-4"
         >
-          <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto">
-            <CheckCircle2 className="w-10 h-10 text-emerald-600" />
+          <div className="w-20 h-20 bg-success/10 rounded-full flex items-center justify-center mx-auto">
+            <CheckCircle2 className="w-10 h-10 text-success" />
           </div>
-          <h2 className="text-2xl font-bold text-brand-900">Full Report Submitted</h2>
+          <h2 className="text-2xl font-bold text-text-primary">Full Report Submitted</h2>
           <p className="text-surface-500 text-sm">
             Your comprehensive incident report has been logged. Safety officers and management have been notified.
           </p>
@@ -433,7 +434,7 @@ export const FullIncidentReport: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-surface-50 to-surface-100 pb-32">
+    <div className="min-h-screen bg-surface-base pb-32">
       {/* Print styles */}
       <style>{`
         @media print {
@@ -450,39 +451,25 @@ export const FullIncidentReport: React.FC = () => {
 
       
       {/* Header */}
-      <div className="no-print bg-surface-100/80 backdrop-blur-md shadow-sm sticky top-20 z-40 px-4 h-16 flex items-center justify-between border-b border-surface-200 max-w-7xl mx-auto">
-        <div className="flex items-center gap-3">
-          <button onClick={() => navigate(-1)} className="p-2 -ml-2 hover:bg-surface-200 rounded-full">
-            <ArrowLeft className="w-6 h-6 text-surface-800" />
-          </button>
-          <h1 className="text-xl font-bold text-surface-900 flex items-center gap-2">
-            <FileText className="w-6 h-6 text-brand-400" />
-            Full Incident Report
-          </h1>
+      <header className="no-print sticky top-[var(--nav-height)] z-40 border-b border-surface-border bg-surface-raised/80 shadow-sm backdrop-blur-md">
+        <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-3">
+            <SMButton variant="ghost" size="sm" leftIcon={<ArrowLeft className="w-5 h-5" />} onClick={() => navigate(-1)} aria-label="Back" />
+            <h1 className="flex items-center gap-2 text-xl font-bold text-text-primary">
+              <FileText className="w-6 h-6 text-accent" />
+              Full Incident Report
+            </h1>
+          </div>
+          
+          {/* Action buttons */}
+          <div className="flex items-center gap-2">
+            <SMButton variant="ghost" size="sm" leftIcon={<Printer className="w-5 h-5" />} type="button" onClick={handlePrint} aria-label="Print" />
+            <SMButton variant="secondary" size="sm" leftIcon={<Download className="w-4 h-4" />} type="button" onClick={handleExportPDF}>Export PDF</SMButton>
+          </div>
         </div>
-        
-        {/* Action buttons */}
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handlePrint}
-            className="p-2 bg-surface-200 text-surface-800 rounded-xl hover:bg-surface-300 transition-colors"
-            title="Print Report"
-          >
-            <Printer className="w-5 h-5" />
-          </button>
-          <button
-            type="button"
-            onClick={handleExportPDF}
-            className="p-2 bg-brand-500/20 text-brand-400 rounded-xl hover:bg-brand-500/30 transition-colors"
-            title="Export PDF"
-          >
-            <Download className="w-5 h-5" />
-          </button>
-        </div>
-      </div>
+      </header>
 
-      <main ref={printRef} className="print-container max-w-7xl mx-auto px-4 py-6">
+      <main ref={printRef} className="print-container mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8">
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Section 1: Incident Information */}
           <SectionCard
@@ -526,7 +513,7 @@ export const FullIncidentReport: React.FC = () => {
                 options={INCIDENT_TYPES}
               />
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-surface-700 uppercase tracking-wide">Severity</label>
+                <label className="text-xs font-bold text-text-muted uppercase tracking-wide">Severity</label>
                 <div className="grid grid-cols-4 gap-2">
                   {SEVERITY_LEVELS.map(level => (
                     <button
@@ -534,8 +521,8 @@ export const FullIncidentReport: React.FC = () => {
                       onClick={() => setFormData({ ...formData, severity: level })}
                       className={`py-2.5 rounded-xl text-sm font-bold transition-all border ${
                         formData.severity === level
-                          ? 'bg-brand-500 text-white border-brand-500'
-                          : 'bg-surface-200 text-surface-800 border-surface-300 hover:border-brand-400 hover:text-surface-900'
+                          ? 'border-accent bg-accent text-text-onAccent'
+                          : 'border-surface-300 bg-surface-200 text-surface-800 hover:border-accent/40 hover:text-text-primary'
                       }`}
                     >
                       {level}
@@ -545,12 +532,12 @@ export const FullIncidentReport: React.FC = () => {
               </div>
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-surface-700 uppercase tracking-wide">Description <span className="text-red-400">*</span></label>
+                  <label className="text-xs font-bold text-text-muted uppercase tracking-wide">Description <span className="text-red-400">*</span></label>
                   <button
                     type="button"
                     onClick={() => requestAI('description')}
                     disabled={aiLoading && aiField === 'description'}
-                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-brand-500/15 border border-brand-500/30 text-brand-400 text-[11px] font-semibold hover:bg-brand-500/25 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-1.5 rounded-lg border border-accent/30 bg-accent/10 px-2.5 py-1 text-[11px] font-semibold text-accent transition-colors hover:bg-accent/15 disabled:opacity-50"
                   >
                     {aiLoading && aiField === 'description' ? <Loader2 className="w-3 h-3 animate-spin" /> : <Brain className="w-3 h-3" />}
                     AI Assist
@@ -562,16 +549,16 @@ export const FullIncidentReport: React.FC = () => {
                   placeholder="Describe what happened in detail..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-4 py-3 bg-surface-200 border border-surface-300 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none text-sm text-surface-900 placeholder:text-surface-600 resize-none"
+                  className="w-full px-4 py-3 bg-surface-200 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary placeholder:text-text-muted resize-none"
                 />
                 {aiSuggestions.length > 0 && aiField === 'description' && (
-                  <div className="p-3 rounded-xl bg-brand-500/10 border border-brand-500/20 space-y-2">
-                    <div className="flex items-center gap-1.5 text-[10px] font-bold text-brand-400 uppercase tracking-wider">
+                  <div className="space-y-2 rounded-xl border border-accent/20 bg-accent/10 p-3">
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-accent">
                       <Sparkles className="w-3 h-3" /> AI Suggestions — click to apply
                     </div>
                     {aiSuggestions.map((s, i) => (
                       <button key={i} type="button" onClick={() => applyAISuggestion(s)}
-                        className="w-full text-left px-3 py-2 rounded-lg bg-surface-200 border border-surface-300 text-xs text-surface-900 hover:bg-surface-300 hover:border-brand-500/40 transition-colors">
+                        className="w-full rounded-lg border border-surface-300 bg-surface-200 px-3 py-2 text-left text-xs text-text-primary transition-colors hover:border-accent/40 hover:bg-surface-300">
                         {s}
                       </button>
                     ))}
@@ -824,7 +811,7 @@ export const FullIncidentReport: React.FC = () => {
               
               {/* PPE Selection */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-surface-700 uppercase tracking-wide">PPE Being Worn</label>
+                <label className="text-xs font-bold text-text-muted uppercase tracking-wide">PPE Being Worn</label>
                 <div className="flex flex-wrap gap-2">
                   {PPE_OPTIONS.map(ppe => (
                     <button
@@ -833,7 +820,7 @@ export const FullIncidentReport: React.FC = () => {
                       onClick={() => togglePPE(ppe)}
                       className={`px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                         selectedPPE.includes(ppe)
-                          ? 'bg-brand-500 text-white'
+                          ? 'bg-accent text-text-onAccent'
                           : 'bg-surface-200 text-surface-800 hover:bg-surface-300'
                       }`}
                     >
@@ -867,16 +854,16 @@ export const FullIncidentReport: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowRootCauseTools(!showRootCauseTools)}
-                  className="w-full flex items-center justify-between p-4 bg-purple-900/20 rounded-xl border border-purple-700/30 hover:bg-purple-900/30 transition-colors"
+                  className="flex w-full items-center justify-between rounded-xl border border-primary/20 bg-primary/10 p-4 transition-colors hover:bg-primary/15"
                 >
                   <div className="flex items-center gap-3">
-                    <Target className="w-5 h-5 text-purple-400" />
-                    <span className="font-semibold text-purple-300">Root Cause Analysis Tools</span>
+                    <Target className="w-5 h-5 text-accent" />
+                    <span className="font-semibold text-text-primary">Root Cause Analysis Tools</span>
                   </div>
                   {showRootCauseTools ? (
-                    <ChevronUp className="w-5 h-5 text-purple-400" />
+                    <ChevronUp className="w-5 h-5 text-accent" />
                   ) : (
-                    <ChevronDown className="w-5 h-5 text-purple-400" />
+                    <ChevronDown className="w-5 h-5 text-accent" />
                   )}
                 </button>
                 
@@ -913,12 +900,12 @@ export const FullIncidentReport: React.FC = () => {
               {/* Root Cause with AI */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-surface-700 uppercase tracking-wide">Root Cause Analysis Summary</label>
+                  <label className="text-xs font-bold text-text-muted uppercase tracking-wide">Root Cause Analysis Summary</label>
                   <button
                     type="button"
                     onClick={() => requestAI('rootCauses')}
                     disabled={aiLoading && aiField === 'rootCauses'}
-                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-brand-500/15 border border-brand-500/30 text-brand-400 text-[11px] font-semibold hover:bg-brand-500/25 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-1.5 rounded-lg border border-accent/30 bg-accent/10 px-2.5 py-1 text-[11px] font-semibold text-accent transition-colors hover:bg-accent/15 disabled:opacity-50"
                   >
                     {aiLoading && aiField === 'rootCauses' ? <Loader2 className="w-3 h-3 animate-spin" /> : <Brain className="w-3 h-3" />}
                     AI Analyse
@@ -927,16 +914,16 @@ export const FullIncidentReport: React.FC = () => {
                 <textarea rows={3} placeholder="What caused this incident?"
                   value={formData.rootCauses}
                   onChange={(e) => setFormData({ ...formData, rootCauses: e.target.value })}
-                  className="w-full px-4 py-3 bg-surface-200 border border-surface-300 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none text-sm text-surface-900 placeholder:text-surface-600 resize-none"
+                  className="w-full px-4 py-3 bg-surface-200 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary placeholder:text-text-muted resize-none"
                 />
                 {aiSuggestions.length > 0 && aiField === 'rootCauses' && (
-                  <div className="p-3 rounded-xl bg-brand-500/10 border border-brand-500/20 space-y-2">
-                    <div className="flex items-center gap-1.5 text-[10px] font-bold text-brand-400 uppercase tracking-wider">
+                  <div className="space-y-2 rounded-xl border border-accent/20 bg-accent/10 p-3">
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-accent">
                       <Sparkles className="w-3 h-3" /> AI Root Cause Suggestions — click to apply
                     </div>
                     {aiSuggestions.map((s, i) => (
                       <button key={i} type="button" onClick={() => applyAISuggestion(s)}
-                        className="w-full text-left px-3 py-2 rounded-lg bg-surface-200 border border-surface-300 text-xs text-surface-900 hover:bg-surface-300 hover:border-brand-500/40 transition-colors">
+                        className="w-full rounded-lg border border-surface-300 bg-surface-200 px-3 py-2 text-left text-xs text-text-primary transition-colors hover:border-accent/40 hover:bg-surface-300">
                         {s}
                       </button>
                     ))}
@@ -947,12 +934,12 @@ export const FullIncidentReport: React.FC = () => {
               {/* Corrective Actions with AI */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-surface-700 uppercase tracking-wide">Corrective Actions</label>
+                  <label className="text-xs font-bold text-text-muted uppercase tracking-wide">Corrective Actions</label>
                   <button
                     type="button"
                     onClick={() => requestAI('correctiveActions')}
                     disabled={aiLoading && aiField === 'correctiveActions'}
-                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-brand-500/15 border border-brand-500/30 text-brand-400 text-[11px] font-semibold hover:bg-brand-500/25 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-1.5 rounded-lg border border-accent/30 bg-accent/10 px-2.5 py-1 text-[11px] font-semibold text-accent transition-colors hover:bg-accent/15 disabled:opacity-50"
                   >
                     {aiLoading && aiField === 'correctiveActions' ? <Loader2 className="w-3 h-3 animate-spin" /> : <Brain className="w-3 h-3" />}
                     AI Suggest
@@ -961,16 +948,16 @@ export const FullIncidentReport: React.FC = () => {
                 <textarea rows={3} placeholder="Actions to address the root cause"
                   value={formData.correctiveActions}
                   onChange={(e) => setFormData({ ...formData, correctiveActions: e.target.value })}
-                  className="w-full px-4 py-3 bg-surface-200 border border-surface-300 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none text-sm text-surface-900 placeholder:text-surface-600 resize-none"
+                  className="w-full px-4 py-3 bg-surface-200 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary placeholder:text-text-muted resize-none"
                 />
                 {aiSuggestions.length > 0 && aiField === 'correctiveActions' && (
-                  <div className="p-3 rounded-xl bg-brand-500/10 border border-brand-500/20 space-y-2">
-                    <div className="flex items-center gap-1.5 text-[10px] font-bold text-brand-400 uppercase tracking-wider">
+                  <div className="space-y-2 rounded-xl border border-accent/20 bg-accent/10 p-3">
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-accent">
                       <Sparkles className="w-3 h-3" /> AI Corrective Action Suggestions — click to apply
                     </div>
                     {aiSuggestions.map((s, i) => (
                       <button key={i} type="button" onClick={() => applyAISuggestion(s)}
-                        className="w-full text-left px-3 py-2 rounded-lg bg-surface-200 border border-surface-300 text-xs text-surface-900 hover:bg-surface-300 hover:border-brand-500/40 transition-colors">
+                        className="w-full rounded-lg border border-surface-300 bg-surface-200 px-3 py-2 text-left text-xs text-text-primary transition-colors hover:border-accent/40 hover:bg-surface-300">
                         {s}
                       </button>
                     ))}
@@ -1144,11 +1131,11 @@ export const FullIncidentReport: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-surface-100 p-6 rounded-3xl border border-surface-200"
+            className="bg-surface-raised p-6 rounded-3xl border border-surface-border"
           >
-            <label className="text-xs font-bold text-surface-700 uppercase tracking-wide">Evidence Photos</label>
+            <label className="text-xs font-bold text-text-muted uppercase tracking-wide">Evidence Photos</label>
             <label
-              className="mt-3 w-full py-8 border-2 border-dashed border-surface-300 rounded-2xl flex flex-col items-center gap-2 text-surface-600 hover:text-brand-400 hover:border-brand-500 transition-all cursor-pointer"
+              className="mt-3 flex w-full cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-surface-300 py-8 text-surface-600 transition-all hover:border-accent hover:text-accent"
             >
               <input
                 type="file" accept="image/*" multiple className="hidden"
@@ -1206,7 +1193,7 @@ export const FullIncidentReport: React.FC = () => {
               onClick={handleExportPDF}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex-1 py-5 bg-surface-200 text-brand-400 border-2 border-brand-500/40 rounded-3xl font-bold text-lg flex items-center justify-center gap-3 hover:bg-surface-300 transition-colors"
+              className="flex-1 flex items-center justify-center gap-3 rounded-3xl border-2 border-accent/30 bg-surface-200 py-5 text-lg font-bold text-accent transition-colors hover:bg-surface-300"
             >
               <Download className="w-5 h-5" />
               Export PDF
@@ -1217,7 +1204,7 @@ export const FullIncidentReport: React.FC = () => {
               disabled={createIncident.loading}
               whileHover={{ scale: createIncident.loading ? 1 : 1.02 }}
               whileTap={{ scale: createIncident.loading ? 1 : 0.98 }}
-              className="flex-[2] py-5 bg-brand-900 text-white rounded-3xl shadow-glow font-bold text-lg flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="flex-[2] py-5 bg-primary text-text-inverted rounded-3xl shadow-glow font-bold text-lg flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <Send className="w-5 h-5" />
               {createIncident.loading ? 'Submitting...' : 'Submit Full Report'}
@@ -1246,7 +1233,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
-    className="bg-surface-100 rounded-3xl border border-surface-200 overflow-hidden"
+    className="bg-surface-raised rounded-3xl border border-surface-border overflow-hidden"
   >
     <button
       type="button"
@@ -1255,7 +1242,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
     >
       <div className="flex items-center gap-3">
         <Icon className={`w-5 h-5 ${color}`} />
-        <span className="font-bold text-surface-900">{title}</span>
+        <span className="font-bold text-text-primary">{title}</span>
       </div>
       {isExpanded ? (
         <ChevronUp className="w-5 h-5 text-surface-600" />
@@ -1294,14 +1281,14 @@ const InputField: React.FC<InputFieldProps> = ({
   label, type, value, onChange, placeholder, required
 }) => (
   <div className="space-y-1.5">
-    <label className="text-xs font-bold text-surface-700 uppercase tracking-wide">{label}</label>
+    <label className="text-xs font-bold text-text-muted uppercase tracking-wide">{label}</label>
     <input
       type={type}
       required={required}
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full px-4 py-3 bg-surface-200 border border-surface-300 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none text-sm text-surface-900 placeholder:text-surface-600"
+      className="w-full px-4 py-3 bg-surface-200 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary placeholder:text-text-muted"
     />
   </div>
 );
@@ -1318,12 +1305,12 @@ const SelectField: React.FC<SelectFieldProps> = ({
   label, value, onChange, options, required
 }) => (
   <div className="space-y-1.5">
-    <label className="text-xs font-bold text-surface-700 uppercase tracking-wide">{label}</label>
+    <label className="text-xs font-bold text-text-muted uppercase tracking-wide">{label}</label>
     <select
       required={required}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full px-4 py-3 bg-surface-200 border border-surface-300 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none text-sm text-surface-900 appearance-none"
+      className="w-full px-4 py-3 bg-surface-200 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary appearance-none"
     >
       <option value="">Select...</option>
       {options.map(opt => (
@@ -1346,14 +1333,14 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
   label, value, onChange, rows = 3, placeholder, required
 }) => (
   <div className="space-y-1.5">
-    <label className="text-xs font-bold text-surface-700 uppercase tracking-wide">{label}</label>
+    <label className="text-xs font-bold text-text-muted uppercase tracking-wide">{label}</label>
     <textarea
       required={required}
       rows={rows}
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full px-4 py-3 bg-surface-200 border border-surface-300 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none text-sm text-surface-900 placeholder:text-surface-600 resize-none"
+      className="w-full px-4 py-3 bg-surface-200 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary placeholder:text-text-muted resize-none"
     />
   </div>
 );

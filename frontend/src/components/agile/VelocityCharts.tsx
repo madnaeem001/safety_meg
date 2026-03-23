@@ -9,7 +9,7 @@ import { SMCard } from '../../components/ui';
 import { ProjectTask } from '../../data/mockProjectManagement';
 import { useProjectSprints, useVelocityHistory, useRecordVelocity } from '../../api/hooks/useAPIHooks';
 
-const MotionSMCard = motion(SMCard);
+const MotionSMCard = motion.create(SMCard);
 
 interface VelocityChartsProps {
   tasks: ProjectTask[];

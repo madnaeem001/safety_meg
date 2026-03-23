@@ -6,7 +6,6 @@ import {
   Building2,
   CalendarDays,
   CheckCircle2,
-  ChevronDown,
   ClipboardCheck,
   Clock,
   FileCheck,
@@ -28,6 +27,7 @@ import {
   useUpdatePermitToWork,
 } from '../api/hooks/useAPIHooks';
 import type { CreatePermitToWorkPayload, PermitToWorkRecord } from '../api/services/apiService';
+import { SMBadge, SMButton, SMInput, SMSelect, SMStatCard } from '../components/ui';
 
 type PermitStatusFilter = 'all' | PermitToWorkRecord['status'];
 type PermitRiskFilter = 'all' | PermitToWorkRecord['riskLevel'];
@@ -72,31 +72,20 @@ const formatStatus = (value: string) =>
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ');
 
-const getStatusColor = (status: string) => {
+const getStatusVariant = (status: string): 'success' | 'warning' | 'danger' | 'neutral' => {
   switch (status) {
-    case 'active':
-    case 'approved':
-    case 'closed':
-      return 'bg-emerald-50 text-emerald-700 border-emerald-200';
-    case 'pending-approval':
-      return 'bg-amber-50 text-amber-700 border-amber-200';
-    case 'cancelled':
-      return 'bg-rose-50 text-rose-700 border-rose-200';
-    default:
-      return 'bg-surface-50 text-surface-600 border-surface-200';
+    case 'active': case 'approved': case 'closed': return 'success';
+    case 'pending-approval': return 'warning';
+    case 'cancelled': return 'danger';
+    default: return 'neutral';
   }
 };
 
-const getRiskColor = (risk: string) => {
+const getRiskVariant = (risk: string): 'danger' | 'warning' | 'success' => {
   switch (risk) {
-    case 'critical':
-      return 'bg-rose-50 text-rose-700 border-rose-200';
-    case 'high':
-      return 'bg-orange-50 text-orange-700 border-orange-200';
-    case 'medium':
-      return 'bg-amber-50 text-amber-700 border-amber-200';
-    default:
-      return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+    case 'critical': return 'danger';
+    case 'high': case 'medium': return 'warning';
+    default: return 'success';
   }
 };
 
@@ -272,72 +261,37 @@ export const PermitToWork = () => {
 
   return (
     <div className="min-h-screen bg-surface-50 pb-20">
-      <header className="sticky top-[72px] z-40 border-b border-surface-200/70 bg-white/85 px-6 py-4 backdrop-blur-xl">
+      <header className="sticky top-[var(--nav-height)] z-40 border-b border-surface-200/70 bg-white/85 px-6 py-4 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <button onClick={() => navigate('/')} className="rounded-full p-2 transition-colors hover:bg-surface-100">
-              <ArrowLeft className="h-6 w-6 text-surface-600" />
-            </button>
+            <SMButton variant="ghost" size="sm" leftIcon={<ArrowLeft className="h-5 w-5" />} onClick={() => navigate('/')} aria-label="Back to home" />
             <div>
               <h1 className="text-xl font-bold text-surface-900">Permit to Work</h1>
               <p className="text-sm text-surface-500">Live backend workflow for permit creation, approval, activation, and closure.</p>
             </div>
           </div>
 
-          <button
-            onClick={() => setShowCreateForm((current) => !current)}
-            className="inline-flex items-center gap-2 rounded-2xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-button transition-all hover:bg-brand-700"
-          >
-            <Plus className="h-4 w-4" />
+          <SMButton variant="primary" leftIcon={<Plus className="h-4 w-4" />} onClick={() => setShowCreateForm((current) => !current)}>
             {showCreateForm ? 'Hide Form' : 'New Permit'}
-          </button>
+          </SMButton>
         </div>
       </header>
 
       <main className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-8">
-        <section className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <section className="grid grid-cols-2 xl:grid-cols-4 gap-4">
           {[
-            {
-              title: 'Total Permits',
-              value: stats?.total ?? 0,
-              icon: ClipboardCheck,
-              tone: 'bg-blue-50 text-blue-700 border-blue-200',
-            },
-            {
-              title: 'Active Work',
-              value: stats?.active ?? 0,
-              icon: FileCheck,
-              tone: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-            },
-            {
-              title: 'Pending Approval',
-              value: stats?.pendingApproval ?? 0,
-              icon: ShieldAlert,
-              tone: 'bg-amber-50 text-amber-700 border-amber-200',
-            },
-            {
-              title: 'Expiring Soon',
-              value: stats?.expiringSoon ?? 0,
-              icon: Clock,
-              tone: 'bg-rose-50 text-rose-700 border-rose-200',
-            },
+            { title: 'Total Permits',    value: stats?.total ?? 0,           icon: ClipboardCheck, variant: 'default'  as const },
+            { title: 'Active Work',      value: stats?.active ?? 0,          icon: FileCheck,      variant: 'success'  as const },
+            { title: 'Pending Approval', value: stats?.pendingApproval ?? 0, icon: ShieldAlert,    variant: 'warning'  as const },
+            { title: 'Expiring Soon',    value: stats?.expiringSoon ?? 0,    icon: Clock,          variant: 'danger'   as const },
           ].map((card) => (
-            <motion.div
+            <SMStatCard
               key={card.title}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="rounded-[2rem] border border-surface-200 bg-white p-5 shadow-soft"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-sm font-medium text-surface-500">{card.title}</p>
-                  <p className="mt-3 text-3xl font-bold text-surface-900">{statsLoading ? '...' : card.value}</p>
-                </div>
-                <div className={`rounded-2xl border p-3 ${card.tone}`}>
-                  <card.icon className="h-5 w-5" />
-                </div>
-              </div>
-            </motion.div>
+              label={card.title}
+              value={statsLoading ? '...' : card.value}
+              icon={<card.icon className="h-5 w-5" />}
+              variant={card.variant}
+            />
           ))}
         </section>
 
@@ -357,175 +311,128 @@ export const PermitToWork = () => {
               </div>
 
               <form onSubmit={handleCreatePermit} className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-                <label className="space-y-2 text-sm font-medium text-surface-700">
-                  Permit Type
-                  <select
-                    value={formState.permitType}
-                    onChange={(event) => setFormState((current) => ({ ...current, permitType: event.target.value as PermitToWorkRecord['permitType'] }))}
-                    className="w-full rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
-                  >
-                    {PERMIT_TYPES.map((type) => (
-                      <option key={type.value} value={type.value}>{type.label}</option>
-                    ))}
-                  </select>
-                </label>
+                <SMSelect
+                  label="Permit Type"
+                  value={formState.permitType}
+                  onChange={(event) => setFormState((current) => ({ ...current, permitType: event.target.value as PermitToWorkRecord['permitType'] }))}
+                  options={PERMIT_TYPES}
+                />
 
-                <label className="space-y-2 text-sm font-medium text-surface-700">
-                  Title
-                  <input
-                    value={formState.title}
-                    onChange={(event) => setFormState((current) => ({ ...current, title: event.target.value }))}
-                    className="w-full rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
-                    placeholder="Hot work on boiler pipe"
-                  />
-                </label>
+                <SMInput
+                  label="Title"
+                  value={formState.title}
+                  onChange={(event) => setFormState((current) => ({ ...current, title: event.target.value }))}
+                  placeholder="Hot work on boiler pipe"
+                />
 
-                <label className="space-y-2 text-sm font-medium text-surface-700">
-                  Location
-                  <input
-                    value={formState.location}
-                    onChange={(event) => setFormState((current) => ({ ...current, location: event.target.value }))}
-                    className="w-full rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
-                    placeholder="Plant 2"
-                  />
-                </label>
+                <SMInput
+                  label="Location"
+                  value={formState.location}
+                  onChange={(event) => setFormState((current) => ({ ...current, location: event.target.value }))}
+                  placeholder="Plant 2"
+                />
 
-                <label className="space-y-2 text-sm font-medium text-surface-700">
-                  Work Area
-                  <input
-                    value={formState.workArea}
-                    onChange={(event) => setFormState((current) => ({ ...current, workArea: event.target.value }))}
-                    className="w-full rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
-                    placeholder="Boiler Room A"
-                  />
-                </label>
+                <SMInput
+                  label="Work Area"
+                  value={formState.workArea}
+                  onChange={(event) => setFormState((current) => ({ ...current, workArea: event.target.value }))}
+                  placeholder="Boiler Room A"
+                />
 
-                <label className="space-y-2 text-sm font-medium text-surface-700">
-                  Requested By
-                  <input
-                    value={formState.requestedBy}
-                    onChange={(event) => setFormState((current) => ({ ...current, requestedBy: event.target.value }))}
-                    className="w-full rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
-                    placeholder="Site Supervisor"
-                  />
-                </label>
+                <SMInput
+                  label="Requested By"
+                  value={formState.requestedBy}
+                  onChange={(event) => setFormState((current) => ({ ...current, requestedBy: event.target.value }))}
+                  placeholder="Site Supervisor"
+                />
 
-                <label className="space-y-2 text-sm font-medium text-surface-700">
-                  Department
-                  <input
-                    value={formState.department}
-                    onChange={(event) => setFormState((current) => ({ ...current, department: event.target.value }))}
-                    className="w-full rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
-                    placeholder="Maintenance"
-                  />
-                </label>
+                <SMInput
+                  label="Department"
+                  value={formState.department}
+                  onChange={(event) => setFormState((current) => ({ ...current, department: event.target.value }))}
+                  placeholder="Maintenance"
+                />
 
-                <label className="space-y-2 text-sm font-medium text-surface-700">
-                  Risk Level
-                  <select
-                    value={formState.riskLevel}
-                    onChange={(event) => setFormState((current) => ({ ...current, riskLevel: event.target.value as PermitToWorkRecord['riskLevel'] }))}
-                    className="w-full rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
-                  >
-                    {RISK_LEVELS.map((risk) => (
-                      <option key={risk} value={risk}>{formatStatus(risk)}</option>
-                    ))}
-                  </select>
-                </label>
+                <SMSelect
+                  label="Risk Level"
+                  value={formState.riskLevel}
+                  onChange={(event) => setFormState((current) => ({ ...current, riskLevel: event.target.value as PermitToWorkRecord['riskLevel'] }))}
+                  options={RISK_LEVELS.map((risk) => ({ value: risk, label: formatStatus(risk) }))}
+                />
 
-                <label className="space-y-2 text-sm font-medium text-surface-700">
-                  Start Date
-                  <input
-                    type="datetime-local"
-                    value={formState.startDate}
-                    onChange={(event) => setFormState((current) => ({ ...current, startDate: event.target.value }))}
-                    className="w-full rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
-                  />
-                </label>
+                <SMInput
+                  label="Start Date"
+                  type="datetime-local"
+                  value={formState.startDate}
+                  onChange={(event) => setFormState((current) => ({ ...current, startDate: event.target.value }))}
+                />
 
-                <label className="space-y-2 text-sm font-medium text-surface-700">
-                  End Date
-                  <input
-                    type="datetime-local"
-                    value={formState.endDate}
-                    onChange={(event) => setFormState((current) => ({ ...current, endDate: event.target.value }))}
-                    className="w-full rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
-                  />
-                </label>
+                <SMInput
+                  label="End Date"
+                  type="datetime-local"
+                  value={formState.endDate}
+                  onChange={(event) => setFormState((current) => ({ ...current, endDate: event.target.value }))}
+                />
 
-                <label className="space-y-2 text-sm font-medium text-surface-700 md:col-span-2 xl:col-span-3">
-                  Description
-                  <textarea
+                <div className="md:col-span-2 xl:col-span-3">
+                  <SMInput
+                    label="Description"
+                    as="textarea"
                     value={formState.description}
                     onChange={(event) => setFormState((current) => ({ ...current, description: event.target.value }))}
                     rows={3}
-                    className="w-full rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
                     placeholder="Describe the task, hazards, and site conditions."
                   />
-                </label>
+                </div>
 
-                <label className="space-y-2 text-sm font-medium text-surface-700">
-                  PPE Required
-                  <input
-                    value={formState.ppeRequired?.join(', ') ?? ''}
-                    onChange={(event) => setFormState((current) => ({ ...current, ppeRequired: parseCommaSeparated(event.target.value) }))}
-                    className="w-full rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
-                    placeholder="Helmet, gloves, face shield"
-                  />
-                </label>
+                <SMInput
+                  label="PPE Required"
+                  value={formState.ppeRequired?.join(', ') ?? ''}
+                  onChange={(event) => setFormState((current) => ({ ...current, ppeRequired: parseCommaSeparated(event.target.value) }))}
+                  placeholder="Helmet, gloves, face shield"
+                />
 
-                <label className="space-y-2 text-sm font-medium text-surface-700">
-                  Precautions
-                  <input
-                    value={formState.precautions?.join(', ') ?? ''}
-                    onChange={(event) => setFormState((current) => ({ ...current, precautions: parseCommaSeparated(event.target.value) }))}
-                    className="w-full rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
-                    placeholder="Gas test, isolate power, barricades"
-                  />
-                </label>
+                <SMInput
+                  label="Precautions"
+                  value={formState.precautions?.join(', ') ?? ''}
+                  onChange={(event) => setFormState((current) => ({ ...current, precautions: parseCommaSeparated(event.target.value) }))}
+                  placeholder="Gas test, isolate power, barricades"
+                />
 
-                <label className="space-y-2 text-sm font-medium text-surface-700">
-                  IoT Sensor IDs
-                  <input
-                    value={formState.iotSensorIds?.join(', ') ?? ''}
-                    onChange={(event) => setFormState((current) => ({ ...current, iotSensorIds: parseCommaSeparated(event.target.value) }))}
-                    className="w-full rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
-                    placeholder="SEN-101, SEN-204"
-                  />
-                </label>
+                <SMInput
+                  label="IoT Sensor IDs"
+                  value={formState.iotSensorIds?.join(', ') ?? ''}
+                  onChange={(event) => setFormState((current) => ({ ...current, iotSensorIds: parseCommaSeparated(event.target.value) }))}
+                  placeholder="SEN-101, SEN-204"
+                />
 
-                <label className="space-y-2 text-sm font-medium text-surface-700 md:col-span-2 xl:col-span-3">
-                  Emergency Procedure
-                  <textarea
+                <div className="md:col-span-2 xl:col-span-3">
+                  <SMInput
+                    label="Emergency Procedure"
+                    as="textarea"
                     value={formState.emergencyProcedure}
                     onChange={(event) => setFormState((current) => ({ ...current, emergencyProcedure: event.target.value }))}
                     rows={2}
-                    className="w-full rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
                     placeholder="Shutdown path, rescue steps, emergency contacts."
                   />
-                </label>
+                </div>
 
-                <label className="space-y-2 text-sm font-medium text-surface-700 md:col-span-2 xl:col-span-3">
-                  Notes
-                  <textarea
+                <div className="md:col-span-2 xl:col-span-3">
+                  <SMInput
+                    label="Notes"
+                    as="textarea"
                     value={formState.notes}
                     onChange={(event) => setFormState((current) => ({ ...current, notes: event.target.value }))}
                     rows={2}
-                    className="w-full rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
                     placeholder="Shift notes, contractor details, extra restrictions."
                   />
-                </label>
+                </div>
 
                 <div className="flex items-center justify-between gap-4 pt-2 md:col-span-2 xl:col-span-3">
                   <div className="text-sm text-rose-600">{formError}</div>
-                  <button
-                    type="submit"
-                    disabled={creatingPermit}
-                    className="inline-flex items-center gap-2 rounded-2xl bg-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-button transition-all hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    <Plus className="h-4 w-4" />
-                    {creatingPermit ? 'Creating...' : 'Create Permit'}
-                  </button>
+                  <SMButton type="submit" variant="primary" loading={creatingPermit} leftIcon={<Plus className="h-4 w-4" />}>
+                    Create Permit
+                  </SMButton>
                 </div>
               </form>
             </motion.section>
@@ -534,71 +441,39 @@ export const PermitToWork = () => {
 
         <section className="rounded-[2rem] border border-surface-200 bg-white p-5 shadow-soft">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <label className="space-y-2 text-sm font-medium text-surface-700">
-              Status
-              <div className="relative">
-                <select
-                  value={statusFilter}
-                  onChange={(event) => setStatusFilter(event.target.value as PermitStatusFilter)}
-                  className="w-full appearance-none rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
-                >
-                  {STATUS_OPTIONS.map((status) => (
-                    <option key={status} value={status}>{status === 'all' ? 'All Statuses' : formatStatus(status)}</option>
-                  ))}
-                </select>
-                <ChevronDown className="pointer-events-none absolute right-4 top-3.5 h-4 w-4 text-surface-400" />
-              </div>
-            </label>
+            <SMSelect
+              label="Status"
+              value={statusFilter}
+              onChange={(event) => setStatusFilter(event.target.value as PermitStatusFilter)}
+              options={STATUS_OPTIONS.map((status) => ({ value: status, label: status === 'all' ? 'All Statuses' : formatStatus(status) }))}
+            />
 
-            <label className="space-y-2 text-sm font-medium text-surface-700">
-              Permit Type
-              <div className="relative">
-                <select
-                  value={typeFilter}
-                  onChange={(event) => setTypeFilter(event.target.value as PermitTypeFilter)}
-                  className="w-full appearance-none rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
-                >
-                  <option value="all">All Permit Types</option>
-                  {PERMIT_TYPES.map((type) => (
-                    <option key={type.value} value={type.value}>{type.label}</option>
-                  ))}
-                </select>
-                <ChevronDown className="pointer-events-none absolute right-4 top-3.5 h-4 w-4 text-surface-400" />
-              </div>
-            </label>
+            <SMSelect
+              label="Permit Type"
+              value={typeFilter}
+              onChange={(event) => setTypeFilter(event.target.value as PermitTypeFilter)}
+              options={[{ value: 'all', label: 'All Permit Types' }, ...PERMIT_TYPES]}
+            />
 
-            <label className="space-y-2 text-sm font-medium text-surface-700">
-              Risk Level
-              <div className="relative">
-                <select
-                  value={riskFilter}
-                  onChange={(event) => setRiskFilter(event.target.value as PermitRiskFilter)}
-                  className="w-full appearance-none rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
-                >
-                  <option value="all">All Risk Levels</option>
-                  {RISK_LEVELS.map((risk) => (
-                    <option key={risk} value={risk}>{formatStatus(risk)}</option>
-                  ))}
-                </select>
-                <ChevronDown className="pointer-events-none absolute right-4 top-3.5 h-4 w-4 text-surface-400" />
-              </div>
-            </label>
+            <SMSelect
+              label="Risk Level"
+              value={riskFilter}
+              onChange={(event) => setRiskFilter(event.target.value as PermitRiskFilter)}
+              options={[{ value: 'all', label: 'All Risk Levels' }, ...RISK_LEVELS.map((risk) => ({ value: risk, label: formatStatus(risk) }))]}
+            />
 
-            <label className="space-y-2 text-sm font-medium text-surface-700">
-              Department
-              <input
-                list="ptw-departments"
-                value={departmentFilter}
-                onChange={(event) => setDepartmentFilter(event.target.value)}
-                className="w-full rounded-2xl border border-surface-200 bg-surface-50 px-4 py-3 text-sm outline-none transition focus:border-brand-400"
-                placeholder="Filter by department"
-              />
-              <datalist id="ptw-departments">
-                {departments.map((department) => (
-                  <option key={department} value={department} />
-                ))}
-              </datalist>
-            </label>
+            <SMInput
+              label="Department"
+              list="ptw-departments"
+              value={departmentFilter}
+              onChange={(event) => setDepartmentFilter(event.target.value)}
+              placeholder="Filter by department"
+            />
+            <datalist id="ptw-departments">
+              {departments.map((department) => (
+                <option key={department} value={department} />
+              ))}
+            </datalist>
           </div>
         </section>
 
@@ -635,12 +510,8 @@ export const PermitToWork = () => {
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${getStatusColor(permit.status)}`}>
-                      {formatStatus(permit.status)}
-                    </span>
-                    <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${getRiskColor(permit.riskLevel)}`}>
-                      {formatStatus(permit.riskLevel)} Risk
-                    </span>
+                    <SMBadge variant={getStatusVariant(permit.status)}>{formatStatus(permit.status)}</SMBadge>
+                    <SMBadge variant={getRiskVariant(permit.riskLevel)}>{formatStatus(permit.riskLevel)} Risk</SMBadge>
                   </div>
                 </div>
               </motion.button>
@@ -670,12 +541,8 @@ export const PermitToWork = () => {
                       <h2 className="mt-2 text-2xl font-bold text-surface-900">{selectedPermit.title}</h2>
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${getStatusColor(selectedPermit.status)}`}>
-                        {formatStatus(selectedPermit.status)}
-                      </span>
-                      <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${getRiskColor(selectedPermit.riskLevel)}`}>
-                        {formatStatus(selectedPermit.riskLevel)} Risk
-                      </span>
+                      <SMBadge variant={getStatusVariant(selectedPermit.status)}>{formatStatus(selectedPermit.status)}</SMBadge>
+                      <SMBadge variant={getRiskVariant(selectedPermit.riskLevel)}>{formatStatus(selectedPermit.riskLevel)} Risk</SMBadge>
                     </div>
                   </div>
 
@@ -809,9 +676,7 @@ export const PermitToWork = () => {
                             <p className="text-sm font-semibold text-surface-900">{approval.approverName}</p>
                             <p className="text-xs text-surface-500">{approval.approverRole || 'Reviewer'} • {formatDate(approval.approvedAt || approval.createdAt)}</p>
                           </div>
-                          <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${approval.status === 'approved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200'}`}>
-                            {formatStatus(approval.status)}
-                          </span>
+                          <SMBadge variant={approval.status === 'approved' ? 'success' : 'danger'}>{formatStatus(approval.status)}</SMBadge>
                         </div>
                         {approval.comments && <p className="mt-3 text-sm text-surface-600">{approval.comments}</p>}
                       </div>

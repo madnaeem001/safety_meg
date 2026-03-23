@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { SMButton } from '../../ui';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Shield, CheckCircle2, AlertTriangle, XCircle, Clock, TrendingUp, 
@@ -170,20 +171,20 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'compliant': return 'bg-green-100 text-green-700 border-green-200';
-      case 'pending': return 'bg-amber-100 text-amber-700 border-amber-200';
-      case 'overdue': return 'bg-red-100 text-red-700 border-red-200';
-      case 'review': return 'bg-blue-100 text-blue-700 border-blue-200';
-      default: return 'bg-gray-100 text-gray-700 border-gray-200';
+      case 'compliant': return 'bg-success/10 text-success border-success/20';
+      case 'pending': return 'bg-warning/10 text-warning border-warning/20';
+      case 'overdue': return 'bg-danger/10 text-danger border-danger/20';
+      case 'review': return 'bg-accent/10 text-accent border-accent/20';
+      default: return 'bg-surface-100 text-text-muted border-surface-border';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'compliant': return <CheckCircle2 className="w-4 h-4 text-green-600" />;
-      case 'pending': return <Clock className="w-4 h-4 text-amber-600" />;
-      case 'overdue': return <XCircle className="w-4 h-4 text-red-600" />;
-      case 'review': return <AlertCircle className="w-4 h-4 text-blue-600" />;
+      case 'compliant': return <CheckCircle2 className="w-4 h-4 text-success" />;
+      case 'pending': return <Clock className="w-4 h-4 text-warning" />;
+      case 'overdue': return <XCircle className="w-4 h-4 text-danger" />;
+      case 'review': return <AlertCircle className="w-4 h-4 text-accent" />;
       default: return <AlertTriangle className="w-4 h-4 text-gray-600" />;
     }
   };
@@ -242,15 +243,15 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'bg-red-100 text-red-700';
-      case 'medium': return 'bg-amber-100 text-amber-700';
-      case 'low': return 'bg-green-100 text-green-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'high': return 'bg-danger/10 text-danger';
+      case 'medium': return 'bg-warning/10 text-warning';
+      case 'low': return 'bg-success/10 text-success';
+      default: return 'bg-surface-100 text-text-muted';
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 p-4 md:p-6">
+    <div className="min-h-screen bg-surface-base p-4 md:p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <motion.div
@@ -260,50 +261,50 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
         >
           <div className="flex items-center gap-3">
             {onBack && (
-              <button
+              <SMButton
+                variant="ghost"
+                size="sm"
                 onClick={onBack}
-                className="p-2 hover:bg-white/80 rounded-xl transition-colors"
-              >
-                <ChevronRight className="w-5 h-5 rotate-180" />
-              </button>
+                leftIcon={<ChevronRight className="w-5 h-5 rotate-180" />}
+              />
             )}
-            <div className="p-3 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg">
+            <div className="p-3 rounded-2xl bg-primary shadow-lg">
               <Shield className="w-8 h-8 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-800">Compliance Dashboard</h1>
-              <p className="text-sm text-slate-500">Track regulatory compliance and requirements</p>
+              <h1 className="text-2xl font-bold text-text-primary">Compliance Dashboard</h1>
+              <p className="text-sm text-text-muted">Track regulatory compliance and requirements</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <button className="flex items-center gap-2 px-4 py-2 bg-white rounded-xl shadow-sm hover:shadow-md transition-all text-sm">
+            <button className="flex items-center gap-2 px-4 py-2 bg-surface-raised rounded-xl shadow-sm hover:shadow-md transition-all text-sm text-text-primary">
               <RefreshCw className="w-4 h-4" />
               Refresh
             </button>
             <div className="relative group">
-              <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl shadow-sm hover:shadow-md transition-all text-sm">
+              <button className="flex items-center gap-2 px-4 py-2 bg-primary text-text-inverted rounded-xl shadow-sm hover:shadow-md transition-all text-sm">
                 <Download className="w-4 h-4" />
                 Export Report
               </button>
-              <div className="absolute right-0 top-full mt-2 bg-white rounded-xl shadow-lg border border-slate-200 py-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+              <div className="absolute right-0 top-full mt-2 bg-surface-raised rounded-xl shadow-lg border border-surface-border py-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
                 <button
                   onClick={() => handleExport('pdf')}
-                  className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                  className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-surface-100 flex items-center gap-2"
                 >
                   <FileDown className="w-4 h-4" />
                   Export as PDF
                 </button>
                 <button
                   onClick={() => handleExport('csv')}
-                  className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                  className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-surface-100 flex items-center gap-2"
                 >
                   <FileText className="w-4 h-4" />
                   Export as CSV
                 </button>
                 <button
                   onClick={() => handleExport('json')}
-                  className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                  className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-surface-100 flex items-center gap-2"
                 >
                   <FileText className="w-4 h-4" />
                   Export as JSON
@@ -314,7 +315,7 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
         </motion.div>
 
         {/* View Tabs */}
-        <div className="flex gap-2 bg-white/60 p-1 rounded-xl w-fit">
+        <div className="flex gap-2 bg-surface-raised/60 p-1 rounded-xl w-fit">
           {[
             { id: 'overview', label: 'Overview', icon: BarChart3 },
             { id: 'items', label: 'Compliance Items', icon: ClipboardCheck },
@@ -325,8 +326,8 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
               onClick={() => setActiveView(tab.id as any)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 activeView === tab.id
-                  ? 'bg-white shadow-sm text-blue-600'
-                  : 'text-slate-600 hover:bg-white/50'
+                  ? 'bg-surface-raised shadow-sm text-accent'
+                  : 'text-text-muted hover:bg-surface-100/50'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -339,16 +340,16 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700 rounded-2xl p-6 text-white shadow-xl"
+          className="bg-primary rounded-2xl p-6 text-text-inverted shadow-xl"
         >
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {/* Overall Score */}
             <div className="md:col-span-1">
-              <p className="text-blue-200 text-sm mb-2">Overall Compliance Score</p>
+              <p className="text-text-inverted/70 text-sm mb-2">Overall Compliance Score</p>
               <div className="flex items-end gap-3">
                 <span className="text-5xl font-bold">{mockComplianceData.overallScore}%</span>
                 <div className={`flex items-center gap-1 px-2 py-1 rounded-lg text-sm ${
-                  mockComplianceData.trend >= 0 ? 'bg-green-500/20 text-green-200' : 'bg-red-500/20 text-red-200'
+                  mockComplianceData.trend >= 0 ? 'bg-white/20 text-white/90' : 'bg-white/20 text-white/90'
                 }`}>
                   {mockComplianceData.trend >= 0 ? (
                     <TrendingUp className="w-4 h-4" />
@@ -369,17 +370,17 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
             {/* Stats */}
             <div className="md:col-span-3 grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { label: 'Total Items', value: summaryStats.total, icon: ClipboardCheck, color: 'bg-blue-500/20' },
-                { label: 'Compliant', value: summaryStats.compliant, icon: CheckCircle2, color: 'bg-green-500/20' },
-                { label: 'Pending', value: summaryStats.pending, icon: Clock, color: 'bg-amber-500/20' },
-                { label: 'Overdue', value: summaryStats.overdue, icon: XCircle, color: 'bg-red-500/20' },
+                { label: 'Total Items', value: summaryStats.total, icon: ClipboardCheck, color: 'bg-white/10' },
+                { label: 'Compliant', value: summaryStats.compliant, icon: CheckCircle2, color: 'bg-white/10' },
+                { label: 'Pending', value: summaryStats.pending, icon: Clock, color: 'bg-white/10' },
+                { label: 'Overdue', value: summaryStats.overdue, icon: XCircle, color: 'bg-white/10' },
               ].map((stat, idx) => (
                 <div key={idx} className={`${stat.color} rounded-xl p-4`}>
                   <div className="flex items-center justify-between mb-2">
                     <stat.icon className="w-5 h-5 text-white/80" />
                   </div>
                   <p className="text-3xl font-bold">{stat.value}</p>
-                  <p className="text-blue-200 text-sm">{stat.label}</p>
+                  <p className="text-white/70 text-sm">{stat.label}</p>
                 </div>
               ))}
             </div>
@@ -396,15 +397,15 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.1 }}
-                  className="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-all cursor-pointer border border-slate-100"
+                  className="bg-surface-raised rounded-2xl p-5 shadow-sm hover:shadow-md transition-all cursor-pointer border border-surface-border"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <h3 className="font-semibold text-slate-800">{category.name}</h3>
-                      <p className="text-sm text-slate-500">{category.items} items tracked</p>
+                      <h3 className="font-semibold text-text-primary">{category.name}</h3>
+                      <p className="text-sm text-text-muted">{category.items} items tracked</p>
                     </div>
                     <div className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium ${
-                      category.trend >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                      category.trend >= 0 ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'
                     }`}>
                       {category.trend >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                       {Math.abs(category.trend)}%
@@ -414,13 +415,13 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
                   {/* Score Bar */}
                   <div className="mb-4">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-2xl font-bold text-slate-800">{category.score}%</span>
+                      <span className="text-2xl font-bold text-text-primary">{category.score}%</span>
                     </div>
-                    <div className="bg-slate-100 rounded-full h-2 overflow-hidden">
+                    <div className="bg-surface-border rounded-full h-2 overflow-hidden">
                       <div 
                         className={`h-full rounded-full ${
-                          category.score >= 95 ? 'bg-green-500' : 
-                          category.score >= 85 ? 'bg-amber-500' : 'bg-red-500'
+                          category.score >= 95 ? 'bg-success' : 
+                          category.score >= 85 ? 'bg-warning' : 'bg-danger'
                         }`}
                         style={{ width: `${category.score}%` }}
                       />
@@ -429,22 +430,22 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
 
                   {/* Item Breakdown */}
                   <div className="grid grid-cols-3 gap-2 text-center">
-                    <div className="bg-green-50 rounded-lg p-2">
-                      <p className="text-lg font-semibold text-green-700">{category.compliant}</p>
-                      <p className="text-xs text-green-600">Compliant</p>
+                    <div className="bg-success/5 rounded-lg p-2">
+                      <p className="text-lg font-semibold text-success">{category.compliant}</p>
+                      <p className="text-xs text-success">Compliant</p>
                     </div>
-                    <div className="bg-amber-50 rounded-lg p-2">
-                      <p className="text-lg font-semibold text-amber-700">{category.pending}</p>
-                      <p className="text-xs text-amber-600">Pending</p>
+                    <div className="bg-warning/5 rounded-lg p-2">
+                      <p className="text-lg font-semibold text-warning">{category.pending}</p>
+                      <p className="text-xs text-warning">Pending</p>
                     </div>
-                    <div className="bg-red-50 rounded-lg p-2">
-                      <p className="text-lg font-semibold text-red-700">{category.overdue}</p>
-                      <p className="text-xs text-red-600">Overdue</p>
+                    <div className="bg-danger/5 rounded-lg p-2">
+                      <p className="text-lg font-semibold text-danger">{category.overdue}</p>
+                      <p className="text-xs text-danger">Overdue</p>
                     </div>
                   </div>
 
                   {/* Audit Dates */}
-                  <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                  <div className="mt-4 pt-4 border-t border-surface-border flex items-center justify-between text-xs text-text-muted">
                     <span>Last: {category.lastAudit}</span>
                     <span>Next: {category.nextAudit}</span>
                   </div>
@@ -458,11 +459,11 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100"
+                className="bg-surface-raised rounded-2xl p-5 shadow-soft border border-surface-border"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-slate-800 flex items-center gap-2">
-                    <Award className="w-5 h-5 text-blue-600" />
+                  <h3 className="font-semibold text-text-primary flex items-center gap-2">
+                    <Award className="w-5 h-5 text-accent" />
                     Regulatory Frameworks
                   </h3>
                 </div>
@@ -470,22 +471,22 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
                   {mockComplianceData.regulatoryFrameworks.map((framework) => (
                     <div
                       key={framework.id}
-                      className="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors"
+                      className="flex items-center justify-between p-3 bg-surface-100/50 rounded-xl hover:bg-surface-100 transition-colors"
                     >
                       <div className="flex items-center gap-3">
                         <div className={`w-2 h-2 rounded-full ${
-                          framework.status === 'compliant' ? 'bg-green-500' : 'bg-amber-500'
+                          framework.status === 'compliant' ? 'bg-success' : 'bg-warning'
                         }`} />
                         <div>
-                          <p className="font-medium text-slate-800">{framework.name}</p>
-                          <p className="text-xs text-slate-500">{framework.items} requirements</p>
+                          <p className="font-medium text-text-primary">{framework.name}</p>
+                          <p className="text-xs text-text-muted">{framework.items} requirements</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
                         <span className={`px-2 py-1 rounded-lg text-xs font-medium ${getStatusColor(framework.status)}`}>
                           {framework.status.charAt(0).toUpperCase() + framework.status.slice(1)}
                         </span>
-                        <span className="font-semibold text-slate-800">{framework.score}%</span>
+                        <span className="font-semibold text-text-primary">{framework.score}%</span>
                       </div>
                     </div>
                   ))}
@@ -496,34 +497,34 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100"
+                className="bg-surface-raised rounded-2xl p-5 shadow-soft border border-surface-border"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-slate-800 flex items-center gap-2">
-                    <Calendar className="w-5 h-5 text-blue-600" />
+                  <h3 className="font-semibold text-text-primary flex items-center gap-2">
+                    <Calendar className="w-5 h-5 text-accent" />
                     Upcoming Deadlines
                   </h3>
-                  <button className="text-blue-600 text-sm hover:underline">View All</button>
+                  <button className="text-accent text-sm hover:underline">View All</button>
                 </div>
                 <div className="space-y-3">
                   {mockComplianceData.upcomingDeadlines.map((deadline) => (
                     <div
                       key={deadline.id}
-                      className="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors"
+                      className="flex items-center justify-between p-3 bg-surface-100/50 rounded-xl hover:bg-surface-100 transition-colors"
                     >
                       <div className="flex items-center gap-3">
                         <div className={`p-2 rounded-lg ${
-                          deadline.daysRemaining <= 7 ? 'bg-red-100' : 
-                          deadline.daysRemaining <= 14 ? 'bg-amber-100' : 'bg-green-100'
+                          deadline.daysRemaining <= 7 ? 'bg-danger/10' : 
+                          deadline.daysRemaining <= 14 ? 'bg-warning/10' : 'bg-success/10'
                         }`}>
                           <Clock className={`w-4 h-4 ${
-                            deadline.daysRemaining <= 7 ? 'text-red-600' : 
-                            deadline.daysRemaining <= 14 ? 'text-amber-600' : 'text-green-600'
+                            deadline.daysRemaining <= 7 ? 'text-danger' : 
+                            deadline.daysRemaining <= 14 ? 'text-warning' : 'text-success'
                           }`} />
                         </div>
                         <div>
-                          <p className="font-medium text-slate-800">{deadline.item}</p>
-                          <p className="text-xs text-slate-500">Due: {deadline.dueDate}</p>
+                          <p className="font-medium text-text-primary">{deadline.item}</p>
+                          <p className="text-xs text-text-muted">Due: {deadline.dueDate}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
@@ -541,11 +542,11 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100"
+              className="bg-surface-raised rounded-2xl p-5 shadow-soft border border-surface-border"
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-slate-800 flex items-center gap-2">
-                  <Activity className="w-5 h-5 text-blue-600" />
+                <h3 className="font-semibold text-text-primary flex items-center gap-2">
+                  <Activity className="w-5 h-5 text-accent" />
                   Recent Activity
                 </h3>
               </div>
@@ -553,18 +554,18 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
                 {mockComplianceData.recentActivities.map((activity) => (
                   <div
                     key={activity.id}
-                    className="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors"
+                    className="flex items-center justify-between p-3 bg-surface-100/50 rounded-xl hover:bg-surface-100 transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       {getStatusIcon(activity.status)}
                       <div>
-                        <p className="font-medium text-slate-800">{activity.action}</p>
-                        <p className="text-sm text-slate-600">{activity.item}</p>
+                        <p className="font-medium text-text-primary">{activity.action}</p>
+                        <p className="text-sm text-text-muted">{activity.item}</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm text-slate-600">{activity.user}</p>
-                      <p className="text-xs text-slate-400">{activity.date}</p>
+                      <p className="text-sm text-text-muted">{activity.user}</p>
+                      <p className="text-xs text-text-muted">{activity.date}</p>
                     </div>
                   </div>
                 ))}
@@ -576,22 +577,22 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
         {activeView === 'items' && (
           <>
             {/* Filters */}
-            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between bg-white rounded-2xl p-4 shadow-sm">
+            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between bg-surface-raised rounded-2xl p-4 shadow-soft">
               <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
                 <input
                   type="text"
                   placeholder="Search compliance items..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full pl-10 pr-4 py-2 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent focus:border-accent bg-surface-100 text-text-primary"
                 />
               </div>
               <div className="flex items-center gap-2 flex-wrap">
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-3 py-2 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500"
+                  className="px-3 py-2 border border-surface-border rounded-xl text-sm focus:ring-2 focus:ring-accent bg-surface-100 text-text-primary"
                 >
                   <option value="all">All Categories</option>
                   {COMPLIANCE_CATEGORIES.map(cat => (
@@ -601,7 +602,7 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
                 <select
                   value={selectedStatus}
                   onChange={(e) => setSelectedStatus(e.target.value)}
-                  className="px-3 py-2 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500"
+                  className="px-3 py-2 border border-surface-border rounded-xl text-sm focus:ring-2 focus:ring-accent bg-surface-100 text-text-primary"
                 >
                   <option value="all">All Status</option>
                   <option value="compliant">Compliant</option>
@@ -612,40 +613,40 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
             </div>
 
             {/* Items List */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div className="bg-surface-raised rounded-2xl shadow-soft border border-surface-border overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-slate-50 border-b border-slate-100">
+                  <thead className="bg-surface-100 border-b border-surface-border">
                     <tr>
-                      <th className="text-left px-4 py-3 text-sm font-semibold text-slate-600">ID</th>
-                      <th className="text-left px-4 py-3 text-sm font-semibold text-slate-600">Title</th>
-                      <th className="text-left px-4 py-3 text-sm font-semibold text-slate-600">Category</th>
-                      <th className="text-left px-4 py-3 text-sm font-semibold text-slate-600">Status</th>
-                      <th className="text-left px-4 py-3 text-sm font-semibold text-slate-600">Due Date</th>
-                      <th className="text-left px-4 py-3 text-sm font-semibold text-slate-600">Responsible</th>
-                      <th className="text-left px-4 py-3 text-sm font-semibold text-slate-600">Actions</th>
+                      <th className="text-left px-4 py-3 text-sm font-semibold text-text-muted">ID</th>
+                      <th className="text-left px-4 py-3 text-sm font-semibold text-text-muted">Title</th>
+                      <th className="text-left px-4 py-3 text-sm font-semibold text-text-muted">Category</th>
+                      <th className="text-left px-4 py-3 text-sm font-semibold text-text-muted">Status</th>
+                      <th className="text-left px-4 py-3 text-sm font-semibold text-text-muted">Due Date</th>
+                      <th className="text-left px-4 py-3 text-sm font-semibold text-text-muted">Responsible</th>
+                      <th className="text-left px-4 py-3 text-sm font-semibold text-text-muted">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-surface-border">
                     {filteredItems.map((item) => (
-                      <tr key={item.id} className="hover:bg-slate-50 transition-colors">
-                        <td className="px-4 py-3 text-sm font-medium text-slate-800">{item.id}</td>
+                      <tr key={item.id} className="hover:bg-surface-100 transition-colors">
+                        <td className="px-4 py-3 text-sm font-medium text-text-primary">{item.id}</td>
                         <td className="px-4 py-3">
-                          <p className="text-sm font-medium text-slate-800">{item.title}</p>
-                          <p className="text-xs text-slate-500">{item.notes}</p>
+                          <p className="text-sm font-medium text-text-primary">{item.title}</p>
+                          <p className="text-xs text-text-muted">{item.notes}</p>
                         </td>
-                        <td className="px-4 py-3 text-sm text-slate-600 capitalize">{item.category}</td>
+                        <td className="px-4 py-3 text-sm text-text-muted capitalize">{item.category}</td>
                         <td className="px-4 py-3">
                           <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium border ${getStatusColor(item.status)}`}>
                             {getStatusIcon(item.status)}
                             {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-sm text-slate-600">{item.dueDate}</td>
-                        <td className="px-4 py-3 text-sm text-slate-600">{item.responsible}</td>
+                        <td className="px-4 py-3 text-sm text-text-muted">{item.dueDate}</td>
+                        <td className="px-4 py-3 text-sm text-text-muted">{item.responsible}</td>
                         <td className="px-4 py-3">
-                          <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
-                            <Eye className="w-4 h-4 text-slate-600" />
+                          <button className="p-2 hover:bg-surface-100 rounded-lg transition-colors">
+                            <Eye className="w-4 h-4 text-text-muted" />
                           </button>
                         </td>
                       </tr>
@@ -661,13 +662,13 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100"
+            className="bg-surface-raised rounded-2xl p-6 shadow-soft border border-surface-border"
           >
             <div className="text-center py-12">
-              <Calendar className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-slate-800 mb-2">Compliance Calendar</h3>
-              <p className="text-slate-500">Interactive calendar view coming soon</p>
-              <p className="text-sm text-slate-400 mt-2">Track deadlines, inspections, and audits</p>
+              <Calendar className="w-16 h-16 text-text-muted/30 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-text-primary mb-2">Compliance Calendar</h3>
+              <p className="text-text-muted">Interactive calendar view coming soon</p>
+              <p className="text-sm text-text-muted/70 mt-2">Track deadlines, inspections, and audits</p>
             </div>
           </motion.div>
         )}

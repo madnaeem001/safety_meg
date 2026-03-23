@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Trophy, Star, Zap, Target, Award, TrendingUp, Shield, CheckCircle2 } from 'lucide-react';
 import { SMCard } from '../../components/ui';
 
-const MotionSMCard = motion(SMCard);
+const MotionSMCard = motion.create(SMCard);
 
 export const GamificationStats = () => {
   const achievements = [

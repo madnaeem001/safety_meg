@@ -322,14 +322,12 @@ export const RiskAssessment: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 pb-20">
+    <div className="min-h-screen bg-surface-base pb-20">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-md shadow-sm sticky top-[72px] z-50 px-4 h-16 flex items-center gap-3 safe-top border-b border-surface-200">
-        <button onClick={() => navigate(-1)} className="p-2 -ml-2 hover:bg-surface-100 rounded-full transition-colors">
-          <ArrowLeft className="w-6 h-6 text-surface-600" />
-        </button>
+      <div className="bg-surface-raised/80 backdrop-blur-md shadow-sm sticky top-[var(--nav-height)] z-50 px-4 h-16 flex items-center gap-3 safe-top border-b border-surface-border">
+        <SMButton variant="ghost" size="sm" onClick={() => navigate(-1)} leftIcon={<ArrowLeft className="w-5 h-5" />} />
         <img src="/logo.png" alt="SafetyMEG" className="w-8 h-8 object-contain" />
-        <h1 className="text-xl font-bold text-brand-900 flex items-center gap-2 tracking-tight">
+        <h1 className="text-xl font-bold text-text-primary flex items-center gap-2 tracking-tight">
           AI Risk Assessment
         </h1>
       </div>
@@ -349,8 +347,8 @@ export const RiskAssessment: React.FC = () => {
               onClick={() => setMode(m.id as AssessmentMode)}
               className={`flex items-center gap-2 px-5 py-3 rounded-2xl font-bold whitespace-nowrap transition-all ${
                 mode === m.id 
-                  ? 'bg-brand-900 text-white shadow-lg' 
-                  : 'bg-white text-surface-600 border border-surface-100 hover:bg-surface-50'
+                  ? 'bg-primary text-text-inverted shadow-lg' 
+                  : 'bg-surface-raised text-text-muted border border-surface-border hover:bg-surface-100'
               }`}
             >
               <m.icon className="w-4 h-4" />
@@ -370,33 +368,33 @@ export const RiskAssessment: React.FC = () => {
               className="space-y-6"
             >
               {/* API Key Input */}
-              <div className="bg-brand-50 p-5 rounded-2xl border border-brand-100">
-                <label className="block text-sm font-bold text-brand-900 mb-2">
-                  OpenAI API Key <span className="font-normal text-brand-600">(Required for Demo)</span>
+              <div className="bg-accent/5 p-5 rounded-2xl border border-accent/20">
+                <label className="block text-sm font-bold text-text-primary mb-2">
+                  OpenAI API Key <span className="font-normal text-accent">(Required for Demo)</span>
                 </label>
                 <input
                   type="password"
                   value={apiKey}
                   onChange={(e) => setApiKey(e.target.value)}
                   placeholder="sk-..."
-                  className="w-full px-4 py-3 rounded-xl border-brand-200 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white shadow-sm transition-all"
+                  className="w-full px-4 py-3 rounded-xl border-surface-border focus:ring-2 focus:ring-accent focus:border-accent bg-surface-raised shadow-sm transition-all"
                 />
-                <p className="text-xs text-brand-600 mt-2 flex items-center gap-1">
+                <p className="text-xs text-accent mt-2 flex items-center gap-1">
                   <Shield className="w-3 h-3" />
                   Your key is used locally and never stored.
                 </p>
               </div>
 
               {/* Input Section */}
-              <div className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100">
-                <label className="block text-lg font-bold text-brand-900 mb-3">
+              <div className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border">
+                <label className="block text-lg font-bold text-text-primary mb-3">
                   Describe the Task or Environment
                 </label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="E.g., Working at height to replace a light bulb in the warehouse..."
-                  className="w-full h-40 px-4 py-3 rounded-xl border border-surface-200 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 resize-none bg-surface-50 focus:bg-white transition-all"
+                  className="w-full h-40 px-4 py-3 rounded-xl border border-surface-border focus:ring-2 focus:ring-accent focus:border-accent resize-none bg-surface-100 focus:bg-surface-raised transition-all"
                 />
                 
                 <motion.button
@@ -404,7 +402,7 @@ export const RiskAssessment: React.FC = () => {
                   whileTap={{ scale: 0.98 }}
                   onClick={handleAnalyze}
                   disabled={loading || !description || !apiKey}
-                  className="w-full mt-6 py-4 flex items-center justify-center gap-2 bg-brand-600 text-white rounded-2xl font-bold active:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-brand-200"
+                  className="w-full mt-6 py-4 flex items-center justify-center gap-2 bg-primary text-text-inverted rounded-2xl font-bold active:opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
                 >
                   {loading ? (
                     <>
@@ -425,15 +423,15 @@ export const RiskAssessment: React.FC = () => {
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.95, y: 20 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100"
+                  className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border"
                 >
-                  <div className="flex items-center gap-3 mb-5 pb-4 border-b border-surface-100">
-                    <div className="p-2 bg-emerald-100 rounded-full">
-                      <CheckCircle className="w-6 h-6 text-emerald-600" />
+                  <div className="flex items-center gap-3 mb-5 pb-4 border-b border-surface-border">
+                    <div className="p-2 bg-success/10 rounded-full">
+                      <CheckCircle className="w-6 h-6 text-success" />
                     </div>
-                    <h2 className="text-xl font-bold text-brand-900">Assessment Result</h2>
+                    <h2 className="text-xl font-bold text-text-primary">Assessment Result</h2>
                   </div>
-                  <div className="whitespace-pre-wrap font-medium text-surface-700 leading-relaxed">
+                  <div className="whitespace-pre-wrap font-medium text-text-primary leading-relaxed">
                     {result}
                   </div>
                 </motion.div>
@@ -451,26 +449,26 @@ export const RiskAssessment: React.FC = () => {
               className="space-y-6"
             >
               {/* Task Information */}
-              <div className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100">
-                <h3 className="font-bold text-brand-900 mb-4 flex items-center gap-2">
-                  <ClipboardList className="w-5 h-5 text-brand-600" />
+              <div className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border">
+                <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
+                  <ClipboardList className="w-5 h-5 text-accent" />
                   Pre-Task Safety Assessment
                 </h3>
-                <p className="text-sm text-surface-500 mb-6">Complete this form before starting any high-risk work activity.</p>
+                <p className="text-sm text-text-muted mb-6">Complete this form before starting any high-risk work activity.</p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-xs font-bold text-surface-400 uppercase mb-1 block">Task Name</label>
+                    <label className="text-xs font-bold text-text-muted uppercase mb-1 block">Task Name</label>
                     <input
                       type="text"
                       value={preTaskData.taskName}
                       onChange={(e) => setPreTaskData({ ...preTaskData, taskName: e.target.value })}
                       placeholder="e.g., Scaffold erection"
-                      className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
+                      className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none"
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-surface-400 uppercase mb-1 block flex items-center gap-1">
+                    <label className="text-xs font-bold text-text-muted uppercase mb-1 block flex items-center gap-1">
                       <MapPin className="w-3 h-3" /> Location
                     </label>
                     <input
@@ -478,22 +476,22 @@ export const RiskAssessment: React.FC = () => {
                       value={preTaskData.location}
                       onChange={(e) => setPreTaskData({ ...preTaskData, location: e.target.value })}
                       placeholder="e.g., Building A, Level 3"
-                      className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
+                      className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none"
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-surface-400 uppercase mb-1 block flex items-center gap-1">
+                    <label className="text-xs font-bold text-text-muted uppercase mb-1 block flex items-center gap-1">
                       <Calendar className="w-3 h-3" /> Date
                     </label>
                     <input
                       type="date"
                       value={preTaskData.date}
                       onChange={(e) => setPreTaskData({ ...preTaskData, date: e.target.value })}
-                      className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
+                      className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none"
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-surface-400 uppercase mb-1 block flex items-center gap-1">
+                    <label className="text-xs font-bold text-text-muted uppercase mb-1 block flex items-center gap-1">
                       <Users className="w-3 h-3" /> Supervisor
                     </label>
                     <input
@@ -501,26 +499,26 @@ export const RiskAssessment: React.FC = () => {
                       value={preTaskData.supervisor}
                       onChange={(e) => setPreTaskData({ ...preTaskData, supervisor: e.target.value })}
                       placeholder="Supervisor name"
-                      className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
+                      className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none"
                     />
                   </div>
                   <div className="md:col-span-2">
-                    <label className="text-xs font-bold text-surface-400 uppercase mb-1 block">Crew Members</label>
+                    <label className="text-xs font-bold text-text-muted uppercase mb-1 block">Crew Members</label>
                     <input
                       type="text"
                       value={preTaskData.crewMembers}
                       onChange={(e) => setPreTaskData({ ...preTaskData, crewMembers: e.target.value })}
                       placeholder="List all crew members participating"
-                      className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
+                      className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Hazards & Controls */}
-              <div className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100">
-                <h3 className="font-bold text-brand-900 mb-4 flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-orange-500" />
+              <div className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border">
+                <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5 text-warning" />
                   Hazards Identified
                 </h3>
                 <div className="space-y-3">
@@ -536,13 +534,13 @@ export const RiskAssessment: React.FC = () => {
                           setPreTaskData({ ...preTaskData, hazardsIdentified: updated });
                         }}
                         placeholder="Describe the hazard..."
-                        className="flex-1 px-4 py-2 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
+                        className="flex-1 px-4 py-2 bg-surface-100 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none"
                       />
                     </div>
                   ))}
                   <button
                     onClick={() => addPreTaskItem('hazardsIdentified')}
-                    className="text-brand-600 font-bold text-sm hover:bg-brand-50 px-4 py-2 rounded-xl transition-colors"
+                    className="text-accent font-bold text-sm hover:bg-accent/5 px-4 py-2 rounded-xl transition-colors"
                   >
                     + Add Hazard
                   </button>
@@ -550,8 +548,8 @@ export const RiskAssessment: React.FC = () => {
               </div>
 
               {/* PPE Selection */}
-              <div className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100">
-                <h3 className="font-bold text-brand-900 mb-4 flex items-center gap-2">
+              <div className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border">
+                <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
                   <HardHat className="w-5 h-5 text-yellow-500" />
                   Required PPE
                 </h3>
@@ -561,8 +559,8 @@ export const RiskAssessment: React.FC = () => {
                       key={ppe}
                       className={`flex items-center gap-2 p-3 rounded-xl border cursor-pointer transition-all ${
                         preTaskData.ppeRequired.includes(ppe)
-                          ? 'bg-brand-50 border-brand-300 text-brand-700'
-                          : 'bg-surface-50 border-surface-200 text-surface-600 hover:bg-surface-100'
+                          ? 'bg-accent/5 border-accent/30 text-accent'
+                          : 'bg-surface-100 border-surface-border text-text-muted hover:bg-surface-100'
                       }`}
                     >
                       <input
@@ -598,12 +596,12 @@ export const RiskAssessment: React.FC = () => {
               className="space-y-6"
             >
               {/* Template Selector */}
-              <div className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100">
-                <h3 className="font-bold text-brand-900 mb-4 flex items-center gap-2">
-                  <FileText className="w-5 h-5 text-purple-600" />
+              <div className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border">
+                <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-accent" />
                   Job Safety Analysis (JSA)
                 </h3>
-                <p className="text-sm text-surface-500 mb-4">Select a template or create a custom JSA.</p>
+                <p className="text-sm text-text-muted mb-4">Select a template or create a custom JSA.</p>
                 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                   {JSA_TEMPLATES.map(template => (
@@ -612,8 +610,8 @@ export const RiskAssessment: React.FC = () => {
                       onClick={() => handleTemplateSelect(template.id)}
                       className={`p-3 rounded-xl border text-left transition-all ${
                         selectedJSATemplate === template.id
-                          ? 'bg-purple-50 border-purple-300 text-purple-700'
-                          : 'bg-surface-50 border-surface-200 text-surface-600 hover:bg-surface-100'
+                          ? 'bg-accent/5 border-accent/30 text-accent'
+                          : 'bg-surface-100 border-surface-border text-text-muted hover:bg-surface-100'
                       }`}
                     >
                       <span className="text-sm font-medium">{template.name}</span>
@@ -623,12 +621,12 @@ export const RiskAssessment: React.FC = () => {
               </div>
 
               {/* JSA Steps */}
-              <div className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100">
+              <div className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="font-bold text-brand-900">Task Steps, Hazards & Controls</h3>
+                  <h3 className="font-bold text-text-primary">Task Steps, Hazards & Controls</h3>
                   <button
                     onClick={addJSAItem}
-                    className="text-brand-600 font-bold text-sm hover:bg-brand-50 px-4 py-2 rounded-xl transition-colors"
+                    className="text-accent font-bold text-sm hover:bg-accent/5 px-4 py-2 rounded-xl transition-colors"
                   >
                     + Add Step
                   </button>
@@ -636,18 +634,18 @@ export const RiskAssessment: React.FC = () => {
 
                 <div className="space-y-4">
                   {jsaItems.map((item, index) => (
-                    <div key={index} className="bg-surface-50 rounded-2xl border border-surface-200 overflow-hidden">
+                    <div key={index} className="bg-surface-100 rounded-2xl border border-surface-border overflow-hidden">
                       <button
                         onClick={() => setJsaExpanded(jsaExpanded === index ? null : index)}
                         className="w-full flex items-center justify-between p-4 hover:bg-surface-100 transition-colors"
                       >
                         <div className="flex items-center gap-3">
-                          <span className="w-8 h-8 bg-brand-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                          <span className="w-8 h-8 bg-primary text-text-inverted rounded-full flex items-center justify-center font-bold text-sm">
                             {index + 1}
                           </span>
-                          <span className="font-medium text-surface-900">{item.step || 'Step ' + (index + 1)}</span>
+                          <span className="font-medium text-text-primary">{item.step || 'Step ' + (index + 1)}</span>
                         </div>
-                        {jsaExpanded === index ? <ChevronUp className="w-5 h-5 text-surface-400" /> : <ChevronDown className="w-5 h-5 text-surface-400" />}
+                        {jsaExpanded === index ? <ChevronUp className="w-5 h-5 text-text-muted" /> : <ChevronDown className="w-5 h-5 text-text-muted" />}
                       </button>
                       
                       {jsaExpanded === index && (
@@ -658,7 +656,7 @@ export const RiskAssessment: React.FC = () => {
                           className="p-4 pt-0 space-y-4"
                         >
                           <div>
-                            <label className="text-xs font-bold text-surface-400 uppercase mb-1 block">Task Step</label>
+                            <label className="text-xs font-bold text-text-muted uppercase mb-1 block">Task Step</label>
                             <input
                               type="text"
                               value={item.step}
@@ -668,11 +666,11 @@ export const RiskAssessment: React.FC = () => {
                                 setJsaItems(updated);
                               }}
                               placeholder="Describe the task step..."
-                              className="w-full px-4 py-3 bg-white border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
+                              className="w-full px-4 py-3 bg-surface-raised border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none"
                             />
                           </div>
                           <div>
-                            <label className="text-xs font-bold text-orange-400 uppercase mb-1 block flex items-center gap-1">
+                            <label className="text-xs font-bold text-warning uppercase mb-1 block flex items-center gap-1">
                               <AlertTriangle className="w-3 h-3" /> Potential Hazards
                             </label>
                             <textarea
@@ -684,11 +682,11 @@ export const RiskAssessment: React.FC = () => {
                               }}
                               placeholder="What could go wrong? What are the risks?"
                               rows={2}
-                              className="w-full px-4 py-3 bg-white border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none resize-none"
+                              className="w-full px-4 py-3 bg-surface-raised border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none resize-none"
                             />
                           </div>
                           <div>
-                            <label className="text-xs font-bold text-green-400 uppercase mb-1 block flex items-center gap-1">
+                            <label className="text-xs font-bold text-success uppercase mb-1 block flex items-center gap-1">
                               <Shield className="w-3 h-3" /> Control Measures
                             </label>
                             <textarea
@@ -700,13 +698,13 @@ export const RiskAssessment: React.FC = () => {
                               }}
                               placeholder="How will the hazards be controlled?"
                               rows={2}
-                              className="w-full px-4 py-3 bg-white border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none resize-none"
+                              className="w-full px-4 py-3 bg-surface-raised border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none resize-none"
                             />
                           </div>
                           {jsaItems.length > 1 && (
                             <button
                               onClick={() => removeJSAItem(index)}
-                              className="text-red-500 font-bold text-sm hover:bg-red-50 px-4 py-2 rounded-xl transition-colors"
+                              className="text-danger font-bold text-sm hover:bg-danger/5 px-4 py-2 rounded-xl transition-colors"
                             >
                               Remove Step
                             </button>
@@ -747,16 +745,16 @@ export const RiskAssessment: React.FC = () => {
 
               {/* AI Insights Panel */}
               {showAIPanel && (
-                <div className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100">
+                <div className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-bold text-brand-900 flex items-center gap-2">
-                      <Brain className="w-5 h-5 text-purple-600" />
+                    <h3 className="font-bold text-text-primary flex items-center gap-2">
+                      <Brain className="w-5 h-5 text-accent" />
                       AI Safety Insights
                     </h3>
                     <button
                       onClick={runAIAnalysis}
                       disabled={isAnalyzingAI}
-                      className="flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-xl font-medium hover:bg-purple-200 transition-colors disabled:opacity-50"
+                      className="flex items-center gap-2 px-4 py-2 bg-accent/10 text-accent rounded-xl font-medium hover:bg-accent/20 transition-colors disabled:opacity-50"
                     >
                       {isAnalyzingAI ? (
                         <><Loader2 className="w-4 h-4 animate-spin" /> Analyzing...</>
@@ -772,43 +770,43 @@ export const RiskAssessment: React.FC = () => {
                         <div
                           key={insight.id}
                           className={`p-4 rounded-xl border ${
-                            insight.type === 'warning' ? 'bg-red-50 border-red-200' :
-                            insight.type === 'pattern' ? 'bg-amber-50 border-amber-200' :
-                            insight.type === 'recommendation' ? 'bg-blue-50 border-blue-200' :
-                            'bg-green-50 border-green-200'
+                            insight.type === 'warning' ? 'bg-danger/5 border border-danger/20' :
+                            insight.type === 'pattern' ? 'bg-warning/5 border border-warning/20' :
+                            insight.type === 'recommendation' ? 'bg-accent/5 border border-accent/20' :
+                            'bg-success/5 border border-success/20'
                           }`}
                         >
                           <div className="flex items-start gap-3">
                             <div className={`p-2 rounded-lg ${
-                              insight.type === 'warning' ? 'bg-red-100' :
-                              insight.type === 'pattern' ? 'bg-amber-100' :
-                              insight.type === 'recommendation' ? 'bg-blue-100' :
-                              'bg-green-100'
+                              insight.type === 'warning' ? 'bg-danger/10' :
+                              insight.type === 'pattern' ? 'bg-warning/10' :
+                              insight.type === 'recommendation' ? 'bg-accent/10' :
+                              'bg-success/10'
                             }`}>
-                              {insight.type === 'warning' && <AlertTriangle className="w-4 h-4 text-red-600" />}
-                              {insight.type === 'pattern' && <TrendingUp className="w-4 h-4 text-amber-600" />}
-                              {insight.type === 'recommendation' && <Lightbulb className="w-4 h-4 text-blue-600" />}
-                              {insight.type === 'benchmark' && <BarChart3 className="w-4 h-4 text-green-600" />}
+                              {insight.type === 'warning' && <AlertTriangle className="w-4 h-4 text-danger" />}
+                              {insight.type === 'pattern' && <TrendingUp className="w-4 h-4 text-warning" />}
+                              {insight.type === 'recommendation' && <Lightbulb className="w-4 h-4 text-accent" />}
+                              {insight.type === 'benchmark' && <BarChart3 className="w-4 h-4 text-success" />}
                             </div>
                             <div className="flex-1">
                               <div className="flex items-center justify-between">
                                 <h4 className={`font-medium ${
-                                  insight.type === 'warning' ? 'text-red-800' :
-                                  insight.type === 'pattern' ? 'text-amber-800' :
-                                  insight.type === 'recommendation' ? 'text-blue-800' :
-                                  'text-green-800'
+                                  insight.type === 'warning' ? 'text-danger' :
+                                  insight.type === 'pattern' ? 'text-warning' :
+                                  insight.type === 'recommendation' ? 'text-accent' :
+                                  'text-success'
                                 }`}>{insight.title}</h4>
-                                <span className="text-xs text-surface-500">{insight.confidence}% confidence</span>
+                                <span className="text-xs text-text-muted">{insight.confidence}% confidence</span>
                               </div>
-                              <p className="text-sm text-surface-600 mt-1">{insight.description}</p>
-                              <p className="text-xs text-surface-400 mt-2">Source: {insight.source}</p>
+                              <p className="text-sm text-text-muted mt-1">{insight.description}</p>
+                              <p className="text-xs text-text-muted mt-2">Source: {insight.source}</p>
                             </div>
                           </div>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-8 text-surface-500">
+                    <div className="text-center py-8 text-text-muted">
                       <Brain className="w-12 h-12 mx-auto mb-3 opacity-30" />
                       <p>Click "Analyze Task" to get AI-powered safety insights</p>
                     </div>
@@ -817,15 +815,15 @@ export const RiskAssessment: React.FC = () => {
               )}
 
               {/* Linked Incidents */}
-              <div className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100">
+              <div className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-bold text-brand-900 flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-orange-500" />
+                  <h3 className="font-bold text-text-primary flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-warning" />
                     Linked Incident Reports
                   </h3>
                   <button
                     onClick={() => setShowIncidentSearch(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-orange-100 text-orange-700 rounded-xl font-medium hover:bg-orange-200 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-warning/10 text-warning rounded-xl font-medium hover:bg-warning/20 transition-colors"
                   >
                     <Plus className="w-4 h-4" />
                     Link Incident
@@ -835,39 +833,39 @@ export const RiskAssessment: React.FC = () => {
                 {linkedIncidents.length > 0 ? (
                   <div className="space-y-3">
                     {linkedIncidents.map(incident => (
-                      <div key={incident.id} className="p-4 bg-surface-50 rounded-xl border border-surface-200">
+                      <div key={incident.id} className="p-4 bg-surface-100 rounded-xl border border-surface-border">
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex items-center gap-2">
                             <span className={`px-2 py-0.5 text-xs rounded-full ${
-                              incident.severity === 'critical' ? 'bg-red-100 text-red-700' :
-                              incident.severity === 'high' ? 'bg-orange-100 text-orange-700' :
+                              incident.severity === 'critical' ? 'bg-danger/10 text-danger' :
+                              incident.severity === 'high' ? 'bg-warning/10 text-warning' :
                               incident.severity === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                              'bg-green-100 text-green-700'
+                              'bg-success/10 text-success'
                             }`}>
                               {incident.severity}
                             </span>
-                            <span className="font-medium text-surface-900">{incident.id}</span>
+                            <span className="font-medium text-text-primary">{incident.id}</span>
                           </div>
                           <button
                             onClick={() => unlinkIncident(incident.id)}
-                            className="p-1 hover:bg-surface-200 rounded-lg"
+                            className="p-1 hover:bg-surface-100 rounded-lg"
                           >
-                            <XCircle className="w-4 h-4 text-surface-400" />
+                            <XCircle className="w-4 h-4 text-text-muted" />
                           </button>
                         </div>
-                        <h4 className="font-medium text-surface-800 mb-1">{incident.title}</h4>
-                        <p className="text-sm text-surface-600 mb-3">{incident.description}</p>
+                        <h4 className="font-medium text-text-primary mb-1">{incident.title}</h4>
+                        <p className="text-sm text-text-muted mb-3">{incident.description}</p>
                         
                         <div className="mb-3">
-                          <p className="text-xs font-medium text-surface-500 mb-1">Root Cause:</p>
-                          <p className="text-sm text-surface-700 bg-red-50 p-2 rounded-lg">{incident.rootCause}</p>
+                          <p className="text-xs font-medium text-text-muted mb-1">Root Cause:</p>
+                          <p className="text-sm text-text-primary bg-danger/5 p-2 rounded-lg">{incident.rootCause}</p>
                         </div>
                         
                         <div>
-                          <p className="text-xs font-medium text-surface-500 mb-1">Lessons Learned (Applied to JSA):</p>
+                          <p className="text-xs font-medium text-text-muted mb-1">Lessons Learned (Applied to JSA):</p>
                           <ul className="space-y-1">
                             {incident.lessonsLearned.map((lesson, i) => (
-                              <li key={i} className="text-sm text-green-700 bg-green-50 p-2 rounded-lg flex items-start gap-2">
+                              <li key={i} className="text-sm text-success bg-success/5 p-2 rounded-lg flex items-start gap-2">
                                 <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
                                 {lesson}
                               </li>
@@ -878,7 +876,7 @@ export const RiskAssessment: React.FC = () => {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-surface-500 border-2 border-dashed border-surface-200 rounded-xl">
+                  <div className="text-center py-8 text-text-muted border-2 border-dashed border-surface-border rounded-xl">
                     <FileText className="w-12 h-12 mx-auto mb-3 opacity-30" />
                     <p>No incidents linked yet</p>
                     <p className="text-sm">Link relevant incidents to learn from past events</p>
@@ -887,9 +885,9 @@ export const RiskAssessment: React.FC = () => {
               </div>
 
               {/* JSA Form (reusing existing JSA) */}
-              <div className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100">
-                <h3 className="font-bold text-brand-900 mb-4">Job Safety Analysis Steps</h3>
-                <p className="text-sm text-surface-500 mb-6">Lessons from linked incidents will be auto-populated into control measures.</p>
+              <div className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border">
+                <h3 className="font-bold text-text-primary mb-4">Job Safety Analysis Steps</h3>
+                <p className="text-sm text-text-muted mb-6">Lessons from linked incidents will be auto-populated into control measures.</p>
                 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
                   {JSA_TEMPLATES.map(template => (
@@ -898,8 +896,8 @@ export const RiskAssessment: React.FC = () => {
                       onClick={() => handleTemplateSelect(template.id)}
                       className={`p-3 rounded-xl border text-left transition-all ${
                         selectedJSATemplate === template.id
-                          ? 'bg-brand-50 border-brand-300 text-brand-700'
-                          : 'bg-surface-50 border-surface-200 text-surface-600 hover:bg-surface-100'
+                          ? 'bg-accent/5 border-accent/30 text-accent'
+                          : 'bg-surface-100 border-surface-border text-text-muted hover:bg-surface-100'
                       }`}
                     >
                       <span className="text-sm font-medium">{template.name}</span>
@@ -909,19 +907,19 @@ export const RiskAssessment: React.FC = () => {
 
                 <div className="space-y-4">
                   {jsaItems.map((item, index) => (
-                    <div key={index} className="bg-surface-50 rounded-2xl border border-surface-200 overflow-hidden">
+                    <div key={index} className="bg-surface-100 rounded-2xl border border-surface-border overflow-hidden">
                       <button
                         onClick={() => setJsaExpanded(jsaExpanded === index ? null : index)}
                         className="w-full flex items-center justify-between p-4 hover:bg-surface-100 transition-colors"
                       >
                         <div className="flex items-center gap-3">
-                          <span className="w-8 h-8 bg-brand-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                          <span className="w-8 h-8 bg-primary text-text-inverted rounded-full flex items-center justify-center font-bold text-sm">
                             {index + 1}
                           </span>
-                          <span className="font-medium text-surface-900">{item.step || 'Step ' + (index + 1)}</span>
-                          {item.control && <CheckCircle className="w-4 h-4 text-green-500" />}
+                          <span className="font-medium text-text-primary">{item.step || 'Step ' + (index + 1)}</span>
+                          {item.control && <CheckCircle className="w-4 h-4 text-success" />}
                         </div>
-                        {jsaExpanded === index ? <ChevronUp className="w-5 h-5 text-surface-400" /> : <ChevronDown className="w-5 h-5 text-surface-400" />}
+                        {jsaExpanded === index ? <ChevronUp className="w-5 h-5 text-text-muted" /> : <ChevronDown className="w-5 h-5 text-text-muted" />}
                       </button>
                       
                       {jsaExpanded === index && (
@@ -931,7 +929,7 @@ export const RiskAssessment: React.FC = () => {
                           className="p-4 pt-0 space-y-4"
                         >
                           <div>
-                            <label className="text-xs font-bold text-surface-400 uppercase mb-1 block">Task Step</label>
+                            <label className="text-xs font-bold text-text-muted uppercase mb-1 block">Task Step</label>
                             <input
                               type="text"
                               value={item.step}
@@ -941,11 +939,11 @@ export const RiskAssessment: React.FC = () => {
                                 setJsaItems(updated);
                               }}
                               placeholder="Describe the task step..."
-                              className="w-full px-4 py-3 bg-white border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
+                              className="w-full px-4 py-3 bg-surface-raised border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none"
                             />
                           </div>
                           <div>
-                            <label className="text-xs font-bold text-orange-400 uppercase mb-1 block flex items-center gap-1">
+                            <label className="text-xs font-bold text-warning uppercase mb-1 block flex items-center gap-1">
                               <AlertTriangle className="w-3 h-3" /> Potential Hazards
                             </label>
                             <textarea
@@ -957,13 +955,13 @@ export const RiskAssessment: React.FC = () => {
                               }}
                               placeholder="What could go wrong? What are the risks?"
                               rows={2}
-                              className="w-full px-4 py-3 bg-white border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none resize-none"
+                              className="w-full px-4 py-3 bg-surface-raised border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none resize-none"
                             />
                           </div>
                           <div>
-                            <label className="text-xs font-bold text-green-400 uppercase mb-1 block flex items-center gap-1">
+                            <label className="text-xs font-bold text-success uppercase mb-1 block flex items-center gap-1">
                               <Shield className="w-3 h-3" /> Control Measures
-                              {linkedIncidents.length > 0 && <span className="text-purple-500 ml-2">(Includes lessons from linked incidents)</span>}
+                              {linkedIncidents.length > 0 && <span className="text-accent ml-2">(Includes lessons from linked incidents)</span>}
                             </label>
                             <textarea
                               value={item.control}
@@ -974,7 +972,7 @@ export const RiskAssessment: React.FC = () => {
                               }}
                               placeholder="How will the hazards be controlled?"
                               rows={4}
-                              className="w-full px-4 py-3 bg-white border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none resize-none"
+                              className="w-full px-4 py-3 bg-surface-raised border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none resize-none"
                             />
                           </div>
                         </motion.div>
@@ -983,7 +981,7 @@ export const RiskAssessment: React.FC = () => {
                   ))}
                   <button
                     onClick={addJSAItem}
-                    className="w-full py-3 border-2 border-dashed border-surface-300 rounded-xl text-surface-500 font-medium hover:bg-surface-50 transition-colors"
+                    className="w-full py-3 border-2 border-dashed border-surface-border rounded-xl text-text-muted font-medium hover:bg-surface-100 transition-colors"
                   >
                     + Add Step
                   </button>
@@ -992,7 +990,7 @@ export const RiskAssessment: React.FC = () => {
 
               {/* Submit */}
               <div className="flex gap-4">
-                <button className="flex-1 py-4 bg-surface-100 text-surface-700 rounded-2xl font-bold hover:bg-surface-200 transition-all flex items-center justify-center gap-2">
+                <button className="flex-1 py-4 bg-surface-100 text-text-primary rounded-2xl font-bold hover:bg-surface-100 transition-all flex items-center justify-center gap-2">
                   <Eye className="w-5 h-5" />
                   Preview JSA
                 </button>
@@ -1014,12 +1012,12 @@ export const RiskAssessment: React.FC = () => {
                       animate={{ scale: 1, y: 0 }}
                       exit={{ scale: 0.95, y: 20 }}
                       onClick={(e) => e.stopPropagation()}
-                      className="bg-white rounded-3xl p-6 max-w-lg w-full max-h-[80vh] overflow-y-auto"
+                      className="bg-surface-raised rounded-3xl p-6 max-w-lg w-full max-h-[80vh] overflow-y-auto"
                     >
                       <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-bold text-brand-900">Link Incident Report</h3>
+                        <h3 className="text-lg font-bold text-text-primary">Link Incident Report</h3>
                         <button onClick={() => setShowIncidentSearch(false)} className="p-2 hover:bg-surface-100 rounded-full">
-                          <XCircle className="w-5 h-5 text-surface-500" />
+                          <XCircle className="w-5 h-5 text-text-muted" />
                         </button>
                       </div>
                       
@@ -1028,7 +1026,7 @@ export const RiskAssessment: React.FC = () => {
                         value={incidentSearchQuery}
                         onChange={(e) => setIncidentSearchQuery(e.target.value)}
                         placeholder="Search incidents by title, type, or related tasks..."
-                        className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl mb-4"
+                        className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl mb-4"
                       />
                       
                       <div className="space-y-3">
@@ -1036,22 +1034,22 @@ export const RiskAssessment: React.FC = () => {
                           <button
                             key={incident.id}
                             onClick={() => linkIncident(incident)}
-                            className="w-full p-4 bg-surface-50 rounded-xl border border-surface-200 text-left hover:bg-surface-100 transition-colors"
+                            className="w-full p-4 bg-surface-100 rounded-xl border border-surface-border text-left hover:bg-surface-100 transition-colors"
                           >
                             <div className="flex items-center gap-2 mb-1">
                               <span className={`px-2 py-0.5 text-xs rounded-full ${
-                                incident.severity === 'critical' ? 'bg-red-100 text-red-700' :
-                                incident.severity === 'high' ? 'bg-orange-100 text-orange-700' :
+                                incident.severity === 'critical' ? 'bg-danger/10 text-danger' :
+                                incident.severity === 'high' ? 'bg-warning/10 text-warning' :
                                 'bg-yellow-100 text-yellow-700'
                               }`}>
                                 {incident.severity}
                               </span>
-                              <span className="text-sm text-surface-500">{incident.id} • {incident.date}</span>
+                              <span className="text-sm text-text-muted">{incident.id} • {incident.date}</span>
                             </div>
-                            <h4 className="font-medium text-surface-900">{incident.title}</h4>
+                            <h4 className="font-medium text-text-primary">{incident.title}</h4>
                             <div className="flex flex-wrap gap-1 mt-2">
                               {incident.relatedTasks.map((task, i) => (
-                                <span key={i} className="px-2 py-0.5 bg-surface-200 text-surface-600 text-xs rounded-full">
+                                <span key={i} className="px-2 py-0.5 bg-surface-100 text-text-muted text-xs rounded-full">
                                   {task}
                                 </span>
                               ))}
@@ -1080,16 +1078,16 @@ export const RiskAssessment: React.FC = () => {
                 <motion.div
                   initial={{ scale: 0.9, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="bg-white p-8 rounded-3xl shadow-soft border border-surface-100 text-center"
+                  className="bg-surface-raised p-8 rounded-3xl shadow-soft border border-surface-border text-center"
                 >
-                  <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <div className="w-20 h-20 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-6">
                     <CheckCircle className="w-10 h-10 text-green-600" />
                   </div>
-                  <h2 className="text-2xl font-bold text-brand-900 mb-2">JSA Submitted Successfully!</h2>
-                  <p className="text-surface-600 mb-4">Your Job Safety Analysis has been submitted for review.</p>
-                  <div className="bg-surface-50 rounded-xl p-4 mb-6">
-                    <p className="text-sm text-surface-500">Reference Number</p>
-                    <p className="text-xl font-bold text-brand-600">{jsaReportId}</p>
+                  <h2 className="text-2xl font-bold text-text-primary mb-2">JSA Submitted Successfully!</h2>
+                  <p className="text-text-muted mb-4">Your Job Safety Analysis has been submitted for review.</p>
+                  <div className="bg-surface-100 rounded-xl p-4 mb-6">
+                    <p className="text-sm text-text-muted">Reference Number</p>
+                    <p className="text-xl font-bold text-accent">{jsaReportId}</p>
                   </div>
                   <div className="space-y-3">
                     <button
@@ -1109,13 +1107,13 @@ export const RiskAssessment: React.FC = () => {
                         setJsaItems([{ step: '', hazard: '', control: '' }]);
                         setSignatures([]);
                       }}
-                      className="w-full py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors"
+                      className="w-full py-3 bg-primary text-text-inverted rounded-xl font-bold hover:opacity-90 transition-colors"
                     >
                       Create New JSA
                     </button>
                     <button
                       onClick={() => navigate('/safety-hub')}
-                      className="w-full py-3 bg-surface-100 text-surface-700 rounded-xl font-medium hover:bg-surface-200 transition-colors"
+                      className="w-full py-3 bg-surface-100 text-text-primary rounded-xl font-medium hover:bg-surface-100 transition-colors"
                     >
                       Return to Safety Hub
                     </button>
@@ -1137,25 +1135,25 @@ export const RiskAssessment: React.FC = () => {
                   </div>
 
                   {/* Report Details */}
-                  <div className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100">
-                    <h3 className="font-bold text-brand-900 mb-4 flex items-center gap-2">
+                  <div className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border">
+                    <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
                       <FileText className="w-5 h-5 text-teal-600" />
                       Report Details
                     </h3>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="text-xs font-bold text-surface-400 uppercase mb-1 block">Task/Job Name *</label>
+                        <label className="text-xs font-bold text-text-muted uppercase mb-1 block">Task/Job Name *</label>
                         <input
                           type="text"
                           value={jsaReportData.taskName}
                           onChange={(e) => setJsaReportData({ ...jsaReportData, taskName: e.target.value })}
                           placeholder="e.g., Scaffold Installation"
-                          className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-teal-500/20 outline-none"
+                          className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none"
                         />
                       </div>
                       <div>
-                        <label className="text-xs font-bold text-surface-400 uppercase mb-1 block flex items-center gap-1">
+                        <label className="text-xs font-bold text-text-muted uppercase mb-1 block flex items-center gap-1">
                           <MapPin className="w-3 h-3" /> Location *
                         </label>
                         <input
@@ -1163,22 +1161,22 @@ export const RiskAssessment: React.FC = () => {
                           value={jsaReportData.location}
                           onChange={(e) => setJsaReportData({ ...jsaReportData, location: e.target.value })}
                           placeholder="e.g., Building A, Level 3"
-                          className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-teal-500/20 outline-none"
+                          className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none"
                         />
                       </div>
                       <div>
-                        <label className="text-xs font-bold text-surface-400 uppercase mb-1 block flex items-center gap-1">
+                        <label className="text-xs font-bold text-text-muted uppercase mb-1 block flex items-center gap-1">
                           <Calendar className="w-3 h-3" /> Date *
                         </label>
                         <input
                           type="date"
                           value={jsaReportData.date}
                           onChange={(e) => setJsaReportData({ ...jsaReportData, date: e.target.value })}
-                          className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-teal-500/20 outline-none"
+                          className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none"
                         />
                       </div>
                       <div>
-                        <label className="text-xs font-bold text-surface-400 uppercase mb-1 block flex items-center gap-1">
+                        <label className="text-xs font-bold text-text-muted uppercase mb-1 block flex items-center gap-1">
                           <Users className="w-3 h-3" /> Supervisor *
                         </label>
                         <input
@@ -1186,26 +1184,26 @@ export const RiskAssessment: React.FC = () => {
                           value={jsaReportData.supervisor}
                           onChange={(e) => setJsaReportData({ ...jsaReportData, supervisor: e.target.value })}
                           placeholder="Supervisor name"
-                          className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-teal-500/20 outline-none"
+                          className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none"
                         />
                       </div>
                       <div className="md:col-span-2">
-                        <label className="text-xs font-bold text-surface-400 uppercase mb-1 block">Crew Members (comma separated)</label>
+                        <label className="text-xs font-bold text-text-muted uppercase mb-1 block">Crew Members (comma separated)</label>
                         <input
                           type="text"
                           value={jsaReportData.crewMembers}
                           onChange={(e) => setJsaReportData({ ...jsaReportData, crewMembers: e.target.value })}
                           placeholder="John Doe, Jane Smith, Mike Johnson"
-                          className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-teal-500/20 outline-none"
+                          className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none"
                         />
                       </div>
                     </div>
                   </div>
 
                   {/* JSA Template Selection */}
-                  <div className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100">
-                    <h3 className="font-bold text-brand-900 mb-4 flex items-center gap-2">
-                      <ClipboardList className="w-5 h-5 text-purple-600" />
+                  <div className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border">
+                    <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
+                      <ClipboardList className="w-5 h-5 text-accent" />
                       Select JSA Template
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -1216,7 +1214,7 @@ export const RiskAssessment: React.FC = () => {
                           className={`p-3 rounded-xl border text-left transition-all ${
                             selectedJSATemplate === template.id
                               ? 'bg-teal-50 border-teal-300 text-teal-700'
-                              : 'bg-surface-50 border-surface-200 text-surface-600 hover:bg-surface-100'
+                              : 'bg-surface-100 border-surface-border text-text-muted hover:bg-surface-100'
                           }`}
                         >
                           <span className="text-sm font-medium">{template.name}</span>
@@ -1226,10 +1224,10 @@ export const RiskAssessment: React.FC = () => {
                   </div>
 
                   {/* Task Steps, Hazards & Controls */}
-                  <div className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100">
+                  <div className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-bold text-brand-900 flex items-center gap-2">
-                        <Shield className="w-5 h-5 text-orange-500" />
+                      <h3 className="font-bold text-text-primary flex items-center gap-2">
+                        <Shield className="w-5 h-5 text-warning" />
                         Task Steps, Hazards & Controls
                       </h3>
                       <button
@@ -1242,7 +1240,7 @@ export const RiskAssessment: React.FC = () => {
                     
                     <div className="space-y-4">
                       {jsaItems.map((item, index) => (
-                        <div key={index} className="bg-surface-50 rounded-2xl border border-surface-200 overflow-hidden">
+                        <div key={index} className="bg-surface-100 rounded-2xl border border-surface-border overflow-hidden">
                           <button
                             onClick={() => setJsaExpanded(jsaExpanded === index ? null : index)}
                             className="w-full flex items-center justify-between p-4 hover:bg-surface-100 transition-colors"
@@ -1251,10 +1249,10 @@ export const RiskAssessment: React.FC = () => {
                               <span className="w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
                                 {index + 1}
                               </span>
-                              <span className="font-medium text-surface-900">{item.step || 'Step ' + (index + 1)}</span>
-                              {item.hazard && item.control && <CheckCircle className="w-4 h-4 text-green-500" />}
+                              <span className="font-medium text-text-primary">{item.step || 'Step ' + (index + 1)}</span>
+                              {item.hazard && item.control && <CheckCircle className="w-4 h-4 text-success" />}
                             </div>
-                            {jsaExpanded === index ? <ChevronUp className="w-5 h-5 text-surface-400" /> : <ChevronDown className="w-5 h-5 text-surface-400" />}
+                            {jsaExpanded === index ? <ChevronUp className="w-5 h-5 text-text-muted" /> : <ChevronDown className="w-5 h-5 text-text-muted" />}
                           </button>
                           
                           {jsaExpanded === index && (
@@ -1264,7 +1262,7 @@ export const RiskAssessment: React.FC = () => {
                               className="p-4 pt-0 space-y-4"
                             >
                               <div>
-                                <label className="text-xs font-bold text-surface-400 uppercase mb-1 block">Task Step *</label>
+                                <label className="text-xs font-bold text-text-muted uppercase mb-1 block">Task Step *</label>
                                 <input
                                   type="text"
                                   value={item.step}
@@ -1274,11 +1272,11 @@ export const RiskAssessment: React.FC = () => {
                                     setJsaItems(updated);
                                   }}
                                   placeholder="Describe the task step..."
-                                  className="w-full px-4 py-3 bg-white border border-surface-200 rounded-xl focus:ring-2 focus:ring-teal-500/20 outline-none"
+                                  className="w-full px-4 py-3 bg-surface-raised border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none"
                                 />
                               </div>
                               <div>
-                                <label className="text-xs font-bold text-orange-400 uppercase mb-1 block flex items-center gap-1">
+                                <label className="text-xs font-bold text-warning uppercase mb-1 block flex items-center gap-1">
                                   <AlertTriangle className="w-3 h-3" /> Potential Hazards *
                                 </label>
                                 <textarea
@@ -1290,11 +1288,11 @@ export const RiskAssessment: React.FC = () => {
                                   }}
                                   placeholder="What could go wrong? What are the risks?"
                                   rows={2}
-                                  className="w-full px-4 py-3 bg-white border border-surface-200 rounded-xl focus:ring-2 focus:ring-teal-500/20 outline-none resize-none"
+                                  className="w-full px-4 py-3 bg-surface-raised border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none resize-none"
                                 />
                               </div>
                               <div>
-                                <label className="text-xs font-bold text-green-400 uppercase mb-1 block flex items-center gap-1">
+                                <label className="text-xs font-bold text-success uppercase mb-1 block flex items-center gap-1">
                                   <Shield className="w-3 h-3" /> Control Measures *
                                 </label>
                                 <textarea
@@ -1306,13 +1304,13 @@ export const RiskAssessment: React.FC = () => {
                                   }}
                                   placeholder="How will the hazards be controlled?"
                                   rows={3}
-                                  className="w-full px-4 py-3 bg-white border border-surface-200 rounded-xl focus:ring-2 focus:ring-teal-500/20 outline-none resize-none"
+                                  className="w-full px-4 py-3 bg-surface-raised border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none resize-none"
                                 />
                               </div>
                               {jsaItems.length > 1 && (
                                 <button
                                   onClick={() => removeJSAItem(index)}
-                                  className="text-red-500 font-bold text-sm hover:bg-red-50 px-4 py-2 rounded-xl transition-colors"
+                                  className="text-danger font-bold text-sm hover:bg-danger/5 px-4 py-2 rounded-xl transition-colors"
                                 >
                                   Remove Step
                                 </button>
@@ -1325,8 +1323,8 @@ export const RiskAssessment: React.FC = () => {
                   </div>
 
                   {/* PPE & Equipment */}
-                  <div className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100">
-                    <h3 className="font-bold text-brand-900 mb-4 flex items-center gap-2">
+                  <div className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border">
+                    <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
                       <HardHat className="w-5 h-5 text-yellow-500" />
                       Required PPE
                     </h3>
@@ -1337,7 +1335,7 @@ export const RiskAssessment: React.FC = () => {
                           className={`flex items-center gap-2 p-3 rounded-xl border cursor-pointer transition-all ${
                             preTaskData.ppeRequired.includes(ppe)
                               ? 'bg-teal-50 border-teal-300 text-teal-700'
-                              : 'bg-surface-50 border-surface-200 text-surface-600 hover:bg-surface-100'
+                              : 'bg-surface-100 border-surface-border text-text-muted hover:bg-surface-100'
                           }`}
                         >
                           <input
@@ -1358,7 +1356,7 @@ export const RiskAssessment: React.FC = () => {
                     </div>
                     
                     <div className="mt-4">
-                      <label className="text-xs font-bold text-surface-400 uppercase mb-1 block flex items-center gap-1">
+                      <label className="text-xs font-bold text-text-muted uppercase mb-1 block flex items-center gap-1">
                         <Wrench className="w-3 h-3" /> Tools & Equipment Needed
                       </label>
                       <textarea
@@ -1366,15 +1364,15 @@ export const RiskAssessment: React.FC = () => {
                         onChange={(e) => setJsaReportData({ ...jsaReportData, equipmentNeeded: e.target.value })}
                         placeholder="List all tools and equipment required for this job..."
                         rows={2}
-                        className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-teal-500/20 outline-none resize-none"
+                        className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none resize-none"
                       />
                     </div>
                   </div>
 
                   {/* Emergency Procedures */}
-                  <div className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100">
-                    <h3 className="font-bold text-brand-900 mb-4 flex items-center gap-2">
-                      <AlertTriangle className="w-5 h-5 text-red-500" />
+                  <div className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border">
+                    <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
+                      <AlertTriangle className="w-5 h-5 text-danger" />
                       Emergency Procedures
                     </h3>
                     <textarea
@@ -1382,14 +1380,14 @@ export const RiskAssessment: React.FC = () => {
                       onChange={(e) => setJsaReportData({ ...jsaReportData, emergencyProcedures: e.target.value })}
                       placeholder="Describe emergency procedures, evacuation routes, emergency contacts, and first aid locations..."
                       rows={4}
-                      className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-teal-500/20 outline-none resize-none"
+                      className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none resize-none"
                     />
                   </div>
 
                   {/* Signatures Section */}
-                  <div className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100">
+                  <div className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-bold text-brand-900 flex items-center gap-2">
+                      <h3 className="font-bold text-text-primary flex items-center gap-2">
                         <FileText className="w-5 h-5 text-indigo-600" />
                         Required Signatures
                       </h3>
@@ -1404,22 +1402,22 @@ export const RiskAssessment: React.FC = () => {
                     {signatures.length > 0 ? (
                       <div className="space-y-2">
                         {signatures.map((sig, index) => (
-                          <div key={index} className="flex items-center gap-3 p-3 bg-surface-50 rounded-xl">
+                          <div key={index} className="flex items-center gap-3 p-3 bg-surface-100 rounded-xl">
                             <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                              sig.signed ? 'bg-green-100' : 'bg-surface-200'
+                              sig.signed ? 'bg-success/10' : 'bg-surface-100'
                             }`}>
                               {sig.signed ? (
-                                <CheckCircle className="w-5 h-5 text-green-600" />
+                                <CheckCircle className="w-5 h-5 text-success" />
                               ) : (
-                                <FileText className="w-4 h-4 text-surface-400" />
+                                <FileText className="w-4 h-4 text-text-muted" />
                               )}
                             </div>
                             <div className="flex-1">
-                              <p className="font-medium text-surface-900">{sig.name}</p>
-                              <p className="text-sm text-surface-500">{sig.role}</p>
+                              <p className="font-medium text-text-primary">{sig.name}</p>
+                              <p className="text-sm text-text-muted">{sig.role}</p>
                             </div>
                             <span className={`px-2 py-1 text-xs rounded-full ${
-                              sig.signed ? 'bg-green-100 text-green-700' : 'bg-surface-200 text-surface-600'
+                              sig.signed ? 'bg-success/10 text-success' : 'bg-surface-100 text-text-muted'
                             }`}>
                               {sig.signed ? 'Signed' : 'Pending'}
                             </span>
@@ -1427,7 +1425,7 @@ export const RiskAssessment: React.FC = () => {
                         ))}
                       </div>
                     ) : (
-                      <div className="text-center py-6 text-surface-500 border-2 border-dashed border-surface-200 rounded-xl">
+                      <div className="text-center py-6 text-text-muted border-2 border-dashed border-surface-border rounded-xl">
                         <FileText className="w-10 h-10 mx-auto mb-2 opacity-30" />
                         <p>No signatures added yet</p>
                         <p className="text-sm">Click "Add Signature" to add crew signatures</p>
@@ -1436,20 +1434,20 @@ export const RiskAssessment: React.FC = () => {
                   </div>
 
                   {/* Additional Notes */}
-                  <div className="bg-white p-6 rounded-3xl shadow-soft border border-surface-100">
-                    <h3 className="font-bold text-brand-900 mb-4">Additional Notes</h3>
+                  <div className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border">
+                    <h3 className="font-bold text-text-primary mb-4">Additional Notes</h3>
                     <textarea
                       value={jsaReportData.additionalNotes}
                       onChange={(e) => setJsaReportData({ ...jsaReportData, additionalNotes: e.target.value })}
                       placeholder="Any additional comments, special considerations, or notes..."
                       rows={3}
-                      className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-teal-500/20 outline-none resize-none"
+                      className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none resize-none"
                     />
                   </div>
 
                   {/* Submit Buttons */}
                   <div className="flex gap-4">
-                    <button className="flex-1 py-4 bg-surface-100 text-surface-700 rounded-2xl font-bold hover:bg-surface-200 transition-all flex items-center justify-center gap-2">
+                    <button className="flex-1 py-4 bg-surface-100 text-text-primary rounded-2xl font-bold hover:bg-surface-100 transition-all flex items-center justify-center gap-2">
                       <Eye className="w-5 h-5" />
                       Preview Report
                     </button>
@@ -1533,30 +1531,30 @@ export const RiskAssessment: React.FC = () => {
                       animate={{ scale: 1, y: 0 }}
                       exit={{ scale: 0.95, y: 20 }}
                       onClick={(e) => e.stopPropagation()}
-                      className="bg-white rounded-3xl p-6 max-w-md w-full"
+                      className="bg-surface-raised rounded-3xl p-6 max-w-md w-full"
                     >
                       <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-bold text-brand-900">Add Signature</h3>
+                        <h3 className="text-lg font-bold text-text-primary">Add Signature</h3>
                         <button onClick={() => setShowSignatureModal(false)} className="p-2 hover:bg-surface-100 rounded-full">
-                          <XCircle className="w-5 h-5 text-surface-500" />
+                          <XCircle className="w-5 h-5 text-text-muted" />
                         </button>
                       </div>
                       
                       <div className="space-y-4">
                         <div>
-                          <label className="text-xs font-bold text-surface-400 uppercase mb-1 block">Name</label>
+                          <label className="text-xs font-bold text-text-muted uppercase mb-1 block">Name</label>
                           <input
                             type="text"
                             id="sig-name"
                             placeholder="Worker name"
-                            className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl"
+                            className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl"
                           />
                         </div>
                         <div>
-                          <label className="text-xs font-bold text-surface-400 uppercase mb-1 block">Role</label>
+                          <label className="text-xs font-bold text-text-muted uppercase mb-1 block">Role</label>
                           <select
                             id="sig-role"
-                            className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl"
+                            className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl"
                           >
                             <option value="Worker">Worker</option>
                             <option value="Supervisor">Supervisor</option>

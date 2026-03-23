@@ -2934,6 +2934,24 @@ export interface ToolboxTalkRecord {
   attendeeCount?: number; status: string; createdAt?: number;
 }
 
+export interface ToolboxTalkAIGenerationPayload {
+  industry: string;
+  category?: string;
+  topic: string;
+}
+
+export interface ToolboxTalkAIGenerationResponse {
+  topic: string;
+  industry: string;
+  category?: string;
+  content: string;
+  keyPoints: string[];
+  safetyTips: string[];
+  discussionQuestions: string[];
+  source: 'ai' | 'fallback';
+  model?: string | null;
+}
+
 export const toolboxApiService = {
   getAll: (params?: { category?: string; department?: string; status?: string }) =>
     api.get<ToolboxTalkRecord[]>('/toolbox-talks', params as any),
@@ -2944,8 +2962,11 @@ export const toolboxApiService = {
   create: (data: Partial<ToolboxTalkRecord>) =>
     api.post<ToolboxTalkRecord>('/toolbox-talks', data),
 
-  attend: (id: number, data: { attendeeName: string; employeeId?: string; signature?: string }) =>
+  attend: (id: number, data: { attendees: Array<{ employeeName: string; employeeId?: string; department?: string; signature?: boolean }> }) =>
     api.post<any>(`/toolbox-talks/${id}/attend`, data),
+
+  generateAI: (data: ToolboxTalkAIGenerationPayload) =>
+    api.post<ToolboxTalkAIGenerationResponse>('/toolbox-talks/ai-generate', data),
 };
 
 // ============================================

@@ -184,7 +184,7 @@ export const IncidentsTrendChart: React.FC<{ timeRange?: string; data?: Dashboar
       </div>
     </div>
     <motion.div className="h-40 md:h-48 w-full min-w-0" {...chartAnimationProps}>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={160}>
         <AreaChart data={chartData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
           <defs>
             <linearGradient id="incidentGradient" x1="0" y1="0" x2="0" y2="1">
@@ -261,7 +261,7 @@ export const SafetyScoreTrendChart: React.FC = () => (
       </div>
     </div>
     <motion.div className="h-36 md:h-44 w-full min-w-0" {...chartAnimationProps}>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={144}>
         <LineChart data={safetyScoreTrend} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
           <defs>
             <linearGradient id="scoreGradient" x1="0" y1="0" x2="1" y2="0">
@@ -375,7 +375,7 @@ export const InspectionCompletionChart: React.FC<{ data?: DashboardInspectionTre
       </div>
     </div>
     <motion.div className="h-36 md:h-44 w-full min-w-0" {...chartAnimationProps}>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={144}>
         <BarChart data={chartData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }} barGap={3}>
           <XAxis 
             dataKey="month" 
@@ -492,7 +492,7 @@ export const IncidentCategoriesChart: React.FC<{ data?: DashboardSeverityBreakdo
     {hasData ? (
       <div className="flex min-w-0 flex-col items-stretch gap-5 md:flex-row md:items-center">
         <motion.div className="mx-auto h-28 w-28 min-w-[7rem] flex-shrink-0 md:mx-0 md:h-32 md:w-32 md:min-w-[8rem]" {...chartAnimationProps}>
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={112}>
             <PieChart>
               <Pie
                 data={chartData}

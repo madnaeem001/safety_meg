@@ -163,7 +163,7 @@ export const EHSWorkflowDashboard: React.FC<EHSWorkflowDashboardProps> = ({ onBa
     return (
       <>
         {/* Dashboard Tab Switcher */}
-        <div className="bg-white border-b border-surface-200 sticky top-0 z-50">
+        <div className="bg-surface-raised border-b border-surface-border sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex gap-2 py-3">
               <button
@@ -175,7 +175,7 @@ export const EHSWorkflowDashboard: React.FC<EHSWorkflowDashboardProps> = ({ onBa
               </button>
               <button
                 onClick={() => setDashboardTab('project')}
-                className="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all bg-indigo-600 text-white shadow-lg"
+                className="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all bg-accent text-text-inverted shadow-lg"
               >
                 <FolderKanban className="w-4 h-4" />
                 Project Management
@@ -189,22 +189,22 @@ export const EHSWorkflowDashboard: React.FC<EHSWorkflowDashboardProps> = ({ onBa
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-surface-50 via-white to-surface-100">
+    <div className="min-h-screen bg-gradient-to-br bg-surface-base">
       {/* Dashboard Tab Switcher */}
-      <div className="bg-white border-b border-surface-200 sticky top-0 z-50">
+      <div className="bg-surface-raised border-b border-surface-border sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between py-3">
             <div className="flex gap-2">
               <button
                 onClick={() => setDashboardTab('ehs')}
-                className="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all bg-brand-600 text-white shadow-lg"
+                className="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all bg-primary text-text-inverted shadow-lg"
               >
                 <Shield className="w-4 h-4" />
                 EHS Workflow
               </button>
               <button
                 onClick={() => setDashboardTab('project')}
-                className="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all bg-indigo-100 text-indigo-600 hover:bg-indigo-200"
+                className="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all bg-accent/10 text-accent hover:bg-accent/20"
               >
                 <FolderKanban className="w-4 h-4" />
                 Project Management
@@ -213,7 +213,7 @@ export const EHSWorkflowDashboard: React.FC<EHSWorkflowDashboardProps> = ({ onBa
             {/* Export Button */}
             <button
               onClick={() => setExportModalOpen(true)}
-              className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-surface-600 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors"
+              className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-text-muted bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors"
             >
               <Download className="w-4 h-4" />
               Export
@@ -223,7 +223,7 @@ export const EHSWorkflowDashboard: React.FC<EHSWorkflowDashboardProps> = ({ onBa
       </div>
 
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-xl border-b border-surface-200/60 sticky top-12 z-40">
+      <div className="bg-surface-raised/80 backdrop-blur-xl border-b border-surface-border/60 sticky top-12 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -236,12 +236,12 @@ export const EHSWorkflowDashboard: React.FC<EHSWorkflowDashboardProps> = ({ onBa
                 </button>
               )}
               <div>
-                <h1 className="text-xl font-bold text-surface-800">Unified EHS Workflow</h1>
-                <p className="text-xs text-surface-500">Standard workflow aligned with ISO 45001</p>
+                <h1 className="text-xl font-bold text-text-primary">Unified EHS Workflow</h1>
+                <p className="text-xs text-text-muted">Standard workflow aligned with ISO 45001</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-surface-400 hidden sm:block">
+              <span className="text-xs text-text-muted hidden sm:block">
                 {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
               </span>
             </div>
@@ -264,18 +264,18 @@ export const EHSWorkflowDashboard: React.FC<EHSWorkflowDashboardProps> = ({ onBa
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-xl border border-surface-200 p-4"
+            className="bg-surface-raised rounded-xl border border-surface-border p-4"
           >
             <div className="flex items-center gap-2 mb-2">
-              <div className="p-2 bg-brand-100 rounded-lg">
-                <Target className="w-4 h-4 text-brand-600" />
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Target className="w-4 h-4 text-accent" />
               </div>
-              <span className="text-xs text-surface-500">TRIR</span>
+              <span className="text-xs text-text-muted">TRIR</span>
             </div>
-            <div className="text-2xl font-bold text-surface-800">{mockMetrics.trir}</div>
+            <div className="text-2xl font-bold text-text-primary">{mockMetrics.trir}</div>
             <div className="flex items-center gap-1 mt-1">
               <TrendingUp className="w-3 h-3 text-green-500" />
-              <span className="text-[10px] text-green-600">-0.3 vs last quarter</span>
+              <span className="text-xs text-success">-0.3 vs last quarter</span>
             </div>
           </motion.div>
 
@@ -283,48 +283,48 @@ export const EHSWorkflowDashboard: React.FC<EHSWorkflowDashboardProps> = ({ onBa
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            className="bg-white rounded-xl border border-surface-200 p-4"
+            className="bg-surface-raised rounded-xl border border-surface-border p-4"
           >
             <div className="flex items-center gap-2 mb-2">
-              <div className="p-2 bg-amber-100 rounded-lg">
-                <Clock className="w-4 h-4 text-amber-600" />
+              <div className="p-2 bg-warning/10 rounded-lg">
+                <Clock className="w-4 h-4 text-warning" />
               </div>
-              <span className="text-xs text-surface-500">Pending</span>
+              <span className="text-xs text-text-muted">Pending</span>
             </div>
-            <div className="text-2xl font-bold text-surface-800">{pendingItems}</div>
-            <div className="text-[10px] text-surface-400 mt-1">Items requiring action</div>
+            <div className="text-2xl font-bold text-text-primary">{pendingItems}</div>
+            <div className="text-xs text-text-muted mt-1">Items requiring action</div>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white rounded-xl border border-surface-200 p-4"
+            className="bg-surface-raised rounded-xl border border-surface-border p-4"
           >
             <div className="flex items-center gap-2 mb-2">
-              <div className="p-2 bg-red-100 rounded-lg">
-                <AlertTriangle className="w-4 h-4 text-red-600" />
+              <div className="p-2 bg-danger/10 rounded-lg">
+                <AlertTriangle className="w-4 h-4 text-danger" />
               </div>
-              <span className="text-xs text-surface-500">Overdue</span>
+              <span className="text-xs text-text-muted">Overdue</span>
             </div>
-            <div className="text-2xl font-bold text-red-600">{overdueItems}</div>
-            <div className="text-[10px] text-surface-400 mt-1">Past due date</div>
+            <div className="text-2xl font-bold text-danger">{overdueItems}</div>
+            <div className="text-xs text-text-muted mt-1">Past due date</div>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="bg-white rounded-xl border border-surface-200 p-4"
+            className="bg-surface-raised rounded-xl border border-surface-border p-4"
           >
             <div className="flex items-center gap-2 mb-2">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <Shield className="w-4 h-4 text-green-600" />
+              <div className="p-2 bg-success/10 rounded-lg">
+                <Shield className="w-4 h-4 text-success" />
               </div>
-              <span className="text-xs text-surface-500">Compliance</span>
+              <span className="text-xs text-text-muted">Compliance</span>
             </div>
-            <div className="text-2xl font-bold text-surface-800">{mockMetrics.complianceRate}%</div>
-            <div className="text-[10px] text-green-600 mt-1">Regulatory compliance</div>
+            <div className="text-2xl font-bold text-text-primary">{mockMetrics.complianceRate}%</div>
+            <div className="text-xs text-success mt-1">Regulatory compliance</div>
           </motion.div>
         </div>
 
@@ -337,11 +337,11 @@ export const EHSWorkflowDashboard: React.FC<EHSWorkflowDashboardProps> = ({ onBa
         >
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-semibold text-surface-800">{currentStageInfo?.name}</h2>
-              <p className="text-xs text-surface-500">{currentStageInfo?.description}</p>
+              <h2 className="text-lg font-semibold text-text-primary">{currentStageInfo?.name}</h2>
+              <p className="text-xs text-text-muted">{currentStageInfo?.description}</p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-surface-400">
+              <span className="text-sm text-text-muted">
                 {stageCounts[activeStage]} items
               </span>
             </div>
@@ -412,28 +412,28 @@ const ReportingDashboard: React.FC<{ metrics: typeof mockMetrics }> = ({ metrics
     <div className="space-y-6">
       {/* KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="bg-white rounded-xl border border-surface-200 p-4">
+        <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
           <div className="text-xs text-surface-500 mb-1">Total Recordable Incident Rate</div>
           <div className="text-3xl font-bold text-surface-800">{metrics.trir}</div>
           <div className="h-1 bg-surface-100 rounded-full mt-3">
             <div className="h-full bg-brand-500 rounded-full" style={{ width: `${Math.min(metrics.trir / 5 * 100, 100)}%` }} />
           </div>
         </div>
-        <div className="bg-white rounded-xl border border-surface-200 p-4">
+        <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
           <div className="text-xs text-surface-500 mb-1">Lost Time Incident Rate</div>
           <div className="text-3xl font-bold text-surface-800">{metrics.ltir}</div>
           <div className="h-1 bg-surface-100 rounded-full mt-3">
             <div className="h-full bg-amber-500 rounded-full" style={{ width: `${Math.min(metrics.ltir / 2 * 100, 100)}%` }} />
           </div>
         </div>
-        <div className="bg-white rounded-xl border border-surface-200 p-4">
+        <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
           <div className="text-xs text-surface-500 mb-1">CAPA Closure Rate</div>
           <div className="text-3xl font-bold text-green-600">{metrics.capaClosureRate}%</div>
           <div className="h-1 bg-surface-100 rounded-full mt-3">
             <div className="h-full bg-green-500 rounded-full" style={{ width: `${metrics.capaClosureRate}%` }} />
           </div>
         </div>
-        <div className="bg-white rounded-xl border border-surface-200 p-4">
+        <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
           <div className="text-xs text-surface-500 mb-1">Compliance Rate</div>
           <div className="text-3xl font-bold text-brand-600">{metrics.complianceRate}%</div>
           <div className="h-1 bg-surface-100 rounded-full mt-3">
@@ -443,30 +443,30 @@ const ReportingDashboard: React.FC<{ metrics: typeof mockMetrics }> = ({ metrics
       </div>
 
       {/* Leading Indicators */}
-      <div className="bg-white rounded-xl border border-surface-200 p-4">
+      <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
         <h3 className="text-sm font-semibold text-surface-800 mb-4">Leading Indicators (This Month)</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center">
             <div className="text-2xl font-bold text-blue-600">{metrics.leadingIndicators.observations}</div>
-            <div className="text-xs text-surface-500">Observations</div>
+            <div className="text-xs text-text-muted">Observations</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-teal-600">{metrics.leadingIndicators.inspections}</div>
-            <div className="text-xs text-surface-500">Inspections</div>
+            <div className="text-xs text-text-muted">Inspections</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-purple-600">{metrics.leadingIndicators.trainings}</div>
-            <div className="text-xs text-surface-500">Training Hours</div>
+            <div className="text-xs text-text-muted">Training Hours</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-green-600">{metrics.leadingIndicators.audits}</div>
-            <div className="text-xs text-surface-500">Audits</div>
+            <div className="text-xs text-text-muted">Audits</div>
           </div>
         </div>
       </div>
 
       {/* Incident Rate by Location */}
-      <div className="bg-white rounded-xl border border-surface-200 p-4">
+      <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
         <h3 className="text-sm font-semibold text-surface-800 mb-4">Incident Rate by Location</h3>
         <div className="space-y-3">
           {metrics.incidentRateByLocation.map((item, idx) => (
@@ -489,10 +489,10 @@ const ReportingDashboard: React.FC<{ metrics: typeof mockMetrics }> = ({ metrics
 
       {/* Export Options */}
       <div className="flex gap-3 justify-center">
-        <button className="px-4 py-2 text-xs font-medium text-surface-600 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors">
+        <button className="px-4 py-2 text-xs font-medium text-text-muted bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors">
           Export to Excel
         </button>
-        <button className="px-4 py-2 text-xs font-medium text-surface-600 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors">
+        <button className="px-4 py-2 text-xs font-medium text-text-muted bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors">
           Export to PDF
         </button>
         <SMButton variant="primary" size="sm">Generate Full Report</SMButton>
@@ -538,7 +538,7 @@ const ImprovementDashboard: React.FC = () => {
       </div>
 
       {/* Connected Modules */}
-      <div className="bg-white rounded-xl border border-surface-200 p-4">
+      <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
         <h3 className="text-sm font-semibold text-surface-800 mb-4">Connected Modules</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {improvementAreas.map((area, idx) => {
@@ -553,7 +553,7 @@ const ImprovementDashboard: React.FC = () => {
                   <IconComponent className={`w-4 h-4 text-${area.color}-600`} />
                   <span className="text-sm font-medium text-surface-700">{area.name}</span>
                 </div>
-                <div className="text-2xl font-bold text-surface-800">{area.linked}</div>
+                <div className="text-2xl font-bold text-text-primary">{area.linked}</div>
                 <div className="text-[10px] text-surface-500">Linked records</div>
               </motion.div>
             );
@@ -562,11 +562,11 @@ const ImprovementDashboard: React.FC = () => {
       </div>
 
       {/* Action Items */}
-      <div className="bg-white rounded-xl border border-surface-200 p-4">
+      <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
         <h3 className="text-sm font-semibold text-surface-800 mb-4">Improvement Opportunities</h3>
         <div className="space-y-2">
           <div className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg border border-amber-200">
-            <AlertTriangle className="w-4 h-4 text-amber-600" />
+            <AlertTriangle className="w-4 h-4 text-warning" />
             <div className="flex-1">
               <div className="text-xs font-medium text-surface-700">High forklift near-miss rate in Warehouse</div>
               <div className="text-[10px] text-surface-500">3 incidents in last 30 days</div>
@@ -586,7 +586,7 @@ const ImprovementDashboard: React.FC = () => {
             </button>
           </div>
           <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
-            <CheckCircle2 className="w-4 h-4 text-green-600" />
+            <CheckCircle2 className="w-4 h-4 text-success" />
             <div className="flex-1">
               <div className="text-xs font-medium text-surface-700">CAPA closure rate at 82%</div>
               <div className="text-[10px] text-surface-500">Above 80% target</div>

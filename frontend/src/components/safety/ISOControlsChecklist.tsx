@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { CheckCircle2, FileText, ArrowUpRight } from 'lucide-react';
 import { SMCard, SMBadge } from '../../components/ui';
 
-const MotionSMCard = motion(SMCard);
+const MotionSMCard = motion.create(SMCard);
 
 export interface ISOChecklistItem {
   id: string;

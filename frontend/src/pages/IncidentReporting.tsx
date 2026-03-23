@@ -5,7 +5,7 @@ import { SMButton, SMInput, SMSelect, SMDatePicker, SMCard } from '../components
 import PageContainer from '../layouts/PageContainer';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const MotionSMCard = motion(SMCard);
+const MotionSMCard = motion.create(SMCard);
 import { BodyDiagram, getBodyPartName } from '../components/safety/BodyDiagram';
 import { exportIncidentReportToPDF, generateReportId } from '../utils/exports/incidentPdfExport';
 import { aiAssistantService, incidentService, type IncidentSubmissionPayload } from '../api/services/apiService';
@@ -435,22 +435,7 @@ export const IncidentReporting: React.FC = () => {
       }
     >
       <div className="space-y-6 text-left">
-        {/* API Key Input (Temporary for Demo) */}
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-primary p-6 rounded-xl shadow-glow text-white space-y-4"
-        >
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-white/10 rounded-xl">
-              <Brain className="w-5 h-5 text-accent-300" />
-            </div>
-            <h3 className="font-bold tracking-tight">AI Assistance Ready</h3>
-          </div>
-          <p className="text-sm text-white/80 leading-relaxed">
-            AI suggestions now route through the backend. Real provider keys can be added later without exposing any secret in the browser.
-          </p>
-        </motion.div>
+        
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Incident Details */}
@@ -608,6 +593,7 @@ export const IncidentReporting: React.FC = () => {
                 </motion.div>
               )}
 
+              <div className="ai-purple-theme space-y-6">
               {/* Immediate Actions & Witnesses */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -620,6 +606,7 @@ export const IncidentReporting: React.FC = () => {
                     disabled={aiActionsLoading || (!formData.incident_type && !formData.description)}
                     loading={aiActionsLoading}
                     leftIcon={<Sparkles className="w-3 h-3" />}
+                    className="border border-primary/20 bg-primary text-white shadow-soft hover:bg-primary/90 hover:text-white"
                   >
                     AI Fill
                   </SMButton>
@@ -666,6 +653,7 @@ export const IncidentReporting: React.FC = () => {
                     disabled={aiSeverityLoading || !formData.description}
                     loading={aiSeverityLoading}
                     leftIcon={<Brain className="w-3 h-3" />}
+                    className="border border-primary/20 bg-primary text-white shadow-soft hover:bg-primary/90 hover:text-white"
                   >
                     AI Suggest
                   </SMButton>
@@ -711,7 +699,7 @@ export const IncidentReporting: React.FC = () => {
                 disabled={aiLoading || !formData.description}
                 loading={aiLoading}
                 leftIcon={<Sparkles className="w-4 h-4" />}
-                className="w-full py-4"
+                className="w-full border border-primary/20 bg-primary py-4 text-white shadow-soft hover:bg-primary/90 hover:text-white"
               >
                 AI Root Cause &amp; Action Suggestion
               </SMButton>
@@ -788,6 +776,7 @@ export const IncidentReporting: React.FC = () => {
                 </motion.div>
               )}
             </AnimatePresence>
+            </div>
 
             {/* Photo Upload */}
             <div className="space-y-3">

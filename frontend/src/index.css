@@ -25,6 +25,9 @@
        --text-on-accent   → text on accent (teal) bg
   ========================================================================= */
   :root {
+    /* Navigation bar height — used by sticky sub-headers */
+    --nav-height: 72px;
+
     /* Light Theme (Soft Icy Indigo Gradient derived from #151C62) */
     --bg-main-gradient: linear-gradient(135deg, #E2E6F0 0%, #F4F5FA 100%);
 
@@ -515,6 +518,185 @@
 .scroll-snap-item {
   scroll-snap-align: start;
   scroll-snap-stop: always;
+}
+
+/* ============================================
+   SCOPED AI PURPLE THEME
+   Applies only inside .ai-purple-theme wrappers
+   ============================================ */
+
+.ai-purple-theme {
+  --ai-rgb: 139 92 246;
+  --ai-rgb-strong: 124 58 237;
+  --ai-rgb-deep: 91 33 182;
+}
+
+.ai-purple-theme [class*="text-accent"],
+.ai-purple-theme [class*="text-brand"],
+.ai-purple-theme [class*="text-cyan-"],
+.ai-purple-theme [class*="text-purple-"] {
+  color: rgb(var(--ai-rgb)) !important;
+}
+
+.ai-purple-theme [class*="bg-accent"],
+.ai-purple-theme [class*="bg-primary"],
+.ai-purple-theme [class*="bg-brand-500"],
+.ai-purple-theme [class*="bg-brand-600"],
+.ai-purple-theme [class*="bg-cyan-500"],
+.ai-purple-theme [class*="bg-cyan-400"],
+.ai-purple-theme [class*="bg-purple-500"],
+.ai-purple-theme [class*="bg-purple-400"],
+.ai-purple-theme [class*="bg-violet-500"],
+.ai-purple-theme [class*="bg-violet-600"] {
+  background-color: rgb(var(--ai-rgb) / var(--tw-bg-opacity, 1)) !important;
+}
+
+.ai-purple-theme [class*="bg-accent/5"],
+.ai-purple-theme [class*="bg-brand-500/5"],
+.ai-purple-theme [class*="bg-cyan-500/5"],
+.ai-purple-theme [class*="bg-purple-500/5"],
+.ai-purple-theme [class*="bg-violet-500/5"] {
+  background-color: rgb(var(--ai-rgb) / 0.05) !important;
+}
+
+.ai-purple-theme [class*="bg-accent/10"],
+.ai-purple-theme [class*="bg-brand-500/10"],
+.ai-purple-theme [class*="bg-cyan-500/10"],
+.ai-purple-theme [class*="bg-purple-500/10"],
+.ai-purple-theme [class*="bg-violet-500/10"] {
+  background-color: rgb(var(--ai-rgb) / 0.10) !important;
+}
+
+.ai-purple-theme [class*="bg-accent/20"],
+.ai-purple-theme [class*="bg-brand-500/20"],
+.ai-purple-theme [class*="bg-cyan-500/20"],
+.ai-purple-theme [class*="bg-purple-500/20"],
+.ai-purple-theme [class*="bg-violet-500/20"] {
+  background-color: rgb(var(--ai-rgb) / 0.20) !important;
+}
+
+.ai-purple-theme [class*="bg-accent/30"],
+.ai-purple-theme [class*="bg-brand-500/30"],
+.ai-purple-theme [class*="bg-cyan-500/30"],
+.ai-purple-theme [class*="bg-purple-500/30"],
+.ai-purple-theme [class*="bg-violet-500/30"] {
+  background-color: rgb(var(--ai-rgb) / 0.30) !important;
+}
+
+.ai-purple-theme [class*="bg-accent/40"],
+.ai-purple-theme [class*="bg-brand-500/40"],
+.ai-purple-theme [class*="bg-cyan-500/40"],
+.ai-purple-theme [class*="bg-purple-500/40"],
+.ai-purple-theme [class*="bg-violet-500/40"] {
+  background-color: rgb(var(--ai-rgb) / 0.40) !important;
+}
+
+.ai-purple-theme [class*="bg-accent/50"],
+.ai-purple-theme [class*="bg-brand-500/50"],
+.ai-purple-theme [class*="bg-cyan-500/50"],
+.ai-purple-theme [class*="bg-purple-500/50"],
+.ai-purple-theme [class*="bg-violet-500/50"] {
+  background-color: rgb(var(--ai-rgb) / 0.50) !important;
+}
+
+.ai-purple-theme [class*="bg-accent/60"],
+.ai-purple-theme [class*="bg-brand-500/60"],
+.ai-purple-theme [class*="bg-cyan-500/60"],
+.ai-purple-theme [class*="bg-purple-500/60"],
+.ai-purple-theme [class*="bg-violet-500/60"] {
+  background-color: rgb(var(--ai-rgb) / 0.60) !important;
+}
+
+.ai-purple-theme [class*="border-accent"],
+.ai-purple-theme [class*="border-primary"],
+.ai-purple-theme [class*="border-brand"],
+.ai-purple-theme [class*="border-cyan-"],
+.ai-purple-theme [class*="border-purple-"],
+.ai-purple-theme [class*="border-violet-"] {
+  border-color: rgb(var(--ai-rgb) / var(--tw-border-opacity, 1)) !important;
+}
+
+.ai-purple-theme [class*="border-accent/20"],
+.ai-purple-theme [class*="border-brand-500/20"],
+.ai-purple-theme [class*="border-cyan-500/20"],
+.ai-purple-theme [class*="border-purple-500/20"],
+.ai-purple-theme [class*="border-violet-500/20"] {
+  border-color: rgb(var(--ai-rgb) / 0.20) !important;
+}
+
+.ai-purple-theme [class*="border-accent/30"],
+.ai-purple-theme [class*="border-brand-500/30"],
+.ai-purple-theme [class*="border-cyan-500/30"],
+.ai-purple-theme [class*="border-purple-500/30"],
+.ai-purple-theme [class*="border-violet-500/30"] {
+  border-color: rgb(var(--ai-rgb) / 0.30) !important;
+}
+
+.ai-purple-theme [class*="border-accent/40"],
+.ai-purple-theme [class*="border-brand-500/40"],
+.ai-purple-theme [class*="border-cyan-500/40"],
+.ai-purple-theme [class*="border-purple-500/40"],
+.ai-purple-theme [class*="border-violet-500/40"] {
+  border-color: rgb(var(--ai-rgb) / 0.40) !important;
+}
+
+.ai-purple-theme [class*="ring-accent"],
+.ai-purple-theme [class*="ring-brand"],
+.ai-purple-theme [class*="focus:ring-accent"]:focus,
+.ai-purple-theme [class*="focus:ring-brand"]:focus {
+  --tw-ring-color: rgb(var(--ai-rgb) / 0.35) !important;
+}
+
+.ai-purple-theme [class*="focus:border-accent"]:focus,
+.ai-purple-theme [class*="focus:border-primary"]:focus,
+.ai-purple-theme [class*="focus:border-brand"]:focus,
+.ai-purple-theme [class*="hover:border-accent"]:hover,
+.ai-purple-theme [class*="hover:border-primary"]:hover,
+.ai-purple-theme [class*="hover:border-brand"]:hover,
+.ai-purple-theme [class*="hover:border-cyan-"]:hover,
+.ai-purple-theme [class*="hover:border-purple-"]:hover {
+  border-color: rgb(var(--ai-rgb) / 0.45) !important;
+}
+
+.ai-purple-theme [class*="hover:bg-accent"]:hover,
+.ai-purple-theme [class*="hover:bg-primary"]:hover,
+.ai-purple-theme [class*="hover:bg-brand"]:hover,
+.ai-purple-theme [class*="hover:bg-cyan-"]:hover,
+.ai-purple-theme [class*="hover:bg-purple-"]:hover,
+.ai-purple-theme [class*="hover:bg-violet-"]:hover {
+  background-color: rgb(var(--ai-rgb-strong) / 1) !important;
+}
+
+.ai-purple-theme [class*="hover:text-accent"]:hover,
+.ai-purple-theme [class*="hover:text-brand"]:hover,
+.ai-purple-theme [class*="hover:text-cyan-"]:hover,
+.ai-purple-theme [class*="hover:text-purple-"]:hover {
+  color: rgb(var(--ai-rgb)) !important;
+}
+
+.ai-purple-theme [class*="from-brand"],
+.ai-purple-theme [class*="from-primary"],
+.ai-purple-theme [class*="from-cyan"],
+.ai-purple-theme [class*="from-purple"],
+.ai-purple-theme [class*="from-violet"] {
+  --tw-gradient-from: rgb(var(--ai-rgb)) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(var(--ai-rgb) / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+.ai-purple-theme [class*="via-cyan"],
+.ai-purple-theme [class*="via-purple"],
+.ai-purple-theme [class*="via-violet"],
+.ai-purple-theme [class*="via-brand"] {
+  --tw-gradient-stops: var(--tw-gradient-from), rgb(var(--ai-rgb-strong)) var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+}
+
+.ai-purple-theme [class*="to-brand"],
+.ai-purple-theme [class*="to-primary"],
+.ai-purple-theme [class*="to-cyan"],
+.ai-purple-theme [class*="to-purple"],
+.ai-purple-theme [class*="to-violet"] {
+  --tw-gradient-to: rgb(var(--ai-rgb-deep)) var(--tw-gradient-to-position) !important;
 }
 
 /* ============================================
@@ -1199,6 +1381,7 @@
     border-radius: inherit;
     background: linear-gradient(135deg, rgba(117, 136, 102, 0.25), rgba(214, 125, 71, 0.15));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;

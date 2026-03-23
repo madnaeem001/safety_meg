@@ -28,6 +28,7 @@ import {
   Wrench,
   HardHat
 } from 'lucide-react';
+import { SMButton, SMAlert, SMCard, SMTabs } from '../components/ui';
 import { 
   hierarchyOfControls, 
   aiRiskAssessmentConfig, 
@@ -90,7 +91,7 @@ const mapHierarchyControl = (control: ControlHierarchyItem, index: number): Hier
   effectiveness: control.effectiveness,
   examples: control.examples,
   regulatoryReferences: control.regulatoryReferences.map(mapRegulatoryReference),
-  color: HIERARCHY_LEVEL_META[index]?.color ?? 'bg-slate-500',
+  color: HIERARCHY_LEVEL_META[index]?.color ?? 'bg-accent',
   icon: HIERARCHY_LEVEL_META[index]?.icon ?? 'ShieldCheck',
 });
 
@@ -309,102 +310,82 @@ export const RootCauseCorrectiveAction = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 pb-20">
-      <header className="sticky top-[72px] z-40 bg-white/80 backdrop-blur-xl border-b border-surface-200/60 px-6 py-4">
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
+    <div className="min-h-screen bg-surface-base pb-20">
+      <header className="sticky top-[var(--nav-height,72px)] z-40 border-b border-surface-border bg-surface-raised/90 px-6 py-4 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-[1440px] items-center justify-between">
           <div className="flex items-center gap-4">
-            <button onClick={() => navigate(-1)} className="p-2 hover:bg-surface-100 rounded-full transition-colors">
-              <ArrowLeft className="w-6 h-6 text-surface-600" />
-            </button>
+            <SMButton variant="ghost" size="sm" leftIcon={<ArrowLeft className="w-5 h-5" />} onClick={() => navigate(-1)} aria-label="Go back" />
             <div>
-              <h1 className="text-xl font-bold text-surface-900">Root Cause & CAPA</h1>
-              <p className="text-sm text-surface-500">Analysis, Lessons Learned & Corrective Actions</p>
+              <h1 className="text-xl font-bold text-text-primary">Root Cause & CAPA</h1>
+              <p className="text-sm text-text-muted">Analysis, Lessons Learned & Corrective Actions</p>
             </div>
           </div>
-          <button 
+          <SMButton
+            variant="secondary"
+            leftIcon={isAnalyzing ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Brain className="w-4 h-4" />}
             onClick={handleAIAnalysis}
             disabled={isAnalyzing}
-            className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-xl font-semibold hover:bg-purple-700 transition-colors disabled:opacity-50"
           >
-            {isAnalyzing ? (
-              <>
-                <RefreshCw className="w-4 h-4 animate-spin" />
-                Analyzing...
-              </>
-            ) : (
-              <>
-                <Brain className="w-4 h-4" />
-                AI Analysis
-              </>
-            )}
-          </button>
+            {isAnalyzing ? 'Analyzing...' : 'AI Analysis'}
+          </SMButton>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-6 py-8 space-y-8">
+      <main className="mx-auto max-w-[1440px] space-y-8 px-6 py-8">
         {/* Incident Reference */}
-        <section className="bg-brand-900 text-white rounded-[2.5rem] p-8 shadow-xl relative overflow-hidden">
-          <div className="relative z-10">
-            <div className="flex items-center gap-2 text-brand-300 text-sm font-bold uppercase tracking-wider mb-2">
-              <AlertCircle className="w-4 h-4" />
-              {sourceType === 'injury' ? 'Injury' : sourceType === 'vehicle' ? 'Vehicle' : 'Incident'} Reference
+        <SMCard flat className="relative overflow-hidden rounded-[2rem] border border-primary/15 bg-gradient-to-br from-primary to-accent p-8 text-text-onAccent shadow-card">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-onAccent/80">
+            <AlertCircle className="w-4 h-4" />
+            {sourceType === 'injury' ? 'Injury' : sourceType === 'vehicle' ? 'Vehicle' : 'Incident'} Reference
+          </div>
+          <h2 className="text-2xl font-bold mb-4">{getSourceTitle()}</h2>
+          <div className="flex flex-wrap gap-6 text-sm text-white/80">
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4" />
+              Jan 05, 2026
             </div>
-            <h2 className="text-2xl font-bold mb-4">{getSourceTitle()}</h2>
-            <div className="flex flex-wrap gap-6 text-sm text-brand-100">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                Jan 05, 2026
-              </div>
-              <div className="flex items-center gap-2">
-                <User className="w-4 h-4" />
-                Investigator: John Doe
-              </div>
-              <div className="px-3 py-1 bg-white/10 rounded-full border border-white/20">
-                ID: {sourceId}
-              </div>
-              <div className="px-3 py-1 bg-white/10 rounded-full border border-white/20">
-                {investigationData?.id
-                  ? `Investigation #${investigationData.id} linked`
-                  : numericSourceIncidentId
-                    ? 'Backend ready'
-                    : 'Draft-only context'}
-              </div>
+            <div className="flex items-center gap-2">
+              <User className="w-4 h-4" />
+              Investigator: John Doe
+            </div>
+            <div className="px-3 py-1 bg-white/10 rounded-full border border-white/20">
+              ID: {sourceId}
+            </div>
+            <div className="px-3 py-1 bg-white/10 rounded-full border border-white/20">
+              {investigationData?.id
+                ? `Investigation #${investigationData.id} linked`
+                : numericSourceIncidentId
+                  ? 'Backend ready'
+                  : 'Draft-only context'}
             </div>
           </div>
-          <Zap className="absolute right-[-20px] bottom-[-20px] w-48 h-48 text-white/5 rotate-12" />
-        </section>
+        </SMCard>
 
         {(saveMessage || saveError || (!numericSourceIncidentId && !investigationData)) && (
-          <div className={`rounded-2xl border px-5 py-4 text-sm ${saveError || !numericSourceIncidentId ? 'bg-amber-50 border-amber-200 text-amber-800' : 'bg-emerald-50 border-emerald-200 text-emerald-800'}`}>
+          <SMAlert variant={saveError ? 'danger' : saveMessage ? 'success' : 'warning'}>
             {saveError || saveMessage || 'This page can still be edited, but backend persistence needs a numeric incident id in the route context.'}
-          </div>
+          </SMAlert>
         )}
 
         {/* Section Navigation */}
-        <div className="flex overflow-x-auto gap-2 pb-2 no-scrollbar">
-          {[
-            { id: 'ai-controls', label: 'AI & Controls', icon: Brain },
-            { id: 'regulations', label: 'Regulatory References', icon: BookOpen },
-            { id: '5whys', label: '5 Whys Analysis', icon: Target },
-            { id: 'fishbone', label: 'Fishbone Diagram', icon: GitBranch },
-            { id: 'preventive', label: 'Preventive Measures', icon: ShieldCheck },
-            { id: 'lessons', label: 'Lessons Learned', icon: Lightbulb },
-            { id: 'capa', label: 'Corrective Actions', icon: CheckCircle2 },
-          ].map(section => (
-            <button
-              key={section.id}
-              onClick={() => setActiveSection(section.id)}
-              className={`flex items-center gap-2 px-5 py-3 rounded-2xl font-bold whitespace-nowrap transition-all ${
-                activeSection === section.id 
-                  ? 'bg-brand-900 text-white shadow-lg' 
-                  : 'bg-white text-surface-600 border border-surface-100 hover:bg-surface-50'
-              }`}
-            >
-              <section.icon className="w-4 h-4" />
-              {section.label}
-            </button>
-          ))}
-        </div>
+        <SMTabs value={activeSection} onChange={setActiveSection}>
+          <SMTabs.List className="overflow-x-auto no-scrollbar gap-1 pb-1">
+            {[
+              { id: 'ai-controls', label: 'AI & Controls', icon: Brain },
+              { id: 'regulations', label: 'Regulatory References', icon: BookOpen },
+              { id: '5whys', label: '5 Whys Analysis', icon: Target },
+              { id: 'fishbone', label: 'Fishbone Diagram', icon: GitBranch },
+              { id: 'preventive', label: 'Preventive Measures', icon: ShieldCheck },
+              { id: 'lessons', label: 'Lessons Learned', icon: Lightbulb },
+              { id: 'capa', label: 'Corrective Actions', icon: CheckCircle2 },
+            ].map(section => (
+              <SMTabs.Trigger key={section.id} value={section.id} className="flex items-center gap-2 whitespace-nowrap">
+                <section.icon className="w-4 h-4" />
+                {section.label}
+              </SMTabs.Trigger>
+            ))}
+          </SMTabs.List>
+        </SMTabs>
 
         {/* AI & Hierarchy of Controls Section */}
         <AnimatePresence mode="wait">
@@ -417,10 +398,10 @@ export const RootCauseCorrectiveAction = () => {
               className="space-y-6"
             >
               {/* AI Risk Assessment Panel */}
-              <div className="bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 rounded-[2.5rem] p-8 text-white shadow-xl relative overflow-hidden">
+              <div className="relative overflow-hidden rounded-[2.5rem] border border-primary/15 bg-gradient-to-br from-primary via-accent to-primary p-8 text-text-onAccent shadow-card">
                 <div className="absolute inset-0 opacity-10">
                   <div className="absolute top-10 right-10 w-40 h-40 bg-white rounded-full blur-3xl" />
-                  <div className="absolute bottom-10 left-10 w-32 h-32 bg-purple-300 rounded-full blur-3xl" />
+                  <div className="absolute bottom-10 left-10 w-32 h-32 rounded-full bg-white/30 blur-3xl" />
                 </div>
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-6">
@@ -429,28 +410,28 @@ export const RootCauseCorrectiveAction = () => {
                     </div>
                     <div>
                       <h2 className="text-xl font-bold">{aiRiskAssessmentConfig.name}</h2>
-                      <p className="text-purple-200 text-sm">{aiRiskAssessmentConfig.description}</p>
+                      <p className="text-sm text-text-onAccent/80">{aiRiskAssessmentConfig.description}</p>
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <h3 className="text-xs font-bold uppercase tracking-wider text-purple-300 mb-3">Risk Factors Analyzed</h3>
+                      <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-text-onAccent/70">Risk Factors Analyzed</h3>
                       <ul className="space-y-2">
                         {aiRiskAssessmentConfig.riskFactors.map((factor, idx) => (
-                          <li key={idx} className="flex items-center gap-2 text-sm text-purple-100">
-                            <div className="w-1.5 h-1.5 bg-purple-400 rounded-full" />
+                          <li key={idx} className="flex items-center gap-2 text-sm text-text-onAccent/90">
+                            <div className="h-1.5 w-1.5 rounded-full bg-white/70" />
                             {factor}
                           </li>
                         ))}
                       </ul>
                     </div>
                     <div>
-                      <h3 className="text-xs font-bold uppercase tracking-wider text-purple-300 mb-3">AI Capabilities</h3>
+                      <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-text-onAccent/70">AI Capabilities</h3>
                       <ul className="space-y-2">
                         {aiRiskAssessmentConfig.aiCapabilities.map((cap, idx) => (
-                          <li key={idx} className="flex items-center gap-2 text-sm text-purple-100">
-                            <Zap className="w-3 h-3 text-yellow-400" />
+                          <li key={idx} className="flex items-center gap-2 text-sm text-text-onAccent/90">
+                            <Zap className="w-3 h-3 text-white/80" />
                             {cap}
                           </li>
                         ))}
@@ -461,14 +442,14 @@ export const RootCauseCorrectiveAction = () => {
               </div>
 
               {/* Hierarchy of Controls */}
-              <div className="bg-white rounded-[2.5rem] p-8 border border-surface-100 shadow-soft">
+              <div className="rounded-[2.5rem] border border-surface-border bg-surface-raised p-8 shadow-soft">
                 <div className="flex items-center gap-3 mb-8">
                   <div className="w-10 h-10 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">
                     <Layers className="w-6 h-6" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-surface-900">Hierarchy of Controls (NIOSH)</h2>
-                    <p className="text-sm text-surface-500">Select controls from most effective (elimination) to least effective (PPE)</p>
+                    <h2 className="text-lg font-bold text-text-primary">Hierarchy of Controls (NIOSH)</h2>
+                    <p className="text-sm text-text-muted">Select controls from most effective (elimination) to least effective (PPE)</p>
                   </div>
                 </div>
 
@@ -476,7 +457,7 @@ export const RootCauseCorrectiveAction = () => {
                   {hierarchyControls.map((control, idx) => (
                     <div 
                       key={control.id} 
-                      className="p-6 bg-surface-50 rounded-3xl border border-surface-100 hover:border-brand-300 transition-all group"
+                      className="group rounded-3xl border border-surface-border bg-surface-sunken p-6 transition-all hover:border-accent/30"
                     >
                       <div className="flex items-start gap-4">
                         <div className={`w-12 h-12 ${control.color} text-white rounded-2xl flex items-center justify-center font-bold text-lg shrink-0 shadow-lg`}>
@@ -484,19 +465,19 @@ export const RootCauseCorrectiveAction = () => {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-3 mb-2">
-                            <h3 className="font-bold text-surface-900">{control.name}</h3>
+                            <h3 className="font-bold text-text-primary">{control.name}</h3>
                             <span className={`px-2 py-0.5 text-xs font-bold rounded-full ${control.color} text-white`}>
                               {control.effectiveness}% Effective
                             </span>
                           </div>
-                          <p className="text-sm text-surface-600 mb-4">{control.description}</p>
+                          <p className="mb-4 text-sm text-text-secondary">{control.description}</p>
                           
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                              <h4 className="text-xs font-bold uppercase text-surface-400 mb-2">Examples</h4>
+                              <h4 className="mb-2 text-xs font-bold uppercase text-text-muted">Examples</h4>
                               <ul className="space-y-1">
                                 {control.examples.slice(0, 3).map((ex, i) => (
-                                  <li key={i} className="text-sm text-surface-600 flex items-start gap-2">
+                                  <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
                                     <CheckCircle className="w-3.5 h-3.5 text-green-500 mt-0.5 shrink-0" />
                                     {ex}
                                   </li>
@@ -504,11 +485,11 @@ export const RootCauseCorrectiveAction = () => {
                               </ul>
                             </div>
                             <div>
-                              <h4 className="text-xs font-bold uppercase text-surface-400 mb-2">Regulatory References</h4>
+                              <h4 className="mb-2 text-xs font-bold uppercase text-text-muted">Regulatory References</h4>
                               <ul className="space-y-1">
                                 {control.regulatoryReferences.slice(0, 2).map((ref, i) => (
-                                  <li key={i} className="text-xs text-surface-600">
-                                    <span className="font-bold text-brand-600">{ref.body}</span>: {ref.code}
+                                  <li key={i} className="text-xs text-text-secondary">
+                                    <span className="font-bold text-accent">{ref.body}</span>: {ref.code}
                                   </li>
                                 ))}
                               </ul>
@@ -533,7 +514,7 @@ export const RootCauseCorrectiveAction = () => {
                       ))}
                     </div>
                   </div>
-                  <div className="flex justify-between text-[10px] text-surface-500 mt-1 px-1">
+                  <div className="mt-1 flex justify-between px-1 text-xs text-text-muted">
                     {hierarchyControls.map((c) => (
                       <span key={c.id}>{c.name}</span>
                     ))}
@@ -550,15 +531,15 @@ export const RootCauseCorrectiveAction = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="bg-white rounded-[2.5rem] p-8 border border-surface-100 shadow-soft"
+              className="rounded-[2.5rem] border border-surface-border bg-surface-raised p-8 shadow-soft"
             >
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
                   <BookOpen className="w-6 h-6" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-surface-900">Regulatory References</h2>
-                  <p className="text-sm text-surface-500">ISO, EPA, MSHA, NIOSH, and OSHA standards for CAPA</p>
+                  <h2 className="text-lg font-bold text-text-primary">Regulatory References</h2>
+                  <p className="text-sm text-text-muted">ISO, EPA, MSHA, NIOSH, and OSHA standards for CAPA</p>
                 </div>
               </div>
 
@@ -578,7 +559,7 @@ export const RootCauseCorrectiveAction = () => {
                   <div key={body} className="mb-6">
                     <div className={`flex items-center gap-2 mb-4 px-4 py-2 ${colors.bg} ${colors.border} border rounded-xl inline-flex`}>
                       <span className={`font-bold ${colors.text}`}>{body}</span>
-                      <span className="text-xs text-surface-500">({refs.length} standards)</span>
+                      <span className="text-xs text-text-muted">({refs.length} standards)</span>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {refs.map(ref => (
@@ -593,14 +574,14 @@ export const RootCauseCorrectiveAction = () => {
                                 href={ref.sourceUrl} 
                                 target="_blank" 
                                 rel="noopener noreferrer"
-                                className="p-1.5 hover:bg-white/50 rounded-lg transition-colors"
+                                className="rounded-lg p-1.5 transition-colors hover:bg-white/50"
                               >
                                 <ExternalLink className="w-4 h-4 text-surface-400" />
                               </a>
                             )}
                           </div>
-                          <h4 className="font-bold text-surface-900 text-sm mb-1">{ref.title}</h4>
-                          <p className="text-xs text-surface-600 line-clamp-2">{ref.description}</p>
+                          <h4 className="mb-1 text-sm font-bold text-text-primary">{ref.title}</h4>
+                          <p className="line-clamp-2 text-xs text-text-secondary">{ref.description}</p>
                         </div>
                       ))}
                     </div>
@@ -609,20 +590,20 @@ export const RootCauseCorrectiveAction = () => {
               })}
 
               {/* AI Regulatory Alignment */}
-              <div className="mt-8 p-6 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-3xl border border-purple-200">
+              <div className="mt-8 rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/10 to-accent/10 p-6">
                 <div className="flex items-center gap-3 mb-4">
-                  <Brain className="w-6 h-6 text-purple-600" />
-                  <h3 className="font-bold text-purple-900">AI Risk Assessment Regulatory Alignment</h3>
+                  <Brain className="w-6 h-6 text-accent" />
+                  <h3 className="font-bold text-text-primary">AI Risk Assessment Regulatory Alignment</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {aiRiskAssessmentConfig.regulatoryAlignment.map((ref, idx) => (
-                    <div key={idx} className="flex items-start gap-3 p-3 bg-white/60 rounded-xl">
-                      <div className="w-8 h-8 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center text-xs font-bold">
+                    <div key={idx} className="flex items-start gap-3 rounded-xl bg-surface-raised/80 p-3">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/10 text-xs font-bold text-accent">
                         {ref.body}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-purple-900">{ref.code}</p>
-                        <p className="text-xs text-purple-700">{ref.title}</p>
+                        <p className="text-sm font-bold text-text-primary">{ref.code}</p>
+                        <p className="text-xs text-text-secondary">{ref.title}</p>
                       </div>
                     </div>
                   ))}
@@ -638,15 +619,15 @@ export const RootCauseCorrectiveAction = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="bg-white rounded-[2.5rem] p-8 border border-surface-100 shadow-soft"
+              className="rounded-[2.5rem] border border-surface-border bg-surface-raised p-8 shadow-soft"
             >
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-10 h-10 bg-red-50 text-red-600 rounded-xl flex items-center justify-center">
                   <Target className="w-6 h-6" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-surface-900">5 Whys Analysis</h2>
-                  <p className="text-sm text-surface-500">Drill down to find the root cause by asking "Why?" 5 times</p>
+                  <h2 className="text-lg font-bold text-text-primary">5 Whys Analysis</h2>
+                  <p className="text-sm text-text-muted">Drill down to find the root cause by asking "Why?" 5 times</p>
                 </div>
               </div>
 
@@ -654,17 +635,17 @@ export const RootCauseCorrectiveAction = () => {
                 {rootCauses.map((cause, index) => (
                   <div key={index} className="flex gap-4 items-start">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${
-                      cause ? 'bg-brand-600 text-white' : 'bg-surface-100 text-surface-500'
+                      cause ? 'bg-accent text-text-onAccent' : 'bg-surface-sunken text-text-muted'
                     }`}>
                       {index + 1}
                     </div>
                     <div className="flex-1">
-                      <label className="text-xs font-bold text-surface-400 uppercase mb-2 block">
+                      <label className="mb-2 block text-xs font-bold uppercase text-text-muted">
                         Why #{index + 1}: {index === 0 ? 'Initial Problem' : `Response to Why #${index}`}
                       </label>
                       <textarea
                         placeholder={index === 0 ? 'What happened? Describe the initial problem...' : 'Why did the previous answer occur?'}
-                        className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-2xl focus:ring-2 focus:ring-brand-500/20 outline-none transition-all resize-none"
+                        className="w-full resize-none rounded-2xl border border-surface-border bg-surface-sunken px-4 py-3 transition-all outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/15"
                         rows={2}
                         value={cause}
                         onChange={(e) => {
@@ -697,20 +678,20 @@ export const RootCauseCorrectiveAction = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="bg-white rounded-[2.5rem] p-8 border border-surface-100 shadow-soft"
+              className="rounded-[2.5rem] border border-surface-border bg-surface-raised p-8 shadow-soft"
             >
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-10 h-10 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center">
                   <GitBranch className="w-6 h-6" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-surface-900">Fishbone Diagram (Ishikawa)</h2>
-                  <p className="text-sm text-surface-500">Identify contributing factors across 6 categories (6M)</p>
+                  <h2 className="text-lg font-bold text-text-primary">Fishbone Diagram (Ishikawa)</h2>
+                  <p className="text-sm text-text-muted">Identify contributing factors across 6 categories (6M)</p>
                 </div>
               </div>
 
               {/* Visual Fishbone */}
-              <div className="mb-8 p-6 bg-surface-50 rounded-3xl border border-surface-200">
+              <div className="mb-8 rounded-3xl border border-surface-border bg-surface-sunken p-6">
                 <div className="flex items-center justify-center mb-4">
                   <div className="px-6 py-3 bg-red-100 text-red-700 font-bold rounded-2xl border-2 border-red-300">
                     Problem/Effect: {getSourceTitle()}
@@ -718,11 +699,11 @@ export const RootCauseCorrectiveAction = () => {
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {fishboneCategories.map(category => (
-                    <div key={category.id} className="p-4 bg-white rounded-2xl border border-surface-200">
+                    <div key={category.id} className="rounded-2xl border border-surface-border bg-surface-raised p-4">
                       <div className="flex items-center gap-2 mb-3">
                         <div className={`w-3 h-3 rounded-full ${category.color}`} />
-                        <span className="font-bold text-surface-900 text-sm">{category.name}</span>
-                        <span className="text-xs text-surface-400">({category.factors.length})</span>
+                        <span className="text-sm font-bold text-text-primary">{category.name}</span>
+                        <span className="text-xs text-text-muted">({category.factors.length})</span>
                       </div>
                       <div className="space-y-2">
                         {category.factors.map((factor, idx) => (
@@ -732,7 +713,7 @@ export const RootCauseCorrectiveAction = () => {
                               placeholder="Contributing factor..."
                               value={factor}
                               onChange={(e) => updateFishboneFactor(category.id, idx, e.target.value)}
-                              className="flex-1 px-3 py-1.5 text-sm bg-surface-50 border border-surface-200 rounded-lg focus:ring-1 focus:ring-brand-500/20 outline-none"
+                              className="flex-1 rounded-lg border border-surface-border bg-surface-sunken px-3 py-1.5 text-sm outline-none focus:border-accent/40 focus:ring-1 focus:ring-accent/15"
                             />
                             <button
                               onClick={() => removeFishboneFactor(category.id, idx)}
@@ -742,13 +723,15 @@ export const RootCauseCorrectiveAction = () => {
                             </button>
                           </div>
                         ))}
-                        <button
+                        <SMButton
+                          variant="ghost"
+                          size="sm"
+                          leftIcon={<Plus className="w-3 h-3" />}
                           onClick={() => addFishboneFactor(category.id)}
-                          className="w-full py-2 text-xs font-bold text-brand-600 hover:bg-brand-50 rounded-lg transition-colors flex items-center justify-center gap-1"
+                          className="w-full"
                         >
-                          <Plus className="w-3 h-3" />
                           Add Factor
-                        </button>
+                        </SMButton>
                       </div>
                     </div>
                   ))}
@@ -764,7 +747,7 @@ export const RootCauseCorrectiveAction = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="bg-white rounded-[2.5rem] p-8 border border-surface-100 shadow-soft"
+              className="rounded-[2.5rem] border border-surface-border bg-surface-raised p-8 shadow-soft"
             >
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
@@ -772,17 +755,13 @@ export const RootCauseCorrectiveAction = () => {
                     <ShieldCheck className="w-6 h-6" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-surface-900">Preventive Measures</h2>
-                    <p className="text-sm text-surface-500">Actions to prevent recurrence</p>
+                    <h2 className="text-lg font-bold text-text-primary">Preventive Measures</h2>
+                    <p className="text-sm text-text-muted">Actions to prevent recurrence</p>
                   </div>
                 </div>
-                <button 
-                  onClick={addPreventiveMeasure}
-                  className="flex items-center gap-2 text-brand-600 font-bold text-sm hover:bg-brand-50 px-4 py-2 rounded-xl transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
+                <SMButton variant="ghost" size="sm" leftIcon={<Plus className="w-4 h-4" />} onClick={addPreventiveMeasure}>
                   Add Measure
-                </button>
+                </SMButton>
               </div>
 
               <div className="space-y-4">
@@ -794,7 +773,7 @@ export const RootCauseCorrectiveAction = () => {
                     <div className="flex-1">
                       <textarea
                         placeholder="Describe the preventive measure to be implemented..."
-                        className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-2xl focus:ring-2 focus:ring-brand-500/20 outline-none transition-all resize-none"
+                        className="w-full resize-none rounded-2xl border border-surface-border bg-surface-sunken px-4 py-3 transition-all outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/15"
                         rows={2}
                         value={measure}
                         onChange={(e) => {
@@ -825,24 +804,24 @@ export const RootCauseCorrectiveAction = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="bg-white rounded-[2.5rem] p-8 border border-surface-100 shadow-soft"
+              className="rounded-[2.5rem] border border-surface-border bg-surface-raised p-8 shadow-soft"
             >
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-10 h-10 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center">
                   <Lightbulb className="w-6 h-6" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-surface-900">Lessons Learned</h2>
-                  <p className="text-sm text-surface-500">Capture insights to improve future safety</p>
+                  <h2 className="text-lg font-bold text-text-primary">Lessons Learned</h2>
+                  <p className="text-sm text-text-muted">Capture insights to improve future safety</p>
                 </div>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <label className="text-sm font-bold text-surface-700 mb-2 block">What Happened?</label>
+                  <label className="mb-2 block text-sm font-bold text-text-secondary">What Happened?</label>
                   <textarea
                     placeholder="Brief summary of the incident and its impact..."
-                    className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-2xl focus:ring-2 focus:ring-brand-500/20 outline-none transition-all resize-none"
+                    className="w-full resize-none rounded-2xl border border-surface-border bg-surface-sunken px-4 py-3 transition-all outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/15"
                     rows={3}
                     value={lessonsLearned.whatHappened}
                     onChange={(e) => setLessonsLearned({ ...lessonsLearned, whatHappened: e.target.value })}
@@ -850,10 +829,10 @@ export const RootCauseCorrectiveAction = () => {
                 </div>
 
                 <div>
-                  <label className="text-sm font-bold text-surface-700 mb-2 block">Why It Matters</label>
+                  <label className="mb-2 block text-sm font-bold text-text-secondary">Why It Matters</label>
                   <textarea
                     placeholder="Explain the significance and potential consequences if not addressed..."
-                    className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-2xl focus:ring-2 focus:ring-brand-500/20 outline-none transition-all resize-none"
+                    className="w-full resize-none rounded-2xl border border-surface-border bg-surface-sunken px-4 py-3 transition-all outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/15"
                     rows={3}
                     value={lessonsLearned.whyItMatters}
                     onChange={(e) => setLessonsLearned({ ...lessonsLearned, whyItMatters: e.target.value })}
@@ -861,10 +840,10 @@ export const RootCauseCorrectiveAction = () => {
                 </div>
 
                 <div>
-                  <label className="text-sm font-bold text-surface-700 mb-2 block">Key Takeaways</label>
+                  <label className="mb-2 block text-sm font-bold text-text-secondary">Key Takeaways</label>
                   <textarea
                     placeholder="What should everyone learn from this incident?"
-                    className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-2xl focus:ring-2 focus:ring-brand-500/20 outline-none transition-all resize-none"
+                    className="w-full resize-none rounded-2xl border border-surface-border bg-surface-sunken px-4 py-3 transition-all outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/15"
                     rows={3}
                     value={lessonsLearned.keyTakeaways}
                     onChange={(e) => setLessonsLearned({ ...lessonsLearned, keyTakeaways: e.target.value })}
@@ -872,10 +851,10 @@ export const RootCauseCorrectiveAction = () => {
                 </div>
 
                 <div>
-                  <label className="text-sm font-bold text-surface-700 mb-2 block">Recommendations</label>
+                  <label className="mb-2 block text-sm font-bold text-text-secondary">Recommendations</label>
                   <textarea
                     placeholder="Specific recommendations for teams, departments, or the organization..."
-                    className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-2xl focus:ring-2 focus:ring-brand-500/20 outline-none transition-all resize-none"
+                    className="w-full resize-none rounded-2xl border border-surface-border bg-surface-sunken px-4 py-3 transition-all outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/15"
                     rows={3}
                     value={lessonsLearned.recommendations}
                     onChange={(e) => setLessonsLearned({ ...lessonsLearned, recommendations: e.target.value })}
@@ -892,7 +871,7 @@ export const RootCauseCorrectiveAction = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="bg-white rounded-[2.5rem] p-8 border border-surface-100 shadow-soft"
+              className="rounded-[2.5rem] border border-surface-border bg-surface-raised p-8 shadow-soft"
             >
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
@@ -900,22 +879,18 @@ export const RootCauseCorrectiveAction = () => {
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-surface-900">Corrective & Preventive Actions</h2>
-                    <p className="text-sm text-surface-500">Assign and track remediation tasks</p>
+                    <h2 className="text-lg font-bold text-text-primary">Corrective & Preventive Actions</h2>
+                    <p className="text-sm text-text-muted">Assign and track remediation tasks</p>
                   </div>
                 </div>
-                <button 
-                  onClick={addAction}
-                  className="flex items-center gap-2 text-brand-600 font-bold text-sm hover:bg-brand-50 px-4 py-2 rounded-xl transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
+                <SMButton variant="ghost" size="sm" leftIcon={<Plus className="w-4 h-4" />} onClick={addAction}>
                   Add Action
-                </button>
+                </SMButton>
               </div>
 
               <div className="space-y-6">
                 {correctiveActions.map((action, index) => (
-                  <div key={index} className="p-6 bg-surface-50 rounded-3xl border border-surface-100 relative group">
+                  <div key={index} className="relative rounded-3xl border border-surface-border bg-surface-sunken p-6 group">
                     <button 
                       onClick={() => removeAction(index)}
                       className="absolute top-4 right-4 p-2 text-surface-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"
@@ -925,11 +900,11 @@ export const RootCauseCorrectiveAction = () => {
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="md:col-span-2 space-y-2">
-                        <label className="text-xs font-bold text-surface-400 uppercase ml-1">Action Description</label>
+                        <label className="ml-1 text-xs font-bold uppercase text-text-muted">Action Description</label>
                         <input
                           type="text"
                           placeholder="What needs to be done?"
-                          className="w-full px-4 py-3 bg-white border border-surface-200 rounded-2xl focus:ring-2 focus:ring-brand-500/20 outline-none transition-all"
+                          className="w-full rounded-2xl border border-surface-border bg-surface-raised px-4 py-3 transition-all outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/15"
                           value={action.action}
                           onChange={(e) => {
                             const newActions = [...correctiveActions];
@@ -939,13 +914,13 @@ export const RootCauseCorrectiveAction = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-surface-400 uppercase ml-1">Assigned To</label>
+                        <label className="ml-1 text-xs font-bold uppercase text-text-muted">Assigned To</label>
                         <div className="relative">
                           <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-400" />
                           <input
                             type="text"
                             placeholder="Name or Department"
-                            className="w-full pl-11 pr-4 py-3 bg-white border border-surface-200 rounded-2xl focus:ring-2 focus:ring-brand-500/20 outline-none transition-all"
+                            className="w-full rounded-2xl border border-surface-border bg-surface-raised py-3 pl-11 pr-4 transition-all outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/15"
                             value={action.assignedTo}
                             onChange={(e) => {
                               const newActions = [...correctiveActions];
@@ -956,12 +931,12 @@ export const RootCauseCorrectiveAction = () => {
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-surface-400 uppercase ml-1">Due Date</label>
+                        <label className="ml-1 text-xs font-bold uppercase text-text-muted">Due Date</label>
                         <div className="relative">
                           <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-400" />
                           <input
                             type="date"
-                            className="w-full pl-11 pr-4 py-3 bg-white border border-surface-200 rounded-2xl focus:ring-2 focus:ring-brand-500/20 outline-none transition-all"
+                            className="w-full rounded-2xl border border-surface-border bg-surface-raised py-3 pl-11 pr-4 transition-all outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/15"
                             value={action.dueDate}
                             onChange={(e) => {
                               const newActions = [...correctiveActions];
@@ -980,21 +955,23 @@ export const RootCauseCorrectiveAction = () => {
         </AnimatePresence>
 
         <div className="flex gap-4">
-          <button
+          <SMButton
+            variant="secondary"
+            className="flex-1"
             onClick={() => void persistAnalysis(false)}
             disabled={isPersisting}
-            className="flex-1 px-6 py-4 bg-white border border-surface-200 text-surface-700 rounded-2xl font-bold hover:bg-surface-50 transition-all disabled:opacity-60"
           >
             Save Draft
-          </button>
-          <button
+          </SMButton>
+          <SMButton
+            variant="primary"
+            className="flex-[2]"
+            leftIcon={<CheckCircle2 className="w-5 h-5" />}
+            loading={isPersisting}
             onClick={() => void persistAnalysis(true)}
-            disabled={isPersisting}
-            className="flex-[2] px-6 py-4 bg-brand-600 text-white rounded-2xl font-bold shadow-button hover:bg-brand-700 transition-all flex items-center justify-center gap-2 disabled:opacity-60"
           >
-            <CheckCircle2 className="w-5 h-5" />
             {isPersisting ? 'Saving...' : 'Finalize Analysis'}
-          </button>
+          </SMButton>
         </div>
       </main>
     </div>

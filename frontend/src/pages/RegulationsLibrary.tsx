@@ -326,9 +326,10 @@ export const RegulationsLibrary: React.FC = () => {
   const [selectedBody, setSelectedBody] = useState<RegulatoryBody | 'All'>('All');
   const [selectedTab, setSelectedTab] = useState<ManagementTab>('All Regulations');
   const [selectedRegulation, setSelectedRegulation] = useState<Regulation | null>(null);
+  const enableBackendRegulations = import.meta.env.VITE_ENABLE_REGULATIONS_API === 'true';
 
   // ── Real API Data ───────────────────────────────────────────────────────
-  const { data: backendRegs } = useRegulations();
+  const { data: backendRegs } = useRegulations(undefined, { immediate: enableBackendRegulations });
 
   // Merge backend regulations with mock data
   const mergedRegulations = useMemo<Regulation[]>(() => {

@@ -127,16 +127,16 @@ interface MetricConfig {
 
 // Default metrics configuration
 const defaultMetrics: MetricConfig[] = [
-  { id: 'safetyScore', label: 'Safety Score', value: 94, trend: 5, icon: Shield, color: 'from-emerald-500 to-green-600', unit: '%', visible: true, order: 0 },
-  { id: 'openIncidents', label: 'Open Incidents', value: 7, trend: -2, icon: AlertTriangle, color: 'bg-white', visible: true, order: 1 },
-  { id: 'daysWithoutLTI', label: 'Days Without LTI', value: 42, target: 90, icon: CheckCircle2, color: 'bg-white', visible: true, order: 2 },
-  { id: 'complianceRate', label: 'Compliance Rate', value: 97, trend: 3, icon: ClipboardCheck, color: 'bg-white', unit: '%', visible: true, order: 3 },
-  { id: 'trir', label: 'TRIR', value: 2.8, trend: -0.5, icon: Activity, color: 'bg-white', visible: false, order: 4 },
-  { id: 'nearMisses', label: 'Near Misses (MTD)', value: 24, trend: 8, icon: Eye, color: 'bg-white', visible: false, order: 5 },
-  { id: 'trainingCompletion', label: 'Training Completion', value: 92, unit: '%', icon: Users, color: 'bg-white', visible: false, order: 6 },
-  { id: 'auditsCompleted', label: 'Audits Completed', value: 12, icon: ClipboardCheck, color: 'bg-white', visible: false, order: 7 },
-  { id: 'correctiveActions', label: 'Open CAPAs', value: 8, icon: Target, color: 'bg-white', visible: false, order: 8 },
-  { id: 'riskScore', label: 'Risk Score', value: 'Low', icon: Gauge, color: 'bg-white', visible: false, order: 9 },
+  { id: 'safetyScore', label: 'Safety Score', value: 94, trend: 5, icon: Shield, color: 'bg-success', unit: '%', visible: true, order: 0 },
+  { id: 'openIncidents', label: 'Open Incidents', value: 7, trend: -2, icon: AlertTriangle, color: 'bg-surface-raised', visible: true, order: 1 },
+  { id: 'daysWithoutLTI', label: 'Days Without LTI', value: 42, target: 90, icon: CheckCircle2, color: 'bg-surface-raised', visible: true, order: 2 },
+  { id: 'complianceRate', label: 'Compliance Rate', value: 97, trend: 3, icon: ClipboardCheck, color: 'bg-surface-raised', unit: '%', visible: true, order: 3 },
+  { id: 'trir', label: 'TRIR', value: 2.8, trend: -0.5, icon: Activity, color: 'bg-surface-raised', visible: false, order: 4 },
+  { id: 'nearMisses', label: 'Near Misses (MTD)', value: 24, trend: 8, icon: Eye, color: 'bg-surface-raised', visible: false, order: 5 },
+  { id: 'trainingCompletion', label: 'Training Completion', value: 92, unit: '%', icon: Users, color: 'bg-surface-raised', visible: false, order: 6 },
+  { id: 'auditsCompleted', label: 'Audits Completed', value: 12, icon: ClipboardCheck, color: 'bg-surface-raised', visible: false, order: 7 },
+  { id: 'correctiveActions', label: 'Open CAPAs', value: 8, icon: Target, color: 'bg-surface-raised', visible: false, order: 8 },
+  { id: 'riskScore', label: 'Risk Score', value: 'Low', icon: Gauge, color: 'bg-surface-raised', visible: false, order: 9 },
 ];
 
 // Quick stats mock data (backward compatible)
@@ -165,12 +165,12 @@ const recentIncidents = [
 
 // Quick action items
 const quickActions = [
-  { id: 'new-incident', label: 'Report Incident', icon: AlertTriangle, color: 'bg-red-500', route: '/report-incident' },
-  { id: 'near-miss', label: 'Near Miss', icon: Eye, color: 'bg-amber-500', route: '/near-miss' },
-  { id: 'toolbox-talks', label: 'Toolbox Talk', icon: MessageSquare, color: 'bg-cyan-500', route: '/toolbox-talks' },
-  { id: 'kpi-dashboard', label: 'KPI Dashboard', icon: BarChart3, color: 'bg-indigo-500', route: '/kpi-indicators' },
-  { id: 'jsa', label: 'New JSA', icon: ClipboardCheck, color: 'bg-emerald-500', route: '/hazard-assessment' },
-  { id: 'audit', label: 'Safety Audit', icon: Shield, color: 'bg-purple-500', route: '/safety-audit' },
+  { id: 'new-incident', label: 'Report Incident', icon: AlertTriangle, color: 'bg-danger', route: '/report-incident' },
+  { id: 'near-miss', label: 'Near Miss', icon: Eye, color: 'bg-warning', route: '/near-miss' },
+  { id: 'toolbox-talks', label: 'Toolbox Talk', icon: MessageSquare, color: 'bg-accent', route: '/toolbox-talks' },
+  { id: 'kpi-dashboard', label: 'KPI Dashboard', icon: BarChart3, color: 'bg-primary', route: '/kpi-indicators' },
+  { id: 'jsa', label: 'New JSA', icon: ClipboardCheck, color: 'bg-success', route: '/hazard-assessment' },
+  { id: 'audit', label: 'Safety Audit', icon: Shield, color: 'bg-accent', route: '/safety-audit' },
 ];
 
 // Module cards for dashboard
@@ -180,7 +180,7 @@ const moduleCards = [
     title: 'Incident Management', 
     description: 'Report and track all types of incidents, injuries, and near misses',
     icon: AlertTriangle, 
-    color: 'from-red-500 to-orange-500',
+    color: 'bg-danger',
     stats: { label: 'Open', value: 7 },
     route: null,
     section: 'incidents' as MainSectionType
@@ -190,7 +190,7 @@ const moduleCards = [
     title: 'Compliance & OSHA', 
     description: 'OSHA logs, ISO forms, audit trails, and regulatory compliance',
     icon: ClipboardCheck, 
-    color: 'from-cyan-500 to-blue-500',
+    color: 'bg-accent',
     stats: { label: 'Score', value: '97%' },
     route: null,
     section: 'compliance' as MainSectionType
@@ -200,7 +200,7 @@ const moduleCards = [
     title: 'Analytics & AI', 
     description: 'AI-powered insights, risk analysis, and predictive safety metrics',
     icon: Brain, 
-    color: 'from-purple-500 to-indigo-500',
+    color: 'bg-primary',
     stats: { label: 'Insights', value: 24 },
     route: null,
     section: 'analytics' as MainSectionType
@@ -210,7 +210,7 @@ const moduleCards = [
     title: 'Environmental', 
     description: 'ESG reporting, emissions tracking, and environmental compliance',
     icon: Leaf, 
-    color: 'from-emerald-500 to-green-500',
+    color: 'bg-success',
     stats: { label: 'Status', value: 'Good' },
     route: '/esg-reporting',
     section: null
@@ -220,7 +220,7 @@ const moduleCards = [
     title: 'Training', 
     description: 'Safety training management, certifications, and compliance tracking',
     icon: Users, 
-    color: 'from-amber-500 to-yellow-500',
+    color: 'bg-warning',
     stats: { label: 'Due', value: 8 },
     route: '/training',
     section: null
@@ -230,7 +230,7 @@ const moduleCards = [
     title: 'Tools & Settings', 
     description: 'Collaboration, voice commands, offline sync, and system settings',
     icon: Settings, 
-    color: 'from-slate-500 to-gray-500',
+    color: 'bg-text-muted',
     stats: { label: 'Active', value: 5 },
     route: null,
     section: 'tools' as MainSectionType
@@ -399,22 +399,22 @@ export const SafetyManagementHub = () => {
   // Get severity badge color
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical': return 'bg-red-100 text-red-700 border-red-200';
-      case 'high': return 'bg-orange-100 text-orange-700 border-orange-200';
-      case 'medium': return 'bg-amber-100 text-amber-700 border-amber-200';
-      case 'low': return 'bg-green-100 text-green-700 border-green-200';
-      default: return 'bg-gray-100 text-gray-600 border-gray-200';
+      case 'critical': return 'bg-danger/10 text-danger border-danger/20';
+      case 'high': return 'bg-danger/10 text-danger border-danger/20';
+      case 'medium': return 'bg-warning/10 text-warning border-warning/20';
+      case 'low': return 'bg-success/10 text-success border-success/20';
+      default: return 'bg-surface-overlay text-text-muted border-surface-border';
     }
   };
 
   // Get status badge color
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'open': return 'bg-blue-100 text-blue-700';
-      case 'investigating': return 'bg-purple-100 text-purple-700';
-      case 'resolved': return 'bg-green-100 text-green-700';
-      case 'capa-pending': return 'bg-amber-100 text-amber-700';
-      default: return 'bg-gray-100 text-gray-600';
+      case 'open': return 'bg-accent/10 text-accent';
+      case 'investigating': return 'bg-primary/10 text-primary';
+      case 'resolved': return 'bg-success/10 text-success';
+      case 'capa-pending': return 'bg-warning/10 text-warning';
+      default: return 'bg-surface-overlay text-text-muted';
     }
   };
 
@@ -438,54 +438,47 @@ export const SafetyManagementHub = () => {
         <div className="flex items-center gap-4">
           <img src="/logo.png" alt="SafetyMEG Logo" className="w-12 h-12 object-contain" />
           <div>
-            <h1 className="text-3xl lg:text-4xl font-bold text-white">Safety Hub</h1>
-            <p className="text-slate-400 mt-1">Intelligent Safety Management & Compliance</p>
+            <h1 className="text-3xl lg:text-4xl font-bold text-text-primary">Safety Hub</h1>
+            <p className="text-text-muted mt-1">Intelligent Safety Management & Compliance</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <div className="hidden md:flex items-center gap-3 px-4 py-2 bg-slate-800/50 border border-slate-700/50 rounded-xl">
+          <div className="hidden md:flex items-center gap-3 px-4 py-2 bg-surface-raised border border-surface-border rounded-xl shadow-sm">
             <div className="flex items-center gap-2">
-              <Brain className="w-4 h-4 text-purple-400" />
-              <span className="text-[10px] font-black text-white uppercase tracking-widest">AI Safety Score</span>
+              <Brain className="w-4 h-4 text-accent" />
+              <span className="text-[10px] font-black text-text-primary uppercase tracking-widest">AI Safety Score</span>
             </div>
-            <div className="w-24 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+            <div className="w-24 h-1.5 bg-surface-sunken rounded-full overflow-hidden">
               <motion.div 
                 initial={{ width: 0 }}
                 animate={{ width: `${liveQuickStats.safetyScore}%` }}
-                className="h-full bg-gradient-to-r from-purple-500 to-indigo-500"
+                className="h-full bg-accent"
               />
             </div>
-            <span className="text-[10px] font-bold text-purple-300">{liveQuickStats.safetyScore}%</span>
+            <span className="text-[10px] font-bold text-accent">{liveQuickStats.safetyScore}%</span>
           </div>
-          <button 
-            onClick={() => setShowAIAssistant(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
-          >
-            <Sparkles className="w-5 h-5" />
-            AI Assistant
-          </button>
         </div>
       </div>
 
       {/* AI Insights Banner */}
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700/50 rounded-[2.5rem] p-8 relative overflow-hidden shadow-2xl">
+      <div className="bg-surface-raised border border-surface-border rounded-[2.5rem] p-8 relative overflow-hidden shadow-card">
         <div className="absolute top-0 right-0 p-12 opacity-5">
-          <Shield className="w-48 h-48" />
+          <Shield className="w-48 h-48 text-accent" />
         </div>
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <span className="px-3 py-1 bg-purple-500/20 border border-purple-500/30 rounded-full text-[10px] font-black text-purple-400 uppercase tracking-widest">AI Predictive Insight</span>
-              <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Updated 5m ago</span>
+              <span className="px-3 py-1 bg-accent/10 border border-accent/20 rounded-full text-[10px] font-black text-accent uppercase tracking-widest">AI Predictive Insight</span>
+              <span className="text-text-muted text-[10px] font-bold uppercase tracking-widest">Updated 5m ago</span>
             </div>
-            <h2 className="text-2xl font-bold text-white mb-4">Facility-wide risk levels have decreased by 12% following the implementation of AI-guided PPE audits.</h2>
+            <h2 className="text-2xl font-bold text-text-primary mb-4">Facility-wide risk levels have decreased by 12% following the implementation of AI-guided PPE audits.</h2>
             <div className="flex flex-wrap gap-4">
-              <div className="flex items-center gap-2 text-sm text-slate-400">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+              <div className="flex items-center gap-2 text-sm text-text-muted">
+                <CheckCircle2 className="w-4 h-4 text-success" />
                 <span>342 Audits Completed</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-slate-400">
-                <AlertTriangle className="w-4 h-4 text-amber-500" />
+              <div className="flex items-center gap-2 text-sm text-text-muted">
+                <AlertTriangle className="w-4 h-4 text-warning" />
                 <span>3 High-Risk Areas Identified</span>
               </div>
             </div>
@@ -493,13 +486,13 @@ export const SafetyManagementHub = () => {
           <div className="flex justify-center lg:justify-end gap-4">
             <button 
               onClick={() => navigate('/visual-audit/template')}
-              className="px-8 py-4 bg-purple-600 text-white rounded-2xl font-bold hover:bg-purple-700 transition-all shadow-xl active:scale-95"
+              className="px-8 py-4 bg-accent text-text-onAccent rounded-2xl font-bold transition-all shadow-sm active:scale-95"
             >
               AI Standard Audit
             </button>
             <button 
               onClick={() => navigate('/safety-audit?mode=ai_insights')}
-              className="px-8 py-4 bg-white text-slate-900 rounded-2xl font-bold hover:bg-purple-50 transition-all shadow-xl active:scale-95"
+              className="px-8 py-4 bg-surface-sunken text-text-primary border border-surface-border rounded-2xl font-bold transition-all shadow-sm active:scale-95"
             >
               View AI Audit Report
             </button>
@@ -509,90 +502,90 @@ export const SafetyManagementHub = () => {
 
       {/* EHS Benchmarks Section */}
       {/* EHS Benchmarks with Trend Charts */}
-      <div className="bg-gradient-to-br from-indigo-900/50 to-purple-900/50 rounded-2xl lg:rounded-3xl p-5 lg:p-6 border border-indigo-700/30">
+      <div className="bg-surface-raised rounded-2xl lg:rounded-3xl p-5 lg:p-6 border border-surface-border shadow-card">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-indigo-400" />
-            <h2 className="text-lg font-bold text-white">EHS Benchmarks</h2>
+            <BarChart3 className="w-5 h-5 text-accent" />
+            <h2 className="text-lg font-bold text-text-primary">EHS Benchmarks</h2>
           </div>
-          <span className="text-xs font-medium text-indigo-300 bg-indigo-800/50 px-3 py-1 rounded-full">vs Industry</span>
+          <span className="text-xs font-medium text-accent bg-accent/10 px-3 py-1 rounded-full">vs Industry</span>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-slate-800/60 rounded-xl p-4">
+          <div className="bg-surface-sunken rounded-xl p-4 border border-surface-border">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-medium text-slate-400">TRIR</span>
-              <span className="text-xs font-bold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded">72nd %ile</span>
+              <span className="text-xs font-medium text-text-muted">TRIR</span>
+              <span className="text-xs font-bold text-success bg-success/10 px-2 py-0.5 rounded">72nd %ile</span>
             </div>
-            <div className="text-2xl font-bold text-white">2.8</div>
+            <div className="text-2xl font-bold text-text-primary">2.8</div>
             {/* Mini Trend Chart */}
             <div className="flex items-end gap-1 mt-2 h-8">
               {[3.6, 3.4, 3.2, 3.0, 2.9, 2.8].map((val, i) => (
                 <div key={i} className="flex-1 flex flex-col items-center gap-0.5">
-                  <div className="w-full bg-emerald-500/80 rounded-t" style={{ height: `${(val / 4) * 100}%` }} />
+                  <div className="w-full bg-success rounded-t" style={{ height: `${(val / 4) * 100}%` }} />
                 </div>
               ))}
             </div>
-            <div className="flex justify-between mt-1 text-[10px] text-slate-500">
-              <span className="flex items-center gap-0.5"><TrendingDown className="w-3 h-3 text-emerald-400" />-22%</span>
+            <div className="flex justify-between mt-1 text-[10px] text-text-muted">
+              <span className="flex items-center gap-0.5"><TrendingDown className="w-3 h-3 text-success" />-22%</span>
               <span>6mo</span>
             </div>
           </div>
-          <div className="bg-slate-800/60 rounded-xl p-4">
+          <div className="bg-surface-sunken rounded-xl p-4 border border-surface-border">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-medium text-slate-400">Compliance</span>
-              <span className="text-xs font-bold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded">85th %ile</span>
+              <span className="text-xs font-medium text-text-muted">Compliance</span>
+              <span className="text-xs font-bold text-success bg-success/10 px-2 py-0.5 rounded">85th %ile</span>
             </div>
-            <div className="text-2xl font-bold text-white">97%</div>
+            <div className="text-2xl font-bold text-text-primary">97%</div>
             {/* Mini Trend Chart */}
             <div className="flex items-end gap-1 mt-2 h-8">
               {[88, 90, 93, 94, 96, 97].map((val, i) => (
                 <div key={i} className="flex-1 flex flex-col items-center gap-0.5">
-                  <div className="w-full bg-emerald-500/80 rounded-t" style={{ height: `${val}%` }} />
+                  <div className="w-full bg-success rounded-t" style={{ height: `${val}%` }} />
                 </div>
               ))}
             </div>
-            <div className="flex justify-between mt-1 text-[10px] text-slate-500">
-              <span className="flex items-center gap-0.5"><TrendingUp className="w-3 h-3 text-emerald-400" />+10%</span>
+            <div className="flex justify-between mt-1 text-[10px] text-text-muted">
+              <span className="flex items-center gap-0.5"><TrendingUp className="w-3 h-3 text-success" />+10%</span>
               <span>6mo</span>
             </div>
           </div>
-          <div className="bg-slate-800/60 rounded-xl p-4">
+          <div className="bg-surface-sunken rounded-xl p-4 border border-surface-border">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-medium text-slate-400">Emissions</span>
-              <span className="text-xs font-bold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded">76th %ile</span>
+              <span className="text-xs font-medium text-text-muted">Emissions</span>
+              <span className="text-xs font-bold text-success bg-success/10 px-2 py-0.5 rounded">76th %ile</span>
             </div>
-            <div className="text-2xl font-bold text-white">42</div>
-            <div className="text-[10px] text-slate-400 mt-0.5">tCO2e/M$</div>
+            <div className="text-2xl font-bold text-text-primary">42</div>
+            <div className="text-[10px] text-text-muted mt-0.5">tCO2e/M$</div>
             {/* Mini Trend Chart */}
             <div className="flex items-end gap-1 mt-1 h-6">
               {[52, 50, 48, 46, 44, 42].map((val, i) => (
                 <div key={i} className="flex-1 flex flex-col items-center gap-0.5">
-                  <div className="w-full bg-emerald-500/80 rounded-t" style={{ height: `${(val / 60) * 100}%` }} />
+                  <div className="w-full bg-success rounded-t" style={{ height: `${(val / 60) * 100}%` }} />
                 </div>
               ))}
             </div>
-            <div className="flex justify-between mt-1 text-[10px] text-slate-500">
-              <span className="flex items-center gap-0.5"><TrendingDown className="w-3 h-3 text-emerald-400" />-19%</span>
+            <div className="flex justify-between mt-1 text-[10px] text-text-muted">
+              <span className="flex items-center gap-0.5"><TrendingDown className="w-3 h-3 text-success" />-19%</span>
               <span>6mo</span>
             </div>
           </div>
-          <div className="bg-slate-800/60 rounded-xl p-4">
+          <div className="bg-surface-sunken rounded-xl p-4 border border-surface-border">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-medium text-slate-400">Security</span>
-              <span className="text-xs font-bold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded">99th %ile</span>
+              <span className="text-xs font-medium text-text-muted">Security</span>
+              <span className="text-xs font-bold text-success bg-success/10 px-2 py-0.5 rounded">99th %ile</span>
             </div>
-            <div className="text-2xl font-bold text-white">Active</div>
-            <div className="text-[10px] text-slate-400 mt-0.5">End-to-End Encrypted</div>
+            <div className="text-2xl font-bold text-text-primary">Active</div>
+            <div className="text-[10px] text-text-muted mt-0.5">End-to-End Encrypted</div>
             {/* Mini Trend Chart */}
             <div className="flex items-end gap-1 mt-1 h-6">
               {[100, 100, 100, 100, 100, 100].map((val, i) => (
                 <div key={i} className="flex-1 flex flex-col items-center gap-0.5">
-                  <div className="w-full bg-blue-500/80 rounded-t" style={{ height: `${val}%` }} />
+                  <div className="w-full bg-accent rounded-t" style={{ height: `${val}%` }} />
                 </div>
               ))}
             </div>
-            <div className="flex justify-between mt-1 text-[10px] text-slate-500">
-              <span className="flex items-center gap-0.5"><Shield className="w-3 h-3 text-blue-400" />Secure</span>
+            <div className="flex justify-between mt-1 text-[10px] text-text-muted">
+              <span className="flex items-center gap-0.5"><Shield className="w-3 h-3 text-accent" />Secure</span>
               <span>Live</span>
             </div>
           </div>
@@ -600,23 +593,23 @@ export const SafetyManagementHub = () => {
       </div>
 
       {/* Global Standards Compliance Widget */}
-      <div className="bg-slate-900/40 border border-slate-800 rounded-[2.5rem] p-8 backdrop-blur-md">
+      <div className="bg-surface-raised border border-surface-border rounded-[2.5rem] p-8 backdrop-blur-md shadow-card">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
-              <Globe className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent">
+              <Globe className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-xl font-black text-white">International Standards Compliance</h3>
-                <span className="px-2 py-0.5 rounded-full bg-violet-500/20 border border-violet-500/30 text-[10px] font-bold text-violet-300 uppercase tracking-wider flex items-center gap-1">
+                <h3 className="text-xl font-black text-text-primary">International Standards Compliance</h3>
+                <span className="px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-bold text-primary uppercase tracking-wider flex items-center gap-1">
                   <Sparkles className="w-3 h-3" /> AI Integrated
                 </span>
               </div>
-              <p className="text-sm text-slate-400">All 21 global safety standards tracked in real-time</p>
+              <p className="text-sm text-text-muted">All 21 global safety standards tracked in real-time</p>
             </div>
           </div>
-          <button onClick={() => navigate('/international-standards')} className="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-colors">
+          <button onClick={() => navigate('/international-standards')} className="px-4 py-2 bg-accent text-text-onAccent rounded-xl text-sm font-bold transition-colors">
             View All
           </button>
         </div>
@@ -644,31 +637,31 @@ export const SafetyManagementHub = () => {
             { name: 'GCC', rate: 86, color: 'from-yellow-600 to-yellow-700' },
             { name: 'NIOSH', rate: 92, color: 'from-violet-500 to-violet-600' },
           ].map(std => (
-            <div key={std.name} className="bg-slate-800/60 rounded-xl p-3 text-center hover:bg-slate-700/60 transition-colors cursor-pointer group">
-              <div className={`w-10 h-10 mx-auto rounded-lg bg-gradient-to-br ${std.color} flex items-center justify-center mb-2 group-hover:scale-110 transition-transform`}>
+            <div key={std.name} className={`bg-gradient-to-br ${std.color} border border-white/15 rounded-xl p-3 text-center transition-transform cursor-pointer group shadow-sm hover:-translate-y-0.5`}>
+              <div className="w-10 h-10 mx-auto rounded-lg bg-white/10 border border-white/20 flex items-center justify-center mb-2 backdrop-blur-sm group-hover:scale-110 transition-transform">
                 <span className="text-[8px] font-black text-white leading-none">{std.name.split(' ')[0].slice(0, 4)}</span>
               </div>
               <p className="text-[10px] font-bold text-white truncate">{std.name}</p>
-              <p className={`text-xs font-black mt-0.5 ${std.rate >= 95 ? 'text-emerald-400' : std.rate >= 90 ? 'text-blue-400' : std.rate >= 85 ? 'text-amber-400' : 'text-red-400'}`}>{std.rate}%</p>
+              <p className="text-xs font-black mt-0.5 text-white">{std.rate}%</p>
             </div>
           ))}
         </div>
-        <div className="mt-4 flex items-center justify-between text-xs text-slate-500">
-          <span>Average Compliance: <span className="font-bold text-emerald-400">92.5%</span></span>
+        <div className="mt-4 flex items-center justify-between text-xs text-text-muted">
+          <span>Average Compliance: <span className="font-bold text-success">92.5%</span></span>
           <span>21 Standards · 12 Regions · Last Updated: Today</span>
         </div>
       </div>
 
       {/* Security & Integration Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-slate-900/40 border border-slate-800 rounded-[2.5rem] p-8 backdrop-blur-md">
+        <div className="bg-surface-raised border border-surface-border rounded-[2.5rem] p-8 backdrop-blur-md shadow-card">
           <div className="flex items-center gap-4 mb-8">
-            <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400">
+            <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent">
               <Shield className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-2xl font-black text-white">Security Protection</h3>
-              <p className="text-sm text-slate-500">Enterprise-grade data security & privacy</p>
+              <h3 className="text-2xl font-black text-text-primary">Security Protection</h3>
+              <p className="text-sm text-text-muted">Enterprise-grade data security & privacy</p>
             </div>
           </div>
           <div className="space-y-4">
@@ -678,25 +671,25 @@ export const SafetyManagementHub = () => {
               { label: 'Secure Audit Trail', status: 'Synced', icon: History },
               { label: 'Access Control Monitoring', status: 'Live', icon: Eye },
             ].map((item, i) => (
-              <div key={i} className="flex items-center justify-between p-4 bg-slate-800/30 rounded-2xl border border-slate-700/50">
+              <div key={i} className="flex items-center justify-between p-4 bg-surface-sunken rounded-2xl border border-surface-border">
                 <div className="flex items-center gap-3">
-                  <item.icon className="w-5 h-5 text-slate-400" />
-                  <span className="text-sm font-bold text-white">{item.label}</span>
+                  <item.icon className="w-5 h-5 text-text-muted" />
+                  <span className="text-sm font-bold text-text-primary">{item.label}</span>
                 </div>
-                <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">{item.status}</span>
+                <span className="text-[10px] font-black text-success uppercase tracking-widest bg-success/10 px-3 py-1 rounded-full border border-success/20">{item.status}</span>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="bg-slate-900/40 border border-slate-800 rounded-[2.5rem] p-8 backdrop-blur-md">
+        <div className="bg-surface-raised border border-surface-border rounded-[2.5rem] p-8 backdrop-blur-md shadow-card">
           <div className="flex items-center gap-4 mb-8">
-            <div className="w-12 h-12 rounded-2xl bg-brand-500/10 flex items-center justify-center text-brand-400">
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
               <Zap className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-2xl font-black text-white">Integration Ready</h3>
-              <p className="text-sm text-slate-500">Connect with your existing EHS ecosystem</p>
+              <h3 className="text-2xl font-black text-text-primary">Integration Ready</h3>
+              <p className="text-sm text-text-muted">Connect with your existing EHS ecosystem</p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -706,9 +699,9 @@ export const SafetyManagementHub = () => {
               { label: 'IoT Hub', icon: Activity },
               { label: 'Cloud Sync', icon: CloudRain },
             ].map((item, i) => (
-              <div key={i} className="p-6 bg-slate-800/30 rounded-3xl border border-slate-700/50 flex flex-col items-center justify-center text-center group hover:border-brand-500/50 transition-all cursor-pointer">
-                <item.icon className="w-8 h-8 text-slate-500 mb-3 group-hover:text-brand-400 transition-colors" />
-                <span className="text-xs font-bold text-white">{item.label}</span>
+              <div key={i} className="p-6 bg-surface-sunken rounded-3xl border border-surface-border flex flex-col items-center justify-center text-center group hover:border-accent/40 hover:bg-surface-overlay transition-all cursor-pointer">
+                <item.icon className="w-8 h-8 text-text-muted mb-3 group-hover:text-accent transition-colors" />
+                <span className="text-xs font-bold text-text-primary">{item.label}</span>
               </div>
             ))}
           </div>
@@ -721,7 +714,7 @@ export const SafetyManagementHub = () => {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl lg:rounded-3xl p-5 lg:p-6 text-white relative overflow-hidden"
+          className="bg-success rounded-2xl lg:rounded-3xl p-5 lg:p-6 text-text-onAccent relative overflow-hidden shadow-card"
         >
           <div className="relative z-10">
             <div className="flex items-center gap-2 mb-3">
@@ -754,16 +747,16 @@ export const SafetyManagementHub = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-slate-800 rounded-2xl lg:rounded-3xl p-5 lg:p-6 border border-slate-700"
+          className="bg-surface-raised rounded-2xl lg:rounded-3xl p-5 lg:p-6 border border-surface-border shadow-card"
         >
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-10 h-10 bg-red-500/20 rounded-xl flex items-center justify-center">
-              <AlertTriangle className="w-5 h-5 text-red-400" />
+            <div className="w-10 h-10 bg-danger/10 rounded-xl flex items-center justify-center">
+              <AlertTriangle className="w-5 h-5 text-danger" />
             </div>
           </div>
-          <span className="text-4xl lg:text-5xl font-bold text-white">{liveQuickStats.openIncidents}</span>
-          <p className="text-sm text-slate-400 mt-1">Open Incidents</p>
-          <div className="flex items-center gap-1 mt-2 text-emerald-400">
+          <span className="text-4xl lg:text-5xl font-bold text-text-primary">{liveQuickStats.openIncidents}</span>
+          <p className="text-sm text-text-muted mt-1">Open Incidents</p>
+          <div className="flex items-center gap-1 mt-2 text-success">
             <TrendingDown className="w-4 h-4" />
             <span className="text-sm font-medium">{Math.abs(liveQuickStats.incidentTrend)} less than last week</span>
           </div>
@@ -774,22 +767,22 @@ export const SafetyManagementHub = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-slate-800 rounded-2xl lg:rounded-3xl p-5 lg:p-6 border border-slate-700"
+          className="bg-surface-raised rounded-2xl lg:rounded-3xl p-5 lg:p-6 border border-surface-border shadow-card"
         >
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center">
-              <CheckCircle2 className="w-5 h-5 text-green-400" />
+            <div className="w-10 h-10 bg-success/10 rounded-xl flex items-center justify-center">
+              <CheckCircle2 className="w-5 h-5 text-success" />
             </div>
           </div>
-          <span className="text-4xl lg:text-5xl font-bold text-white">{liveQuickStats.daysWithoutLTI}</span>
-          <p className="text-sm text-slate-400 mt-1">Days Without LTI</p>
-          <div className="w-full bg-slate-700 rounded-full h-2 mt-3">
+          <span className="text-4xl lg:text-5xl font-bold text-text-primary">{liveQuickStats.daysWithoutLTI}</span>
+          <p className="text-sm text-text-muted mt-1">Days Without LTI</p>
+          <div className="w-full bg-surface-sunken rounded-full h-2 mt-3">
             <div 
-              className="bg-green-500 h-2 rounded-full transition-all" 
+              className="bg-success h-2 rounded-full transition-all" 
               style={{ width: `${(liveQuickStats.daysWithoutLTI / liveQuickStats.daysTarget) * 100}%` }}
             />
           </div>
-          <p className="text-xs text-slate-500 mt-1">Goal: {liveQuickStats.daysTarget} days</p>
+          <p className="text-xs text-text-muted mt-1">Goal: {liveQuickStats.daysTarget} days</p>
         </motion.div>
 
         {/* Compliance Rate */}
@@ -797,19 +790,19 @@ export const SafetyManagementHub = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-slate-800 rounded-2xl lg:rounded-3xl p-5 lg:p-6 border border-slate-700"
+          className="bg-surface-raised rounded-2xl lg:rounded-3xl p-5 lg:p-6 border border-surface-border shadow-card"
         >
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center">
-              <ClipboardCheck className="w-5 h-5 text-blue-400" />
+            <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center">
+              <ClipboardCheck className="w-5 h-5 text-accent" />
             </div>
           </div>
           <div className="flex items-end gap-1">
-            <span className="text-4xl lg:text-5xl font-bold text-white">{liveQuickStats.complianceRate}</span>
-            <span className="text-xl text-slate-500 mb-1">%</span>
+            <span className="text-4xl lg:text-5xl font-bold text-text-primary">{liveQuickStats.complianceRate}</span>
+            <span className="text-xl text-text-muted mb-1">%</span>
           </div>
-          <p className="text-sm text-slate-400 mt-1">Compliance Rate</p>
-          <div className="flex items-center gap-1 mt-2 text-emerald-400">
+          <p className="text-sm text-text-muted mt-1">Compliance Rate</p>
+          <div className="flex items-center gap-1 mt-2 text-success">
             <TrendingUp className="w-4 h-4" />
             <span className="text-sm font-medium">+{liveQuickStats.complianceTrend}% this month</span>
           </div>
@@ -818,7 +811,7 @@ export const SafetyManagementHub = () => {
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-xl font-bold text-white mb-4">Quick Actions</h2>
+        <h2 className="text-xl font-bold text-text-primary mb-4">Quick Actions</h2>
         <div className="grid grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4">
           {quickActions.map((action, i) => (
             <motion.button
@@ -827,12 +820,12 @@ export const SafetyManagementHub = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.05 }}
               onClick={() => navigate(action.route)}
-              className="group flex flex-col items-center gap-3 p-4 lg:p-6 bg-slate-800 rounded-2xl border border-slate-700 hover:border-slate-600 hover:bg-slate-750 transition-all"
+              className="group flex flex-col items-center gap-3 p-4 lg:p-6 bg-surface-raised rounded-2xl border border-surface-border hover:border-accent/30 hover:bg-surface-overlay transition-all shadow-card"
             >
               <div className={`w-12 h-12 lg:w-14 lg:h-14 ${action.color} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
                 <action.icon className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
               </div>
-              <span className="text-xs lg:text-sm font-semibold text-slate-300 text-center">{action.label}</span>
+              <span className="text-xs lg:text-sm font-semibold text-text-primary text-center">{action.label}</span>
             </motion.button>
           ))}
         </div>
@@ -842,7 +835,7 @@ export const SafetyManagementHub = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
         {/* Main Modules - 2 columns on large screens */}
         <div className="lg:col-span-2 space-y-4">
-          <h2 className="text-xl font-bold text-white">Modules</h2>
+          <h2 className="text-xl font-bold text-text-primary">Modules</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {moduleCards.map((module, i) => {
               // Override stats for incident & compliance cards with live values
@@ -858,20 +851,20 @@ export const SafetyManagementHub = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 onClick={() => module.route ? navigate(module.route) : setMainSection(module.section!)}
-                className="group cursor-pointer bg-slate-800 rounded-2xl lg:rounded-3xl p-5 lg:p-6 border border-slate-700 hover:border-slate-600 hover:bg-slate-750 transition-all"
+                className="group cursor-pointer bg-surface-raised rounded-2xl lg:rounded-3xl p-5 lg:p-6 border border-surface-border hover:border-accent/30 hover:bg-surface-overlay transition-all shadow-card"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div className={`w-12 h-12 lg:w-14 lg:h-14 rounded-2xl bg-gradient-to-br ${module.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                    <module.icon className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
+                  <div className={`w-12 h-12 lg:w-14 lg:h-14 rounded-2xl ${module.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                    <module.icon className="w-6 h-6 lg:w-7 lg:h-7 text-text-onAccent" />
                   </div>
                   <div className="text-right">
-                    <span className="text-2xl lg:text-3xl font-bold text-white">{liveStats.value}</span>
-                    <p className="text-xs text-slate-500">{liveStats.label}</p>
+                    <span className="text-2xl lg:text-3xl font-bold text-text-primary">{liveStats.value}</span>
+                    <p className="text-xs text-text-muted">{liveStats.label}</p>
                   </div>
                 </div>
-                <h3 className="text-lg font-bold text-white mb-1 group-hover:text-brand-400 transition-colors">{module.title}</h3>
-                <p className="text-sm text-slate-400 line-clamp-2">{module.description}</p>
-                <div className="mt-4 flex items-center text-sm font-medium text-brand-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                <h3 className="text-lg font-bold text-text-primary mb-1 group-hover:text-accent transition-colors">{module.title}</h3>
+                <p className="text-sm text-text-muted line-clamp-2">{module.description}</p>
+                <div className="mt-4 flex items-center text-sm font-medium text-accent opacity-0 group-hover:opacity-100 transition-opacity">
                   Open module <ChevronRight className="w-4 h-4 ml-1" />
                 </div>
               </motion.div>
@@ -883,15 +876,15 @@ export const SafetyManagementHub = () => {
         {/* Recent Activity */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-white">Recent Activity</h2>
+            <h2 className="text-xl font-bold text-text-primary">Recent Activity</h2>
             <button 
               onClick={() => setMainSection('incidents')}
-              className="text-sm font-medium text-brand-400 hover:text-brand-300"
+              className="text-sm font-medium text-accent hover:opacity-80"
             >
               View all
             </button>
           </div>
-          <div className="bg-slate-800 rounded-2xl lg:rounded-3xl border border-slate-700 divide-y divide-slate-700/50 overflow-hidden">
+          <div className="bg-surface-raised rounded-2xl lg:rounded-3xl border border-surface-border divide-y divide-surface-border overflow-hidden shadow-card">
             {liveRecentIncidents.map((incident, i) => {
               const TypeIcon = getTypeIcon(incident.type);
               return (
@@ -900,7 +893,7 @@ export const SafetyManagementHub = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 }}
-                  className="p-4 hover:bg-slate-750 cursor-pointer transition-colors"
+                  className="p-4 hover:bg-surface-overlay cursor-pointer transition-colors"
                   onClick={() => navigate('/full-report')}
                 >
                   <div className="flex items-start gap-3">
@@ -913,8 +906,8 @@ export const SafetyManagementHub = () => {
                       <TypeIcon className="w-5 h-5" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-white truncate">{incident.title}</p>
-                      <p className="text-xs text-slate-500">{incident.id} • {incident.location}</p>
+                      <p className="text-sm font-semibold text-text-primary truncate">{incident.title}</p>
+                      <p className="text-xs text-text-muted">{incident.id} • {incident.location}</p>
                       <div className="flex items-center gap-2 mt-2">
                         <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getSeverityColor(incident.severity)}`}>
                           {incident.severity}
@@ -932,21 +925,21 @@ export const SafetyManagementHub = () => {
 
           {/* Additional Quick Stats */}
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-amber-500/10 rounded-2xl p-4 border border-amber-500/20">
+            <div className="bg-warning/10 rounded-2xl p-4 border border-warning/20">
               <div className="flex items-center gap-2 mb-2">
-                <Clock className="w-5 h-5 text-amber-400" />
-                <span className="text-sm font-medium text-amber-400">Pending</span>
+                <Clock className="w-5 h-5 text-warning" />
+                <span className="text-sm font-medium text-warning">Pending</span>
               </div>
-              <span className="text-2xl font-bold text-amber-400">{liveQuickStats.pendingActions}</span>
-              <p className="text-xs text-amber-500/70">Actions due</p>
+              <span className="text-2xl font-bold text-warning">{liveQuickStats.pendingActions}</span>
+              <p className="text-xs text-warning/80">Actions due</p>
             </div>
-            <div className="bg-blue-500/10 rounded-2xl p-4 border border-blue-500/20">
+            <div className="bg-accent/10 rounded-2xl p-4 border border-accent/20">
               <div className="flex items-center gap-2 mb-2">
-                <Calendar className="w-5 h-5 text-blue-400" />
-                <span className="text-sm font-medium text-blue-400">Upcoming</span>
+                <Calendar className="w-5 h-5 text-accent" />
+                <span className="text-sm font-medium text-accent">Upcoming</span>
               </div>
-              <span className="text-2xl font-bold text-blue-400">{liveQuickStats.upcomingInspections}</span>
-              <p className="text-xs text-blue-500/70">Inspections</p>
+              <span className="text-2xl font-bold text-accent">{liveQuickStats.upcomingInspections}</span>
+              <p className="text-xs text-accent/80">Inspections</p>
             </div>
           </div>
         </div>
@@ -1039,13 +1032,13 @@ export const SafetyManagementHub = () => {
         <div className="flex items-center gap-4">
           <button 
             onClick={() => setMainSection('dashboard')}
-            className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors"
+            className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface-raised border border-surface-border hover:bg-surface-overlay transition-colors"
           >
-            <ArrowLeft className="w-5 h-5 text-slate-400" />
+            <ArrowLeft className="w-5 h-5 text-text-muted" />
           </button>
           <div>
-            <h1 className="text-2xl lg:text-3xl font-bold text-white">{sectionTitles[mainSection]}</h1>
-            <p className="text-sm text-slate-400">Manage all {mainSection} related tasks and data</p>
+            <h1 className="text-2xl lg:text-3xl font-bold text-text-primary">{sectionTitles[mainSection]}</h1>
+            <p className="text-sm text-text-muted">Manage all {mainSection} related tasks and data</p>
           </div>
         </div>
 
@@ -1057,8 +1050,8 @@ export const SafetyManagementHub = () => {
               onClick={() => setActiveSubItem(item.id)}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all ${
                 activeSubItem === item.id
-                  ? 'bg-brand-500/20 text-brand-400 border border-brand-500/30'
-                  : 'bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-750'
+                  ? 'bg-accent/10 text-accent border border-accent/20'
+                  : 'bg-surface-raised text-text-muted border border-surface-border hover:bg-surface-overlay hover:text-text-primary'
               }`}
             >
               <item.icon className="w-4 h-4" />
@@ -1076,13 +1069,9 @@ export const SafetyManagementHub = () => {
   };
 
   return (
-    <div className="min-h-screen text-text-primary transition-colors duration-300">
+    <div className="min-h-screen bg-surface-base text-text-primary transition-colors duration-300">
       {/* Main Container */}
       <main className="max-w-[1920px] mx-auto px-4 lg:px-8 py-6 lg:py-10 pb-32">
-        <div className="flex items-center gap-4 mb-8">
-          <img src="/assets/aigc/images/safetymeg-logo_1770373676_000.png" alt="SafetyMEG Logo" className="h-12 w-auto object-contain" />
-          <h1 className="text-3xl font-bold text-text-primary font-display tracking-tight">SafetyMEG Hub</h1>
-        </div>
         <AnimatePresence mode="wait">
           <motion.div
             key={mainSection}
@@ -1096,14 +1085,6 @@ export const SafetyManagementHub = () => {
         </AnimatePresence>
       </main>
 
-      {/* Floating AI Assistant Button */}
-      <button
-        onClick={() => setShowAIAssistant(true)}
-        className="fixed bottom-60 right-6 w-14 h-14 bg-gradient-to-br from-purple-600 to-indigo-600 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all flex items-center justify-center z-40"
-      >
-        <Brain className="w-7 h-7" />
-      </button>
-
       {/* AI Assistant Modal */}
       <AnimatePresence>
         {showAIAssistant && (
@@ -1111,7 +1092,7 @@ export const SafetyManagementHub = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-end lg:items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-primary-950/60 backdrop-blur-sm flex items-end lg:items-center justify-center z-50 p-4"
             onClick={() => setShowAIAssistant(false)}
           >
             <motion.div
@@ -1119,24 +1100,24 @@ export const SafetyManagementHub = () => {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 100, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-2xl bg-slate-800 rounded-t-3xl lg:rounded-3xl max-h-[80vh] overflow-hidden border border-slate-700"
+              className="w-full max-w-2xl bg-surface-raised rounded-t-3xl lg:rounded-3xl max-h-[80vh] overflow-hidden border border-surface-border shadow-modal"
             >
-              <div className="p-6 border-b border-slate-700">
+              <div className="p-6 border-b border-surface-border">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-2xl flex items-center justify-center">
-                      <Brain className="w-6 h-6 text-white" />
+                    <div className="w-12 h-12 bg-accent rounded-2xl flex items-center justify-center">
+                      <Brain className="w-6 h-6 text-text-onAccent" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-white">EHS AI Assistant</h3>
-                      <p className="text-sm text-slate-400">How can I help you today?</p>
+                      <h3 className="text-lg font-bold text-text-primary">EHS AI Assistant</h3>
+                      <p className="text-sm text-text-muted">How can I help you today?</p>
                     </div>
                   </div>
                   <button 
                     onClick={() => setShowAIAssistant(false)}
-                    className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-700 transition-colors"
+                    className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-overlay transition-colors"
                   >
-                    <X className="w-5 h-5 text-slate-400" />
+                    <X className="w-5 h-5 text-text-muted" />
                   </button>
                 </div>
               </div>
@@ -1155,7 +1136,7 @@ export const SafetyManagementHub = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-end lg:items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-primary-950/60 backdrop-blur-sm flex items-end lg:items-center justify-center z-50 p-4"
             onClick={() => {
               setShowMetricCustomizer(false);
               setReorderMode(false);
@@ -1166,17 +1147,17 @@ export const SafetyManagementHub = () => {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 100, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-lg bg-slate-800 rounded-t-3xl lg:rounded-3xl max-h-[80vh] overflow-hidden border border-slate-700"
+              className="w-full max-w-lg bg-surface-raised rounded-t-3xl lg:rounded-3xl max-h-[80vh] overflow-hidden border border-surface-border shadow-modal"
             >
-              <div className="p-6 border-b border-slate-700">
+              <div className="p-6 border-b border-surface-border">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center">
-                      <Settings className="w-6 h-6 text-white" />
+                    <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center">
+                      <Settings className="w-6 h-6 text-text-onAccent" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-white">Customize Dashboard</h3>
-                      <p className="text-sm text-slate-400">Toggle visibility and drag to reorder</p>
+                      <h3 className="text-lg font-bold text-text-primary">Customize Dashboard</h3>
+                      <p className="text-sm text-text-muted">Toggle visibility and drag to reorder</p>
                     </div>
                   </div>
                   <button 
@@ -1184,21 +1165,21 @@ export const SafetyManagementHub = () => {
                       setShowMetricCustomizer(false);
                       setReorderMode(false);
                     }}
-                    className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-700 transition-colors"
+                    className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-overlay transition-colors"
                   >
-                    <X className="w-5 h-5 text-slate-400" />
+                    <X className="w-5 h-5 text-text-muted" />
                   </button>
                 </div>
               </div>
               <div className="p-4">
                 <div className="flex items-center justify-between mb-4">
-                  <p className="text-sm text-slate-400">Drag to reorder metrics:</p>
+                  <p className="text-sm text-text-muted">Drag to reorder metrics:</p>
                   <button
                     onClick={() => setReorderMode(!reorderMode)}
                     className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                       reorderMode 
-                        ? 'bg-brand-500/20 text-brand-400 border border-brand-500/50'
-                        : 'bg-slate-700 text-slate-300 border border-slate-600'
+                        ? 'bg-accent/10 text-accent border border-accent/20'
+                        : 'bg-surface-sunken text-text-primary border border-surface-border'
                     }`}
                   >
                     {reorderMode ? 'Done Reordering' : 'Reorder Mode'}
@@ -1216,22 +1197,22 @@ export const SafetyManagementHub = () => {
                       value={metric}
                       className={`flex items-center justify-between p-4 rounded-xl border transition-all ${
                         reorderMode 
-                          ? 'bg-slate-700/50 border-brand-500/30 cursor-grab active:cursor-grabbing'
-                          : 'bg-slate-700/30 border-slate-600/30'
+                          ? 'bg-surface-overlay border-accent/20 cursor-grab active:cursor-grabbing'
+                          : 'bg-surface-sunken border-surface-border'
                       }`}
                     >
                       <div className="flex items-center gap-3">
                         {reorderMode && (
-                          <div className="text-slate-500">
+                          <div className="text-text-muted">
                             <MoreHorizontal className="w-5 h-5" />
                           </div>
                         )}
-                        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-brand-500/20">
-                          <metric.icon className="w-5 h-5 text-brand-400" />
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-accent/10">
+                          <metric.icon className="w-5 h-5 text-accent" />
                         </div>
                         <div>
-                          <p className="font-semibold text-white">{metric.label}</p>
-                          <p className="text-sm text-slate-400">
+                          <p className="font-semibold text-text-primary">{metric.label}</p>
+                          <p className="text-sm text-text-muted">
                             Current: {metric.value}{metric.unit || ''}
                           </p>
                         </div>
@@ -1239,47 +1220,47 @@ export const SafetyManagementHub = () => {
                       {!reorderMode && (
                         <button
                           onClick={() => toggleMetricVisibility(metric.id)}
-                          className="w-6 h-6 rounded-full bg-brand-600 flex items-center justify-center"
+                          className="w-6 h-6 rounded-full bg-accent flex items-center justify-center"
                         >
-                          <CheckCircle2 className="w-4 h-4 text-white" />
+                          <CheckCircle2 className="w-4 h-4 text-text-onAccent" />
                         </button>
                       )}
                     </Reorder.Item>
                   ))}
                 </Reorder.Group>
               </div>
-              <div className="p-4 border-t border-slate-700">
-                <p className="text-sm text-slate-400 mb-3">Available metrics:</p>
+              <div className="p-4 border-t border-surface-border">
+                <p className="text-sm text-text-muted mb-3">Available metrics:</p>
                 <div className="space-y-2 max-h-40 overflow-y-auto">
                   {metrics.filter(m => !m.visible).map((metric) => (
                     <div
                       key={metric.id}
-                      className="flex items-center justify-between p-3 rounded-xl border border-slate-600/30 bg-slate-700/20 hover:bg-slate-700/40 cursor-pointer transition-all"
+                      className="flex items-center justify-between p-3 rounded-xl border border-surface-border bg-surface-sunken hover:bg-surface-overlay cursor-pointer transition-all"
                       onClick={() => toggleMetricVisibility(metric.id)}
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-600/50">
-                          <metric.icon className="w-4 h-4 text-slate-400" />
+                        <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-overlay">
+                          <metric.icon className="w-4 h-4 text-text-muted" />
                         </div>
                         <div>
-                          <p className="font-medium text-slate-300 text-sm">{metric.label}</p>
-                          <p className="text-xs text-slate-500">Tap to add</p>
+                          <p className="font-medium text-text-primary text-sm">{metric.label}</p>
+                          <p className="text-xs text-text-muted">Tap to add</p>
                         </div>
                       </div>
-                      <Plus className="w-5 h-5 text-slate-500" />
+                      <Plus className="w-5 h-5 text-text-muted" />
                     </div>
                   ))}
                 </div>
               </div>
-              <div className="p-4 border-t border-slate-700 bg-slate-800/50">
+              <div className="p-4 border-t border-surface-border bg-surface-overlay/60">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm text-slate-400">{visibleMetrics.length} metrics visible</p>
+                  <p className="text-sm text-text-muted">{visibleMetrics.length} metrics visible</p>
                   <button 
                     onClick={() => {
                       setShowMetricCustomizer(false);
                       setReorderMode(false);
                     }}
-                    className="px-6 py-2.5 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-500 transition-colors"
+                    className="px-6 py-2.5 bg-accent text-text-onAccent rounded-xl font-semibold transition-colors"
                   >
                     Done
                   </button>

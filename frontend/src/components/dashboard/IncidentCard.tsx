@@ -4,7 +4,7 @@ import { Incident } from './types';
 import { motion } from 'framer-motion';
 import { SMCard, SMBadge } from '../../components/ui';
 
-const MotionSMCard = motion(SMCard);
+const MotionSMCard = motion.create(SMCard);
 
 interface IncidentCardProps {
   incident: Incident;

@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { SMButton } from '../../ui';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   History, 
@@ -292,20 +293,20 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
 
   const getActionColor = (action: AuditAction) => {
     switch (action) {
-      case 'CREATE': return 'bg-green-100 text-green-700 border-green-200';
-      case 'UPDATE': return 'bg-blue-100 text-blue-700 border-blue-200';
-      case 'DELETE': return 'bg-red-100 text-red-700 border-red-200';
-      case 'VIEW': return 'bg-surface-100 text-surface-600 border-surface-200';
-      case 'SUBMIT': return 'bg-purple-100 text-purple-700 border-purple-200';
-      case 'APPROVE': return 'bg-emerald-100 text-emerald-700 border-emerald-200';
-      case 'REJECT': return 'bg-red-100 text-red-700 border-red-200';
-      case 'SIGN': return 'bg-indigo-100 text-indigo-700 border-indigo-200';
-      case 'EXPORT': return 'bg-amber-100 text-amber-700 border-amber-200';
-      case 'ASSIGN': return 'bg-cyan-100 text-cyan-700 border-cyan-200';
-      case 'COMMENT': return 'bg-violet-100 text-violet-700 border-violet-200';
-      case 'ATTACH': return 'bg-pink-100 text-pink-700 border-pink-200';
-      case 'STATUS_CHANGE': return 'bg-orange-100 text-orange-700 border-orange-200';
-      default: return 'bg-surface-100 text-surface-600 border-surface-200';
+      case 'CREATE': return 'bg-success/10 text-success border-success/20';
+      case 'UPDATE': return 'bg-accent/10 text-accent border-accent/20';
+      case 'DELETE': return 'bg-danger/10 text-danger border-danger/20';
+      case 'VIEW': return 'bg-surface-100 text-text-muted border-surface-border';
+      case 'SUBMIT': return 'bg-primary/10 text-text-primary border-primary/20';
+      case 'APPROVE': return 'bg-success/10 text-success border-success/20';
+      case 'REJECT': return 'bg-danger/10 text-danger border-danger/20';
+      case 'SIGN': return 'bg-accent/10 text-accent border-accent/20';
+      case 'EXPORT': return 'bg-warning/10 text-warning border-warning/20';
+      case 'ASSIGN': return 'bg-teal/10 text-teal border-teal/20';
+      case 'COMMENT': return 'bg-primary/10 text-text-primary border-primary/20';
+      case 'ATTACH': return 'bg-primary/10 text-text-primary border-primary/20';
+      case 'STATUS_CHANGE': return 'bg-warning/10 text-warning border-warning/20';
+      default: return 'bg-surface-100 text-text-muted border-surface-border';
     }
   };
 
@@ -353,25 +354,25 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
     return (
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h4 className="font-semibold text-surface-800 flex items-center gap-2">
-            <History className="w-5 h-5 text-brand-500" />
+          <h4 className="font-semibold text-text-primary flex items-center gap-2">
+            <History className="w-5 h-5 text-accent" />
             Recent Activity
           </h4>
-          <span className="text-xs text-surface-500">{filteredEntries.length} entries</span>
+          <span className="text-xs text-text-muted">{filteredEntries.length} entries</span>
         </div>
         <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
           {filteredEntries.slice(0, 5).map(entry => {
             const { date, time } = formatTimestamp(entry.timestamp);
             return (
-              <div key={entry.id} className="flex items-start gap-3 p-2 bg-surface-50 rounded-lg">
+              <div key={entry.id} className="flex items-start gap-3 p-2 bg-surface-raised/50 rounded-lg">
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${getActionColor(entry.action)}`}>
                   {getActionIcon(entry.action)}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-surface-800 truncate">
+                  <p className="text-sm text-text-primary truncate">
                     <span className="font-medium">{entry.userName}</span> {entry.action.toLowerCase().replace('_', ' ')}
                   </p>
-                  <p className="text-xs text-surface-500">{date} at {time}</p>
+                  <p className="text-xs text-text-muted">{date} at {time}</p>
                 </div>
               </div>
             );
@@ -390,11 +391,11 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-brand-900 flex items-center gap-2">
-            <Shield className="w-6 h-6 text-brand-500" />
+          <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
+            <Shield className="w-6 h-6 text-accent" />
             Audit Trail
           </h2>
-          <p className="text-sm text-surface-500">Complete activity log with tamper-evident hashing</p>
+          <p className="text-sm text-text-muted">Complete activity log with tamper-evident hashing</p>
         </div>
         <button
           onClick={exportAuditLog}
@@ -406,7 +407,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white rounded-2xl p-4 border border-surface-100 shadow-soft space-y-4">
+      <div className="bg-surface-raised rounded-2xl p-4 border border-surface-border shadow-soft space-y-4">
         <div className="flex items-center gap-3">
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-400" />
@@ -415,13 +416,13 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
               placeholder="Search by user, entity, or details..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-surface-50 border border-surface-100 rounded-xl text-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm"
             />
           </div>
           <button
             onClick={() => setShowFilters(!showFilters)}
             className={`p-2.5 rounded-xl border transition-colors flex items-center gap-2 ${
-              showFilters ? 'bg-brand-50 border-brand-200 text-brand-600' : 'bg-surface-50 border-surface-100 text-surface-600'
+              showFilters ? 'bg-primary/5 border-primary/20 text-text-primary' : 'bg-surface-100 border-surface-border text-text-muted'
             }`}
           >
             <Filter className="w-5 h-5" />
@@ -437,13 +438,13 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
               exit={{ height: 0, opacity: 0 }}
               className="overflow-hidden"
             >
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-3 pt-3 border-t border-surface-100">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-3 pt-3 border-t border-surface-border">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-surface-400 uppercase">Action</label>
+                  <label className="text-xs font-bold text-text-muted uppercase">Action</label>
                   <select
                     value={selectedAction}
                     onChange={(e) => setSelectedAction(e.target.value as AuditAction | 'all')}
-                    className="w-full px-3 py-2 bg-surface-50 border border-surface-100 rounded-xl text-sm"
+                    className="w-full px-3 py-2 bg-surface-100 border border-surface-border rounded-xl text-sm"
                   >
                     <option value="all">All Actions</option>
                     {actions.map(action => (
@@ -452,11 +453,11 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-surface-400 uppercase">Entity Type</label>
+                  <label className="text-xs font-bold text-text-muted uppercase">Entity Type</label>
                   <select
                     value={selectedEntityType}
                     onChange={(e) => setSelectedEntityType(e.target.value)}
-                    className="w-full px-3 py-2 bg-surface-50 border border-surface-100 rounded-xl text-sm"
+                    className="w-full px-3 py-2 bg-surface-100 border border-surface-border rounded-xl text-sm"
                   >
                     <option value="all">All Types</option>
                     {entityTypes.map(type => (
@@ -465,21 +466,21 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-surface-400 uppercase">From Date</label>
+                  <label className="text-xs font-bold text-text-muted uppercase">From Date</label>
                   <input
                     type="date"
                     value={dateRange.from}
                     onChange={(e) => setDateRange(prev => ({ ...prev, from: e.target.value }))}
-                    className="w-full px-3 py-2 bg-surface-50 border border-surface-100 rounded-xl text-sm"
+                    className="w-full px-3 py-2 bg-surface-100 border border-surface-border rounded-xl text-sm"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-surface-400 uppercase">To Date</label>
+                  <label className="text-xs font-bold text-text-muted uppercase">To Date</label>
                   <input
                     type="date"
                     value={dateRange.to}
                     onChange={(e) => setDateRange(prev => ({ ...prev, to: e.target.value }))}
-                    className="w-full px-3 py-2 bg-surface-50 border border-surface-100 rounded-xl text-sm"
+                    className="w-full px-3 py-2 bg-surface-100 border border-surface-border rounded-xl text-sm"
                   />
                 </div>
               </div>
@@ -487,10 +488,10 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
           )}
         </AnimatePresence>
 
-        <div className="flex items-center justify-between text-sm text-surface-500">
+        <div className="flex items-center justify-between text-sm text-text-muted">
           <span>{filteredEntries.length} entries found</span>
           <div className="flex items-center gap-1">
-            <Lock className="w-4 h-4" />
+            <Lock className="w-4 h-4 text-text-muted" />
             <span>Tamper-evident logging enabled</span>
           </div>
         </div>
@@ -512,7 +513,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
             >
               <button
                 onClick={() => setExpandedEntry(isExpanded ? null : entry.id)}
-                className="w-full p-4 flex items-start gap-4 text-left hover:bg-surface-50 transition-colors"
+                className="w-full p-4 flex items-start gap-4 text-left hover:bg-surface-100/50 transition-colors"
               >
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 border ${getActionColor(entry.action)}`}>
                   {getActionIcon(entry.action)}
@@ -523,33 +524,33 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
                     <span className={`px-2 py-0.5 text-[10px] font-bold uppercase rounded-full border ${getActionColor(entry.action)}`}>
                       {entry.action.replace('_', ' ')}
                     </span>
-                    <span className="text-xs text-surface-400 font-mono">{entry.entityId}</span>
+                    <span className="text-xs text-text-muted font-mono">{entry.entityId}</span>
                   </div>
                   
-                  <p className="text-sm text-surface-800">
+                  <p className="text-sm text-text-primary">
                     <span className="font-semibold">{entry.userName}</span>
-                    <span className="text-surface-500 mx-1">({entry.userRole})</span>
+                    <span className="text-text-muted mx-1">({entry.userRole})</span>
                     {entry.field && (
                       <>
                         changed <span className="font-medium">{entry.field}</span>
                         {entry.oldValue && entry.newValue && (
                           <>
-                            {' '}from <span className="line-through text-surface-400">{entry.oldValue}</span>
-                            {' '}to <span className="font-medium text-brand-600">{entry.newValue}</span>
+                            {' '}from <span className="line-through text-text-muted">{entry.oldValue}</span>
+                            {' '}to <span className="font-medium text-accent">{entry.newValue}</span>
                           </>
                         )}
                       </>
                     )}
                     {entry.details && !entry.field && (
-                      <span className="text-surface-600"> - {entry.details}</span>
+                      <span className="text-text-muted"> - {entry.details}</span>
                     )}
                   </p>
                   
                   {entry.entityTitle && (
-                    <p className="text-xs text-surface-500 mt-1 truncate">{entry.entityTitle}</p>
+                    <p className="text-xs text-text-muted mt-1 truncate">{entry.entityTitle}</p>
                   )}
                   
-                  <div className="flex items-center gap-4 mt-2 text-xs text-surface-400">
+                  <div className="flex items-center gap-4 mt-2 text-xs text-text-muted">
                     <span className="flex items-center gap-1">
                       <Calendar className="w-3.5 h-3.5" />
                       {date}
@@ -561,7 +562,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
                   </div>
                 </div>
                 
-                <ChevronRight className={`w-5 h-5 text-surface-300 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
+                <ChevronRight className={`w-5 h-5 text-text-muted transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
               </button>
 
               <AnimatePresence>
@@ -572,35 +573,35 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden"
                   >
-                    <div className="px-4 pb-4 pt-2 border-t border-surface-100 bg-surface-50 space-y-3">
+                    <div className="px-4 pb-4 pt-2 border-t border-surface-border bg-surface-base/40 space-y-3">
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div>
-                          <p className="text-xs font-bold text-surface-400 uppercase">Entity Type</p>
-                          <p className="text-sm text-surface-700 capitalize">{entry.entityType}</p>
+                          <p className="text-xs font-bold text-text-muted uppercase">Entity Type</p>
+                          <p className="text-sm text-text-primary capitalize">{entry.entityType}</p>
                         </div>
                         <div>
-                          <p className="text-xs font-bold text-surface-400 uppercase">User ID</p>
-                          <p className="text-sm text-surface-700 font-mono">{entry.userId}</p>
+                          <p className="text-xs font-bold text-text-muted uppercase">User ID</p>
+                          <p className="text-sm text-text-primary font-mono">{entry.userId}</p>
                         </div>
                         {entry.ipAddress && (
                           <div>
-                            <p className="text-xs font-bold text-surface-400 uppercase">IP Address</p>
-                            <p className="text-sm text-surface-700 font-mono">{entry.ipAddress}</p>
+                            <p className="text-xs font-bold text-text-muted uppercase">IP Address</p>
+                            <p className="text-sm text-text-primary font-mono">{entry.ipAddress}</p>
                           </div>
                         )}
                         <div>
-                          <p className="text-xs font-bold text-surface-400 uppercase">Audit ID</p>
-                          <p className="text-sm text-surface-700 font-mono">{entry.id}</p>
+                          <p className="text-xs font-bold text-text-muted uppercase">Audit ID</p>
+                          <p className="text-sm text-text-primary font-mono">{entry.id}</p>
                         </div>
                       </div>
                       
                       {entry.hash && (
-                        <div className="p-3 bg-white rounded-lg border border-surface-200">
+                        <div className="p-3 bg-surface-raised rounded-lg border border-surface-border">
                           <div className="flex items-center gap-2 mb-1">
-                            <Hash className="w-4 h-4 text-surface-400" />
-                            <p className="text-xs font-bold text-surface-400 uppercase">Integrity Hash (SHA-256)</p>
+                            <Hash className="w-4 h-4 text-text-muted" />
+                            <p className="text-xs font-bold text-text-muted uppercase">Integrity Hash (SHA-256)</p>
                           </div>
-                          <p className="text-xs text-surface-600 font-mono break-all">{entry.hash}</p>
+                          <p className="text-xs text-text-primary font-mono break-all">{entry.hash}</p>
                         </div>
                       )}
                     </div>
@@ -612,9 +613,9 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
         })}
 
         {filteredEntries.length === 0 && (
-          <div className="text-center py-12 bg-surface-50 rounded-2xl">
-            <History className="w-12 h-12 text-surface-300 mx-auto mb-4" />
-            <p className="text-surface-500">No audit entries found</p>
+          <div className="text-center py-12 bg-surface-raised/50 rounded-2xl">
+            <History className="w-12 h-12 text-text-muted mx-auto mb-4" />
+            <p className="text-text-muted">No audit entries found</p>
           </div>
         )}
       </div>

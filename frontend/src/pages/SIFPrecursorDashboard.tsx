@@ -6,6 +6,7 @@ import {
 } from '../data/complianceManagement';
 import FadeContent from '../components/animations/FadeContent';
 import { useSIFPrecursors } from '../api/hooks/useAPIHooks';
+import { SMButton } from '../components/ui';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -25,9 +26,9 @@ const itemVariants = {
 };
 
 const potentialConfig: Record<string, { color: string; bgColor: string; borderColor: string; icon: string; label: string }> = {
-  high: { color: 'text-red-700', bgColor: 'bg-red-50', borderColor: 'border-red-400', icon: '🚨', label: 'High SIF Potential' },
-  medium: { color: 'text-orange-700', bgColor: 'bg-orange-50', borderColor: 'border-orange-400', icon: '⚠️', label: 'Medium SIF Potential' },
-  low: { color: 'text-amber-700', bgColor: 'bg-amber-50', borderColor: 'border-amber-300', icon: '📋', label: 'Low SIF Potential' }
+  high: { color: 'text-danger', bgColor: 'bg-danger/10', borderColor: 'border-danger/40', icon: '🚨', label: 'High SIF Potential' },
+  medium: { color: 'text-warning', bgColor: 'bg-warning/10', borderColor: 'border-warning/40', icon: '⚠️', label: 'Medium SIF Potential' },
+  low: { color: 'text-warning', bgColor: 'bg-warning/5', borderColor: 'border-warning/20', icon: '📋', label: 'Low SIF Potential' }
 };
 
 const energyTypeIcons: Record<string, string> = {
@@ -112,18 +113,21 @@ export const SIFPrecursorDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 dark:bg-surface-900 pb-20">
+    <div className="min-h-screen bg-surface-base pb-20">
       {/* Header */}
       <div className="bg-gradient-to-br from-red-600 via-red-500 to-orange-500 pt-12 pb-8 px-4 safe-top">
         <div className="flex items-center gap-3 mb-6">
-          <button
+          <SMButton
+            variant="ghost"
+            size="sm"
             onClick={() => navigate(-1)}
-            className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white active:scale-95 transition-transform"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+            leftIcon={(
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            )}
+            className="bg-white/20 text-white hover:bg-white/30"
+          />
           <div className="flex-1">
             <h1 className="text-2xl font-bold text-white">SIF Precursor Detection</h1>
             <p className="text-red-100 text-sm">AI-powered serious injury prevention</p>
@@ -162,14 +166,14 @@ export const SIFPrecursorDashboard: React.FC = () => {
 
       {/* Energy Type Distribution */}
       <div className="px-4 -mt-4">
-        <div className="bg-white dark:bg-surface-800 rounded-xl p-4 shadow-sm border border-surface-200 dark:border-surface-700">
-          <h3 className="text-xs font-semibold text-surface-500 uppercase tracking-wide mb-3">Energy Type Distribution</h3>
+        <div className="bg-surface-raised rounded-xl p-4 shadow-sm border border-surface-border">
+          <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-3">Energy Type Distribution</h3>
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {Object.entries(metrics.byEnergyType).map(([type, count]) => (
-              <div key={type} className="flex-none px-3 py-2 bg-surface-50 dark:bg-surface-900 rounded-lg">
+              <div key={type} className="flex-none px-3 py-2 bg-surface-100 rounded-lg">
                 <span className="text-lg mr-1">{energyTypeIcons[type] || '⚡'}</span>
-                <span className="text-xs font-medium text-surface-700 dark:text-surface-300">{type.split(' - ')[1] || type}</span>
-                <span className="ml-2 text-xs text-surface-500">({count})</span>
+                <span className="text-xs font-medium text-text-primary">{type.split(' - ')[1] || type}</span>
+                <span className="ml-2 text-xs text-text-muted">({count})</span>
               </div>
             ))}
           </div>
@@ -184,8 +188,8 @@ export const SIFPrecursorDashboard: React.FC = () => {
               onClick={() => setSelectedPotential('all')}
               className={`flex-none px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                 selectedPotential === 'all' 
-                  ? 'bg-red-100 text-red-700' 
-                  : 'bg-surface-100 dark:bg-surface-800 text-surface-600'
+                  ? 'bg-danger/10 text-danger' 
+                  : 'bg-surface-100 text-text-muted'
               }`}
             >
               All
@@ -199,7 +203,7 @@ export const SIFPrecursorDashboard: React.FC = () => {
                   className={`flex-none px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                     selectedPotential === level 
                       ? `${config.bgColor} ${config.color}` 
-                      : 'bg-surface-100 dark:bg-surface-800 text-surface-600'
+                      : 'bg-surface-100 text-text-muted'
                   }`}
                 >
                   {config.icon} {level.charAt(0).toUpperCase() + level.slice(1)}
@@ -208,12 +212,12 @@ export const SIFPrecursorDashboard: React.FC = () => {
             })}
           </div>
           
-          <label className="flex items-center gap-2 text-xs text-surface-500">
+          <label className="flex items-center gap-2 text-xs text-text-muted">
             <input
               type="checkbox"
               checked={showAcknowledged}
               onChange={(e) => setShowAcknowledged(e.target.checked)}
-              className="w-4 h-4 rounded border-surface-300"
+              className="w-4 h-4 rounded border-surface-border"
             />
             Show Acked
           </label>
@@ -238,7 +242,7 @@ export const SIFPrecursorDashboard: React.FC = () => {
                   key={alert.id}
                   variants={itemVariants}
                   layout
-                  className={`bg-white dark:bg-surface-800 rounded-xl border-l-4 ${config.borderColor} shadow-sm overflow-hidden ${
+                  className={`bg-surface-raised rounded-xl border-l-4 ${config.borderColor} shadow-sm overflow-hidden ${
                     alert.acknowledged ? 'opacity-60' : ''
                   }`}
                 >
@@ -253,15 +257,15 @@ export const SIFPrecursorDashboard: React.FC = () => {
                             {config.icon} {config.label}
                           </span>
                           {alert.acknowledged && (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success">
                               ✓ Acknowledged
                             </span>
                           )}
                         </div>
-                        <h3 className="font-semibold text-surface-900 dark:text-surface-100">
+                        <h3 className="font-semibold text-text-primary">
                           {alert.incidentTitle}
                         </h3>
-                        <p className="text-sm text-surface-500 mt-0.5">
+                        <p className="text-sm text-text-muted mt-0.5">
                           {alert.incidentId} • {new Date(alert.incidentDate).toLocaleDateString()}
                         </p>
                       </div>
@@ -274,7 +278,7 @@ export const SIFPrecursorDashboard: React.FC = () => {
                             cy="28"
                             r="24"
                             strokeWidth="5"
-                            className="fill-none stroke-surface-100 dark:stroke-surface-700"
+                            className="fill-none stroke-surface-border"
                           />
                           <circle
                             cx="28"
@@ -285,7 +289,7 @@ export const SIFPrecursorDashboard: React.FC = () => {
                             className={`fill-none ${alert.riskScore >= 80 ? 'stroke-red-500' : alert.riskScore >= 60 ? 'stroke-orange-500' : 'stroke-amber-500'}`}
                           />
                         </svg>
-                        <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-surface-700 dark:text-surface-300">
+                        <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-text-primary">
                           {alert.riskScore}
                         </span>
                       </div>
@@ -294,7 +298,7 @@ export const SIFPrecursorDashboard: React.FC = () => {
                     {/* Energy Type Badge */}
                     <div className="flex items-center gap-2 mt-3">
                       <span className="text-lg">{energyTypeIcons[alert.energyType] || '⚡'}</span>
-                      <span className="text-sm text-surface-600 dark:text-surface-400">{alert.energyType}</span>
+                      <span className="text-sm text-text-muted">{alert.energyType}</span>
                     </div>
                   </button>
 
@@ -305,19 +309,19 @@ export const SIFPrecursorDashboard: React.FC = () => {
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="border-t border-surface-100 dark:border-surface-700"
+                        className="border-t border-surface-border"
                       >
                         <div className="p-4 space-y-4">
                           {/* SIF Indicators */}
                           <div>
-                            <h4 className="text-xs font-semibold text-surface-500 uppercase tracking-wide mb-2 flex items-center gap-2">
-                              <span className="text-red-500">⚠️</span> SIF Indicators Detected
+                            <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2 flex items-center gap-2">
+                              <span className="text-danger">⚠️</span> SIF Indicators Detected
                             </h4>
                             <div className="space-y-1.5">
                               {alert.indicators.map((indicator, i) => (
-                                <div key={i} className="flex items-start gap-2 p-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                                  <span className="text-red-500 mt-0.5">•</span>
-                                  <p className="text-sm text-surface-700 dark:text-surface-300">{indicator}</p>
+                                <div key={i} className="flex items-start gap-2 p-2 bg-danger/5 rounded-lg">
+                                  <span className="text-danger mt-0.5">•</span>
+                                  <p className="text-sm text-text-primary">{indicator}</p>
                                 </div>
                               ))}
                             </div>
@@ -325,12 +329,12 @@ export const SIFPrecursorDashboard: React.FC = () => {
 
                           {/* Control Deficiencies */}
                           <div>
-                            <h4 className="text-xs font-semibold text-surface-500 uppercase tracking-wide mb-2 flex items-center gap-2">
-                              <span className="text-orange-500">🛡️</span> Control Deficiencies
+                            <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2 flex items-center gap-2">
+                              <span className="text-warning">🛡️</span> Control Deficiencies
                             </h4>
                             <div className="flex flex-wrap gap-1.5">
                               {alert.controlsDeficient.map((control, i) => (
-                                <span key={i} className="px-2.5 py-1 bg-orange-50 text-orange-700 rounded-lg text-sm">
+                                <span key={i} className="px-2.5 py-1 bg-warning/10 text-warning rounded-lg text-sm">
                                   {control}
                                 </span>
                               ))}
@@ -339,14 +343,14 @@ export const SIFPrecursorDashboard: React.FC = () => {
 
                           {/* AI Recommendations */}
                           <div>
-                            <h4 className="text-xs font-semibold text-surface-500 uppercase tracking-wide mb-2 flex items-center gap-2">
-                              <span className="text-green-500">💡</span> AI Recommendations
+                            <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2 flex items-center gap-2">
+                              <span className="text-success">💡</span> AI Recommendations
                             </h4>
                             <div className="space-y-2">
                               {alert.recommendations.map((rec, i) => (
-                                <div key={i} className="flex items-start gap-2 p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                                  <span className="text-green-600 font-bold text-xs mt-0.5">{i + 1}</span>
-                                  <p className="text-sm text-surface-700 dark:text-surface-300">{rec}</p>
+                                <div key={i} className="flex items-start gap-2 p-2 bg-success/5 rounded-lg">
+                                  <span className="text-success font-bold text-xs mt-0.5">{i + 1}</span>
+                                  <p className="text-sm text-text-primary">{rec}</p>
                                 </div>
                               ))}
                             </div>
@@ -360,7 +364,7 @@ export const SIFPrecursorDashboard: React.FC = () => {
                                   e.stopPropagation();
                                   handleAcknowledge(alert.id);
                                 }}
-                                className="flex-1 py-2.5 bg-green-600 text-white rounded-lg text-sm font-medium active:scale-98 transition-transform flex items-center justify-center gap-2"
+                                className="flex-1 py-2.5 bg-success text-white rounded-lg text-sm font-medium active:scale-98 transition-transform flex items-center justify-center gap-2"
                               >
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -368,7 +372,7 @@ export const SIFPrecursorDashboard: React.FC = () => {
                                 Acknowledge & Review
                               </button>
                               <button
-                                className="flex-1 py-2.5 bg-red-100 text-red-700 rounded-lg text-sm font-medium active:scale-98 transition-transform flex items-center justify-center gap-2"
+                                className="flex-1 py-2.5 bg-danger/10 text-danger rounded-lg text-sm font-medium active:scale-98 transition-transform flex items-center justify-center gap-2"
                               >
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -388,12 +392,12 @@ export const SIFPrecursorDashboard: React.FC = () => {
 
           {filteredAlerts.length === 0 && (
             <div className="text-center py-12">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-success/10 flex items-center justify-center">
+                <svg className="w-8 h-8 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <p className="text-surface-500 dark:text-surface-400">No SIF precursors requiring attention</p>
+              <p className="text-text-muted">No SIF precursors requiring attention</p>
             </div>
           )}
         </motion.div>
@@ -414,19 +418,19 @@ export const SIFPrecursorDashboard: React.FC = () => {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 25 }}
-              className="bg-white dark:bg-surface-800 rounded-t-3xl w-full max-w-lg max-h-[80vh] overflow-hidden"
+              className="bg-surface-raised rounded-t-3xl w-full max-w-lg max-h-[80vh] overflow-hidden border border-surface-border"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-4 border-b border-surface-100 dark:border-surface-700 flex items-center justify-between">
+              <div className="p-4 border-b border-surface-border flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-xl">🤖</span>
-                  <h2 className="font-bold text-lg text-surface-900 dark:text-surface-100">AI Safety Insights</h2>
+                  <h2 className="font-bold text-lg text-text-primary">AI Safety Insights</h2>
                 </div>
                 <button
                   onClick={() => setAiInsightsOpen(false)}
-                  className="p-2 rounded-full hover:bg-surface-100 dark:hover:bg-surface-700"
+                  className="p-2 rounded-full hover:bg-surface-100"
                 >
-                  <svg className="w-5 h-5 text-surface-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
@@ -434,52 +438,52 @@ export const SIFPrecursorDashboard: React.FC = () => {
               
               <div className="p-4 overflow-y-auto max-h-[calc(80vh-80px)] space-y-4">
                 {/* Pattern Analysis */}
-                <div className="p-4 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/30 dark:to-indigo-900/30 rounded-xl">
-                  <h3 className="font-semibold text-surface-900 dark:text-surface-100 mb-2 flex items-center gap-2">
+                <div className="p-4 bg-accent/5 rounded-xl border border-accent/20">
+                  <h3 className="font-semibold text-text-primary mb-2 flex items-center gap-2">
                     <span>📊</span> Pattern Analysis
                   </h3>
-                  <p className="text-sm text-surface-600 dark:text-surface-400">
+                  <p className="text-sm text-text-muted">
                     Based on analysis of {alerts.length} SIF precursors, <strong>fall from height</strong> and <strong>LOTO violations</strong> represent the highest risk categories. These account for 67% of high-potential incidents.
                   </p>
                 </div>
 
                 {/* Trend Alert */}
-                <div className="p-4 bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/30 dark:to-orange-900/30 rounded-xl">
-                  <h3 className="font-semibold text-surface-900 dark:text-surface-100 mb-2 flex items-center gap-2">
+                <div className="p-4 bg-danger/5 rounded-xl border border-danger/20">
+                  <h3 className="font-semibold text-text-primary mb-2 flex items-center gap-2">
                     <span>📈</span> Trend Alert
                   </h3>
-                  <p className="text-sm text-surface-600 dark:text-surface-400">
+                  <p className="text-sm text-text-muted">
                     There is a <strong>35% increase</strong> in pedestrian-forklift near-misses this month compared to the 12-month average. Consider implementing additional traffic management controls.
                   </p>
                 </div>
 
                 {/* Recommended Focus Areas */}
-                <div className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 rounded-xl">
-                  <h3 className="font-semibold text-surface-900 dark:text-surface-100 mb-2 flex items-center gap-2">
+                <div className="p-4 bg-success/5 rounded-xl border border-success/20">
+                  <h3 className="font-semibold text-text-primary mb-2 flex items-center gap-2">
                     <span>🎯</span> Recommended Focus Areas
                   </h3>
-                  <ul className="space-y-2 text-sm text-surface-600 dark:text-surface-400">
+                  <ul className="space-y-2 text-sm text-text-muted">
                     <li className="flex items-start gap-2">
-                      <span className="text-green-500">1.</span>
+                      <span className="text-success">1.</span>
                       <span>Implement proximity warning systems on all forklifts</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-green-500">2.</span>
+                      <span className="text-success">2.</span>
                       <span>Mandatory supervisor LOTO verification sign-off</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-green-500">3.</span>
+                      <span className="text-success">3.</span>
                       <span>Digital scaffold inspection with photo documentation</span>
                     </li>
                   </ul>
                 </div>
 
                 {/* Predictive Alert */}
-                <div className="p-4 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 rounded-xl">
-                  <h3 className="font-semibold text-surface-900 dark:text-surface-100 mb-2 flex items-center gap-2">
+                <div className="p-4 bg-accent/5 rounded-xl border border-accent/20">
+                  <h3 className="font-semibold text-text-primary mb-2 flex items-center gap-2">
                     <span>🔮</span> Predictive Alert
                   </h3>
-                  <p className="text-sm text-surface-600 dark:text-surface-400">
+                  <p className="text-sm text-text-muted">
                     Based on historical patterns, the <strong>next 14 days</strong> show elevated risk for cold-weather related incidents. Ensure PPE compliance and equipment pre-checks are reinforced.
                   </p>
                 </div>

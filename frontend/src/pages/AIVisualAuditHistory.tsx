@@ -168,7 +168,7 @@ export const AIVisualAuditHistory: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-950 text-white pb-20 selection:bg-brand-500/30">
+    <div className="ai-purple-theme min-h-screen bg-surface-950 text-white pb-20 selection:bg-brand-500/30">
       {/* HD Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-500/5 blur-[120px] rounded-full" />

@@ -10,6 +10,7 @@ import {
 import { buildWeeklySafetyReportData, exportWeeklyReportPDF, exportWeeklyReportExcel } from '../utils/exports/weeklySafetyReport';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RePieChart, Pie, Cell, BarChart, Bar, Legend, RadialBarChart, RadialBar, LineChart as ReLineChart, Line } from 'recharts';
 import { useKPIDashboard, useKPIDepartmentComparison, useKPIIncidentBreakdown } from '../api/hooks/useAPIHooks';
+import { SMButton, SMBadge, SMCard, SMSelect, SMTabs } from '../components/ui';
 
 // Leading Indicators (Proactive measures)
 const LEADING_INDICATORS = [
@@ -507,72 +508,57 @@ export const KPIIndicators: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen pb-24 bg-gradient-to-br from-surface-50 to-surface-100 dark:from-surface-900 dark:to-surface-950">
+    <div className="min-h-screen pb-24 bg-surface-base">
 
       
       {/* Header */}
-      <header className="bg-white dark:bg-surface-800 border-b border-surface-200 dark:border-surface-700 sticky top-[72px] z-40">
+      <header className="bg-surface-raised border-b border-surface-border sticky top-[var(--nav-height)] z-40">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <button
-                onClick={() => navigate(-1)}
-                className="p-2 rounded-xl hover:bg-surface-100 dark:hover:bg-surface-700 transition-colors"
-              >
-                <ArrowLeft className="w-5 h-5 text-surface-600 dark:text-surface-300" />
-              </button>
+              <SMButton variant="ghost" size="sm" leftIcon={<ArrowLeft className="w-5 h-5" />} onClick={() => navigate(-1)} aria-label="Back" />
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center shadow-lg text-text-inverted">
                   <Activity className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-brand-900 dark:text-white">KPI Dashboard</h1>
+                  <h1 className="text-xl font-bold text-text-primary">KPI Dashboard</h1>
                   <p className="text-sm text-surface-500 dark:text-surface-400">Leading & Lagging Indicators</p>
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <select
+              <SMSelect
                 value={selectedPeriod}
                 onChange={e => setSelectedPeriod(e.target.value)}
-                className="px-3 py-2 rounded-xl border border-surface-200 dark:border-surface-600 bg-white dark:bg-surface-700 text-surface-900 dark:text-white text-sm"
-              >
-                <option value="3months">Last 3 Months</option>
-                <option value="6months">Last 6 Months</option>
-                <option value="12months">Last 12 Months</option>
-                <option value="ytd">Year to Date</option>
-              </select>
-              <button 
-                onClick={() => exportWeeklyReportPDF(weeklyReportData)}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-indigo-500 text-white hover:bg-indigo-600 transition-colors text-sm font-medium"
-              >
-                <Download className="w-4 h-4" />
+                options={[
+                  { value: '3months', label: 'Last 3 Months' },
+                  { value: '6months', label: 'Last 6 Months' },
+                  { value: '12months', label: 'Last 12 Months' },
+                  { value: 'ytd', label: 'Year to Date' },
+                ]}
+              />
+              <SMButton variant="secondary" size="sm" leftIcon={<Download className="w-4 h-4" />} onClick={() => exportWeeklyReportPDF(weeklyReportData)}>
                 Export
-              </button>
+              </SMButton>
             </div>
           </div>
         </div>
       </header>
 
       {/* Tab Navigation */}
-      <div className="bg-white dark:bg-surface-800 border-b border-surface-200 dark:border-surface-700">
+      <div className="bg-surface-raised border-b border-surface-border">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex gap-1 overflow-x-auto py-2">
-            {tabs.map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm whitespace-nowrap transition-all ${
-                  activeTab === tab.id
-                    ? 'bg-indigo-500 text-white shadow-md'
-                    : 'text-surface-600 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-700'
-                }`}
-              >
-                <tab.icon className="w-4 h-4" />
-                {tab.label}
-              </button>
-            ))}
-          </div>
+          <SMTabs value={activeTab} onChange={(v) => setActiveTab(v as any)}>
+            <SMTabs.List>
+              {tabs.map(tab => (
+                <SMTabs.Trigger key={tab.id} value={tab.id}>
+                  <tab.icon className="w-4 h-4" />
+                  {tab.label}
+                </SMTabs.Trigger>
+              ))}
+            </SMTabs.List>
+          </SMTabs>
         </div>
       </div>
 
@@ -627,14 +613,14 @@ export const KPIIndicators: React.FC = () => {
               {/* Charts Row */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Leading vs Lagging Trend */}
-                <div className="bg-white dark:bg-surface-800 rounded-2xl p-6 shadow-soft border border-surface-100 dark:border-surface-700">
-                  <h3 className="font-semibold text-brand-900 dark:text-white mb-4">Performance Trend</h3>
+                <div className="bg-surface-raised rounded-2xl p-6 shadow-soft border border-surface-border">
+                  <h3 className="font-semibold text-text-primary mb-4">Performance Trend</h3>
                   <ResponsiveContainer width="100%" height={250}>
                     <AreaChart data={leadingIndicators[0]?.data || LEADING_INDICATORS[0].data}>
                       <defs>
                         <linearGradient id="colorLeading" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                          <stop offset="5%" stopColor="#16A34A" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#16A34A" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -647,8 +633,8 @@ export const KPIIndicators: React.FC = () => {
                 </div>
 
                 {/* Incident Breakdown */}
-                <div className="bg-white dark:bg-surface-800 rounded-2xl p-6 shadow-soft border border-surface-100 dark:border-surface-700">
-                  <h3 className="font-semibold text-brand-900 dark:text-white mb-4">Incident Types</h3>
+                <div className="bg-surface-raised rounded-2xl p-6 shadow-soft border border-surface-border">
+                  <h3 className="font-semibold text-text-primary mb-4">Incident Types</h3>
                   <ResponsiveContainer width="100%" height={250}>
                     <RePieChart>
                       <Pie
@@ -674,9 +660,9 @@ export const KPIIndicators: React.FC = () => {
               {/* Quick Stats */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 {[...leadingIndicators.slice(0, 3), ...laggingIndicators.slice(0, 3)].map((indicator, idx) => (
-                  <div key={indicator.id} className="bg-white dark:bg-surface-800 rounded-xl p-4 shadow-soft border border-surface-100 dark:border-surface-700">
+                  <div key={indicator.id} className="bg-surface-raised rounded-xl p-4 shadow-soft border border-surface-border">
                     <div className="text-xs text-surface-500 dark:text-surface-400 mb-1">{indicator.name}</div>
-                    <div className="text-2xl font-bold text-brand-900 dark:text-white">
+                    <div className="text-2xl font-bold text-text-primary">
                       {indicator.current}{indicator.unit && indicator.unit !== '%' ? '' : indicator.unit}
                     </div>
                     <div className={`text-xs font-medium flex items-center gap-1 mt-1 ${
@@ -705,11 +691,11 @@ export const KPIIndicators: React.FC = () => {
               className="space-y-6"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-success/10 flex items-center justify-center">
                   <TrendingUp className="w-5 h-5 text-emerald-600" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-brand-900 dark:text-white">Leading Indicators</h2>
+                  <h2 className="text-lg font-bold text-text-primary">Leading Indicators</h2>
                   <p className="text-sm text-surface-500">Proactive safety measures that predict future performance</p>
                 </div>
               </div>
@@ -721,15 +707,15 @@ export const KPIIndicators: React.FC = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="bg-white dark:bg-surface-800 rounded-2xl p-5 shadow-soft border border-surface-100 dark:border-surface-700"
+                    className="bg-surface-raised rounded-2xl p-5 shadow-soft border border-surface-border"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div>
-                        <h3 className="font-semibold text-brand-900 dark:text-white">{indicator.name}</h3>
+                        <h3 className="font-semibold text-text-primary">{indicator.name}</h3>
                         <p className="text-xs text-surface-500 dark:text-surface-400">{indicator.description}</p>
                       </div>
                       <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${
-                        indicator.trend === 'up' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
+                        indicator.trend === 'up' ? 'bg-success/15 text-success' : 'bg-danger/15 text-danger'
                       }`}>
                         {indicator.change}
                       </span>
@@ -737,7 +723,7 @@ export const KPIIndicators: React.FC = () => {
 
                     <div className="flex items-end justify-between mb-3">
                       <div>
-                        <div className="text-3xl font-bold text-brand-900 dark:text-white">{indicator.current}</div>
+                        <div className="text-3xl font-bold text-text-primary">{indicator.current}</div>
                         <div className="text-xs text-surface-500">Target: {indicator.target} {indicator.unit}</div>
                       </div>
                       <div className="text-right">
@@ -759,8 +745,8 @@ export const KPIIndicators: React.FC = () => {
                       <AreaChart data={indicator.data}>
                         <defs>
                           <linearGradient id={`gradient-${indicator.id}`} x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                            <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                            <stop offset="5%" stopColor="#16A34A" stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor="#16A34A" stopOpacity={0}/>
                           </linearGradient>
                         </defs>
                         <Area type="monotone" dataKey="value" stroke="#10b981" fillOpacity={1} fill={`url(#gradient-${indicator.id})`} strokeWidth={2} />
@@ -782,11 +768,11 @@ export const KPIIndicators: React.FC = () => {
               className="space-y-6"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
                   <TrendingDown className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-brand-900 dark:text-white">Lagging Indicators</h2>
+                  <h2 className="text-lg font-bold text-text-primary">Lagging Indicators</h2>
                   <p className="text-sm text-surface-500">Outcome-based metrics measuring historical safety performance</p>
                 </div>
               </div>
@@ -798,17 +784,17 @@ export const KPIIndicators: React.FC = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="bg-white dark:bg-surface-800 rounded-2xl p-5 shadow-soft border border-surface-100 dark:border-surface-700"
+                    className="bg-surface-raised rounded-2xl p-5 shadow-soft border border-surface-border"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div>
-                        <h3 className="font-semibold text-brand-900 dark:text-white">{indicator.name}</h3>
+                        <h3 className="font-semibold text-text-primary">{indicator.name}</h3>
                         <p className="text-xs text-surface-500 dark:text-surface-400">{indicator.fullName}</p>
                       </div>
                       <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${
                         indicator.id === 'days_without_incident' 
-                          ? (indicator.trend === 'up' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700')
-                          : (indicator.trend === 'down' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700')
+                          ? (indicator.trend === 'up' ? 'bg-success/15 text-success' : 'bg-danger/15 text-danger')
+                          : (indicator.trend === 'down' ? 'bg-success/15 text-success' : 'bg-danger/15 text-danger')
                       }`}>
                         {indicator.change}
                       </span>
@@ -816,7 +802,7 @@ export const KPIIndicators: React.FC = () => {
 
                     <div className="flex items-end justify-between mb-3">
                       <div>
-                        <div className="text-3xl font-bold text-brand-900 dark:text-white">{indicator.current}</div>
+                        <div className="text-3xl font-bold text-text-primary">{indicator.current}</div>
                         <div className="text-xs text-surface-500">Target: {indicator.target} {indicator.unit} • Industry: {indicator.benchmark}</div>
                       </div>
                     </div>
@@ -824,7 +810,7 @@ export const KPIIndicators: React.FC = () => {
                     {/* Comparison Bar */}
                     <div className="flex items-center gap-2 mb-4">
                       <div className="flex-1">
-                        <div className="text-[10px] text-surface-400 mb-1">Current vs Target</div>
+                        <div className="text-xs text-text-muted mb-1">Current vs Target</div>
                         <div className="h-2 bg-surface-100 dark:bg-surface-700 rounded-full overflow-hidden relative">
                           <div
                             className={`h-full rounded-full transition-all duration-500 ${
@@ -847,8 +833,8 @@ export const KPIIndicators: React.FC = () => {
                       <AreaChart data={indicator.data}>
                         <defs>
                           <linearGradient id={`gradient-lag-${indicator.id}`} x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                            <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                            <stop offset="5%" stopColor="#00A89D" stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor="#00A89D" stopOpacity={0}/>
                           </linearGradient>
                         </defs>
                         <Area type="monotone" dataKey="value" stroke="#3b82f6" fillOpacity={1} fill={`url(#gradient-lag-${indicator.id})`} strokeWidth={2} />
@@ -871,19 +857,19 @@ export const KPIIndicators: React.FC = () => {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                     <FileText className="w-5 h-5 text-indigo-600" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-brand-900 dark:text-white">Weekly Safety Report</h2>
+                    <h2 className="text-lg font-bold text-text-primary">Weekly Safety Report</h2>
                     <p className="text-sm text-surface-500">Generate and export comprehensive weekly safety reports</p>
                   </div>
                 </div>
               </div>
 
               {/* Report Summary */}
-              <div className="bg-white dark:bg-surface-800 rounded-2xl p-6 shadow-soft border border-surface-100 dark:border-surface-700">
-                <h3 className="font-semibold text-brand-900 dark:text-white mb-4">
+              <div className="bg-surface-raised rounded-2xl p-6 shadow-soft border border-surface-border">
+                <h3 className="font-semibold text-text-primary mb-4">
                   Report Period: {weeklyReportData.reportPeriod.startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} - {weeklyReportData.reportPeriod.endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </h3>
                 
@@ -913,15 +899,15 @@ export const KPIIndicators: React.FC = () => {
 
                 {/* Report Sections */}
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-brand-900 dark:text-white">Report Includes:</h4>
+                  <h4 className="font-semibold text-text-primary">Report Includes:</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {weeklyReportSections.map((section, idx) => (
                       <div key={idx} className="flex items-start gap-3 p-3 bg-surface-50 dark:bg-surface-700/50 rounded-xl">
-                        <div className="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                           <section.icon className="w-4 h-4 text-indigo-600" />
                         </div>
                         <div>
-                          <div className="font-medium text-brand-900 dark:text-white text-sm">{section.title}</div>
+                          <div className="font-medium text-text-primary text-sm">{section.title}</div>
                           <div className="text-xs text-surface-500">{section.desc}</div>
                         </div>
                       </div>
@@ -931,45 +917,28 @@ export const KPIIndicators: React.FC = () => {
 
                 {/* Export Buttons */}
                 <div className="flex flex-wrap gap-3 mt-6 pt-6 border-t border-surface-200 dark:border-surface-700">
-                  <button
-                    onClick={() => exportWeeklyReportPDF(weeklyReportData)}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-indigo-500 text-white rounded-xl font-medium hover:bg-indigo-600 transition-colors"
-                  >
-                    <Download className="w-4 h-4" />
+                  <SMButton variant="primary" leftIcon={<Download className="w-4 h-4" />} onClick={() => exportWeeklyReportPDF(weeklyReportData)}>
                     Download PDF Report
-                  </button>
-                  <button
-                    onClick={() => exportWeeklyReportExcel(weeklyReportData)}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-emerald-500 text-white rounded-xl font-medium hover:bg-emerald-600 transition-colors"
-                  >
-                    <Download className="w-4 h-4" />
+                  </SMButton>
+                  <SMButton variant="secondary" leftIcon={<Download className="w-4 h-4" />} onClick={() => exportWeeklyReportExcel(weeklyReportData)}>
                     Export to Excel
-                  </button>
-                  <button
-                    onClick={() => navigate('/near-miss')}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-surface-100 dark:bg-surface-700 text-surface-700 dark:text-surface-300 rounded-xl font-medium hover:bg-surface-200 dark:hover:bg-surface-600 transition-colors"
-                  >
-                    <Eye className="w-4 h-4" />
+                  </SMButton>
+                  <SMButton variant="ghost" leftIcon={<Eye className="w-4 h-4" />} onClick={() => navigate('/near-miss')}>
                     Near Miss Reports
-                  </button>
-                  <button
-                    onClick={() => navigate('/toolbox-talks')}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-surface-100 dark:bg-surface-700 text-surface-700 dark:text-surface-300 rounded-xl font-medium hover:bg-surface-200 dark:hover:bg-surface-600 transition-colors"
-                  >
-                    <MessageSquare className="w-4 h-4" />
+                  </SMButton>
+                  <SMButton variant="ghost" leftIcon={<MessageSquare className="w-4 h-4" />} onClick={() => navigate('/toolbox-talks')}>
                     Toolbox Talks
-                  </button>
+                  </SMButton>
                 </div>
               </div>
 
               {/* Scheduled Reports */}
-              <div className="bg-white dark:bg-surface-800 rounded-2xl p-6 shadow-soft border border-surface-100 dark:border-surface-700">
+              <div className="bg-surface-raised rounded-2xl p-6 shadow-soft border border-surface-border">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-brand-900 dark:text-white">Scheduled Reports</h3>
-                  <button className="flex items-center gap-2 px-3 py-1.5 text-sm text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors">
-                    <Settings className="w-4 h-4" />
+                  <h3 className="font-semibold text-text-primary">Scheduled Reports</h3>
+                  <SMButton variant="ghost" size="sm" leftIcon={<Settings className="w-4 h-4" />}>
                     Configure
-                  </button>
+                  </SMButton>
                 </div>
                 <div className="space-y-3">
                   {[
@@ -979,17 +948,17 @@ export const KPIIndicators: React.FC = () => {
                   ].map((schedule, idx) => (
                     <div key={idx} className="flex items-center justify-between p-3 bg-surface-50 dark:bg-surface-700/50 rounded-xl">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                           <Calendar className="w-5 h-5 text-indigo-600" />
                         </div>
                         <div>
-                          <div className="font-medium text-brand-900 dark:text-white">{schedule.name}</div>
+                          <div className="font-medium text-text-primary">{schedule.name}</div>
                           <div className="text-xs text-surface-500">{schedule.frequency} • {schedule.recipients}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-medium rounded-full">Active</span>
-                        <button className="p-1.5 hover:bg-surface-100 dark:hover:bg-surface-600 rounded-lg transition-colors">
+                        <span className="px-2 py-1 bg-success/15 text-success text-xs font-medium rounded-full">Active</span>
+                        <button className="p-1.5 hover:bg-surface-100 dark:hover:bg-surface-600 rounded-lg transition-colors" aria-label="Settings">
                           <Settings className="w-4 h-4 text-surface-400" />
                         </button>
                       </div>
@@ -1010,11 +979,11 @@ export const KPIIndicators: React.FC = () => {
               className="space-y-6"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                   <Shield className="w-5 h-5 text-indigo-600" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-brand-900 dark:text-white">Global Compliance Standards</h2>
+                  <h2 className="text-lg font-bold text-text-primary">Global Compliance Standards</h2>
                   <p className="text-sm text-surface-500">All 21 international safety & compliance standards with KPI tracking</p>
                 </div>
               </div>
@@ -1044,8 +1013,8 @@ export const KPIIndicators: React.FC = () => {
               </div>
 
               {/* Compliance Bar Chart */}
-              <div className="bg-white dark:bg-surface-800 rounded-2xl p-6 shadow-soft border border-surface-100 dark:border-surface-700">
-                <h3 className="font-semibold text-brand-900 dark:text-white mb-4">Compliance Rate by Standard</h3>
+              <div className="bg-surface-raised rounded-2xl p-6 shadow-soft border border-surface-border">
+                <h3 className="font-semibold text-text-primary mb-4">Compliance Rate by Standard</h3>
                 <ResponsiveContainer width="100%" height={400}>
                   <BarChart data={GLOBAL_STANDARDS_COMPLIANCE} layout="vertical" margin={{ left: 80 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -1062,9 +1031,9 @@ export const KPIIndicators: React.FC = () => {
               </div>
 
               {/* Compliance Gap Trend Chart */}
-              <div className="bg-white dark:bg-surface-800 rounded-2xl p-6 shadow-soft border border-surface-100 dark:border-surface-700">
+              <div className="bg-surface-raised rounded-2xl p-6 shadow-soft border border-surface-border">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-brand-900 dark:text-white">Compliance Gap Trend (12 Months)</h3>
+                  <h3 className="font-semibold text-text-primary">Compliance Gap Trend (12 Months)</h3>
                   <span className="text-xs font-medium text-emerald-600 bg-emerald-100 px-3 py-1 rounded-full">↑ 6.4% overall improvement</span>
                 </div>
                 <ResponsiveContainer width="100%" height={350}>
@@ -1085,9 +1054,9 @@ export const KPIIndicators: React.FC = () => {
               </div>
 
               {/* Risk Heat Map by Region */}
-              <div className="bg-white dark:bg-surface-800 rounded-2xl p-6 shadow-soft border border-surface-100 dark:border-surface-700">
+              <div className="bg-surface-raised rounded-2xl p-6 shadow-soft border border-surface-border">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-brand-900 dark:text-white">Global Risk Heat Map</h3>
+                  <h3 className="font-semibold text-text-primary">Global Risk Heat Map</h3>
                   <div className="flex gap-2">
                     <span className="flex items-center gap-1 text-[10px] font-medium text-surface-600 dark:text-surface-400"><span className="w-2 h-2 rounded-full bg-red-500" />Critical</span>
                     <span className="flex items-center gap-1 text-[10px] font-medium text-surface-600 dark:text-surface-400"><span className="w-2 h-2 rounded-full bg-orange-500" />High</span>
@@ -1106,10 +1075,10 @@ export const KPIIndicators: React.FC = () => {
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="font-bold text-surface-900 dark:text-white">{region.region}</h4>
                         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
-                          region.riskLevel === 'Critical' ? 'bg-red-100 text-red-700' :
+                          region.riskLevel === 'Critical' ? 'bg-danger/15 text-danger' :
                           region.riskLevel === 'High' ? 'bg-orange-100 text-orange-700' :
                           region.riskLevel === 'Medium' ? 'bg-amber-100 text-amber-700' :
-                          'bg-emerald-100 text-emerald-700'
+                          'bg-success/15 text-success'
                         }`}>{region.riskLevel}</span>
                       </div>
                       <div className="flex justify-between items-end">
@@ -1128,10 +1097,10 @@ export const KPIIndicators: React.FC = () => {
               </div>
 
               {/* Risk Scoring Matrix */}
-              <div className="bg-white dark:bg-surface-800 rounded-2xl p-6 shadow-soft border border-surface-100 dark:border-surface-700">
+              <div className="bg-surface-raised rounded-2xl p-6 shadow-soft border border-surface-border">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <h3 className="font-semibold text-brand-900 dark:text-white">Risk Scoring per Standard</h3>
+                    <h3 className="font-semibold text-text-primary">Risk Scoring per Standard</h3>
                     <p className="text-xs text-surface-500 mt-1">Likelihood × Severity = Risk Score (1-25 scale)</p>
                   </div>
                   <div className="flex gap-2">
@@ -1161,33 +1130,33 @@ export const KPIIndicators: React.FC = () => {
                           <td className="py-3 px-3">
                             <div className="flex items-center gap-2">
                               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: rs.color }} />
-                              <span className="font-semibold text-brand-900 dark:text-white">{rs.name}</span>
+                              <span className="font-semibold text-text-primary">{rs.name}</span>
                             </div>
                           </td>
                           <td className="text-center py-3 px-2">
                             <span className={`inline-flex items-center justify-center w-7 h-7 rounded-lg text-xs font-bold ${
-                              rs.likelihood >= 4 ? 'bg-red-100 text-red-700' : rs.likelihood >= 3 ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
+                              rs.likelihood >= 4 ? 'bg-danger/15 text-danger' : rs.likelihood >= 3 ? 'bg-amber-100 text-amber-700' : 'bg-success/15 text-success'
                             }`}>{rs.likelihood}</span>
                           </td>
                           <td className="text-center py-3 px-2">
                             <span className={`inline-flex items-center justify-center w-7 h-7 rounded-lg text-xs font-bold ${
-                              rs.severity >= 4 ? 'bg-red-100 text-red-700' : rs.severity >= 3 ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
+                              rs.severity >= 4 ? 'bg-danger/15 text-danger' : rs.severity >= 3 ? 'bg-amber-100 text-amber-700' : 'bg-success/15 text-success'
                             }`}>{rs.severity}</span>
                           </td>
                           <td className="text-center py-3 px-2">
                             <span className={`inline-flex items-center justify-center w-9 h-9 rounded-xl text-sm font-black ${
-                              rs.riskLevel === 'Critical' ? 'bg-red-100 text-red-700 ring-2 ring-red-300' :
+                              rs.riskLevel === 'Critical' ? 'bg-danger/15 text-danger ring-2 ring-red-300' :
                               rs.riskLevel === 'High' ? 'bg-orange-100 text-orange-700' :
                               rs.riskLevel === 'Medium' ? 'bg-amber-100 text-amber-700' :
-                              'bg-emerald-100 text-emerald-700'
+                              'bg-success/15 text-success'
                             }`}>{rs.riskScore}</span>
                           </td>
                           <td className="text-center py-3 px-2">
                             <span className={`px-2 py-1 rounded-full text-[10px] font-bold ${
-                              rs.riskLevel === 'Critical' ? 'bg-red-100 text-red-700' :
+                              rs.riskLevel === 'Critical' ? 'bg-danger/15 text-danger' :
                               rs.riskLevel === 'High' ? 'bg-orange-100 text-orange-700' :
                               rs.riskLevel === 'Medium' ? 'bg-amber-100 text-amber-700' :
-                              'bg-emerald-100 text-emerald-700'
+                              'bg-success/15 text-success'
                             }`}>{rs.riskLevel}</span>
                           </td>
                           <td className="text-center py-3 px-2">
@@ -1209,7 +1178,7 @@ export const KPIIndicators: React.FC = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.03 }}
-                    className="bg-white dark:bg-surface-800 rounded-2xl p-5 shadow-soft border border-surface-100 dark:border-surface-700"
+                    className="bg-surface-raised rounded-2xl p-5 shadow-soft border border-surface-border"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-3">
@@ -1217,22 +1186,22 @@ export const KPIIndicators: React.FC = () => {
                           <Shield className="w-5 h-5" style={{ color: standard.color }} />
                         </div>
                         <div>
-                          <h4 className="font-bold text-brand-900 dark:text-white">{standard.name}</h4>
+                          <h4 className="font-bold text-text-primary">{standard.name}</h4>
                           <p className="text-[10px] text-surface-500 dark:text-surface-400">{standard.region}</p>
                         </div>
                       </div>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        standard.compliance >= 95 ? 'bg-emerald-100 text-emerald-700' :
+                        standard.compliance >= 95 ? 'bg-success/15 text-success' :
                         standard.compliance >= 90 ? 'bg-blue-100 text-blue-700' :
                         standard.compliance >= 85 ? 'bg-amber-100 text-amber-700' :
-                        'bg-red-100 text-red-700'
+                        'bg-danger/15 text-danger'
                       }`}>
                         {standard.trend}
                       </span>
                     </div>
                     <p className="text-xs text-surface-500 dark:text-surface-400 mb-3 line-clamp-1">{standard.fullName}</p>
                     <div className="flex items-end justify-between mb-2">
-                      <div className="text-2xl font-bold text-brand-900 dark:text-white">{standard.compliance}%</div>
+                      <div className="text-2xl font-bold text-text-primary">{standard.compliance}%</div>
                       <div className="text-xs text-surface-500">{standard.audits} audits</div>
                     </div>
                     <div className="h-2 bg-surface-100 dark:bg-surface-700 rounded-full overflow-hidden">
@@ -1262,14 +1231,14 @@ export const KPIIndicators: React.FC = () => {
                   <PieChart className="w-5 h-5 text-purple-600" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-brand-900 dark:text-white">Department Comparison</h2>
+                  <h2 className="text-lg font-bold text-text-primary">Department Comparison</h2>
                   <p className="text-sm text-surface-500">Compare leading and lagging performance across departments</p>
                 </div>
               </div>
 
               {/* Department Comparison Chart */}
-              <div className="bg-white dark:bg-surface-800 rounded-2xl p-6 shadow-soft border border-surface-100 dark:border-surface-700">
-                <h3 className="font-semibold text-brand-900 dark:text-white mb-4">Leading Score by Department</h3>
+              <div className="bg-surface-raised rounded-2xl p-6 shadow-soft border border-surface-border">
+                <h3 className="font-semibold text-text-primary mb-4">Leading Score by Department</h3>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={deptComparison}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -1290,9 +1259,9 @@ export const KPIIndicators: React.FC = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="bg-white dark:bg-surface-800 rounded-2xl p-5 shadow-soft border border-surface-100 dark:border-surface-700"
+                    className="bg-surface-raised rounded-2xl p-5 shadow-soft border border-surface-border"
                   >
-                    <h4 className="font-semibold text-brand-900 dark:text-white mb-3">{dept.dept}</h4>
+                    <h4 className="font-semibold text-text-primary mb-3">{dept.dept}</h4>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <div className="text-xs text-surface-500 mb-1">Leading Score</div>

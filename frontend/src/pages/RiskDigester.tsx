@@ -35,7 +35,7 @@ export const RiskDigester: React.FC = () => {
   const openViolations = (riskStats as any)?.openItems ?? (riskStats as any)?.critical ?? 0;
 
   return (
-    <div className="min-h-screen bg-surface-50 pb-32">
+    <div className="min-h-screen bg-surface-base pb-32">
 
       
       <main className="max-w-7xl mx-auto px-6 py-12 space-y-12">
@@ -45,12 +45,12 @@ export const RiskDigester: React.FC = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
           >
-            <div className="flex items-center gap-2 text-brand-500 font-bold text-[10px] uppercase tracking-[0.3em] mb-2">
+            <div className="flex items-center gap-2 text-accent font-bold text-[10px] uppercase tracking-[0.3em] mb-2">
               <ShieldAlert className="w-4 h-4" />
               Risk Management Module
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-brand-900 tracking-tighter leading-none">Risk Digester</h1>
-            <p className="text-surface-500 mt-4 max-w-xl text-lg">
+            <h1 className="text-4xl md:text-5xl font-bold text-text-primary tracking-tighter leading-none">Risk Digester</h1>
+            <p className="text-text-muted mt-4 max-w-xl text-lg">
               Comprehensive safety and environmental performance tracking aligned with ISO 14001, OSHA, EPA, and TCEQ standards.
             </p>
           </motion.div>
@@ -58,16 +58,16 @@ export const RiskDigester: React.FC = () => {
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-brand-900 text-white p-6 rounded-[2rem] shadow-glow flex items-center gap-6"
+            className="bg-primary text-text-inverted p-6 rounded-[2rem] shadow-glow flex items-center gap-6"
           >
             <div className="text-center">
               <div className="text-2xl font-bold tracking-tight">{typeof complianceScore === 'number' ? complianceScore.toFixed(1) : complianceScore}</div>
-              <div className="text-[8px] font-bold text-brand-300 uppercase tracking-widest">Compliance Score</div>
+              <div className="text-[8px] font-bold text-text-inverted/70 uppercase tracking-widest">Compliance Score</div>
             </div>
             <div className="w-px h-10 bg-white/10" />
             <div className="text-center">
               <div className="text-2xl font-bold tracking-tight">{openViolations}</div>
-              <div className="text-[8px] font-bold text-brand-300 uppercase tracking-widest">Open Violations</div>
+              <div className="text-[8px] font-bold text-text-inverted/70 uppercase tracking-widest">Open Violations</div>
             </div>
           </motion.div>
         </div>

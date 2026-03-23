@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, AlertCircle, CheckCircle2, Clock, Info, X, ChevronRight, Settings, Volume2, VolumeX, Mail, MessageSquare, Smartphone, Filter, Trash2, Check, AlertTriangle, Shield, Calendar, User, Zap, RefreshCw } from 'lucide-react';
 import { SMButton, SMCard, SMBadge } from '../ui';
 
-const MotionSMCard = motion(SMCard);
+const MotionSMCard = motion.create(SMCard);
 
 interface Alert {
   id: string;

@@ -20,7 +20,7 @@ export interface SMSelectOption {
 export interface SMSelectProps
   extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
   label?:       string;
-  options:      SMSelectOption[];
+  options?:     SMSelectOption[];
   size?:        SMSelectSize;
   error?:       string;
   helperText?:  string;
@@ -49,6 +49,7 @@ export const SMSelect = React.forwardRef<HTMLSelectElement, SMSelectProps>(
     {
       label,
       options,
+      children,
       size        = 'md',
       error,
       helperText,
@@ -63,6 +64,7 @@ export const SMSelect = React.forwardRef<HTMLSelectElement, SMSelectProps>(
     const id         = externalId ?? internalId;
     const errorId    = `${id}-error`;
     const helperId   = `${id}-helper`;
+    const normalizedOptions = options ?? [];
 
     const describedBy =
       [error ? errorId : '', !error && helperText ? helperId : '']
@@ -104,11 +106,13 @@ export const SMSelect = React.forwardRef<HTMLSelectElement, SMSelectProps>(
                 {placeholder}
               </option>
             )}
-            {options.map((opt) => (
-              <option key={opt.value} value={opt.value} disabled={opt.disabled}>
-                {opt.label}
-              </option>
-            ))}
+            {normalizedOptions.length > 0
+              ? normalizedOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value} disabled={opt.disabled}>
+                    {opt.label}
+                  </option>
+                ))
+              : children}
           </select>
 
           {/* Custom chevron — pointer-events-none so clicks pass to <select> */}

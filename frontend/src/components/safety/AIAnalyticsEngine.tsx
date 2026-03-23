@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import { SMButton, SMInput, SMCard, SMBadge } from '../ui';
 
-const MotionSMCard = motion(SMCard);
+const MotionSMCard = motion.create(SMCard);
 
 // Types
 export interface AIInsight {

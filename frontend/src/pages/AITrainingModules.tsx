@@ -219,7 +219,7 @@ export const AITrainingModules: React.FC = () => {
   const avgScore = Math.round(displayModules.reduce((s, m) => s + m.score, 0) / displayModules.length);
 
   return (
-    <div className="min-h-screen pb-28" style={{ background: 'linear-gradient(165deg, #020617 0%, #0f172a 35%, #0c1222 70%, #020617 100%)' }}>
+    <div className="ai-purple-theme min-h-screen pb-28" style={{ background: 'linear-gradient(165deg, #020617 0%, #0f172a 35%, #0c1222 70%, #020617 100%)' }}>
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-gradient-radial from-purple-500/8 via-purple-500/3 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-10 w-[400px] h-[400px] bg-gradient-radial from-cyan-500/5 via-transparent to-transparent rounded-full blur-3xl" />

@@ -318,7 +318,7 @@ Fire extinguisher is partially blocked by storage crates.`,
             onClick={() => setIsOpen(true)}
             aria-label="Open AI assistant"
             className="fixed bottom-24 right-6 w-14 h-14 rounded-[1.75rem] flex items-center justify-center transition-all duration-300 hover:brightness-110"
-            style={{ backgroundColor: '#00A89D', color: '#ffffff', border: '1px solid rgba(0,168,157,0.3)', boxShadow: '0 0 0 4px rgba(0,168,157,0.18), 0 8px 32px rgba(0,168,157,0.55)' }}
+            style={{ backgroundColor: '#8B5CF6', color: '#ffffff', border: '1px solid rgba(139,92,246,0.32)', boxShadow: '0 0 0 4px rgba(139,92,246,0.18), 0 8px 32px rgba(139,92,246,0.45)' }}
           >
             <Bot className="w-7 h-7 relative z-10" />
           </motion.button>
@@ -335,7 +335,7 @@ Fire extinguisher is partially blocked by storage crates.`,
               width: isMinimized ? '300px' : '400px'
             }}
             exit={{ opacity: 0, y: 100, scale: 0.9, x: 20 }}
-            className="fixed bottom-24 right-6 bg-surface-overlay border border-surface-border rounded-3xl shadow-modal overflow-hidden flex flex-col max-w-[calc(100vw-48px)]"
+            className="ai-purple-theme fixed bottom-24 right-6 bg-surface-overlay border border-surface-border rounded-3xl shadow-modal overflow-hidden flex flex-col max-w-[calc(100vw-48px)]"
           >
             {/* Header */}
             <div className="p-4 bg-surface-raised border-b border-surface-border flex items-center justify-between shrink-0">

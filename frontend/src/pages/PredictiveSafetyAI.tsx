@@ -273,7 +273,7 @@ export const PredictiveSafetyAI: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen pb-24 bg-surface-950">
+    <div className="ai-purple-theme min-h-screen pb-24 bg-surface-950">
       {/* Header */}
       <header className="sticky top-[72px] z-30 bg-surface-900/80 backdrop-blur-xl border-b border-surface-800">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6">

@@ -27,23 +27,23 @@ const itemVariants = {
 };
 
 const severityConfig: Record<GapSeverity, { color: string; bgColor: string; borderColor: string; icon: string }> = {
-  critical: { color: 'text-red-700', bgColor: 'bg-red-50', borderColor: 'border-red-300', icon: '🚨' },
-  major: { color: 'text-orange-700', bgColor: 'bg-orange-50', borderColor: 'border-orange-300', icon: '⚠️' },
-  minor: { color: 'text-amber-700', bgColor: 'bg-amber-50', borderColor: 'border-amber-300', icon: '📋' },
-  observation: { color: 'text-blue-700', bgColor: 'bg-blue-50', borderColor: 'border-blue-300', icon: '💡' }
+  critical: { color: 'text-danger', bgColor: 'bg-danger/10', borderColor: 'border-danger/40', icon: '🚨' },
+  major: { color: 'text-warning', bgColor: 'bg-warning/10', borderColor: 'border-warning/40', icon: '⚠️' },
+  minor: { color: 'text-warning', bgColor: 'bg-warning/5', borderColor: 'border-warning/20', icon: '📋' },
+  observation: { color: 'text-accent', bgColor: 'bg-accent/10', borderColor: 'border-accent/30', icon: '💡' }
 };
 
 const statusConfig: Record<string, { color: string; bgColor: string; label: string }> = {
-  open: { color: 'text-red-700', bgColor: 'bg-red-100', label: 'Open' },
-  in_progress: { color: 'text-amber-700', bgColor: 'bg-amber-100', label: 'In Progress' },
-  resolved: { color: 'text-green-700', bgColor: 'bg-green-100', label: 'Resolved' },
-  accepted_risk: { color: 'text-purple-700', bgColor: 'bg-purple-100', label: 'Risk Accepted' }
+  open: { color: 'text-danger', bgColor: 'bg-danger/10', label: 'Open' },
+  in_progress: { color: 'text-warning', bgColor: 'bg-warning/10', label: 'In Progress' },
+  resolved: { color: 'text-success', bgColor: 'bg-success/10', label: 'Resolved' },
+  accepted_risk: { color: 'text-accent', bgColor: 'bg-accent/10', label: 'Risk Accepted' }
 };
 
 const effortConfig: Record<string, { color: string; dots: number }> = {
-  low: { color: 'text-green-600', dots: 1 },
-  medium: { color: 'text-amber-600', dots: 2 },
-  high: { color: 'text-red-600', dots: 3 }
+  low: { color: 'text-success', dots: 1 },
+  medium: { color: 'text-warning', dots: 2 },
+  high: { color: 'text-danger', dots: 3 }
 };
 
 const fallbackSeverity = severityConfig.minor;
@@ -115,7 +115,7 @@ export const ComplianceGapAnalysis: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 dark:bg-surface-900 pb-20">
+    <div className="min-h-screen bg-surface-base pb-20">
       {/* Header */}
       <div className="bg-gradient-to-br from-sage-600 via-sage-500 to-emerald-500 pt-12 pb-8 px-4 safe-top">
         <div className="flex items-center gap-3 mb-6">
@@ -160,12 +160,12 @@ export const ComplianceGapAnalysis: React.FC = () => {
 
       {/* Progress Bar */}
       <div className="px-4 -mt-4">
-        <div className="bg-white dark:bg-surface-800 rounded-xl p-4 shadow-sm border border-surface-200 dark:border-surface-700">
+        <div className="bg-surface-raised rounded-xl p-4 shadow-sm border border-surface-border">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-surface-700 dark:text-surface-300">Remediation Progress</span>
+            <span className="text-sm font-medium text-text-primary">Remediation Progress</span>
             <span className="text-sm font-bold text-sage-600">{metrics.total > 0 ? Math.round((metrics.resolved / metrics.total) * 100) : 0}%</span>
           </div>
-          <div className="h-3 bg-surface-100 dark:bg-surface-700 rounded-full overflow-hidden flex">
+          <div className="h-3 bg-surface-border rounded-full overflow-hidden flex">
             <div 
               className="bg-green-500 transition-all duration-500" 
               style={{ width: `${metrics.total > 0 ? (metrics.resolved / metrics.total) * 100 : 0}%` }}
@@ -179,7 +179,7 @@ export const ComplianceGapAnalysis: React.FC = () => {
               style={{ width: `${metrics.total > 0 ? (metrics.open / metrics.total) * 100 : 0}%` }}
             />
           </div>
-          <div className="flex justify-between mt-2 text-xs text-surface-500">
+          <div className="flex justify-between mt-2 text-xs text-text-muted">
             <span className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full bg-green-500" /> Resolved ({metrics.resolved})
             </span>
@@ -205,7 +205,7 @@ export const ComplianceGapAnalysis: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search gaps..."
-              className="w-full pl-9 pr-4 py-2.5 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sage-500"
+              className="w-full pl-9 pr-4 py-2.5 bg-surface-raised border border-surface-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent text-text-primary"
             />
           </div>
         </div>
@@ -214,7 +214,7 @@ export const ComplianceGapAnalysis: React.FC = () => {
           <select
             value={selectedStandard}
             onChange={(e) => setSelectedStandard(e.target.value)}
-            className="px-3 py-2 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg text-sm min-w-[120px]"
+            className="px-3 py-2 bg-surface-raised border border-surface-border rounded-lg text-sm min-w-[120px] text-text-primary"
           >
             <option value="all">All Standards</option>
             {standardsInGaps.map(std => (
@@ -225,7 +225,7 @@ export const ComplianceGapAnalysis: React.FC = () => {
           <select
             value={selectedSeverity}
             onChange={(e) => setSelectedSeverity(e.target.value as GapSeverity | 'all')}
-            className="px-3 py-2 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg text-sm min-w-[100px]"
+            className="px-3 py-2 bg-surface-raised border border-surface-border rounded-lg text-sm min-w-[100px] text-text-primary"
           >
             <option value="all">All Severity</option>
             <option value="critical">🚨 Critical</option>
@@ -237,7 +237,7 @@ export const ComplianceGapAnalysis: React.FC = () => {
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="px-3 py-2 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg text-sm min-w-[100px]"
+            className="px-3 py-2 bg-surface-raised border border-surface-border rounded-lg text-sm min-w-[100px] text-text-primary"
           >
             <option value="all">All Status</option>
             <option value="open">Open</option>
@@ -269,7 +269,7 @@ export const ComplianceGapAnalysis: React.FC = () => {
                   key={gapKey}
                   variants={itemVariants}
                   layout
-                  className={`bg-white dark:bg-surface-800 rounded-xl border-l-4 ${severity.borderColor} shadow-sm overflow-hidden`}
+                  className={`bg-surface-raised rounded-xl border-l-4 ${severity.borderColor} shadow-sm overflow-hidden`}
                 >
                   <button
                     onClick={() => setExpandedGap(isExpanded ? null : gap.id)}
@@ -285,34 +285,34 @@ export const ComplianceGapAnalysis: React.FC = () => {
                             {status.label}
                           </span>
                         </div>
-                        <h3 className="font-semibold text-surface-900 dark:text-surface-100 line-clamp-1">
+                        <h3 className="font-semibold text-text-primary line-clamp-1">
                           {gap.clauseTitle}
                         </h3>
-                        <p className="text-sm text-surface-500 mt-0.5">
+                        <p className="text-sm text-text-muted mt-0.5">
                           {getStandardName(gap.standardId)} • Clause {(gap.clauseId ?? 'N/A').split('-').pop()}
                         </p>
                       </div>
                       <div className="flex flex-col items-end gap-1">
-                        <span className="text-xs text-surface-400">Priority</span>
-                        <span className="text-lg font-bold text-surface-700 dark:text-surface-300">#{gap.priority}</span>
+                        <span className="text-xs text-text-muted">Priority</span>
+                        <span className="text-lg font-bold text-text-primary">#{gap.priority}</span>
                       </div>
                     </div>
 
-                    <p className="text-sm text-surface-600 dark:text-surface-400 mt-2 line-clamp-2">
+                    <p className="text-sm text-text-muted mt-2 line-clamp-2">
                       {gap.gap}
                     </p>
 
-                    <div className="flex items-center justify-between mt-3 pt-3 border-t border-surface-100 dark:border-surface-700">
+                      <div className="flex items-center justify-between mt-3 pt-3 border-t border-surface-border">
                       <div className="flex items-center gap-3">
-                        <span className="text-xs text-surface-500">Effort:</span>
+                        <span className="text-xs text-text-muted">Effort:</span>
                         <span className={`flex gap-0.5 ${effort.color}`}>
                           {[...Array(3)].map((_, i) => (
-                            <span key={i} className={`w-2 h-2 rounded-full ${i < effort.dots ? 'bg-current' : 'bg-surface-200 dark:bg-surface-600'}`} />
+                            <span key={i} className={`w-2 h-2 rounded-full ${i < effort.dots ? 'bg-current' : 'bg-surface-border'}`} />
                           ))}
                         </span>
                       </div>
                       {gap.targetDate && (
-                        <span className={`text-xs ${new Date(gap.targetDate) < new Date() && gap.status !== 'resolved' ? 'text-red-600' : 'text-surface-500'}`}>
+                        <span className={`text-xs ${new Date(gap.targetDate) < new Date() && gap.status !== 'resolved' ? 'text-danger' : 'text-text-muted'}`}>
                           Target: {new Date(gap.targetDate).toLocaleDateString()}
                         </span>
                       )}
@@ -326,33 +326,33 @@ export const ComplianceGapAnalysis: React.FC = () => {
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="border-t border-surface-100 dark:border-surface-700"
+                        className="border-t border-surface-border"
                       >
                         <div className="p-4 space-y-4">
                           <div>
-                            <h4 className="text-xs font-semibold text-surface-500 uppercase tracking-wide mb-1">Requirement</h4>
-                            <p className="text-sm text-surface-700 dark:text-surface-300">{gap.requirement}</p>
+                            <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-1">Requirement</h4>
+                            <p className="text-sm text-text-primary">{gap.requirement}</p>
                           </div>
 
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <h4 className="text-xs font-semibold text-surface-500 uppercase tracking-wide mb-1">Current State</h4>
-                              <p className="text-sm text-surface-600 dark:text-surface-400">{gap.currentState}</p>
+                              <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-1">Current State</h4>
+                              <p className="text-sm text-text-muted">{gap.currentState}</p>
                             </div>
                             <div>
-                              <h4 className="text-xs font-semibold text-surface-500 uppercase tracking-wide mb-1">Desired State</h4>
-                              <p className="text-sm text-surface-600 dark:text-surface-400">{gap.desiredState}</p>
+                              <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-1">Desired State</h4>
+                              <p className="text-sm text-text-muted">{gap.desiredState}</p>
                             </div>
                           </div>
 
                           <div>
-                            <h4 className="text-xs font-semibold text-surface-500 uppercase tracking-wide mb-1">Impact</h4>
-                            <p className="text-sm text-surface-600 dark:text-surface-400">{gap.impact}</p>
+                            <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-1">Impact</h4>
+                            <p className="text-sm text-text-muted">{gap.impact}</p>
                           </div>
 
                           <div>
-                            <h4 className="text-xs font-semibold text-surface-500 uppercase tracking-wide mb-1">Remediation Plan</h4>
-                            <p className="text-sm text-surface-700 dark:text-surface-300">{gap.remediation}</p>
+                            <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-1">Remediation Plan</h4>
+                            <p className="text-sm text-text-primary">{gap.remediation}</p>
                           </div>
 
                           {gap.owner && (
@@ -361,8 +361,8 @@ export const ComplianceGapAnalysis: React.FC = () => {
                                 <span className="text-sm font-medium text-sage-700">{gap.owner.charAt(0)}</span>
                               </div>
                               <div>
-                                <p className="text-sm font-medium text-surface-700 dark:text-surface-300">{gap.owner}</p>
-                                <p className="text-xs text-surface-500">Assigned Owner</p>
+                                <p className="text-sm font-medium text-text-primary">{gap.owner}</p>
+                                <p className="text-xs text-text-muted">Assigned Owner</p>
                               </div>
                             </div>
                           )}
@@ -372,7 +372,7 @@ export const ComplianceGapAnalysis: React.FC = () => {
                             {gap.status === 'open' && (
                               <button
                                 onClick={() => handleStatusChange(gap.id, 'in_progress')}
-                                className="flex-1 py-2 bg-amber-100 text-amber-700 rounded-lg text-sm font-medium active:scale-98 transition-transform"
+                                className="flex-1 py-2 bg-warning/10 text-warning rounded-lg text-sm font-medium active:scale-98 transition-transform"
                               >
                                 Start Work
                               </button>
@@ -380,7 +380,7 @@ export const ComplianceGapAnalysis: React.FC = () => {
                             {gap.status === 'in_progress' && (
                               <button
                                 onClick={() => handleStatusChange(gap.id, 'resolved')}
-                                className="flex-1 py-2 bg-green-100 text-green-700 rounded-lg text-sm font-medium active:scale-98 transition-transform"
+                                className="flex-1 py-2 bg-success/10 text-success rounded-lg text-sm font-medium active:scale-98 transition-transform"
                               >
                                 Mark Resolved
                               </button>
@@ -388,7 +388,7 @@ export const ComplianceGapAnalysis: React.FC = () => {
                             {gap.status !== 'accepted_risk' && gap.status !== 'resolved' && (
                               <button
                                 onClick={() => handleStatusChange(gap.id, 'accepted_risk')}
-                                className="flex-1 py-2 bg-purple-100 text-purple-700 rounded-lg text-sm font-medium active:scale-98 transition-transform"
+                                className="flex-1 py-2 bg-accent/10 text-accent rounded-lg text-sm font-medium active:scale-98 transition-transform"
                               >
                                 Accept Risk
                               </button>
@@ -405,12 +405,12 @@ export const ComplianceGapAnalysis: React.FC = () => {
 
           {filteredGaps.length === 0 && (
             <div className="text-center py-12">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-surface-100 dark:bg-surface-800 flex items-center justify-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-surface-100 flex items-center justify-center">
                 <svg className="w-8 h-8 text-surface-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
               </div>
-              <p className="text-surface-500 dark:text-surface-400">No gaps match your filters</p>
+              <p className="text-text-muted">No gaps match your filters</p>
             </div>
           )}
         </motion.div>

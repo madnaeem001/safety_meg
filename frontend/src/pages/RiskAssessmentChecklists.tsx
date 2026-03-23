@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { SMButton } from '../components/ui';
 import { 
   INDUSTRY_CHECKLISTS, 
   getChecklistByIndustry, 
@@ -104,32 +105,32 @@ const AIHelperPanel: React.FC<AIHelperPanelProps> = ({ category, isOpen, onClose
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 100 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="fixed inset-x-0 bottom-0 z-50 safe-area-bottom"
+          className="ai-purple-theme fixed inset-x-0 bottom-0 z-50 safe-area-bottom"
         >
-          <div className="bg-white dark:bg-slate-800 rounded-t-3xl shadow-2xl border-t border-surface-200 dark:border-slate-700 max-h-[60vh] overflow-hidden">
+          <div className="bg-surface-raised rounded-t-3xl shadow-2xl border-t border-surface-border max-h-[60vh] overflow-hidden">
             {/* Handle bar */}
             <div className="flex justify-center py-3">
-              <div className="w-12 h-1.5 bg-surface-300 dark:bg-slate-600 rounded-full" />
+              <div className="w-12 h-1.5 bg-surface-border rounded-full" />
             </div>
             
             {/* Header */}
-            <div className="px-responsive flex items-center justify-between pb-3 border-b border-surface-100 dark:border-slate-700">
+            <div className="px-responsive flex items-center justify-between pb-3 border-b border-surface-border">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-2xl bg-primary flex items-center justify-center">
                   <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-slate-900 dark:text-white">AI Safety Assistant</h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">Powered by AI Risk Analysis</p>
+                  <h3 className="font-semibold text-text-primary">AI Safety Assistant</h3>
+                  <p className="text-xs text-text-muted">Powered by AI Risk Analysis</p>
                 </div>
               </div>
               <button
                 onClick={onClose}
-                className="touch-target p-2 rounded-xl hover:bg-surface-100 dark:hover:bg-slate-700 transition-colors"
+                className="touch-target p-2 rounded-xl hover:bg-surface-100 transition-colors"
               >
-                <svg className="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -141,15 +142,15 @@ const AIHelperPanel: React.FC<AIHelperPanelProps> = ({ category, isOpen, onClose
                 <div className="space-y-3">
                   {[1, 2, 3].map((i) => (
                     <div key={i} className="flex items-start gap-3 animate-pulse">
-                      <div className="w-2 h-2 mt-2 rounded-full bg-brand-300" />
+                      <div className="w-2 h-2 mt-2 rounded-full bg-accent/40" />
                       <SkeletonLine className="h-4 flex-1" />
                     </div>
                   ))}
                 </div>
               ) : (
                 <div className="space-y-3">
-                  <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
-                    AI Suggestions for <span className="text-brand-600 dark:text-brand-400">{category}</span>:
+                  <p className="text-sm font-medium text-text-primary mb-3">
+                    AI Suggestions for <span className="text-accent">{category}</span>:
                   </p>
                   {suggestions.length > 0 ? (
                     suggestions.map((suggestion, index) => (
@@ -158,14 +159,14 @@ const AIHelperPanel: React.FC<AIHelperPanelProps> = ({ category, isOpen, onClose
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="flex items-start gap-3 p-3 bg-surface-50 dark:bg-slate-700/50 rounded-xl"
+                        className="flex items-start gap-3 p-3 bg-surface-100 rounded-xl"
                       >
-                        <div className="w-2 h-2 mt-1.5 rounded-full bg-brand-500 flex-shrink-0" />
-                        <p className="text-sm text-slate-600 dark:text-slate-300">{suggestion}</p>
+                        <div className="w-2 h-2 mt-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <p className="text-sm text-text-muted">{suggestion}</p>
                       </motion.div>
                     ))
                   ) : (
-                    <p className="text-sm text-slate-500 dark:text-slate-400 text-center py-4">
+                    <p className="text-sm text-text-muted text-center py-4">
                       No suggestions available for this category yet.
                     </p>
                   )}
@@ -173,20 +174,20 @@ const AIHelperPanel: React.FC<AIHelperPanelProps> = ({ category, isOpen, onClose
               )}
               
               {/* Ask AI Input */}
-              <div className="mt-4 pt-4 border-t border-surface-100 dark:border-slate-700">
+              <div className="mt-4 pt-4 border-t border-surface-border">
                 <div className="flex gap-2">
                   <input
                     type="text"
                     value={userQuery}
                     onChange={(e) => setUserQuery(e.target.value)}
                     placeholder="Ask AI about safety concerns..."
-                    className="flex-1 px-4 py-3 text-sm bg-surface-50 dark:bg-slate-700 border border-surface-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all"
+                    className="flex-1 px-4 py-3 text-sm bg-surface-100 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all"
                     onKeyDown={(e) => e.key === 'Enter' && handleAskAI()}
                   />
                   <button
                     onClick={handleAskAI}
                     disabled={isLoading || !userQuery.trim()}
-                    className="px-4 py-3 bg-brand-500 text-white rounded-xl font-medium touch-target disabled:opacity-50 disabled:cursor-not-allowed mobile-active transition-all"
+                    className="px-4 py-3 bg-primary text-text-inverted rounded-xl font-medium touch-target disabled:opacity-50 disabled:cursor-not-allowed mobile-active transition-all"
                   >
                     Ask
                   </button>
@@ -271,8 +272,8 @@ const EmailNotificationSection: React.FC<EmailNotificationSectionProps> = ({ che
   
   return (
     <div className="glass-card p-4 rounded-2xl">
-      <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3 flex items-center gap-2">
-        <svg className="w-5 h-5 text-brand-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <p className="text-sm font-medium text-text-primary mb-3 flex items-center gap-2">
+        <svg className="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
         Send Completion Report via Email
@@ -283,13 +284,13 @@ const EmailNotificationSection: React.FC<EmailNotificationSectionProps> = ({ che
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter email address"
-          className="flex-1 px-4 py-3 text-sm bg-surface-50 dark:bg-slate-700 border border-surface-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none"
+          className="flex-1 px-4 py-3 text-sm bg-surface-100 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent focus:border-transparent outline-none"
           onKeyDown={(e) => e.key === 'Enter' && sendEmailNotification()}
         />
         <button
           onClick={sendEmailNotification}
           disabled={isSending || !email.trim()}
-          className="px-4 py-3 bg-brand-500 text-white rounded-xl font-medium touch-target disabled:opacity-50 mobile-active"
+          className="px-4 py-3 bg-primary text-text-inverted rounded-xl font-medium touch-target disabled:opacity-50 mobile-active"
         >
           {isSending ? (
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -299,7 +300,7 @@ const EmailNotificationSection: React.FC<EmailNotificationSectionProps> = ({ che
         </button>
       </div>
       {message && (
-        <p className={`text-sm mt-2 ${message.type === 'success' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+        <p className={`text-sm mt-2 ${message.type === 'success' ? 'text-success' : 'text-danger'}`}>
           {message.text}
         </p>
       )}
@@ -324,7 +325,7 @@ const ChecklistItemRow: React.FC<ChecklistItemRowProps> = ({ item, isChecked, on
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.03 }}
       className={`glass-card p-4 rounded-2xl transition-all duration-200 ${
-        isChecked ? 'bg-green-50/80 dark:bg-green-900/20 border-green-200 dark:border-green-800' : ''
+        isChecked ? 'bg-success/5 border-success/20' : ''
       }`}
     >
       <div className="flex items-start gap-4">
@@ -332,8 +333,8 @@ const ChecklistItemRow: React.FC<ChecklistItemRowProps> = ({ item, isChecked, on
           onClick={onToggle}
           className={`touch-target flex-shrink-0 w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${
             isChecked
-              ? 'bg-green-500 border-green-500 text-white'
-              : 'border-surface-300 dark:border-slate-600 hover:border-brand-500'
+              ? 'bg-success border-success text-white'
+              : 'border-surface-border hover:border-accent'
           }`}
         >
           {isChecked && (
@@ -345,14 +346,14 @@ const ChecklistItemRow: React.FC<ChecklistItemRowProps> = ({ item, isChecked, on
         
         <div className="flex-1 min-w-0">
           <p className={`text-sm font-medium leading-relaxed ${
-            isChecked ? 'text-green-700 dark:text-green-300 line-through' : 'text-slate-700 dark:text-slate-200'
+            isChecked ? 'text-success line-through' : 'text-text-primary'
           }`}>
             {item.question}
-            {item.required && <span className="text-red-500 ml-1">*</span>}
+            {item.required && <span className="text-danger ml-1">*</span>}
           </p>
           
           {item.regulatoryRef && (
-            <span className="inline-block mt-2 px-2 py-0.5 text-xs font-medium bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 rounded-lg">
+            <span className="inline-block mt-2 px-2 py-0.5 text-xs font-medium bg-accent/10 text-accent rounded-lg">
               {item.regulatoryRef}
             </span>
           )}
@@ -364,7 +365,7 @@ const ChecklistItemRow: React.FC<ChecklistItemRowProps> = ({ item, isChecked, on
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="mt-2 text-xs text-slate-500 dark:text-slate-400 bg-surface-50 dark:bg-slate-800 p-2 rounded-lg"
+                  className="mt-2 text-xs text-text-muted bg-surface-100 p-2 rounded-lg"
                 >
                   💡 {item.helpText}
                 </motion.p>
@@ -376,9 +377,9 @@ const ChecklistItemRow: React.FC<ChecklistItemRowProps> = ({ item, isChecked, on
         {item.helpText && (
           <button
             onClick={() => setShowHelp(!showHelp)}
-            className="touch-target p-2 rounded-xl hover:bg-surface-100 dark:hover:bg-slate-700 transition-colors"
+            className="touch-target p-2 rounded-xl hover:bg-surface-100 transition-colors"
           >
-            <svg className={`w-5 h-5 text-slate-400 transition-transform ${showHelp ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className={`w-5 h-5 text-text-muted transition-transform ${showHelp ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </button>
@@ -506,32 +507,34 @@ export const RiskAssessmentChecklists: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen-safe bg-surface-50 dark:bg-slate-900 safe-area-all">
+      <div className="min-h-screen-safe bg-surface-base safe-area-all">
         <ChecklistSkeleton />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen-safe bg-surface-50 dark:bg-slate-900 safe-area-all pb-24">
+    <div className="min-h-screen-safe bg-surface-base safe-area-all pb-24">
       {/* Header */}
-      <header className="sticky top-[72px] z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-surface-100 dark:border-slate-800 safe-area-top">
+      <header className="sticky top-[var(--nav-height)] z-40 bg-surface-raised/80 backdrop-blur-xl border-b border-surface-border safe-area-top">
         <div className="px-responsive py-4 flex items-center gap-4">
-          <button
+          <SMButton
+            variant="ghost"
+            size="sm"
             onClick={() => navigate(-1)}
-            className="touch-target p-2 -ml-2 rounded-xl hover:bg-surface-100 dark:hover:bg-slate-800 transition-colors"
-          >
-            <svg className="w-6 h-6 text-slate-600 dark:text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+            leftIcon={(
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            )}
+          />
           <div className="flex-1">
-            <h1 className="text-responsive-lg font-bold text-slate-900 dark:text-white">Risk Assessment</h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400">Industry Checklists</p>
+            <h1 className="text-responsive-lg font-bold text-text-primary">Risk Assessment</h1>
+            <p className="text-sm text-text-muted">Industry Checklists</p>
           </div>
           <button
             onClick={() => setShowAIPanel(true)}
-            className="touch-target p-3 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-lg mobile-active"
+            className="touch-target p-3 rounded-2xl bg-primary text-text-inverted shadow-lg mobile-active"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
@@ -542,7 +545,7 @@ export const RiskAssessmentChecklists: React.FC = () => {
 
       {/* Industry Selector */}
       <section className="px-responsive py-4">
-        <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-3">Select Industry</p>
+        <p className="text-sm font-medium text-text-muted mb-3">Select Industry</p>
         <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 ios-safe-scroll">
           {availableIndustries.map((industry) => (
             <button
@@ -550,8 +553,8 @@ export const RiskAssessmentChecklists: React.FC = () => {
               onClick={() => setSelectedIndustry(industry)}
               className={`flex-shrink-0 flex items-center gap-2 px-4 py-3 rounded-2xl font-medium text-sm transition-all touch-target mobile-active ${
                 selectedIndustry === industry
-                  ? 'bg-brand-500 text-white shadow-lg'
-                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-surface-200 dark:border-slate-700'
+                  ? 'bg-primary text-text-inverted shadow-lg'
+                  : 'bg-surface-raised text-text-primary border border-surface-border'
               }`}
             >
               {industryIcons[industry]}
@@ -566,18 +569,18 @@ export const RiskAssessmentChecklists: React.FC = () => {
         <section className="px-responsive pb-4">
           <div className="glass-card p-4 rounded-2xl">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Overall Progress</span>
-              <span className="text-sm font-bold text-brand-600 dark:text-brand-400">{getProgress()}%</span>
+              <span className="text-sm font-medium text-text-primary">Overall Progress</span>
+              <span className="text-sm font-bold text-accent">{getProgress()}%</span>
             </div>
-            <div className="h-2 bg-surface-200 dark:bg-slate-700 rounded-full overflow-hidden">
+            <div className="h-2 bg-surface-border rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${getProgress()}%` }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="h-full bg-gradient-to-r from-brand-500 to-brand-400 rounded-full"
+                className="h-full bg-primary rounded-full"
               />
             </div>
-            <div className="flex items-center justify-between mt-2 text-xs text-slate-500 dark:text-slate-400">
+            <div className="flex items-center justify-between mt-2 text-xs text-text-muted">
               <span>{checkedItems.size} of {currentChecklist.items.length} items</span>
               <span>Est. {currentChecklist.completionEstimate}</span>
             </div>
@@ -595,13 +598,13 @@ export const RiskAssessmentChecklists: React.FC = () => {
                 onClick={() => setSelectedCategory(category)}
                 className={`flex-shrink-0 px-4 py-2.5 rounded-xl font-medium text-sm transition-all touch-target mobile-active whitespace-nowrap ${
                   selectedCategory === category
-                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
-                    : 'bg-surface-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                    ? 'bg-primary text-text-inverted'
+                    : 'bg-surface-100 text-text-muted'
                 }`}
               >
                 {category}
                 <span className={`ml-2 text-xs ${
-                  selectedCategory === category ? 'text-white/70 dark:text-slate-900/70' : 'text-slate-400 dark:text-slate-500'
+                  selectedCategory === category ? 'text-text-inverted/70' : 'text-text-muted'
                 }`}>
                   {getCategoryProgress(category)}%
                 </span>
@@ -625,12 +628,12 @@ export const RiskAssessmentChecklists: React.FC = () => {
           ))
         ) : (
           <div className="text-center py-12">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-surface-100 dark:bg-slate-800 flex items-center justify-center">
-              <svg className="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-surface-100 flex items-center justify-center">
+              <svg className="w-8 h-8 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
             </div>
-            <p className="text-slate-500 dark:text-slate-400">No items in this category</p>
+            <p className="text-text-muted">No items in this category</p>
           </div>
         )}
       </section>
@@ -640,7 +643,7 @@ export const RiskAssessmentChecklists: React.FC = () => {
         <section className="px-responsive pb-4 space-y-3">
           <button
             onClick={() => exportToPDF(currentChecklist, checkedItems)}
-            className="w-full py-4 bg-gradient-to-r from-brand-600 to-brand-500 text-white rounded-2xl font-semibold flex items-center justify-center gap-2 shadow-lg mobile-active"
+            className="w-full py-4 bg-primary text-text-inverted rounded-2xl font-semibold flex items-center justify-center gap-2 shadow-lg mobile-active"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />

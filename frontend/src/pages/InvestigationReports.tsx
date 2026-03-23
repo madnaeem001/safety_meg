@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { SMButton, SMBadge, SMCard } from '../components/ui';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -64,15 +65,15 @@ interface InvestigationViewModel {
 const getSeverityColor = (severity: string) => {
   switch (severity) {
     case 'Critical':
-      return { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200' };
+      return { bg: 'bg-danger/10', text: 'text-danger', border: 'border-danger/20' };
     case 'High':
-      return { bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-200' };
+      return { bg: 'bg-warning/10', text: 'text-warning', border: 'border-warning/20' };
     case 'Medium':
-      return { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200' };
+      return { bg: 'bg-warning/10', text: 'text-warning', border: 'border-surface-border' };
     case 'Low':
-      return { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' };
+      return { bg: 'bg-success/10', text: 'text-success', border: 'border-success/20' };
     default:
-      return { bg: 'bg-surface-50', text: 'text-surface-600', border: 'border-surface-200' };
+      return { bg: 'bg-surface-100', text: 'text-text-muted', border: 'border-surface-border' };
   }
 };
 
@@ -80,13 +81,13 @@ const getStatusColor = (status: string) => {
   switch (status) {
     case 'Completed':
     case 'Closed':
-      return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+      return 'bg-success/10 text-success border-success/20';
     case 'In Progress':
-      return 'bg-blue-50 text-blue-700 border-blue-200';
+      return 'bg-accent/10 text-accent border-accent/20';
     case 'Open':
-      return 'bg-amber-50 text-amber-700 border-amber-200';
+      return 'bg-warning/10 text-warning border-warning/20';
     default:
-      return 'bg-surface-50 text-surface-600 border-surface-200';
+      return 'bg-surface-100 text-text-muted border-surface-border';
   }
 };
 
@@ -226,21 +227,21 @@ export const InvestigationReports: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-surface-50 to-surface-100 pb-32">
+    <div className="min-h-screen bg-surface-base pb-32">
 
 
-      <main className="max-w-7xl mx-auto px-5 py-8 space-y-8">
+      <main className="mx-auto max-w-[1440px] space-y-8 px-5 py-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="space-y-3"
         >
-          <div className="flex items-center gap-2 text-brand-500 font-bold text-[10px] uppercase tracking-[0.3em]">
+          <div className="flex items-center gap-2 text-accent font-bold text-xs uppercase tracking-[0.3em]">
             <FileSearch className="w-4 h-4" />
             Incident Investigation
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-brand-900 tracking-tight">Investigation Reports</h1>
-          <p className="text-surface-500 max-w-2xl">
+          <h1 className="text-3xl md:text-4xl font-bold text-text-primary tracking-tight">Investigation Reports</h1>
+          <p className="max-w-2xl text-text-muted">
             Backend-backed investigation list with RCCA details, exports, and direct drill-down into analysis.
           </p>
 
@@ -250,7 +251,7 @@ export const InvestigationReports: React.FC = () => {
             onClick={handleExportAll}
             disabled={exportingAll || listViewModels.length === 0}
             className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-all shadow-sm ${
-              exportingAll ? 'bg-green-100 text-green-700' : 'bg-primary-600 hover:bg-primary-700 text-white'
+              exportingAll ? 'bg-success/10 text-success' : 'bg-primary text-text-inverted hover:opacity-90'
             } disabled:opacity-60`}
           >
             {exportingAll ? <CheckCircle2 className="w-4 h-4 animate-pulse" /> : <FileSpreadsheet className="w-4 h-4" />}
@@ -263,26 +264,26 @@ export const InvestigationReports: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           className="grid grid-cols-2 md:grid-cols-4 gap-3"
         >
-          <div className="bg-white p-4 rounded-2xl shadow-soft border border-surface-100">
-            <div className="text-2xl font-bold text-brand-900">{listViewModels.length}</div>
-            <div className="text-[10px] font-bold text-surface-400 uppercase tracking-wider">Active Investigations</div>
+          <div className="bg-surface-raised p-4 rounded-2xl shadow-soft border border-surface-border">
+            <div className="text-2xl font-bold text-text-primary">{listViewModels.length}</div>
+            <div className="text-xs font-bold text-text-muted uppercase tracking-wider">Active Investigations</div>
           </div>
-          <div className="bg-white p-4 rounded-2xl shadow-soft border border-surface-100">
-            <div className="text-2xl font-bold text-amber-600">{openCount}</div>
-            <div className="text-[10px] font-bold text-surface-400 uppercase tracking-wider">Open Status</div>
+          <div className="bg-surface-raised p-4 rounded-2xl shadow-soft border border-surface-border">
+            <div className="text-2xl font-bold text-warning">{openCount}</div>
+            <div className="text-xs font-bold text-text-muted uppercase tracking-wider">Open Status</div>
           </div>
-          <div className="bg-white p-4 rounded-2xl shadow-soft border border-surface-100">
-            <div className="text-2xl font-bold text-red-600">{reportableCount}</div>
-            <div className="text-[10px] font-bold text-surface-400 uppercase tracking-wider">Regulatory Reportable</div>
+          <div className="bg-surface-raised p-4 rounded-2xl shadow-soft border border-surface-border">
+            <div className="text-2xl font-bold text-danger">{reportableCount}</div>
+            <div className="text-xs font-bold text-text-muted uppercase tracking-wider">Regulatory Reportable</div>
           </div>
-          <div className="bg-white p-4 rounded-2xl shadow-soft border border-surface-100">
-            <div className="text-2xl font-bold text-emerald-600">{totalCorrectiveActions}</div>
-            <div className="text-[10px] font-bold text-surface-400 uppercase tracking-wider">Corrective Actions</div>
+          <div className="bg-surface-raised p-4 rounded-2xl shadow-soft border border-surface-border">
+            <div className="text-2xl font-bold text-success">{totalCorrectiveActions}</div>
+            <div className="text-xs font-bold text-text-muted uppercase tracking-wider">Corrective Actions</div>
           </div>
         </motion.div>
 
         {loading && (
-          <div className="bg-white rounded-3xl shadow-soft border border-surface-100 p-6 text-surface-500">
+          <div className="bg-surface-raised rounded-3xl shadow-soft border border-surface-border p-6 text-text-muted">
             Loading investigations from backend...
           </div>
         )}
@@ -294,7 +295,7 @@ export const InvestigationReports: React.FC = () => {
         )}
 
         {!loading && !error && listViewModels.length === 0 && (
-          <div className="bg-white rounded-3xl shadow-soft border border-surface-100 p-6 text-surface-500">
+          <div className="bg-surface-raised rounded-3xl shadow-soft border border-surface-border p-6 text-text-muted">
             No investigations are available yet.
           </div>
         )}
@@ -311,7 +312,7 @@ export const InvestigationReports: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.08 }}
-                className="bg-white rounded-3xl shadow-soft border border-surface-100 overflow-hidden"
+                className="bg-surface-raised rounded-3xl shadow-soft border border-surface-border overflow-hidden"
               >
                 <div
                   role="button"
@@ -333,17 +334,17 @@ export const InvestigationReports: React.FC = () => {
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <div>
                         <div className="flex items-center gap-2 mb-1 flex-wrap">
-                          <span className="text-xs font-bold text-brand-600">{item.id}</span>
+                          <span className="text-xs font-bold text-accent">{item.id}</span>
                           <span className={`px-2 py-0.5 text-[9px] font-bold uppercase rounded-full border ${getStatusColor(item.status)}`}>
                             {item.status}
                           </span>
                           {item.regulatoryReportable && (
-                            <span className="px-2 py-0.5 text-[9px] font-bold uppercase rounded-full bg-red-50 text-red-600 border border-red-200">
+                            <span className="px-2 py-0.5 text-[9px] font-bold uppercase rounded-full bg-danger/10 text-danger border border-danger/20">
                               OSHA
                             </span>
                           )}
                         </div>
-                        <h3 className="font-bold text-brand-900 text-base leading-tight">{item.incident}</h3>
+                        <h3 className="font-bold text-text-primary text-base leading-tight">{item.incident}</h3>
                       </div>
                       <div className="flex items-center gap-2">
                         <motion.button
@@ -391,33 +392,34 @@ export const InvestigationReports: React.FC = () => {
                         <div className="pt-4 flex flex-wrap items-center justify-between gap-3">
                           <div>
                             <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2">Findings Summary</h4>
-                            <p className="text-sm text-brand-800 leading-relaxed">{detailModel.findings}</p>
+                            <p className="text-sm text-text-primary leading-relaxed">{detailModel.findings}</p>
                           </div>
-                          <button
+                          <SMButton
+                            variant="primary"
+                            size="sm"
+                            leftIcon={<ArrowUpRight className="w-4 h-4" />}
                             onClick={() => navigate(`/root-cause?type=incident&id=${detailModel.incidentId}`)}
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-600 text-white text-sm font-semibold hover:bg-brand-700 transition-colors"
                           >
                             Open Analysis
-                            <ArrowUpRight className="w-4 h-4" />
-                          </button>
+                          </SMButton>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="p-4 bg-accent-50 rounded-2xl border border-accent-100">
-                            <h4 className="text-xs font-bold text-accent-700 uppercase tracking-wider mb-3 flex items-center gap-2">
+                          <div className="p-4 bg-accent/5 rounded-2xl border border-accent/15">
+                            <h4 className="text-xs font-bold text-accent uppercase tracking-wider mb-3 flex items-center gap-2">
                               <Target className="w-4 h-4" />Root Causes
                             </h4>
                             {detailModel.rootCauses.length > 0 ? (
                               <ul className="space-y-2">
                                 {detailModel.rootCauses.map((cause, causeIndex) => (
-                                  <li key={`${detailModel.id}-cause-${causeIndex}`} className="text-sm text-accent-800 flex items-start gap-2">
-                                    <span className="text-accent-500 font-bold">{causeIndex + 1}.</span>
+                                  <li key={`${detailModel.id}-cause-${causeIndex}`} className="text-sm text-text-primary flex items-start gap-2">
+                                    <span className="text-accent font-bold">{causeIndex + 1}.</span>
                                     {cause}
                                   </li>
                                 ))}
                               </ul>
                             ) : (
-                              <p className="text-sm text-accent-800">No root causes saved yet.</p>
+                              <p className="text-sm text-text-primary">No root causes saved yet.</p>
                             )}
                           </div>
 
@@ -440,17 +442,17 @@ export const InvestigationReports: React.FC = () => {
                           </div>
                         </div>
 
-                        <div className="p-4 bg-brand-50 rounded-2xl border border-brand-100">
-                          <h4 className="text-xs font-bold text-brand-700 uppercase tracking-wider mb-3 flex items-center gap-2">
+                          <div className="p-4 bg-primary/5 rounded-2xl border border-primary/15">
+                            <h4 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-3 flex items-center gap-2">
                             <ClipboardList className="w-4 h-4" />Corrective Actions ({detailModel.correctiveActions.length})
                           </h4>
                           {detailModel.correctiveActions.length > 0 ? (
                             <div className="space-y-3">
                               {detailModel.correctiveActions.map((action) => (
-                                <div key={action.id} className="bg-white p-4 rounded-xl border border-brand-100">
+                                <div key={action.id} className="bg-surface-raised p-4 rounded-xl border border-surface-border">
                                   <div className="flex items-start justify-between gap-3">
                                     <div className="flex-1">
-                                      <p className="text-sm font-medium text-brand-900">{action.action}</p>
+                                      <p className="text-sm font-medium text-text-primary">{action.action}</p>
                                       <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-surface-500">
                                         <span className="flex items-center gap-1"><User className="w-3.5 h-3.5" />{action.assignedTo}</span>
                                         <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />Due: {action.dueDate}</span>
@@ -464,7 +466,7 @@ export const InvestigationReports: React.FC = () => {
                               ))}
                             </div>
                           ) : (
-                            <p className="text-sm text-brand-800">No corrective actions saved yet.</p>
+                              <p className="text-sm text-text-primary">No corrective actions saved yet.</p>
                           )}
                         </div>
 
@@ -484,7 +486,7 @@ export const InvestigationReports: React.FC = () => {
                                   </div>
                                   <div className="flex-1 pb-3">
                                     <div className="flex items-center gap-2">
-                                      <span className="font-semibold text-xs text-brand-900">{event.action}</span>
+                                      <span className="font-semibold text-xs text-text-primary">{event.action}</span>
                                       <span className="text-[10px] text-surface-400">by {event.user}</span>
                                     </div>
                                     <p className="text-xs text-surface-500 mt-0.5">{event.details}</p>

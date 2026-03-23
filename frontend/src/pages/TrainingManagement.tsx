@@ -53,6 +53,18 @@ const ROLE_OPTIONS = [
   'Contractor',
 ] as const;
 
+const ROLE_SELECT_OPTIONS = ROLE_OPTIONS.map((role) => ({
+  value: role,
+  label: role,
+}));
+
+const PRIORITY_OPTIONS = [
+  { value: 'Low', label: 'Low' },
+  { value: 'Normal', label: 'Normal' },
+  { value: 'High', label: 'High' },
+  { value: 'Critical', label: 'Critical' },
+] as const;
+
 const getPriorityBadgeVariant = (daysUntilExpiration: number): 'danger' | 'warning' | 'neutral' => {
   if (daysUntilExpiration <= 7) return 'danger';
   if (daysUntilExpiration <= 14) return 'warning';
@@ -283,13 +295,9 @@ export const TrainingManagement: React.FC = () => {
                           />
                           <SMSelect
                             value={assignmentForm.priority}
+                            options={[...PRIORITY_OPTIONS]}
                             onChange={(event) => setAssignmentForm((current) => ({ ...current, priority: event.target.value as 'Low' | 'Normal' | 'High' | 'Critical' }))}
-                          >
-                            <option value="Low">Low</option>
-                            <option value="Normal">Normal</option>
-                            <option value="High">High</option>
-                            <option value="Critical">Critical</option>
-                          </SMSelect>
+                          />
                         </div>
                         <SMInput
                           as="textarea"
@@ -360,12 +368,9 @@ export const TrainingManagement: React.FC = () => {
                     <div className="flex items-center gap-3">
                       <SMSelect
                         value={filterRole}
+                        options={ROLE_SELECT_OPTIONS}
                         onChange={(event) => setFilterRole(event.target.value as (typeof ROLE_OPTIONS)[number])}
-                      >
-                        {ROLE_OPTIONS.map((role) => (
-                          <option key={role} value={role}>{role}</option>
-                        ))}
-                      </SMSelect>
+                      />
                       <SMButton variant="primary" size="sm" onClick={() => refetchCourses()}>Refresh</SMButton>
                     </div>
                   </div>

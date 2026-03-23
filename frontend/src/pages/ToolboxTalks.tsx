@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft, Sparkles, Brain, Loader2, CheckCircle2, Users, Calendar, Clock,
-  FileText, Pen, Download, Plus, X, RefreshCw, Shield, AlertTriangle, Zap,
-  BookOpen, Target, ClipboardList, User, Building2, Star, Send, Check
+  FileText, Plus, X, RefreshCw, Shield, AlertTriangle, Zap,
+  BookOpen, Target, ClipboardList, User, Building2, Star, Check
 } from 'lucide-react';
-import { useToolboxTalks, useCreateToolboxTalk } from '../api/hooks/useAPIHooks';
+import { useAttendToolboxTalk, useCreateToolboxTalk, useGenerateToolboxTalk, useToolboxTalks } from '../api/hooks/useAPIHooks';
 
 // Toolbox Talk Categories
 const TALK_CATEGORIES = [
@@ -78,6 +78,80 @@ interface ToolboxTalk {
   attendees: Attendee[];
   notes: string;
   status: 'draft' | 'in_progress' | 'completed';
+  aiSource?: 'ai' | 'fallback';
+  aiModel?: string | null;
+}
+
+function renderInline(text: string): React.ReactNode[] {
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g);
+  return parts.map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) return <strong key={index}>{part.slice(2, -2)}</strong>;
+    if (part.startsWith('*') && part.endsWith('*')) return <em key={index}>{part.slice(1, -1)}</em>;
+    if (part.startsWith('`') && part.endsWith('`')) return <code key={index} className="rounded bg-surface-raised px-1 py-0.5 text-xs font-mono text-primary">{part.slice(1, -1)}</code>;
+    return part;
+  });
+}
+
+function renderMarkdown(text: string): React.ReactNode {
+  const lines = text.split('\n');
+  const elements: React.ReactNode[] = [];
+  let bullets: string[] = [];
+  let key = 0;
+
+  const flushBullets = () => {
+    if (bullets.length === 0) return;
+    elements.push(
+      <ul key={`bullets-${key++}`} className="my-3 space-y-2">
+        {bullets.map((item, index) => (
+          <li key={index} className="flex items-start gap-3 text-sm leading-6 text-text-secondary">
+            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+            <span>{renderInline(item)}</span>
+          </li>
+        ))}
+      </ul>
+    );
+    bullets = [];
+  };
+
+  lines.forEach((line, index) => {
+    const trimmed = line.trim();
+    if (!trimmed) {
+      flushBullets();
+      return;
+    }
+    if (/^##\s+/.test(trimmed)) {
+      flushBullets();
+      elements.push(<h3 key={`h3-${index}`} className="mt-5 text-base font-bold text-text-primary first:mt-0">{renderInline(trimmed.replace(/^##\s+/, ''))}</h3>);
+      return;
+    }
+    if (/^#\s+/.test(trimmed)) {
+      flushBullets();
+      elements.push(<h2 key={`h2-${index}`} className="mt-5 text-lg font-bold text-text-primary first:mt-0">{renderInline(trimmed.replace(/^#\s+/, ''))}</h2>);
+      return;
+    }
+    if (/^[-*•]\s+/.test(trimmed)) {
+      bullets.push(trimmed.replace(/^[-*•]\s+/, ''));
+      return;
+    }
+    flushBullets();
+    elements.push(<p key={`p-${index}`} className="text-sm leading-6 text-text-secondary">{renderInline(trimmed)}</p>);
+  });
+
+  flushBullets();
+  return <div className="space-y-1">{elements}</div>;
+}
+
+function mapCategoryToBackendTopic(category: string): 'safety' | 'health' | 'environment' | 'emergency' | 'general' {
+  switch (category) {
+    case 'chemical':
+    case 'heat_stress':
+    case 'ergonomics':
+      return 'health';
+    case 'fire_safety':
+      return 'emergency';
+    default:
+      return 'general';
+  }
 }
 
 // Mock past talks for records
@@ -141,6 +215,8 @@ export const ToolboxTalks: React.FC = () => {
   // ── Real API Data ────────────────────────────────────────────────────────
   const { data: backendTalks } = useToolboxTalks();
   const createTalkMutation = useCreateToolboxTalk();
+  const attendTalkMutation = useAttendToolboxTalk();
+  const generateTalkMutation = useGenerateToolboxTalk();
 
   // Merge backend talks with mock data
   useEffect(() => {
@@ -173,82 +249,50 @@ export const ToolboxTalks: React.FC = () => {
   const [signerName, setSignerName] = useState('');
   const [signerId, setSignerId] = useState('');
 
+  const totalAttendees = pastTalks.reduce((sum, talk) => sum + talk.attendees.length, 0);
+  const completedTalks = pastTalks.filter(talk => talk.status === 'completed').length;
+  const availableTopics = INDUSTRY_TOPICS[selectedIndustry] ?? [];
+
+  useEffect(() => {
+    setSelectedTopic('');
+  }, [selectedIndustry]);
+
   const generateAIToolboxTalk = async () => {
     setIsGenerating(true);
-    
-    // Simulate AI generation
-    await new Promise(resolve => setTimeout(resolve, 2500));
-    
-    const topic = customTopic || selectedTopic || 'Daily Safety Awareness';
-    const newTalk: ToolboxTalk = {
-      id: `TBT-${new Date().getFullYear()}-${String(pastTalks.length + 1).padStart(3, '0')}`,
-      date: new Date().toISOString().split('T')[0],
-      time: new Date().toTimeString().slice(0, 5),
-      topic: topic,
-      category: selectedCategory || 'general_safety',
-      content: generateTalkContent(topic, selectedIndustry),
-      keyPoints: generateKeyPoints(topic),
-      safetyTips: generateSafetyTips(topic),
-      discussionQuestions: generateDiscussionQuestions(topic),
-      presenter: '',
-      location: '',
-      department: '',
-      industry: selectedIndustry,
-      duration: 15,
-      attendees: [],
-      notes: '',
-      status: 'draft',
-    };
-    
-    setCurrentTalk(newTalk);
-    setIsGenerating(false);
-  };
+    try {
+      const topic = customTopic.trim() || selectedTopic || 'Daily Safety Awareness';
+      const generated = await generateTalkMutation.mutate({
+        industry: selectedIndustry,
+        category: selectedCategory || 'general_safety',
+        topic,
+      });
 
-  const generateTalkContent = (topic: string, industry: string): string => {
-    return `**Today's Safety Focus: ${topic}**
+      if (!generated) return;
 
-Good morning team! Today we're discussing ${topic.toLowerCase()}, an essential aspect of our daily safety program.
-
-**Why This Matters:**
-Every year, thousands of workplace incidents occur related to ${topic.toLowerCase()}. By understanding the hazards and following proper procedures, we can prevent injuries and protect ourselves and our coworkers.
-
-**Industry Context (${industry}):**
-In our ${industry} environment, ${topic.toLowerCase()} is particularly important due to the specific hazards we encounter daily. Let's review the key points that apply to our work.
-
-**Regulatory Requirements:**
-Remember, OSHA requires employers to provide a safe workplace. Compliance with safety procedures isn't just a rule—it's the law and it protects you.
-
-**Your Role:**
-Every team member has a responsibility to identify hazards, follow procedures, and speak up when something doesn't seem safe. If you see something, say something!`;
-  };
-
-  const generateKeyPoints = (topic: string): string[] => {
-    const basePoints = [
-      `Always assess ${topic.toLowerCase()} hazards before starting work`,
-      'Follow established procedures and SOPs',
-      'Use required PPE correctly',
-      'Report any unsafe conditions immediately',
-      'Participate in safety training and drills',
-    ];
-    return basePoints.slice(0, 4);
-  };
-
-  const generateSafetyTips = (topic: string): string[] => {
-    return [
-      'Take a moment to think before you act',
-      'Ask questions if you\'re unsure about any procedure',
-      'Look out for your coworkers',
-      'Report near misses—they help prevent real incidents',
-    ];
-  };
-
-  const generateDiscussionQuestions = (topic: string): string[] => {
-    return [
-      `What ${topic.toLowerCase()} hazards do you encounter in your work area?`,
-      'Have you witnessed any near misses related to this topic?',
-      'What additional training or resources would help you work more safely?',
-      'How can we improve our safety procedures?',
-    ];
+      setCurrentTalk({
+        id: `TBT-${new Date().getFullYear()}-${String(pastTalks.length + 1).padStart(3, '0')}`,
+        date: new Date().toISOString().split('T')[0],
+        time: new Date().toTimeString().slice(0, 5),
+        topic: generated.topic,
+        category: generated.category || selectedCategory || 'general_safety',
+        content: generated.content,
+        keyPoints: generated.keyPoints,
+        safetyTips: generated.safetyTips,
+        discussionQuestions: generated.discussionQuestions,
+        presenter: '',
+        location: '',
+        department: '',
+        industry: generated.industry,
+        duration: 15,
+        attendees: [],
+        notes: '',
+        status: 'draft',
+        aiSource: generated.source,
+        aiModel: generated.model,
+      });
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const addAttendee = () => {
@@ -283,26 +327,40 @@ Every team member has a responsibility to identify hazards, follow procedures, a
   const completeTalk = async () => {
     if (!currentTalk) return;
     const completedTalk = { ...currentTalk, status: 'completed' as const };
-    setPastTalks([completedTalk, ...pastTalks]);
-    // Persist to backend
+
     try {
-      await createTalkMutation.mutate({
-        topic: completedTalk.topic,
-        category: completedTalk.category,
-        content: completedTalk.content,
-        presenter: completedTalk.presenter,
+      const created = await createTalkMutation.mutate({
+        title: completedTalk.topic,
+        topic: mapCategoryToBackendTopic(completedTalk.category),
+        description: completedTalk.content,
+        conductor: completedTalk.presenter,
+        conductedDate: new Date(`${completedTalk.date}T${completedTalk.time}`).getTime(),
         location: completedTalk.location,
         department: completedTalk.department,
-        industry: completedTalk.industry,
         duration: completedTalk.duration,
-        scheduledDate: `${completedTalk.date}T${completedTalk.time}`,
         keyPoints: completedTalk.keyPoints,
-        safetyTips: completedTalk.safetyTips,
-        attendeeCount: completedTalk.attendees.length,
+        attachments: [],
+        status: 'completed',
       });
+
+      if (created?.id && completedTalk.attendees.length > 0) {
+        await attendTalkMutation.mutate({
+          id: Number(created.id),
+          data: {
+            attendees: completedTalk.attendees.map(attendee => ({
+              employeeName: attendee.name,
+              employeeId: attendee.employeeId,
+              department: completedTalk.department,
+              signature: true,
+            })),
+          },
+        });
+      }
     } catch {
-      // ignore - local state already updated
+      // Local completion stays visible even if persistence fails.
     }
+
+    setPastTalks([completedTalk, ...pastTalks]);
     setCurrentTalk(null);
     setActiveTab('records');
   };
@@ -314,27 +372,27 @@ Every team member has a responsibility to identify hazards, follow procedures, a
   ];
 
   return (
-    <div className="min-h-screen pb-24 bg-gradient-to-br from-surface-50 to-surface-100 dark:from-surface-900 dark:to-surface-950">
+    <div className="ai-purple-theme min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.08),transparent_28%),radial-gradient(circle_at_top_right,rgba(14,165,233,0.06),transparent_24%),linear-gradient(180deg,var(--surface-base),var(--surface-sunken))] pb-24">
 
       
       {/* Header */}
-      <header className="bg-white dark:bg-surface-800 border-b border-surface-200 dark:border-surface-700 sticky top-[72px] z-40">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+      <header className="sticky top-[var(--nav-height)] z-40 border-b border-surface-border bg-surface-raised/90 backdrop-blur-xl">
+        <div className="mx-auto max-w-[1520px] px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => navigate(-1)}
-                className="p-2 rounded-xl hover:bg-surface-100 dark:hover:bg-surface-700 transition-colors"
+                className="rounded-xl p-2 transition-colors hover:bg-surface-overlay"
               >
-                <ArrowLeft className="w-5 h-5 text-surface-600 dark:text-surface-300" />
+                <ArrowLeft className="h-5 w-5 text-text-secondary" />
               </button>
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg">
-                  <BookOpen className="w-6 h-6 text-white" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white shadow-soft">
+                  <BookOpen className="h-6 w-6" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-brand-900 dark:text-white">AI Toolbox Talks</h1>
-                  <p className="text-sm text-surface-500 dark:text-surface-400">Daily Safety Meetings with Sign-Off</p>
+                  <h1 className="text-xl font-bold text-text-primary">AI Toolbox Talks</h1>
+                  <p className="text-sm text-text-muted">Daily Safety Meetings with Sign-Off</p>
                 </div>
               </div>
             </div>
@@ -343,8 +401,8 @@ Every team member has a responsibility to identify hazards, follow procedures, a
       </header>
 
       {/* Tab Navigation */}
-      <div className="bg-white dark:bg-surface-800 border-b border-surface-200 dark:border-surface-700">
-        <div className="max-w-7xl mx-auto px-4">
+      <div className="border-b border-surface-border bg-surface-raised/95 backdrop-blur-md">
+        <div className="mx-auto max-w-[1520px] px-4 sm:px-6 lg:px-8">
           <div className="flex gap-1 overflow-x-auto py-2">
             {tabs.map(tab => (
               <button
@@ -352,8 +410,8 @@ Every team member has a responsibility to identify hazards, follow procedures, a
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm whitespace-nowrap transition-all ${
                   activeTab === tab.id
-                    ? 'bg-emerald-500 text-white shadow-md'
-                    : 'text-surface-600 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-700'
+                    ? 'bg-primary text-white shadow-soft'
+                    : 'text-text-secondary hover:bg-surface-overlay'
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -365,7 +423,36 @@ Every team member has a responsibility to identify hazards, follow procedures, a
       </div>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-6 pb-8">
+      <main className="mx-auto max-w-[1520px] px-4 py-6 pb-8 sm:px-6 lg:px-8">
+        <section className="mb-6 grid gap-4 xl:grid-cols-[1.35fr_0.85fr]">
+          <div className="rounded-[28px] border border-surface-border bg-surface-raised p-6 shadow-card">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+              AI safety briefing workspace
+            </div>
+            <h2 className="mt-3 text-2xl font-bold text-text-primary">Generate, review, and close toolbox talks in one focused workflow.</h2>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-text-secondary">
+              The generator now runs through the backend OpenRouter flow, then the same page carries the talk through records and attendance without the old disconnected layout.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3 xl:grid-cols-1">
+            <div className="rounded-[24px] border border-surface-border bg-surface-raised p-5 shadow-soft">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-muted">Talk library</p>
+              <p className="mt-2 text-3xl font-bold text-text-primary">{pastTalks.length}</p>
+              <p className="mt-1 text-sm text-text-secondary">Total talks available</p>
+            </div>
+            <div className="rounded-[24px] border border-surface-border bg-surface-raised p-5 shadow-soft">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-muted">Completed</p>
+              <p className="mt-2 text-3xl font-bold text-text-primary">{completedTalks}</p>
+              <p className="mt-1 text-sm text-text-secondary">Finished briefings</p>
+            </div>
+            <div className="rounded-[24px] border border-surface-border bg-surface-raised p-5 shadow-soft">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-muted">Sign-offs</p>
+              <p className="mt-2 text-3xl font-bold text-text-primary">{totalAttendees}</p>
+              <p className="mt-1 text-sm text-text-secondary">Recorded attendees</p>
+            </div>
+          </div>
+        </section>
+
         <AnimatePresence mode="wait">
           {/* Generate Tab */}
           {activeTab === 'generate' && (
@@ -377,108 +464,144 @@ Every team member has a responsibility to identify hazards, follow procedures, a
               className="space-y-6"
             >
               {/* AI Generator Card */}
-              <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 shadow-xl text-white">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center">
-                    <Brain className="w-6 h-6" />
+              <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
+                <div className="rounded-[28px] border border-surface-border bg-surface-raised p-6 shadow-card">
+                  <div className="mb-6 flex items-center gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white shadow-soft">
+                      <Brain className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-text-primary">AI-Powered Toolbox Talk Generator</h3>
+                      <p className="text-sm text-text-secondary">Generate supervisor-ready content through the backend OpenRouter flow.</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-lg">AI-Powered Toolbox Talk Generator</h3>
-                    <p className="text-emerald-100 text-sm">Generate engaging safety content in seconds</p>
+
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="sm:col-span-2">
+                      <label className="mb-2 block text-sm font-medium text-text-secondary">Industry</label>
+                      <select
+                        value={selectedIndustry}
+                        onChange={e => setSelectedIndustry(e.target.value)}
+                        className="w-full rounded-2xl border border-surface-border bg-surface-sunken px-4 py-3 text-text-primary focus:ring-2 focus:ring-primary/30"
+                      >
+                        {Object.keys(INDUSTRY_TOPICS).map(ind => (
+                          <option key={ind} value={ind}>{ind}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-text-secondary">Safety Category</label>
+                      <select
+                        value={selectedCategory}
+                        onChange={e => setSelectedCategory(e.target.value)}
+                        className="w-full rounded-2xl border border-surface-border bg-surface-sunken px-4 py-3 text-text-primary focus:ring-2 focus:ring-primary/30"
+                      >
+                        <option value="">Auto-select from topic</option>
+                        {TALK_CATEGORIES.map(category => (
+                          <option key={category.id} value={category.id}>{category.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-text-secondary">Suggested Topic</label>
+                      <select
+                        value={selectedTopic}
+                        onChange={e => { setSelectedTopic(e.target.value); setCustomTopic(''); }}
+                        className="w-full rounded-2xl border border-surface-border bg-surface-sunken px-4 py-3 text-text-primary focus:ring-2 focus:ring-primary/30"
+                      >
+                        <option value="">Select a topic...</option>
+                        {availableTopics.map(topic => (
+                          <option key={topic} value={topic}>{topic}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label className="mb-2 block text-sm font-medium text-text-secondary">Custom Topic</label>
+                      <input
+                        type="text"
+                        value={customTopic}
+                        onChange={e => { setCustomTopic(e.target.value); setSelectedTopic(''); }}
+                        placeholder="Or enter a site-specific toolbox topic..."
+                        className="w-full rounded-2xl border border-surface-border bg-surface-sunken px-4 py-3 text-text-primary placeholder:text-text-muted focus:ring-2 focus:ring-primary/30"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={generateAIToolboxTalk}
+                    disabled={isGenerating || (!selectedTopic && !customTopic.trim())}
+                    className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3 font-semibold text-white transition-colors hover:bg-primary/90 disabled:opacity-50"
+                  >
+                    {isGenerating ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-5 h-5" />
+                        Generate Toolbox Talk
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                <div className="rounded-[28px] border border-surface-border bg-surface-raised p-6 shadow-card">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-muted">Generator flow</p>
+                  <div className="mt-4 space-y-3">
+                    {[
+                      'Select an industry and topic, or enter a custom job-specific subject.',
+                      'AI returns a ready-to-use talk track, key points, safety tips, and crew discussion prompts.',
+                      'Review the draft, add presenter details, collect attendance, then close the talk into records.',
+                    ].map((item, index) => (
+                      <div key={item} className="flex gap-3 rounded-2xl bg-surface-sunken p-4">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">{index + 1}</div>
+                        <p className="text-sm leading-6 text-text-secondary">{item}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
-
-                {/* Industry Selection */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-emerald-100 mb-2">Industry</label>
-                  <select
-                    value={selectedIndustry}
-                    onChange={e => setSelectedIndustry(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white placeholder-white/60 focus:ring-2 focus:ring-white/50"
-                  >
-                    {Object.keys(INDUSTRY_TOPICS).map(ind => (
-                      <option key={ind} value={ind} className="text-surface-900">{ind}</option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Topic Selection */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-emerald-100 mb-2">Select Topic or Enter Custom</label>
-                  <select
-                    value={selectedTopic}
-                    onChange={e => { setSelectedTopic(e.target.value); setCustomTopic(''); }}
-                    className="w-full px-4 py-2.5 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white placeholder-white/60 focus:ring-2 focus:ring-white/50 mb-2"
-                  >
-                    <option value="" className="text-surface-900">Select a topic...</option>
-                    {INDUSTRY_TOPICS[selectedIndustry]?.map(topic => (
-                      <option key={topic} value={topic} className="text-surface-900">{topic}</option>
-                    ))}
-                  </select>
-                  <input
-                    type="text"
-                    value={customTopic}
-                    onChange={e => { setCustomTopic(e.target.value); setSelectedTopic(''); }}
-                    placeholder="Or enter custom topic..."
-                    className="w-full px-4 py-2.5 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white placeholder-white/60 focus:ring-2 focus:ring-white/50"
-                  />
-                </div>
-
-                <button
-                  onClick={generateAIToolboxTalk}
-                  disabled={isGenerating}
-                  className="w-full py-3 bg-white text-emerald-600 font-semibold rounded-xl hover:bg-emerald-50 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
-                >
-                  {isGenerating ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      Generating...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="w-5 h-5" />
-                      Generate Toolbox Talk
-                    </>
-                  )}
-                </button>
               </div>
 
               {/* Generated Content Preview */}
               {currentTalk && (
-                <div className="bg-white dark:bg-surface-800 rounded-2xl p-6 shadow-soft border border-surface-100 dark:border-surface-700">
+                <div className="rounded-[28px] border border-surface-border bg-surface-raised p-6 shadow-card">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-                        <FileText className="w-5 h-5 text-emerald-600" />
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                        <FileText className="w-5 h-5 text-primary" />
                       </div>
                       <div>
-                        <h3 className="font-bold text-lg text-brand-900 dark:text-white">{currentTalk.topic}</h3>
-                        <p className="text-sm text-surface-500">{currentTalk.id} • {currentTalk.date}</p>
+                        <h3 className="text-lg font-bold text-text-primary">{currentTalk.topic}</h3>
+                        <p className="text-sm text-text-muted">{currentTalk.id} • {currentTalk.date}</p>
                       </div>
                     </div>
-                    <button
-                      onClick={generateAIToolboxTalk}
-                      className="p-2 rounded-xl hover:bg-surface-100 dark:hover:bg-surface-700 transition-colors"
-                      title="Regenerate"
-                    >
-                      <RefreshCw className="w-5 h-5 text-surface-500" />
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                        {currentTalk.aiSource === 'fallback' ? 'Fallback mode' : 'OpenRouter AI'}
+                      </span>
+                      <button
+                        onClick={generateAIToolboxTalk}
+                        className="rounded-xl p-2 transition-colors hover:bg-surface-overlay"
+                        title="Regenerate"
+                      >
+                        <RefreshCw className="w-5 h-5 text-surface-500" />
+                      </button>
+                    </div>
                   </div>
 
-                  {/* Content */}
-                  <div className="prose prose-sm dark:prose-invert max-w-none mb-6">
-                    <div className="whitespace-pre-wrap text-surface-700 dark:text-surface-300">{currentTalk.content}</div>
+                  <div className="mb-6 rounded-2xl border border-surface-border bg-surface-sunken p-5">
+                    {renderMarkdown(currentTalk.content)}
                   </div>
 
-                  {/* Key Points */}
                   <div className="mb-4">
-                    <h4 className="font-semibold text-brand-900 dark:text-white mb-2 flex items-center gap-2">
-                      <Target className="w-4 h-4 text-emerald-500" /> Key Points
+                    <h4 className="mb-2 flex items-center gap-2 font-semibold text-text-primary">
+                      <Target className="w-4 h-4 text-primary" /> Key Points
                     </h4>
                     <ul className="space-y-2">
                       {currentTalk.keyPoints.map((point, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-sm text-surface-600 dark:text-surface-400">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                        <li key={idx} className="flex items-start gap-2 text-sm text-text-secondary">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
                           {point}
                         </li>
                       ))}
@@ -487,12 +610,12 @@ Every team member has a responsibility to identify hazards, follow procedures, a
 
                   {/* Safety Tips */}
                   <div className="mb-4">
-                    <h4 className="font-semibold text-brand-900 dark:text-white mb-2 flex items-center gap-2">
+                    <h4 className="mb-2 flex items-center gap-2 font-semibold text-text-primary">
                       <Star className="w-4 h-4 text-amber-500" /> Safety Tips
                     </h4>
                     <ul className="space-y-2">
                       {currentTalk.safetyTips.map((tip, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-sm text-surface-600 dark:text-surface-400">
+                        <li key={idx} className="flex items-start gap-2 text-sm text-text-secondary">
                           <Star className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
                           {tip}
                         </li>
@@ -502,70 +625,67 @@ Every team member has a responsibility to identify hazards, follow procedures, a
 
                   {/* Discussion Questions */}
                   <div className="mb-6">
-                    <h4 className="font-semibold text-brand-900 dark:text-white mb-2 flex items-center gap-2">
+                    <h4 className="mb-2 flex items-center gap-2 font-semibold text-text-primary">
                       <Users className="w-4 h-4 text-blue-500" /> Discussion Questions
                     </h4>
                     <ul className="space-y-2">
                       {currentTalk.discussionQuestions.map((q, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-sm text-surface-600 dark:text-surface-400">
-                          <span className="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold flex-shrink-0">{idx + 1}</span>
+                        <li key={idx} className="flex items-start gap-2 text-sm text-text-secondary">
+                          <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">{idx + 1}</span>
                           {q}
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  {/* Presenter & Location */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div>
-                      <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">Presenter</label>
+                      <label className="mb-1.5 block text-sm font-medium text-text-secondary">Presenter</label>
                       <input
                         type="text"
                         value={currentTalk.presenter}
                         onChange={e => setCurrentTalk({ ...currentTalk, presenter: e.target.value })}
-                        className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 bg-white dark:bg-surface-700 text-surface-900 dark:text-white"
+                        className="w-full rounded-xl border border-surface-border bg-surface-sunken px-4 py-2.5 text-text-primary"
                         placeholder="Name"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">Location</label>
+                      <label className="mb-1.5 block text-sm font-medium text-text-secondary">Location</label>
                       <input
                         type="text"
                         value={currentTalk.location}
                         onChange={e => setCurrentTalk({ ...currentTalk, location: e.target.value })}
-                        className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 bg-white dark:bg-surface-700 text-surface-900 dark:text-white"
+                        className="w-full rounded-xl border border-surface-border bg-surface-sunken px-4 py-2.5 text-text-primary"
                         placeholder="Meeting location"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">Department</label>
+                      <label className="mb-1.5 block text-sm font-medium text-text-secondary">Department</label>
                       <input
                         type="text"
                         value={currentTalk.department}
                         onChange={e => setCurrentTalk({ ...currentTalk, department: e.target.value })}
-                        className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 bg-white dark:bg-surface-700 text-surface-900 dark:text-white"
+                        className="w-full rounded-xl border border-surface-border bg-surface-sunken px-4 py-2.5 text-text-primary"
                         placeholder="Dept/Team"
                       />
                     </div>
                   </div>
 
-                  {/* Notes */}
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">Meeting Notes</label>
+                    <label className="mb-1.5 block text-sm font-medium text-text-secondary">Meeting Notes</label>
                     <textarea
                       value={currentTalk.notes}
                       onChange={e => setCurrentTalk({ ...currentTalk, notes: e.target.value })}
                       rows={3}
-                      className="w-full px-4 py-3 rounded-xl border border-surface-200 dark:border-surface-600 bg-white dark:bg-surface-700 text-surface-900 dark:text-white resize-none"
+                      className="w-full resize-none rounded-xl border border-surface-border bg-surface-sunken px-4 py-3 text-text-primary"
                       placeholder="Any observations, follow-ups, or action items..."
                     />
                   </div>
 
-                  {/* Action Buttons */}
                   <div className="flex gap-3">
                     <button
                       onClick={() => setActiveTab('attendance')}
-                      className="flex-1 py-3 px-4 rounded-xl bg-blue-500 text-white font-medium hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
+                      className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 font-medium text-white transition-colors hover:bg-primary/90"
                     >
                       <ClipboardList className="w-5 h-5" />
                       Add Attendees
@@ -573,7 +693,7 @@ Every team member has a responsibility to identify hazards, follow procedures, a
                     <button
                       onClick={completeTalk}
                       disabled={currentTalk.attendees.length === 0}
-                      className="flex-1 py-3 px-4 rounded-xl bg-emerald-500 text-white font-medium hover:bg-emerald-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 font-medium text-white transition-colors hover:bg-primary/90 disabled:opacity-50"
                     >
                       <CheckCircle2 className="w-5 h-5" />
                       Complete & Save
@@ -594,10 +714,25 @@ Every team member has a responsibility to identify hazards, follow procedures, a
               className="space-y-4"
             >
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-brand-900 dark:text-white">Toolbox Talk Records</h2>
-                <span className="px-3 py-1.5 bg-surface-100 dark:bg-surface-700 rounded-lg text-sm text-surface-600 dark:text-surface-400">
+                <h2 className="text-lg font-bold text-text-primary">Toolbox Talk Records</h2>
+                <span className="rounded-lg bg-surface-sunken px-3 py-1.5 text-sm text-text-secondary">
                   {pastTalks.length} Records
                 </span>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-3">
+                <div className="rounded-2xl border border-surface-border bg-surface-raised p-4 shadow-soft">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-muted">Completed talks</p>
+                  <p className="mt-2 text-2xl font-bold text-text-primary">{completedTalks}</p>
+                </div>
+                <div className="rounded-2xl border border-surface-border bg-surface-raised p-4 shadow-soft">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-muted">Total attendees</p>
+                  <p className="mt-2 text-2xl font-bold text-text-primary">{totalAttendees}</p>
+                </div>
+                <div className="rounded-2xl border border-surface-border bg-surface-raised p-4 shadow-soft">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-muted">Drafts in progress</p>
+                  <p className="mt-2 text-2xl font-bold text-text-primary">{pastTalks.filter(talk => talk.status !== 'completed').length + (currentTalk ? 1 : 0)}</p>
+                </div>
               </div>
 
               {pastTalks.map((talk, idx) => (
@@ -606,15 +741,15 @@ Every team member has a responsibility to identify hazards, follow procedures, a
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.05 }}
-                  className="bg-white dark:bg-surface-800 rounded-2xl p-5 shadow-soft border border-surface-100 dark:border-surface-700"
+                  className="rounded-[24px] border border-surface-border bg-surface-raised p-5 shadow-card"
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-                        <FileText className="w-5 h-5 text-emerald-600" />
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                        <FileText className="w-5 h-5 text-primary" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-brand-900 dark:text-white">{talk.topic}</h3>
+                        <h3 className="font-semibold text-text-primary">{talk.topic}</h3>
                         <p className="text-sm text-surface-500">{talk.id}</p>
                       </div>
                     </div>
@@ -628,30 +763,30 @@ Every team member has a responsibility to identify hazards, follow procedures, a
                   </div>
 
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                    <div className="flex items-center gap-2 text-surface-500 dark:text-surface-400">
+                    <div className="flex items-center gap-2 text-text-muted">
                       <Calendar className="w-4 h-4" />
                       {talk.date}
                     </div>
-                    <div className="flex items-center gap-2 text-surface-500 dark:text-surface-400">
+                    <div className="flex items-center gap-2 text-text-muted">
                       <User className="w-4 h-4" />
                       {talk.presenter || 'N/A'}
                     </div>
-                    <div className="flex items-center gap-2 text-surface-500 dark:text-surface-400">
+                    <div className="flex items-center gap-2 text-text-muted">
                       <Building2 className="w-4 h-4" />
                       {talk.location || 'N/A'}
                     </div>
-                    <div className="flex items-center gap-2 text-surface-500 dark:text-surface-400">
+                    <div className="flex items-center gap-2 text-text-muted">
                       <Users className="w-4 h-4" />
                       {talk.attendees.length} attendees
                     </div>
                   </div>
 
                   {talk.attendees.length > 0 && (
-                    <div className="mt-4 pt-4 border-t border-surface-100 dark:border-surface-700">
-                      <p className="text-xs font-medium text-surface-500 dark:text-surface-400 mb-2">Signed Attendees:</p>
+                    <div className="mt-4 border-t border-surface-border pt-4">
+                      <p className="mb-2 text-xs font-medium text-text-muted">Signed Attendees:</p>
                       <div className="flex flex-wrap gap-2">
                         {talk.attendees.map(att => (
-                          <span key={att.id} className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 rounded-full text-xs">
+                          <span key={att.id} className="inline-flex items-center gap-1 rounded-full bg-success/10 px-2.5 py-1 text-xs text-success">
                             <Check className="w-3 h-3" />
                             {att.name}
                           </span>
@@ -675,15 +810,15 @@ Every team member has a responsibility to identify hazards, follow procedures, a
             >
               {currentTalk ? (
                 <>
-                  <div className="bg-white dark:bg-surface-800 rounded-2xl p-6 shadow-soft border border-surface-100 dark:border-surface-700">
+                  <div className="rounded-[28px] border border-surface-border bg-surface-raised p-6 shadow-card">
                     <div className="flex items-center justify-between mb-4">
                       <div>
-                        <h3 className="font-bold text-lg text-brand-900 dark:text-white">Attendance Sign-Off</h3>
-                        <p className="text-sm text-surface-500">{currentTalk.topic} • {currentTalk.date}</p>
+                        <h3 className="text-lg font-bold text-text-primary">Attendance Sign-Off</h3>
+                        <p className="text-sm text-text-muted">{currentTalk.topic} • {currentTalk.date}</p>
                       </div>
                       <button
                         onClick={() => setShowSignModal(true)}
-                        className="px-4 py-2 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 transition-colors flex items-center gap-2"
+                        className="flex items-center gap-2 rounded-2xl bg-primary px-4 py-2 text-white transition-colors hover:bg-primary/90"
                       >
                         <Plus className="w-4 h-4" />
                         Add Attendee
@@ -694,26 +829,26 @@ Every team member has a responsibility to identify hazards, follow procedures, a
                     <div className="space-y-3">
                       {currentTalk.attendees.length > 0 ? (
                         currentTalk.attendees.map((att, idx) => (
-                          <div key={att.id} className="flex items-center justify-between p-4 bg-surface-50 dark:bg-surface-700 rounded-xl">
+                          <div key={att.id} className="flex items-center justify-between rounded-2xl bg-surface-sunken p-4">
                             <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+                              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-success/10">
                                 <CheckCircle2 className="w-5 h-5 text-emerald-600" />
                               </div>
                               <div>
-                                <p className="font-medium text-surface-900 dark:text-white">{att.name}</p>
-                                <p className="text-xs text-surface-500">ID: {att.employeeId} • Signed: {new Date(att.signedAt!).toLocaleTimeString()}</p>
+                                <p className="font-medium text-text-primary">{att.name}</p>
+                                <p className="text-xs text-text-muted">ID: {att.employeeId} • Signed: {new Date(att.signedAt!).toLocaleTimeString()}</p>
                               </div>
                             </div>
                             <button
                               onClick={() => removeAttendee(att.id)}
-                              className="p-2 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg text-red-500 transition-colors"
+                              className="rounded-lg p-2 text-danger transition-colors hover:bg-danger/10"
                             >
                               <X className="w-4 h-4" />
                             </button>
                           </div>
                         ))
                       ) : (
-                        <div className="text-center py-12 text-surface-400 dark:text-surface-500">
+                        <div className="py-12 text-center text-text-muted">
                           <Users className="w-12 h-12 mx-auto mb-3 opacity-50" />
                           <p>No attendees signed yet</p>
                           <p className="text-sm">Click "Add Attendee" to record sign-offs</p>
@@ -726,20 +861,20 @@ Every team member has a responsibility to identify hazards, follow procedures, a
                   <button
                     onClick={completeTalk}
                     disabled={currentTalk.attendees.length === 0}
-                    className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-teal-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg"
+                    className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 font-semibold text-white shadow-card transition-all hover:bg-primary/90 disabled:opacity-50"
                   >
                     <CheckCircle2 className="w-5 h-5" />
                     Complete Toolbox Talk ({currentTalk.attendees.length} signatures)
                   </button>
                 </>
               ) : (
-                <div className="bg-white dark:bg-surface-800 rounded-2xl p-12 text-center shadow-soft border border-surface-100 dark:border-surface-700">
-                  <BookOpen className="w-16 h-16 mx-auto text-surface-300 dark:text-surface-600 mb-4" />
-                  <h3 className="text-xl font-bold text-brand-900 dark:text-white mb-2">No Active Toolbox Talk</h3>
-                  <p className="text-surface-500 dark:text-surface-400 mb-6">Generate a toolbox talk first to start collecting sign-offs</p>
+                <div className="rounded-[28px] border border-surface-border bg-surface-raised p-12 text-center shadow-card">
+                  <BookOpen className="mx-auto mb-4 h-16 w-16 text-surface-border" />
+                  <h3 className="mb-2 text-xl font-bold text-text-primary">No Active Toolbox Talk</h3>
+                  <p className="mb-6 text-text-muted">Generate a toolbox talk first to start collecting sign-offs</p>
                   <button
                     onClick={() => setActiveTab('generate')}
-                    className="px-6 py-3 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 transition-colors"
+                    className="rounded-2xl bg-primary px-6 py-3 text-white transition-colors hover:bg-primary/90"
                   >
                     Generate Toolbox Talk
                   </button>
@@ -764,28 +899,28 @@ Every team member has a responsibility to identify hazards, follow procedures, a
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white dark:bg-surface-800 rounded-2xl p-6 max-w-md w-full shadow-2xl"
+              className="w-full max-w-md rounded-2xl border border-surface-border bg-surface-raised p-6 shadow-modal"
               onClick={e => e.stopPropagation()}
             >
-              <h3 className="text-xl font-bold text-brand-900 dark:text-white mb-4">Sign Attendance</h3>
+              <h3 className="mb-4 text-xl font-bold text-text-primary">Sign Attendance</h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">Full Name *</label>
+                  <label className="mb-1.5 block text-sm font-medium text-text-secondary">Full Name *</label>
                   <input
                     type="text"
                     value={signerName}
                     onChange={e => setSignerName(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 bg-white dark:bg-surface-700 text-surface-900 dark:text-white"
+                    className="w-full rounded-xl border border-surface-border bg-surface-sunken px-4 py-2.5 text-text-primary"
                     placeholder="Enter your full name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">Employee ID</label>
+                  <label className="mb-1.5 block text-sm font-medium text-text-secondary">Employee ID</label>
                   <input
                     type="text"
                     value={signerId}
                     onChange={e => setSignerId(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-surface-200 dark:border-surface-600 bg-white dark:bg-surface-700 text-surface-900 dark:text-white"
+                    className="w-full rounded-xl border border-surface-border bg-surface-sunken px-4 py-2.5 text-text-primary"
                     placeholder="Optional"
                   />
                 </div>
@@ -793,14 +928,14 @@ Every team member has a responsibility to identify hazards, follow procedures, a
               <div className="flex gap-3 mt-6">
                 <button
                   onClick={() => setShowSignModal(false)}
-                  className="flex-1 py-2.5 border border-surface-200 dark:border-surface-600 rounded-xl text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-700 transition-colors"
+                  className="flex-1 rounded-xl border border-surface-border py-2.5 text-text-secondary transition-colors hover:bg-surface-overlay"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={addAttendee}
                   disabled={!signerName.trim()}
-                  className="flex-1 py-2.5 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 transition-colors disabled:opacity-50"
+                  className="flex-1 rounded-xl bg-primary py-2.5 text-white transition-colors hover:bg-primary/90 disabled:opacity-50"
                 >
                   Sign & Confirm
                 </button>

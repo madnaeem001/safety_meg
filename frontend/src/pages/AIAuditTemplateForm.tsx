@@ -759,39 +759,39 @@ export const AIAuditTemplateForm: React.FC = () => {
     : allTemplates;
 
   return (
-    <div className="min-h-screen bg-surface-950 text-white pb-24 selection:bg-brand-500/30">
+    <div className="ai-purple-theme min-h-screen bg-surface-base text-text-primary pb-24 selection:bg-accent/20">
       {/* HD Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-brand-500/5 blur-[150px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-violet-500/5 blur-[150px] rounded-full" />
+        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent/10 blur-[150px] rounded-full" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/10 blur-[150px] rounded-full" />
       </div>
 
       {/* Header */}
-      <header className="sticky top-[72px] z-40 bg-surface-900/60 backdrop-blur-2xl border-b border-surface-800 shrink-0">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      <header className="sticky top-[72px] z-40 bg-surface-raised/90 backdrop-blur-2xl border-b border-surface-border shrink-0">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
               <button 
                 onClick={() => navigate(-1)}
-                className="p-2 hover:bg-surface-800 rounded-xl text-surface-400 transition-all group"
+                className="p-2 hover:bg-surface-overlay rounded-xl text-text-muted transition-all group"
               >
                 <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
               </button>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-violet-600 flex items-center justify-center shadow-lg shadow-brand-500/20">
-                  <ClipboardCheck className="w-6 h-6 text-white" />
+                <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center shadow-sm">
+                  <ClipboardCheck className="w-6 h-6 text-text-onAccent" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold text-white leading-tight">AI Audit Form</h1>
-                  <p className="text-[11px] text-surface-400 uppercase tracking-widest font-medium">Standard Compliance Intelligence</p>
+                  <h1 className="text-lg font-bold text-text-primary leading-tight">AI Audit Form</h1>
+                  <p className="text-[11px] text-text-muted uppercase tracking-widest font-medium">Standard Compliance Intelligence</p>
                 </div>
               </div>
             </div>
 
             {selectedTemplate && (
-              <div className="hidden md:flex items-center gap-4 px-4 border-l border-surface-800">
+              <div className="hidden md:flex items-center gap-4 px-4 border-l border-surface-border">
                 <div className="text-right">
-                  <p className="text-[10px] text-surface-500 uppercase tracking-widest font-bold mb-1">Compliance Score</p>
+                  <p className="text-[10px] text-text-muted uppercase tracking-widest font-bold mb-1">Compliance Score</p>
                   <p className={`text-lg font-black ${calculateRiskScore > 80 ? 'text-emerald-400' : calculateRiskScore > 50 ? 'text-amber-400' : 'text-red-400'}`}>
                     {calculateRiskScore}%
                   </p>
@@ -805,29 +805,29 @@ export const AIAuditTemplateForm: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 relative z-10">
+      <main className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
         {!selectedTemplate ? (
           <div className="space-y-8">
-            <div className="text-center max-w-2xl mx-auto">
-              <h2 className="text-3xl font-black text-white mb-4">Select Audit Standard</h2>
-              <p className="text-surface-400 mb-2">Choose a standard template or build your own custom audit checklist.</p>
-              <p className="text-xs text-surface-500 mb-4">21 built-in templates covering global safety regulations: OSHA, ISO, EU, MSHA, IMO, IATA, WHO, HACCP, DOT, CSA, AS/NZS, NEBOSH, GCC and more</p>
+            <div className="text-center max-w-3xl mx-auto">
+              <h2 className="text-3xl font-black text-text-primary mb-4">Select Audit Standard</h2>
+              <p className="text-text-muted mb-2">Choose a standard template or build your own custom audit checklist.</p>
+              <p className="text-xs text-text-muted mb-4">21 built-in templates covering global safety regulations: OSHA, ISO, EU, MSHA, IMO, IATA, WHO, HACCP, DOT, CSA, AS/NZS, NEBOSH, GCC and more</p>
               
               {/* Search and Custom Builder buttons */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
-                <div className="relative flex-1 max-w-md">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-500" />
+                <div className="relative flex-1 max-w-xl">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
                   <input
                     type="text"
                     placeholder="Search templates (ISO, OSHA, Cal/OSHA, BSEE, ANSI, NFPA...)"
                     value={searchFilter}
                     onChange={(e) => setSearchFilter(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3 bg-surface-800/50 border border-surface-700 rounded-2xl text-sm text-white placeholder:text-surface-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all"
+                    className="w-full pl-11 pr-4 py-3 bg-surface-sunken border border-surface-border rounded-2xl text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
                   />
                 </div>
                 <button
                   onClick={() => setShowCustomBuilder(true)}
-                  className="px-6 py-3 bg-gradient-to-r from-violet-600 to-brand-500 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:shadow-lg hover:shadow-brand-500/20 transition-all flex items-center gap-2 whitespace-nowrap"
+                  className="px-6 py-3 bg-accent text-text-onAccent rounded-2xl text-xs font-black uppercase tracking-widest shadow-sm transition-all flex items-center gap-2 whitespace-nowrap"
                 >
                   <Plus className="w-4 h-4" />
                   Build Custom Template
@@ -835,12 +835,12 @@ export const AIAuditTemplateForm: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {filteredTemplates.map(template => (
                 <button
                   key={template.id}
                   onClick={() => setSelectedTemplate(template)}
-                  className="group p-8 bg-surface-900/40 border border-surface-800 rounded-[2.5rem] text-left hover:border-brand-500/50 transition-all hover:shadow-2xl hover:shadow-brand-500/5 relative overflow-hidden"
+                  className="group p-8 bg-surface-raised border border-surface-border rounded-[2.5rem] text-left hover:border-accent/30 hover:bg-surface-overlay transition-all shadow-card relative overflow-hidden"
                 >
                   <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
                     {template.standard === 'ISO' ? <Globe className="w-32 h-32" /> : template.standard === 'OSHA' ? <Shield className="w-32 h-32" /> : template.standard === 'ASME' ? <Wrench className="w-32 h-32" /> : template.standard === 'Multi-Standard' ? <ClipboardCheck className="w-32 h-32" /> : template.standard === 'Cal/OSHA' ? <Shield className="w-32 h-32" /> : template.standard === 'BSEE' ? <Globe className="w-32 h-32" /> : template.standard === 'ANSI' ? <Scale className="w-32 h-32" /> : template.standard === 'NFPA' ? <AlertTriangle className="w-32 h-32" /> : template.standard === 'EU' ? <Globe className="w-32 h-32" /> : template.standard === 'MSHA' ? <Mountain className="w-32 h-32" /> : template.standard === 'IMO' ? <Globe className="w-32 h-32" /> : template.standard === 'IATA' ? <Globe className="w-32 h-32" /> : template.standard === 'WHO' ? <Stethoscope className="w-32 h-32" /> : template.standard === 'HACCP' ? <ClipboardCheck className="w-32 h-32" /> : template.standard === 'DOT' ? <Truck className="w-32 h-32" /> : template.standard === 'CSA' ? <Shield className="w-32 h-32" /> : template.standard === 'AS/NZS' ? <Globe className="w-32 h-32" /> : template.standard === 'NEBOSH' ? <HardHat className="w-32 h-32" /> : template.standard === 'GCC' ? <Building2 className="w-32 h-32" /> : template.standard === 'Custom' ? <Sparkles className="w-32 h-32" /> : <Activity className="w-32 h-32" />}
@@ -891,11 +891,11 @@ export const AIAuditTemplateForm: React.FC = () => {
                        template.standard === 'Custom' ? <Sparkles className="w-6 h-6" /> :
                        <Activity className="w-6 h-6" />}
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2">{template.name}</h3>
-                    <p className="text-sm text-surface-400 mb-6 line-clamp-2">{template.description}</p>
-                    <div className="flex items-center gap-2 text-[10px] font-black text-brand-400 uppercase tracking-widest">
+                    <h3 className="text-xl font-bold text-text-primary mb-2">{template.name}</h3>
+                    <p className="text-sm text-text-muted mb-6 line-clamp-2">{template.description}</p>
+                    <div className="flex items-center gap-2 text-[10px] font-black text-accent uppercase tracking-widest">
                       <span>{template.questions.length} Questions</span>
-                      <span className="w-1 h-1 rounded-full bg-surface-700" />
+                      <span className="w-1 h-1 rounded-full bg-surface-border" />
                       <span>v{template.version}</span>
                     </div>
                   </div>
@@ -910,26 +910,26 @@ export const AIAuditTemplateForm: React.FC = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto"
+                  className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary-950/60 backdrop-blur-md overflow-y-auto"
                 >
                   <motion.div
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.9, opacity: 0 }}
-                    className="bg-surface-900 border border-surface-800 rounded-[2.5rem] max-w-3xl w-full p-8 shadow-2xl my-8 max-h-[90vh] overflow-y-auto"
+                    className="bg-surface-raised border border-surface-border rounded-[2.5rem] max-w-3xl w-full p-8 shadow-modal my-8 max-h-[90vh] overflow-y-auto"
                   >
                     <div className="flex items-center justify-between mb-8">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-brand-500 flex items-center justify-center">
-                          <Sparkles className="w-5 h-5 text-white" />
+                        <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+                          <Sparkles className="w-5 h-5 text-text-onAccent" />
                         </div>
                         <div>
-                          <h2 className="text-2xl font-black text-white">Custom Template Builder</h2>
-                          <p className="text-xs text-surface-400">Create your own audit checklist with standard mapping</p>
+                          <h2 className="text-2xl font-black text-text-primary">Custom Template Builder</h2>
+                          <p className="text-xs text-text-muted">Create your own audit checklist with standard mapping</p>
                         </div>
                       </div>
-                      <button onClick={() => setShowCustomBuilder(false)} className="p-2 rounded-lg hover:bg-surface-800 transition-colors">
-                        <X className="w-5 h-5 text-surface-400" />
+                      <button onClick={() => setShowCustomBuilder(false)} className="p-2 rounded-lg hover:bg-surface-overlay transition-colors">
+                        <X className="w-5 h-5 text-text-muted" />
                       </button>
                     </div>
 
@@ -937,21 +937,21 @@ export const AIAuditTemplateForm: React.FC = () => {
                       {/* Template Name & Standard */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label className="text-[10px] font-black text-surface-400 uppercase tracking-widest mb-2 block">Template Name</label>
+                          <label className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-2 block">Template Name</label>
                           <input
                             type="text"
                             value={customTemplateName}
                             onChange={(e) => setCustomTemplateName(e.target.value)}
                             placeholder="e.g., Facility Safety Walkthrough"
-                            className="w-full p-3 bg-surface-800/50 border border-surface-700 rounded-xl text-sm text-white placeholder:text-surface-600 focus:outline-none focus:ring-2 focus:ring-brand-500/30"
+                            className="w-full p-3 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/20"
                           />
                         </div>
                         <div>
-                          <label className="text-[10px] font-black text-surface-400 uppercase tracking-widest mb-2 block">Primary Standard</label>
+                          <label className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-2 block">Primary Standard</label>
                           <select
                             value={customStandard}
                             onChange={(e) => setCustomStandard(e.target.value as any)}
-                            className="w-full p-3 bg-surface-800/50 border border-surface-700 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-500/30"
+                            className="w-full p-3 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/20"
                           >
                             <option value="Custom">Custom</option>
                             <option value="ISO">ISO 45001</option>
@@ -980,10 +980,10 @@ export const AIAuditTemplateForm: React.FC = () => {
 
                       {/* Categories Builder */}
                       <div>
-                        <label className="text-[10px] font-black text-surface-400 uppercase tracking-widest mb-2 block">Categories</label>
+                        <label className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-2 block">Categories</label>
                         <div className="flex gap-2 flex-wrap mb-3">
                           {customCategories.map((cat, i) => (
-                            <span key={i} className="inline-flex items-center gap-1 px-3 py-1 bg-brand-500/20 text-brand-400 rounded-full text-xs font-bold">
+                            <span key={i} className="inline-flex items-center gap-1 px-3 py-1 bg-accent/10 text-accent rounded-full text-xs font-bold border border-accent/20">
                               {cat}
                               <button onClick={() => setCustomCategories(customCategories.filter((_, idx) => idx !== i))}>
                                 <X className="w-3 h-3" />
@@ -998,7 +998,7 @@ export const AIAuditTemplateForm: React.FC = () => {
                             onChange={(e) => setCustomCategoryInput(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddCustomCategory())}
                             placeholder="Add a category (e.g., PPE, Fall Protection)"
-                            className="flex-1 p-3 bg-surface-800/50 border border-surface-700 rounded-xl text-sm text-white placeholder:text-surface-600 focus:outline-none focus:ring-2 focus:ring-brand-500/30"
+                            className="flex-1 p-3 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/20"
                           />
                           <SMButton variant="icon" onClick={handleAddCustomCategory}><Plus className="w-4 h-4" /></SMButton>
                         </div>
@@ -1006,32 +1006,32 @@ export const AIAuditTemplateForm: React.FC = () => {
 
                       {/* Question Builder */}
                       <div>
-                        <label className="text-[10px] font-black text-surface-400 uppercase tracking-widest mb-2 block">Add Questions ({customQuestions.length} added)</label>
-                        <div className="space-y-3 p-4 bg-surface-800/30 rounded-2xl border border-surface-700/50">
+                        <label className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-2 block">Add Questions ({customQuestions.length} added)</label>
+                        <div className="space-y-3 p-4 bg-surface-sunken rounded-2xl border border-surface-border">
                           <textarea
                             value={newQuestionText}
                             onChange={(e) => setNewQuestionText(e.target.value)}
                             placeholder="Enter the audit question..."
                             rows={2}
-                            className="w-full p-3 bg-surface-800/50 border border-surface-700 rounded-xl text-sm text-white placeholder:text-surface-600 focus:outline-none focus:ring-2 focus:ring-brand-500/30 resize-none"
+                            className="w-full p-3 bg-surface-base border border-surface-border rounded-xl text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/20 resize-none"
                           />
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                            <input type="text" value={newQuestionStandard} onChange={(e) => setNewQuestionStandard(e.target.value)} placeholder="Standard (e.g., OSHA)" className="p-2 bg-surface-800/50 border border-surface-700 rounded-lg text-xs text-white placeholder:text-surface-600 focus:outline-none" />
-                            <input type="text" value={newQuestionClause} onChange={(e) => setNewQuestionClause(e.target.value)} placeholder="Clause (e.g., 1910.132)" className="p-2 bg-surface-800/50 border border-surface-700 rounded-lg text-xs text-white placeholder:text-surface-600 focus:outline-none" />
-                            <select value={newQuestionCategory} onChange={(e) => setNewQuestionCategory(e.target.value)} className="p-2 bg-surface-800/50 border border-surface-700 rounded-lg text-xs text-white focus:outline-none">
+                            <input type="text" value={newQuestionStandard} onChange={(e) => setNewQuestionStandard(e.target.value)} placeholder="Standard (e.g., OSHA)" className="p-2 bg-surface-base border border-surface-border rounded-lg text-xs text-text-primary placeholder:text-text-muted focus:outline-none" />
+                            <input type="text" value={newQuestionClause} onChange={(e) => setNewQuestionClause(e.target.value)} placeholder="Clause (e.g., 1910.132)" className="p-2 bg-surface-base border border-surface-border rounded-lg text-xs text-text-primary placeholder:text-text-muted focus:outline-none" />
+                            <select value={newQuestionCategory} onChange={(e) => setNewQuestionCategory(e.target.value)} className="p-2 bg-surface-base border border-surface-border rounded-lg text-xs text-text-primary focus:outline-none">
                               <option value="">Select Category</option>
                               {customCategories.map(c => <option key={c} value={c}>{c}</option>)}
                             </select>
                             <div className="flex items-center gap-2">
-                              <span className="text-[9px] text-surface-500 font-bold">Risk:</span>
+                              <span className="text-[9px] text-text-muted font-bold">Risk:</span>
                               <input type="range" min={1} max={10} value={newQuestionWeight} onChange={(e) => setNewQuestionWeight(Number(e.target.value))} className="flex-1" />
-                              <span className="text-xs text-white font-bold w-4">{newQuestionWeight}</span>
+                              <span className="text-xs text-text-primary font-bold w-4">{newQuestionWeight}</span>
                             </div>
                           </div>
                           <button
                             onClick={handleAddCustomQuestion}
                             disabled={!newQuestionText.trim() || !newQuestionCategory}
-                            className="w-full py-2 bg-violet-600 text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-violet-700 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            className="w-full py-2 bg-primary text-text-onAccent rounded-xl text-xs font-bold uppercase tracking-widest transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                           >
                             <Plus className="w-3 h-3" />
                             Add Question
@@ -1042,12 +1042,12 @@ export const AIAuditTemplateForm: React.FC = () => {
                         {customQuestions.length > 0 && (
                           <div className="mt-4 space-y-2 max-h-48 overflow-y-auto">
                             {customQuestions.map((q, i) => (
-                              <div key={q.id} className="flex items-start justify-between p-3 bg-surface-800/30 rounded-xl border border-surface-700/50">
+                              <div key={q.id} className="flex items-start justify-between p-3 bg-surface-base rounded-xl border border-surface-border">
                                 <div className="flex-1">
-                                  <p className="text-xs text-white font-medium">{q.text}</p>
-                                  <p className="text-[9px] text-surface-500 mt-1">{q.standard} {q.clause} • {q.category} • Weight: {q.riskWeight}</p>
+                                  <p className="text-xs text-text-primary font-medium">{q.text}</p>
+                                  <p className="text-[9px] text-text-muted mt-1">{q.standard} {q.clause} • {q.category} • Weight: {q.riskWeight}</p>
                                 </div>
-                                <button onClick={() => setCustomQuestions(customQuestions.filter((_, idx) => idx !== i))} className="p-1 text-surface-500 hover:text-red-400">
+                                <button onClick={() => setCustomQuestions(customQuestions.filter((_, idx) => idx !== i))} className="p-1 text-text-muted hover:text-danger">
                                   <Trash2 className="w-3 h-3" />
                                 </button>
                               </div>
@@ -1060,7 +1060,7 @@ export const AIAuditTemplateForm: React.FC = () => {
                       <button
                         onClick={handleSaveCustomTemplate}
                         disabled={!customTemplateName.trim() || customQuestions.length === 0}
-                        className="w-full py-4 bg-gradient-to-r from-brand-500 to-violet-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:shadow-lg hover:shadow-brand-500/20 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        className="w-full py-4 bg-accent text-text-onAccent rounded-2xl font-black text-xs uppercase tracking-widest shadow-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                       >
                         <Save className="w-4 h-4" />
                         Save & Start Audit ({customQuestions.length} Questions)
@@ -1076,49 +1076,49 @@ export const AIAuditTemplateForm: React.FC = () => {
             {/* Template Info & AI Summary */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 space-y-6">
-                <div className="bg-surface-900/40 border border-surface-800 rounded-[2.5rem] p-8 backdrop-blur-md">
+                <div className="bg-surface-raised border border-surface-border rounded-[2.5rem] p-8 backdrop-blur-md shadow-card">
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-black text-white">{selectedTemplate.name}</h2>
+                    <h2 className="text-2xl font-black text-text-primary">{selectedTemplate.name}</h2>
                     <button 
                       type="button"
                       onClick={() => setSelectedTemplate(null)}
-                      className="text-[10px] font-black text-surface-500 uppercase tracking-widest hover:text-white transition-colors"
+                      className="text-[10px] font-black text-text-muted uppercase tracking-widest hover:text-text-primary transition-colors"
                     >
                       Change Template
                     </button>
                   </div>
-                  <p className="text-surface-400 text-sm leading-relaxed">{selectedTemplate.description}</p>
+                  <p className="text-text-muted text-sm leading-relaxed">{selectedTemplate.description}</p>
                 </div>
 
                 {/* AI Insights Section */}
-                <div className="bg-gradient-to-br from-brand-600/20 to-violet-600/20 border border-brand-500/30 rounded-[2.5rem] p-8 relative overflow-hidden">
+                <div className="bg-primary/10 border border-primary/20 rounded-[2.5rem] p-8 relative overflow-hidden">
                   <div className="absolute top-0 right-0 p-8 opacity-10">
-                    <Brain className="w-24 h-24 text-white" />
+                    <Brain className="w-24 h-24 text-primary" />
                   </div>
                   <div className="relative z-10">
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 rounded-xl bg-brand-500 flex items-center justify-center shadow-lg shadow-brand-500/40">
-                        <Sparkles className="w-5 h-5 text-white" />
+                      <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-sm">
+                        <Sparkles className="w-5 h-5 text-text-onAccent" />
                       </div>
-                      <h3 className="text-lg font-bold text-white">AI Audit Assistant</h3>
+                      <h3 className="text-lg font-bold text-text-primary">AI Audit Assistant</h3>
                     </div>
                     
                     {aiSummary ? (
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="p-6 bg-surface-950/50 backdrop-blur-xl rounded-3xl border border-white/5"
+                        className="p-6 bg-surface-raised backdrop-blur-xl rounded-3xl border border-surface-border"
                       >
-                        <p className="text-sm text-brand-100 leading-relaxed italic">"{aiSummary}"</p>
+                        <p className="text-sm text-text-primary leading-relaxed italic">"{aiSummary}"</p>
                       </motion.div>
                     ) : (
                       <div className="flex flex-col items-center justify-center py-8 text-center">
-                        <p className="text-surface-400 text-sm mb-6">Complete the audit questions to generate an intelligent summary and risk forecast.</p>
+                        <p className="text-text-muted text-sm mb-6">Complete the audit questions to generate an intelligent summary and risk forecast.</p>
                         <button
                           type="button"
                           onClick={generateAiSummary}
                           disabled={isAnalyzing || Object.keys(answers).length === 0}
-                          className="px-6 py-3 bg-white text-slate-900 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-brand-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                          className="px-6 py-3 bg-accent text-text-onAccent rounded-xl font-bold text-xs uppercase tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                         >
                           {isAnalyzing ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4" />}
                           Generate AI Summary
@@ -1130,34 +1130,34 @@ export const AIAuditTemplateForm: React.FC = () => {
               </div>
 
               <div className="space-y-6">
-                <div className="bg-surface-900/40 border border-surface-800 rounded-[2.5rem] p-8 backdrop-blur-md">
-                  <h3 className="text-sm font-bold text-white mb-6 uppercase tracking-widest">Audit Progress</h3>
-                  <div className="relative h-4 bg-surface-800 rounded-full overflow-hidden mb-4">
+                <div className="bg-surface-raised border border-surface-border rounded-[2.5rem] p-8 backdrop-blur-md shadow-card">
+                  <h3 className="text-sm font-bold text-text-primary mb-6 uppercase tracking-widest">Audit Progress</h3>
+                  <div className="relative h-4 bg-surface-sunken rounded-full overflow-hidden mb-4">
                     <motion.div 
                       initial={{ width: 0 }}
                       animate={{ width: `${(Object.keys(answers).length / selectedTemplate.questions.length) * 100}%` }}
-                      className="h-full bg-brand-500 shadow-[0_0_15px_rgba(20,184,166,0.5)]"
+                      className="h-full bg-accent"
                     />
                   </div>
-                  <div className="flex justify-between text-[10px] text-surface-500 font-bold uppercase tracking-widest">
+                  <div className="flex justify-between text-[10px] text-text-muted font-bold uppercase tracking-widest">
                     <span>{Object.keys(answers).length} of {selectedTemplate.questions.length} Answered</span>
                     <span>{Math.round((Object.keys(answers).length / selectedTemplate.questions.length) * 100)}%</span>
                   </div>
                 </div>
 
-                <div className="bg-surface-900/40 border border-surface-800 rounded-[2.5rem] p-8 backdrop-blur-md">
-                  <h3 className="text-sm font-bold text-white mb-6 uppercase tracking-widest">Quick Actions</h3>
+                <div className="bg-surface-raised border border-surface-border rounded-[2.5rem] p-8 backdrop-blur-md shadow-card">
+                  <h3 className="text-sm font-bold text-text-primary mb-6 uppercase tracking-widest">Quick Actions</h3>
                   <div className="space-y-3">
                     <button 
                       type="button" 
                       onClick={handleExportPDF}
                       disabled={isExporting || Object.keys(answers).length === 0}
-                      className="w-full py-3 bg-surface-800 hover:bg-surface-700 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all border border-surface-700 flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="w-full py-3 bg-surface-sunken hover:bg-surface-overlay text-text-primary rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all border border-surface-border flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       <Download className="w-4 h-4" />
                       {isExporting ? 'Generating PDF...' : 'Export Audit Report'}
                     </button>
-                    <button type="button" className="w-full py-3 bg-surface-800 hover:bg-surface-700 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all border border-surface-700 flex items-center justify-center gap-2">
+                    <button type="button" className="w-full py-3 bg-surface-sunken hover:bg-surface-overlay text-text-primary rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all border border-surface-border flex items-center justify-center gap-2">
                       <Printer className="w-4 h-4" />
                       Print Preview
                     </button>
@@ -1165,58 +1165,58 @@ export const AIAuditTemplateForm: React.FC = () => {
 
                   {/* Visual Evidence Tracking */}
                   <div className="mt-6">
-                    <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-widest">Visual Evidence</h3>
+                    <h3 className="text-sm font-bold text-text-primary mb-4 uppercase tracking-widest">Visual Evidence</h3>
                     <div className="space-y-3">
                       {[
                         { key: 'photos' as const, label: 'Photos', icon: Camera, color: 'text-blue-400' },
                         { key: 'videos' as const, label: 'Videos', icon: Video, color: 'text-violet-400' },
                         { key: 'scans' as const, label: 'QR/Barcode Scans', icon: Scan, color: 'text-emerald-400' },
                       ].map(item => (
-                        <div key={item.key} className="flex items-center justify-between p-3 bg-surface-800/30 rounded-xl border border-surface-700/50">
+                        <div key={item.key} className="flex items-center justify-between p-3 bg-surface-sunken rounded-xl border border-surface-border">
                           <div className="flex items-center gap-2">
                             <item.icon className={`w-4 h-4 ${item.color}`} />
-                            <span className="text-xs text-surface-300 font-medium">{item.label}</span>
+                            <span className="text-xs text-text-primary font-medium">{item.label}</span>
                           </div>
                           <div className="flex items-center gap-2">
                             <button 
                               type="button"
                               onClick={() => setVisualEvidence(prev => ({ ...prev, [item.key]: Math.max(0, prev[item.key] - 1) }))}
-                              className="w-6 h-6 rounded bg-surface-700 flex items-center justify-center text-surface-400 hover:text-white text-xs"
+                              className="w-6 h-6 rounded bg-surface-overlay flex items-center justify-center text-text-muted hover:text-text-primary text-xs"
                             >
                               -
                             </button>
-                            <span className="text-sm font-bold text-white w-6 text-center">{visualEvidence[item.key]}</span>
+                            <span className="text-sm font-bold text-text-primary w-6 text-center">{visualEvidence[item.key]}</span>
                             <button 
                               type="button"
                               onClick={() => setVisualEvidence(prev => ({ ...prev, [item.key]: prev[item.key] + 1 }))}
-                              className="w-6 h-6 rounded bg-surface-700 flex items-center justify-center text-surface-400 hover:text-white text-xs"
+                              className="w-6 h-6 rounded bg-surface-overlay flex items-center justify-center text-text-muted hover:text-text-primary text-xs"
                             >
                               +
                             </button>
                           </div>
                         </div>
                       ))}
-                      <div className="p-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
-                        <p className="text-[9px] text-emerald-400 font-bold text-center uppercase tracking-widest">
+                      <div className="p-2 bg-success/10 border border-success/20 rounded-xl">
+                        <p className="text-[9px] text-success font-bold text-center uppercase tracking-widest">
                           ✓ Synced to ISO • OSHA • Cal/OSHA • BSEE • ASME • ANSI • NFPA • EU • MSHA • IMO • IATA • WHO • HACCP • DOT • CSA • AS/NZS • NEBOSH • GCC
                         </p>
                       </div>
 
                       {/* Global Evidence Photo Upload */}
                       <div className="mt-4 space-y-3">
-                        <h4 className="text-[10px] font-black text-surface-400 uppercase tracking-widest flex items-center gap-2">
+                        <h4 className="text-[10px] font-black text-text-muted uppercase tracking-widest flex items-center gap-2">
                           <Upload className="w-3.5 h-3.5" /> Upload Evidence Photos
                         </h4>
                         <div
                           onDragOver={handleDragOver}
                           onDragLeave={handleDragLeave}
                           onDrop={(e) => handleDrop(e)}
-                          className={`border-2 border-dashed rounded-2xl p-6 text-center transition-all cursor-pointer ${isDragging ? 'border-blue-400 bg-blue-500/10' : 'border-surface-700 hover:border-surface-600'}`}
+                          className={`border-2 border-dashed rounded-2xl p-6 text-center transition-all cursor-pointer ${isDragging ? 'border-accent bg-accent/10' : 'border-surface-border hover:border-accent/40 bg-surface-base'}`}
                           onClick={() => globalFileInputRef.current?.click()}
                         >
-                          <Camera className="w-6 h-6 text-surface-500 mx-auto mb-2" />
-                          <p className="text-[10px] text-surface-500 font-medium">Drop photos here or click to upload</p>
-                          <p className="text-[9px] text-surface-600 mt-1">General audit evidence</p>
+                          <Camera className="w-6 h-6 text-text-muted mx-auto mb-2" />
+                          <p className="text-[10px] text-text-muted font-medium">Drop photos here or click to upload</p>
+                          <p className="text-[9px] text-text-muted mt-1">General audit evidence</p>
                         </div>
                         <input
                           ref={globalFileInputRef}
@@ -1229,7 +1229,7 @@ export const AIAuditTemplateForm: React.FC = () => {
                         {globalEvidencePhotos.length > 0 && (
                           <div className="grid grid-cols-3 gap-2">
                             {globalEvidencePhotos.map((photo, i) => (
-                              <div key={i} className="relative group aspect-square rounded-xl overflow-hidden border border-surface-700">
+                              <div key={i} className="relative group aspect-square rounded-xl overflow-hidden border border-surface-border">
                                 <img src={photo.preview} alt={`Evidence ${i + 1}`} className="w-full h-full object-cover" />
                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                   <button type="button" onClick={() => removeGlobalPhoto(i)} className="p-1.5 bg-red-500 rounded-full">
@@ -1264,22 +1264,22 @@ export const AIAuditTemplateForm: React.FC = () => {
                 const isExpanded = expandedCategory === category;
                 
                 return (
-                  <div key={category} className="bg-surface-900/40 border border-surface-800 rounded-[2.5rem] overflow-hidden transition-all">
+                  <div key={category} className="bg-surface-raised border border-surface-border rounded-[2.5rem] overflow-hidden transition-all shadow-card">
                     <button
                       type="button"
                       onClick={() => setExpandedCategory(isExpanded ? null : category)}
-                      className="w-full p-8 flex items-center justify-between hover:bg-surface-800/30 transition-colors"
+                      className="w-full p-8 flex items-center justify-between hover:bg-surface-overlay transition-colors"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-surface-800 flex items-center justify-center">
-                          <Target className="w-5 h-5 text-brand-400" />
+                        <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                          <Target className="w-5 h-5 text-accent" />
                         </div>
                         <div className="text-left">
-                          <h3 className="text-xl font-bold text-white">{category}</h3>
-                          <p className="text-[10px] text-surface-500 uppercase tracking-widest font-bold">{categoryQuestions.length} Requirements</p>
+                          <h3 className="text-xl font-bold text-text-primary">{category}</h3>
+                          <p className="text-[10px] text-text-muted uppercase tracking-widest font-bold">{categoryQuestions.length} Requirements</p>
                         </div>
                       </div>
-                      {isExpanded ? <ChevronUp className="w-6 h-6 text-surface-500" /> : <ChevronDown className="w-6 h-6 text-surface-500" />}
+                      {isExpanded ? <ChevronUp className="w-6 h-6 text-text-muted" /> : <ChevronDown className="w-6 h-6 text-text-muted" />}
                     </button>
 
                     <AnimatePresence>
@@ -1290,31 +1290,31 @@ export const AIAuditTemplateForm: React.FC = () => {
                           exit={{ height: 0, opacity: 0 }}
                           className="overflow-hidden"
                         >
-                          <div className="p-8 pt-0 space-y-8 border-t border-surface-800/50">
+                          <div className="p-8 pt-0 space-y-8 border-t border-surface-border">
                             {categoryQuestions.map((q, idx) => (
                               <div key={q.id} className="space-y-6">
                                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
                                   <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-2">
-                                      <span className="px-2 py-0.5 rounded bg-brand-500/10 text-brand-400 text-[9px] font-black uppercase tracking-tighter border border-brand-500/20">
+                                      <span className="px-2 py-0.5 rounded bg-accent/10 text-accent text-[9px] font-black uppercase tracking-tighter border border-accent/20">
                                         {q.standard} {q.clause}
                                       </span>
-                                      <span className="text-[9px] text-surface-600 font-bold uppercase tracking-widest">Weight: {q.riskWeight}</span>
+                                      <span className="text-[9px] text-text-muted font-bold uppercase tracking-widest">Weight: {q.riskWeight}</span>
                                     </div>
-                                    <h4 className="text-lg font-bold text-white leading-snug">{q.text}</h4>
+                                    <h4 className="text-lg font-bold text-text-primary leading-snug">{q.text}</h4>
                                     
                                     {/* AI Hint */}
-                                    <div className="mt-4 p-4 bg-violet-500/5 border border-violet-500/10 rounded-2xl flex items-start gap-3">
-                                      <Brain className="w-4 h-4 text-violet-400 mt-0.5 shrink-0" />
-                                      <p className="text-xs text-surface-400 leading-relaxed">
-                                        <span className="font-black text-violet-300 uppercase tracking-tighter mr-2">AI Auditor Hint:</span>
+                                    <div className="mt-4 p-4 bg-primary/5 border border-primary/10 rounded-2xl flex items-start gap-3">
+                                      <Brain className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                                      <p className="text-xs text-text-muted leading-relaxed">
+                                        <span className="font-black text-primary uppercase tracking-tighter mr-2">AI Auditor Hint:</span>
                                         {q.aiHint}
                                       </p>
                                     </div>
                                   </div>
 
                                   <div className="flex flex-col gap-2 shrink-0">
-                                    <div className="flex bg-surface-800 p-1 rounded-xl border border-surface-700">
+                                    <div className="flex bg-surface-sunken p-1 rounded-xl border border-surface-border">
                                       {[
                                         { id: 'compliant', label: 'Compliant', color: 'bg-emerald-500' },
                                         { id: 'non-compliant', label: 'Non-Compliant', color: 'bg-red-500' },
@@ -1327,7 +1327,7 @@ export const AIAuditTemplateForm: React.FC = () => {
                                           className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
                                             answers[q.id]?.status === opt.id 
                                               ? `${opt.color} text-white shadow-lg` 
-                                              : 'text-surface-500 hover:text-white'
+                                              : 'text-text-muted hover:text-text-primary'
                                           }`}
                                         >
                                           {opt.label}
@@ -1341,20 +1341,20 @@ export const AIAuditTemplateForm: React.FC = () => {
                                   placeholder="Add inspection notes, evidence references, or corrective actions..."
                                   value={answers[q.id]?.notes || ''}
                                   onChange={(e) => handleNoteChange(q.id, e.target.value)}
-                                  className="w-full p-4 bg-surface-800/50 border border-surface-700 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all resize-none"
+                                  className="w-full p-4 bg-surface-sunken border border-surface-border rounded-2xl text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all resize-none"
                                   rows={2}
                                 />
 
                                 {/* Evidence Photo Upload Per Question */}
                                 <div className="space-y-3">
                                   <div className="flex items-center justify-between">
-                                    <span className="text-[10px] font-black text-surface-400 uppercase tracking-widest flex items-center gap-2">
+                                    <span className="text-[10px] font-black text-text-muted uppercase tracking-widest flex items-center gap-2">
                                       <Camera className="w-3.5 h-3.5" /> Evidence Photos
                                     </span>
                                     <button
                                       type="button"
                                       onClick={() => { setActivePhotoQuestion(q.id); fileInputRef.current?.click(); }}
-                                      className="px-3 py-1.5 bg-blue-500/20 text-blue-400 rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-blue-500/30 transition-all flex items-center gap-1.5"
+                                      className="px-3 py-1.5 bg-accent/10 text-accent rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-accent/20 transition-all flex items-center gap-1.5"
                                     >
                                       <Upload className="w-3 h-3" /> Upload Photo
                                     </button>
@@ -1365,19 +1365,19 @@ export const AIAuditTemplateForm: React.FC = () => {
                                     onDragOver={handleDragOver}
                                     onDragLeave={handleDragLeave}
                                     onDrop={(e) => handleDrop(e, q.id)}
-                                    className={`border-2 border-dashed rounded-2xl p-4 text-center transition-all cursor-pointer ${isDragging ? 'border-blue-400 bg-blue-500/10' : 'border-surface-700 hover:border-surface-600'}`}
+                                    className={`border-2 border-dashed rounded-2xl p-4 text-center transition-all cursor-pointer ${isDragging ? 'border-accent bg-accent/10' : 'border-surface-border hover:border-accent/40 bg-surface-base'}`}
                                     onClick={() => { setActivePhotoQuestion(q.id); fileInputRef.current?.click(); }}
                                   >
-                                    <Image className="w-5 h-5 text-surface-500 mx-auto mb-2" />
-                                    <p className="text-[10px] text-surface-500">Drag & drop photos or click to browse</p>
-                                    <p className="text-[9px] text-surface-600 mt-1">JPG, PNG, HEIC • Max 10MB per file</p>
+                                    <Image className="w-5 h-5 text-text-muted mx-auto mb-2" />
+                                    <p className="text-[10px] text-text-muted">Drag & drop photos or click to browse</p>
+                                    <p className="text-[9px] text-text-muted mt-1">JPG, PNG, HEIC • Max 10MB per file</p>
                                   </div>
 
                                   {/* Photo Preview Gallery */}
                                   {evidencePhotos[q.id] && evidencePhotos[q.id].length > 0 && (
                                     <div className="flex gap-2 flex-wrap">
                                       {evidencePhotos[q.id].map((photo, pi) => (
-                                        <div key={pi} className="relative group w-20 h-20 rounded-xl overflow-hidden border border-surface-700">
+                                        <div key={pi} className="relative group w-20 h-20 rounded-xl overflow-hidden border border-surface-border">
                                           <img src={photo.preview} alt={`Evidence ${pi + 1}`} className="w-full h-full object-cover" />
                                           <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                             <button
@@ -1396,7 +1396,7 @@ export const AIAuditTemplateForm: React.FC = () => {
                                     </div>
                                   )}
                                 </div>
-                                {idx < categoryQuestions.length - 1 && <div className="h-px bg-surface-800/50" />}
+                                {idx < categoryQuestions.length - 1 && <div className="h-px bg-surface-border" />}
                               </div>
                             ))}
                           </div>
@@ -1409,23 +1409,23 @@ export const AIAuditTemplateForm: React.FC = () => {
             </div>
 
             {/* Submit Section */}
-            <div className="fixed bottom-0 left-0 right-0 p-6 pb-24 bg-surface-950/80 backdrop-blur-xl border-t border-surface-800 z-50">
-              <div className="max-w-5xl mx-auto flex items-center justify-between gap-6">
+            <div className="fixed bottom-0 left-0 right-0 p-6 pb-24 bg-surface-raised/95 backdrop-blur-xl border-t border-surface-border z-50 shadow-modal">
+              <div className="max-w-[1440px] mx-auto flex items-center justify-between gap-6">
                 <div className="hidden md:block">
-                  <p className="text-[10px] text-surface-500 uppercase tracking-widest font-bold mb-1">Current Compliance</p>
-                  <p className="text-xl font-black text-white">{calculateRiskScore}%</p>
+                  <p className="text-[10px] text-text-muted uppercase tracking-widest font-bold mb-1">Current Compliance</p>
+                  <p className="text-xl font-black text-text-primary">{calculateRiskScore}%</p>
                 </div>
                 <div className="flex-1 flex justify-end gap-4">
                   <button 
                     type="button"
                     onClick={() => navigate(-1)}
-                    className="px-8 py-4 bg-surface-800 text-white rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-surface-700 transition-all"
+                    className="px-8 py-4 bg-surface-sunken text-text-primary border border-surface-border rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-surface-overlay transition-all"
                   >
                     Save Draft
                   </button>
                   <button 
                     type="submit"
-                    className="px-12 py-4 bg-brand-500 text-white rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-brand-600 transition-all shadow-lg shadow-brand-500/20 active:scale-95"
+                    className="px-12 py-4 bg-accent text-text-onAccent rounded-2xl font-bold text-xs uppercase tracking-widest transition-all shadow-sm active:scale-95"
                   >
                     Submit Final Audit
                   </button>
@@ -1443,20 +1443,20 @@ export const AIAuditTemplateForm: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary-950/60 backdrop-blur-md"
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-surface-900 border border-surface-800 p-12 rounded-[3rem] max-w-sm w-full text-center space-y-6 shadow-2xl"
+              className="bg-surface-raised border border-surface-border p-12 rounded-[3rem] max-w-sm w-full text-center space-y-6 shadow-modal"
             >
               <div className="w-20 h-20 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-10 h-10" />
               </div>
               <div>
-                <h2 className="text-3xl font-black text-white">Audit Submitted!</h2>
-                <p className="text-surface-400 mt-2">Your standard compliance audit has been recorded and synced with the Global Hub.</p>
+                <h2 className="text-3xl font-black text-text-primary">Audit Submitted!</h2>
+                <p className="text-text-muted mt-2">Your standard compliance audit has been recorded and synced with the Global Hub.</p>
               </div>
             </motion.div>
           </motion.div>

@@ -51,7 +51,7 @@ import {
 import { exportToPDF, ReportTemplates } from '../../utils/exports/compliancePdfExport';
 import { SMButton, SMInput, SMSelect, SMCard, SMBadge } from '../ui';
 
-const MotionSMCard = motion(SMCard);
+const MotionSMCard = motion.create(SMCard);
 
 // Types
 interface InjuryCase {

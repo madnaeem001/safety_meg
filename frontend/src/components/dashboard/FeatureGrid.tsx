@@ -5,7 +5,7 @@ import { NAV_SECTIONS } from './NavigationBar';
 import { ArrowRight } from 'lucide-react';
 import { SMCard } from '../../components/ui';
 
-const MotionSMCard = motion(SMCard);
+const MotionSMCard = motion.create(SMCard);
 
 export const FeatureGrid: React.FC = () => {
   const navigate = useNavigate();

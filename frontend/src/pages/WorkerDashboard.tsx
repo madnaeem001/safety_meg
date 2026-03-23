@@ -11,7 +11,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWorker, useWorkerPerformance, useWorkerTrainings } from '../api/hooks/useAPIHooks';
 import { useAuthStore } from '../store/authStore';
-import { SMButton } from '../components/ui';
+import { SMButton, SMBadge } from '../components/ui';
 
 // Worker Profile
 interface WorkerProfile {
@@ -171,53 +171,49 @@ export const WorkerDashboard: React.FC = () => {
     }
   };
 
-  const getPriorityColor = (priority: Task['priority']) => {
+  const getPriorityVariant = (priority: Task['priority']): 'danger' | 'warning' | 'neutral' | 'success' => {
     switch (priority) {
-      case 'urgent': return 'bg-red-100 text-red-700 border-red-200';
-      case 'high': return 'bg-orange-100 text-orange-700 border-orange-200';
-      case 'medium': return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-      case 'low': return 'bg-green-100 text-green-700 border-green-200';
+      case 'urgent': return 'danger';
+      case 'high': return 'warning';
+      case 'medium': return 'neutral';
+      case 'low': return 'success';
     }
   };
 
   const getStatusIcon = (status: Task['status']) => {
     switch (status) {
-      case 'completed': return <CheckCircle2 className="w-5 h-5 text-green-500" />;
-      case 'in_progress': return <Activity className="w-5 h-5 text-blue-500 animate-pulse" />;
-      case 'overdue': return <XCircle className="w-5 h-5 text-red-500" />;
+      case 'completed': return <CheckCircle2 className="w-5 h-5 text-success" />;
+      case 'in_progress': return <Activity className="w-5 h-5 text-accent animate-pulse" />;
+      case 'overdue': return <XCircle className="w-5 h-5 text-danger" />;
       default: return <Circle className="w-5 h-5 text-surface-400" />;
     }
   };
 
   const getActivityIcon = (type: RecentActivity['type']) => {
     switch (type) {
-      case 'task_completed': return <CheckCircle className="w-4 h-4 text-green-500" />;
-      case 'incident_reported': return <AlertTriangle className="w-4 h-4 text-red-500" />;
+      case 'task_completed': return <CheckCircle className="w-4 h-4 text-success" />;
+      case 'incident_reported': return <AlertTriangle className="w-4 h-4 text-danger" />;
       case 'training_passed': return <Award className="w-4 h-4 text-purple-500" />;
-      case 'observation': return <Eye className="w-4 h-4 text-blue-500" />;
-      case 'jsa_submitted': return <Shield className="w-4 h-4 text-teal-500" />;
+      case 'observation': return <Eye className="w-4 h-4 text-accent" />;
+      case 'jsa_submitted': return <Shield className="w-4 h-4 text-accent" />;
     }
   };
 
   return (
     <div className="min-h-screen bg-surface-50 pb-24">
       {/* Header */}
-      <div className="bg-gradient-to-r from-brand-700 to-brand-900 text-white sticky top-[72px] z-50 safe-top">
+      <div className="bg-primary text-text-inverted sticky top-[var(--nav-height)] z-50 safe-top">
         <div className="px-4 py-4">
           <div className="flex items-center justify-between mb-4">
-            <button onClick={() => navigate(-1)} className="p-2 -ml-2 hover:bg-white/10 rounded-full transition-colors">
-              <ArrowLeft className="w-6 h-6" />
-            </button>
+            <SMButton variant="ghost" size="sm" leftIcon={<ArrowLeft className="w-5 h-5" />} onClick={() => navigate(-1)} className="-ml-2 text-text-inverted hover:bg-white/10" aria-label="Go back" />
             <div className="flex items-center gap-2">
-              <button className="p-2 hover:bg-white/10 rounded-full transition-colors relative">
-                <Bell className="w-6 h-6" />
+              <div className="relative">
+                <SMButton variant="ghost" size="sm" leftIcon={<Bell className="w-5 h-5" />} className="text-text-inverted hover:bg-white/10" aria-label="Notifications" />
                 {(todayTasks.length > 0 || expiringCerts.length > 0) && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-danger rounded-full pointer-events-none" />
                 )}
-              </button>
-              <button onClick={() => setViewMode('profile')} className="p-2 hover:bg-white/10 rounded-full transition-colors">
-                <Settings className="w-6 h-6" />
-              </button>
+              </div>
+              <SMButton variant="ghost" size="sm" leftIcon={<Settings className="w-5 h-5" />} onClick={() => setViewMode('profile')} className="text-text-inverted hover:bg-white/10" aria-label="Settings" />
             </div>
           </div>
 
@@ -266,8 +262,8 @@ export const WorkerDashboard: React.FC = () => {
               onClick={() => setViewMode(tab.id as ViewMode)}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${
                 viewMode === tab.id
-                  ? 'bg-white text-brand-700'
-                  : 'bg-white/10 text-white hover:bg-white/20'
+                  ? 'bg-white/20 text-white'
+                  : 'text-white/70 hover:text-white hover:bg-white/10'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -403,9 +399,7 @@ export const WorkerDashboard: React.FC = () => {
                             )}
                           </div>
                         </div>
-                        <span className={`px-2 py-1 text-xs font-medium rounded-lg border ${getPriorityColor(task.priority)}`}>
-                          {task.priority}
-                        </span>
+                        <SMBadge variant={getPriorityVariant(task.priority)}>{task.priority}</SMBadge>
                       </button>
                     );
                   })}
@@ -520,9 +514,7 @@ export const WorkerDashboard: React.FC = () => {
                         {getStatusIcon(task.status)}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className={`px-2 py-0.5 text-xs font-medium rounded-lg border ${getPriorityColor(task.priority)}`}>
-                              {task.priority}
-                            </span>
+                          <SMBadge variant={getPriorityVariant(task.priority)}>{task.priority}</SMBadge>
                             <span className="text-xs text-surface-500 bg-surface-100 px-2 py-0.5 rounded-full capitalize">
                               {task.type}
                             </span>
@@ -786,9 +778,7 @@ export const WorkerDashboard: React.FC = () => {
             >
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <span className={`px-3 py-1 text-sm font-medium rounded-lg border ${getPriorityColor(selectedTask.priority)}`}>
-                    {selectedTask.priority} priority
-                  </span>
+                  <SMBadge variant={getPriorityVariant(selectedTask.priority)}>{selectedTask.priority} priority</SMBadge>
                   <button onClick={() => setSelectedTask(null)} className="p-2 hover:bg-surface-100 rounded-full">
                     <XCircle className="w-5 h-5 text-surface-500" />
                   </button>

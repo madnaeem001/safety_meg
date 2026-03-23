@@ -147,6 +147,8 @@ import {
   RegulationRecord,
   StandardRecord,
   ToolboxTalkRecord,
+  ToolboxTalkAIGenerationPayload,
+  ToolboxTalkAIGenerationResponse,
   BBSObservation,
   SIFPrecursor,
   HygieneAssessment,
@@ -1879,10 +1881,13 @@ export function useSaveLanguagePreference() {
 // Regulations Hooks (NEW)
 // ============================================
 
-export function useRegulations(params?: { jurisdiction?: string; industry?: string; status?: string; search?: string }) {
+export function useRegulations(
+  params?: { jurisdiction?: string; industry?: string; status?: string; search?: string },
+  options: UseAPIOptions<RegulationRecord[]> = {}
+) {
   return useAPI<RegulationRecord[]>(
     () => regulationsApiService.getAll(params),
-    { immediate: true }
+    { immediate: true, ...options }
   );
 }
 
@@ -1996,8 +2001,14 @@ export function useCreateToolboxTalk() {
 }
 
 export function useAttendToolboxTalk() {
-  return useMutation<any, { id: number; data: { attendeeName: string; employeeId?: string; signature?: string } }>(
+  return useMutation<any, { id: number; data: { attendees: Array<{ employeeName: string; employeeId?: string; department?: string; signature?: boolean }> } }>(
     ({ id, data }) => toolboxApiService.attend(id, data)
+  );
+}
+
+export function useGenerateToolboxTalk() {
+  return useMutation<ToolboxTalkAIGenerationResponse, ToolboxTalkAIGenerationPayload>(
+    (data) => toolboxApiService.generateAI(data)
   );
 }
 

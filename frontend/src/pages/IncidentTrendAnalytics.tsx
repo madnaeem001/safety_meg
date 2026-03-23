@@ -45,6 +45,7 @@ import {
   AreaChart,
   ComposedChart,
 } from 'recharts';
+import { SMButton } from '../components/ui';
 
 // ============================================
 // HISTORICAL INCIDENT DATA
@@ -225,26 +226,26 @@ export default function IncidentTrendAnalytics() {
   // Trend icon helper
   const getTrendIcon = (trend: string | number) => {
     if (typeof trend === 'number') {
-      if (trend > 0) return <ArrowUpRight className="w-4 h-4 text-red-500" />;
-      if (trend < 0) return <ArrowDownRight className="w-4 h-4 text-green-500" />;
-      return <Minus className="w-4 h-4 text-slate-400" />;
+      if (trend > 0) return <ArrowUpRight className="w-4 h-4 text-danger" />;
+      if (trend < 0) return <ArrowDownRight className="w-4 h-4 text-success" />;
+      return <Minus className="w-4 h-4 text-text-muted" />;
     }
-    if (trend === 'up') return <TrendingUp className="w-4 h-4 text-amber-500" />;
-    if (trend === 'down') return <TrendingDown className="w-4 h-4 text-green-500" />;
-    return <Minus className="w-4 h-4 text-slate-400" />;
+    if (trend === 'up') return <TrendingUp className="w-4 h-4 text-warning" />;
+    if (trend === 'down') return <TrendingDown className="w-4 h-4 text-success" />;
+    return <Minus className="w-4 h-4 text-text-muted" />;
   };
   
   // Custom tooltip
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white/95 backdrop-blur p-3 rounded-xl shadow-lg border border-slate-200">
-          <p className="text-sm font-semibold text-slate-900 mb-2">{label}</p>
+        <div className="bg-surface-raised/95 backdrop-blur p-3 rounded-xl shadow-lg border border-surface-border">
+          <p className="text-sm font-semibold text-text-primary mb-2">{label}</p>
           {payload.map((entry: any, index: number) => (
             <div key={index} className="flex items-center gap-2 text-sm">
               <span className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.color }} />
-              <span className="text-slate-600">{entry.name}:</span>
-              <span className="font-medium text-slate-900">{entry.value}</span>
+              <span className="text-text-muted">{entry.name}:</span>
+              <span className="font-medium text-text-primary">{entry.value}</span>
             </div>
           ))}
         </div>
@@ -254,29 +255,29 @@ export default function IncidentTrendAnalytics() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
+    <div className="min-h-screen bg-surface-base">
 
       
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-[72px] z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header className="bg-surface-raised/80 backdrop-blur-xl border-b border-surface-border sticky top-[var(--nav-height)] z-40">
+        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <button
+              <SMButton
+                variant="ghost"
+                size="sm"
                 onClick={() => navigate(-1)}
-                className="p-2 hover:bg-slate-100 rounded-xl transition-colors"
-              >
-                <ArrowLeft className="w-5 h-5 text-slate-600" />
-              </button>
+                leftIcon={<ArrowLeft className="w-5 h-5" />}
+              />
               <div>
-                <h1 className="text-xl font-bold text-slate-900">Incident Trend Analytics</h1>
-                <p className="text-sm text-slate-500">Analyze patterns and identify improvement areas</p>
+                <h1 className="text-xl font-bold text-text-primary">Incident Trend Analytics</h1>
+                <p className="text-sm text-text-muted">Analyze patterns and identify improvement areas</p>
               </div>
             </div>
             
             <div className="flex items-center gap-3">
               {/* Time Range */}
-              <div className="flex items-center bg-slate-100 rounded-xl p-1">
+              <div className="flex items-center bg-surface-100 rounded-xl p-1">
                 {[
                   { value: 'week', label: 'Week' },
                   { value: 'month', label: 'Month' },
@@ -288,8 +289,8 @@ export default function IncidentTrendAnalytics() {
                     onClick={() => setTimeRange(option.value as any)}
                     className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-all ${
                       timeRange === option.value
-                        ? 'bg-white text-slate-900 shadow-sm'
-                        : 'text-slate-600 hover:text-slate-900'
+                        ? 'bg-surface-raised text-text-primary shadow-sm'
+                        : 'text-text-muted hover:text-text-primary'
                     }`}
                   >
                     {option.label}
@@ -298,7 +299,7 @@ export default function IncidentTrendAnalytics() {
               </div>
               
               {/* Export */}
-              <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors">
+              <button className="flex items-center gap-2 px-4 py-2 bg-primary text-text-inverted rounded-xl hover:opacity-90 transition-colors">
                 <Download className="w-4 h-4" />
                 <span className="text-sm font-medium">Export</span>
               </button>
@@ -308,27 +309,27 @@ export default function IncidentTrendAnalytics() {
       </header>
       
       {/* KPI Stats */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm"
+            className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-sm"
           >
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-slate-500">Total Incidents</p>
-                <p className="text-3xl font-bold text-slate-900 mt-1">{stats.totalIncidents}</p>
+                <p className="text-sm text-text-muted">Total Incidents</p>
+                <p className="text-3xl font-bold text-text-primary mt-1">{stats.totalIncidents}</p>
                 <div className="flex items-center gap-1 mt-2">
                   {getTrendIcon(stats.incidentChange)}
-                  <span className={`text-sm font-medium ${stats.incidentChange > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                  <span className={`text-sm font-medium ${stats.incidentChange > 0 ? 'text-danger' : 'text-success'}`}>
                     {Math.abs(stats.incidentChange)}%
                   </span>
-                  <span className="text-xs text-slate-400">vs last period</span>
+                  <span className="text-xs text-text-muted">vs last period</span>
                 </div>
               </div>
-              <div className="p-3 bg-blue-100 rounded-xl">
-                <Activity className="w-6 h-6 text-blue-600" />
+              <div className="p-3 bg-accent/10 rounded-xl">
+                <Activity className="w-6 h-6 text-accent" />
               </div>
             </div>
           </motion.div>
@@ -337,22 +338,22 @@ export default function IncidentTrendAnalytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm"
+            className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-sm"
           >
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-slate-500">Recordable Injuries</p>
-                <p className="text-3xl font-bold text-slate-900 mt-1">{stats.totalInjuries}</p>
+                <p className="text-sm text-text-muted">Recordable Injuries</p>
+                <p className="text-3xl font-bold text-text-primary mt-1">{stats.totalInjuries}</p>
                 <div className="flex items-center gap-1 mt-2">
                   {getTrendIcon(stats.injuryChange)}
-                  <span className={`text-sm font-medium ${stats.injuryChange > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                  <span className={`text-sm font-medium ${stats.injuryChange > 0 ? 'text-danger' : 'text-success'}`}>
                     {Math.abs(stats.injuryChange)}%
                   </span>
-                  <span className="text-xs text-slate-400">vs last period</span>
+                  <span className="text-xs text-text-muted">vs last period</span>
                 </div>
               </div>
-              <div className="p-3 bg-red-100 rounded-xl">
-                <AlertTriangle className="w-6 h-6 text-red-600" />
+              <div className="p-3 bg-danger/10 rounded-xl">
+                <AlertTriangle className="w-6 h-6 text-danger" />
               </div>
             </div>
           </motion.div>
@@ -361,22 +362,22 @@ export default function IncidentTrendAnalytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm"
+            className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-sm"
           >
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-slate-500">TRIR</p>
-                <p className="text-3xl font-bold text-slate-900 mt-1">{stats.trir}</p>
+                <p className="text-sm text-text-muted">TRIR</p>
+                <p className="text-3xl font-bold text-text-primary mt-1">{stats.trir}</p>
                 <div className="flex items-center gap-1 mt-2">
                   {getTrendIcon(stats.trirChange)}
-                  <span className={`text-sm font-medium ${stats.trirChange > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                  <span className={`text-sm font-medium ${stats.trirChange > 0 ? 'text-danger' : 'text-success'}`}>
                     {Math.abs(stats.trirChange)}
                   </span>
-                  <span className="text-xs text-slate-400">vs last period</span>
+                  <span className="text-xs text-text-muted">vs last period</span>
                 </div>
               </div>
-              <div className="p-3 bg-amber-100 rounded-xl">
-                <Target className="w-6 h-6 text-amber-600" />
+              <div className="p-3 bg-warning/10 rounded-xl">
+                <Target className="w-6 h-6 text-warning" />
               </div>
             </div>
           </motion.div>
@@ -385,20 +386,20 @@ export default function IncidentTrendAnalytics() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm"
+            className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-sm"
           >
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-slate-500">Near Miss Ratio</p>
-                <p className="text-3xl font-bold text-slate-900 mt-1">{stats.nearMissRatio}:1</p>
+                <p className="text-sm text-text-muted">Near Miss Ratio</p>
+                <p className="text-3xl font-bold text-text-primary mt-1">{stats.nearMissRatio}:1</p>
                 <div className="flex items-center gap-1 mt-2">
-                  <TrendingUp className="w-4 h-4 text-green-500" />
-                  <span className="text-sm font-medium text-green-600">Good</span>
-                  <span className="text-xs text-slate-400">target: 3:1</span>
+                  <TrendingUp className="w-4 h-4 text-success" />
+                  <span className="text-sm font-medium text-success">Good</span>
+                  <span className="text-xs text-text-muted">target: 3:1</span>
                 </div>
               </div>
-              <div className="p-3 bg-green-100 rounded-xl">
-                <Eye className="w-6 h-6 text-green-600" />
+              <div className="p-3 bg-success/10 rounded-xl">
+                <Eye className="w-6 h-6 text-success" />
               </div>
             </div>
           </motion.div>
@@ -406,8 +407,8 @@ export default function IncidentTrendAnalytics() {
       </div>
       
       {/* View Tabs */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-2 border-b border-slate-200">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-2 border-b border-surface-border">
           {[
             { value: 'trends', label: 'Trend Analysis', icon: LineChartIcon },
             { value: 'breakdown', label: 'Breakdown', icon: PieChart },
@@ -418,8 +419,8 @@ export default function IncidentTrendAnalytics() {
               onClick={() => setChartView(tab.value as any)}
               className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
                 chartView === tab.value
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-slate-500 hover:text-slate-700'
+                  ? 'border-accent text-accent'
+                  : 'border-transparent text-text-muted hover:text-text-primary'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -430,7 +431,7 @@ export default function IncidentTrendAnalytics() {
       </div>
       
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-24">
+      <main className="mx-auto max-w-[1440px] px-4 py-6 pb-24 sm:px-6 lg:px-8">
         <AnimatePresence mode="wait">
           {/* Trends View */}
           {chartView === 'trends' && (
@@ -442,11 +443,11 @@ export default function IncidentTrendAnalytics() {
               className="space-y-6"
             >
               {/* Main Trend Chart */}
-              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+              <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm p-6">
                 <div className="flex items-center justify-between mb-6">
                   <div>
-                    <h3 className="font-semibold text-slate-900">Incident Trends</h3>
-                    <p className="text-sm text-slate-500">Monthly incident breakdown by type</p>
+                    <h3 className="font-semibold text-text-primary">Incident Trends</h3>
+                    <p className="text-sm text-text-muted">Monthly incident breakdown by type</p>
                   </div>
                   <div className="flex items-center gap-4">
                     <label className="flex items-center gap-2 text-sm">
@@ -454,9 +455,9 @@ export default function IncidentTrendAnalytics() {
                         type="checkbox"
                         checked={showComparison}
                         onChange={(e) => setShowComparison(e.target.checked)}
-                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                        className="rounded border-surface-border text-accent focus:ring-accent"
                       />
-                      <span className="text-slate-600">Show comparison</span>
+                      <span className="text-text-muted">Show comparison</span>
                     </label>
                   </div>
                 </div>
@@ -495,8 +496,8 @@ export default function IncidentTrendAnalytics() {
               
               {/* Weekly Breakdown */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-                  <h3 className="font-semibold text-slate-900 mb-4">This Month's Weekly Trend</h3>
+                <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm p-6">
+                  <h3 className="font-semibold text-text-primary mb-4">This Month's Weekly Trend</h3>
                   <div className="h-60">
                     <ResponsiveContainer width="100%" height="100%">
                       <AreaChart data={weeklyData}>
@@ -526,27 +527,27 @@ export default function IncidentTrendAnalytics() {
                 </div>
                 
                 {/* Leading Indicators */}
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-                  <h3 className="font-semibold text-slate-900 mb-4">Leading Indicators</h3>
+                <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm p-6">
+                  <h3 className="font-semibold text-text-primary mb-4">Leading Indicators</h3>
                   <div className="space-y-4">
                     {liData.map((indicator, idx) => (
-                      <div key={idx} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                      <div key={idx} className="flex items-center justify-between p-3 bg-surface-100 rounded-xl">
                         <div className="flex items-center gap-3">
                           {getTrendIcon(indicator.trend)}
                           <div>
-                            <p className="text-sm font-medium text-slate-900">{indicator.name}</p>
-                            <p className="text-xs text-slate-500">Target: {indicator.target}{indicator.unit}</p>
+                            <p className="text-sm font-medium text-text-primary">{indicator.name}</p>
+                            <p className="text-xs text-text-muted">Target: {indicator.target}{indicator.unit}</p>
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className="text-xl font-bold text-slate-900">
+                          <p className="text-xl font-bold text-text-primary">
                             {indicator.current}
-                            <span className="text-sm font-normal text-slate-500">{indicator.unit}</span>
+                            <span className="text-sm font-normal text-text-muted">{indicator.unit}</span>
                           </p>
-                          <div className="w-24 h-2 bg-slate-200 rounded-full mt-1">
+                          <div className="w-24 h-2 bg-surface-border rounded-full mt-1">
                             <div
                               className={`h-full rounded-full ${
-                                indicator.current >= indicator.target ? 'bg-green-500' : 'bg-amber-500'
+                                indicator.current >= indicator.target ? 'bg-success' : 'bg-warning'
                               }`}
                               style={{ width: `${Math.min(100, (indicator.current / indicator.target) * 100)}%` }}
                             />
@@ -571,8 +572,8 @@ export default function IncidentTrendAnalytics() {
             >
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* By Type */}
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-                  <h3 className="font-semibold text-slate-900 mb-4">Incidents by Type</h3>
+                <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm p-6">
+                  <h3 className="font-semibold text-text-primary mb-4">Incidents by Type</h3>
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
                       <RechartsPie>
@@ -597,8 +598,8 @@ export default function IncidentTrendAnalytics() {
                 </div>
                 
                 {/* By Severity */}
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-                  <h3 className="font-semibold text-slate-900 mb-4">Incidents by Severity</h3>
+                <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm p-6">
+                  <h3 className="font-semibold text-text-primary mb-4">Incidents by Severity</h3>
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
                       <RechartsPie>
@@ -624,8 +625,8 @@ export default function IncidentTrendAnalytics() {
               </div>
               
               {/* By Department */}
-              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-                <h3 className="font-semibold text-slate-900 mb-4">Incidents by Department</h3>
+              <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm p-6">
+                <h3 className="font-semibold text-text-primary mb-4">Incidents by Department</h3>
                 <div className="h-72">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={deptData} layout="vertical">
@@ -643,13 +644,13 @@ export default function IncidentTrendAnalytics() {
                 {/* Department cards */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-6">
                   {deptData.map((dept, idx) => (
-                    <div key={idx} className="p-4 bg-slate-50 rounded-xl text-center">
+                    <div key={idx} className="p-4 bg-surface-100 rounded-xl text-center">
                       <div className="flex items-center justify-center gap-1 mb-2">
                         {getTrendIcon(dept.trend)}
-                        <span className="text-xs text-slate-500">{dept.trend}</span>
+                        <span className="text-xs text-text-muted">{dept.trend}</span>
                       </div>
-                      <p className="text-2xl font-bold text-slate-900">{dept.incidents}</p>
-                      <p className="text-xs text-slate-600 mt-1">{dept.department}</p>
+                      <p className="text-2xl font-bold text-text-primary">{dept.incidents}</p>
+                      <p className="text-xs text-text-muted mt-1">{dept.department}</p>
                     </div>
                   ))}
                 </div>
@@ -668,8 +669,8 @@ export default function IncidentTrendAnalytics() {
             >
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Day of Week */}
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-                  <h3 className="font-semibold text-slate-900 mb-4">Incidents by Day of Week</h3>
+                <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm p-6">
+                  <h3 className="font-semibold text-text-primary mb-4">Incidents by Day of Week</h3>
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={dowData}>
@@ -688,16 +689,16 @@ export default function IncidentTrendAnalytics() {
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
-                  <div className="flex items-center justify-center gap-4 mt-4 text-xs">
-                    <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-green-500" /> Low (under 26)</span>
-                    <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-amber-500" /> Medium (26-35)</span>
-                    <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-red-500" /> High (over 35)</span>
+                  <div className="flex items-center justify-center gap-4 mt-4 text-xs text-text-muted">
+                    <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-success" /> Low (under 26)</span>
+                    <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-warning" /> Medium (26-35)</span>
+                    <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-danger" /> High (over 35)</span>
                   </div>
                 </div>
                 
                 {/* Time of Day */}
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-                  <h3 className="font-semibold text-slate-900 mb-4">Incidents by Time of Day</h3>
+                <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm p-6">
+                  <h3 className="font-semibold text-text-primary mb-4">Incidents by Time of Day</h3>
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
                       <AreaChart data={todData}>
@@ -717,15 +718,15 @@ export default function IncidentTrendAnalytics() {
                       </AreaChart>
                     </ResponsiveContainer>
                   </div>
-                  <p className="text-xs text-slate-500 text-center mt-4">
+                  <p className="text-xs text-text-muted text-center mt-4">
                     Peak incident times: 9 AM - 3 PM (51.8% of all incidents)
                   </p>
                 </div>
               </div>
               
               {/* Root Cause Analysis */}
-              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-                <h3 className="font-semibold text-slate-900 mb-4">Root Cause Analysis</h3>
+              <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm p-6">
+                <h3 className="font-semibold text-text-primary mb-4">Root Cause Analysis</h3>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
@@ -744,29 +745,29 @@ export default function IncidentTrendAnalytics() {
                       <div key={idx} className="flex items-center gap-3">
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-sm font-medium text-slate-700">{cause.cause}</span>
-                            <span className="text-sm text-slate-500">{cause.percentage}%</span>
+                            <span className="text-sm font-medium text-text-primary">{cause.cause}</span>
+                            <span className="text-sm text-text-muted">{cause.percentage}%</span>
                           </div>
-                          <div className="w-full h-2 bg-slate-100 rounded-full">
+                          <div className="w-full h-2 bg-surface-100 rounded-full">
                             <div
                               className="h-full bg-indigo-500 rounded-full transition-all duration-500"
                               style={{ width: `${cause.percentage}%` }}
                             />
                           </div>
                         </div>
-                        <span className="text-sm font-bold text-slate-900 w-12 text-right">{cause.count}</span>
+                        <span className="text-sm font-bold text-text-primary w-12 text-right">{cause.count}</span>
                       </div>
                     ))}
                   </div>
                 </div>
                 
                 {/* Insights */}
-                <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
+                <div className="mt-6 p-4 bg-accent/5 rounded-xl border border-accent/20">
                   <div className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-blue-600 mt-0.5" />
+                    <Info className="w-5 h-5 text-accent mt-0.5" />
                     <div>
-                      <h4 className="font-medium text-blue-900">Key Insights</h4>
-                      <ul className="text-sm text-blue-700 mt-2 space-y-1">
+                      <h4 className="font-medium text-accent">Key Insights</h4>
+                      <ul className="text-sm text-text-primary mt-2 space-y-1">
                         <li>• <strong>Human Error</strong> accounts for 37% of incidents - focus on training and awareness</li>
                         <li>• <strong>Thursday</strong> has the highest incident rate - consider mid-week safety briefings</li>
                         <li>• <strong>9 AM - 3 PM</strong> is the peak incident window - increase supervision during these hours</li>

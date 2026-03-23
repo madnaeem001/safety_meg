@@ -130,7 +130,7 @@ export const EHSAIAssistant: React.FC<EHSAIAssistantProps> = ({
   };
 
   return (
-    <div className={`flex flex-col h-full ${isFloating ? 'bg-slate-800' : ''}`}>
+    <div className={`ai-purple-theme flex flex-col h-full ${isFloating ? 'bg-slate-800' : ''}`}>
       {/* Chat Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar min-h-[300px]">
         {messages.map((msg) => (

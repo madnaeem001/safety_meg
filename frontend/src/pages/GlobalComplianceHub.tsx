@@ -143,37 +143,37 @@ export const GlobalComplianceHub: React.FC = () => {
 
   const getStatusConfig = (status: ComplianceFramework['status']) => {
     switch (status) {
-      case 'compliant': return { color: 'text-green-700 bg-green-100 dark:bg-green-900/30 dark:text-green-400', icon: CheckCircle, label: 'Compliant' };
-      case 'partial': return { color: 'text-amber-700 bg-amber-100 dark:bg-amber-900/30 dark:text-amber-400', icon: Clock, label: 'Partial' };
-      case 'non-compliant': return { color: 'text-red-700 bg-red-100 dark:bg-red-900/30 dark:text-red-400', icon: AlertTriangle, label: 'Non-Compliant' };
-      default: return { color: 'text-surface-500 bg-surface-100 dark:bg-surface-700', icon: FileText, label: 'N/A' };
+      case 'compliant': return { color: 'bg-success/10 text-success', icon: CheckCircle, label: 'Compliant' };
+      case 'partial': return { color: 'bg-warning/10 text-warning', icon: Clock, label: 'Partial' };
+      case 'non-compliant': return { color: 'bg-danger/10 text-danger', icon: AlertTriangle, label: 'Non-Compliant' };
+      default: return { color: 'bg-surface-sunken text-text-muted', icon: FileText, label: 'N/A' };
     }
   };
 
   return (
     <FadeContent blur duration={400} delay={0}>
-      <div className="min-h-screen pb-24 bg-surface-50 dark:bg-surface-900">
+      <div className="min-h-screen bg-surface-base pb-24">
         {/* Header */}
-        <header className="sticky top-[72px] z-40 bg-white dark:bg-surface-800 border-b border-surface-200 dark:border-surface-700">
-          <div className="px-4 py-3">
+        <header className="sticky top-[var(--nav-height)] z-40 border-b border-surface-border bg-surface-raised/90 backdrop-blur-xl">
+          <div className="mx-auto max-w-[1440px] px-4 py-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <button 
                   onClick={() => navigate(-1)}
-                  className="p-2 hover:bg-surface-100 dark:hover:bg-surface-700 rounded-full transition-colors"
+                  className="rounded-xl p-2 text-text-secondary transition-colors hover:bg-surface-overlay"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
                 <div>
-                  <h1 className="text-lg font-semibold text-surface-900 dark:text-white">Global Compliance Hub</h1>
-                  <p className="text-xs text-surface-500">Multi-Jurisdictional Compliance Management</p>
+                  <h1 className="text-xl font-bold text-text-primary">Global Compliance Hub</h1>
+                  <p className="text-xs font-bold uppercase tracking-widest text-text-muted">Multi-Jurisdictional Compliance Management</p>
                 </div>
               </div>
               <button
                 onClick={handleExport}
-                className="flex items-center gap-2 px-3 py-1.5 text-sm text-brand-600 font-medium hover:bg-brand-50 dark:hover:bg-brand-900/30 rounded-lg transition-colors"
+                className="flex items-center gap-2 rounded-xl border border-surface-border bg-surface-sunken px-4 py-2 text-sm font-medium text-text-secondary transition-colors hover:bg-surface-overlay"
               >
                 <Download className="w-4 h-4" />
                 Export
@@ -189,13 +189,13 @@ export const GlobalComplianceHub: React.FC = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search frameworks..."
-                  className="w-full pl-10 pr-4 py-2.5 bg-surface-100 dark:bg-surface-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                  className="w-full rounded-2xl border border-surface-border bg-surface-sunken py-3 pl-10 pr-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent/40 focus:outline-none focus:ring-4 focus:ring-accent/10"
                 />
               </div>
               <button
                 onClick={() => setShowFilters(!showFilters)}
                 className={`p-2.5 rounded-xl transition-colors ${
-                  showFilters ? 'bg-brand-500 text-white' : 'bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-400'
+                  showFilters ? 'bg-accent text-text-onAccent' : 'border border-surface-border bg-surface-sunken text-text-secondary hover:bg-surface-overlay'
                 }`}
               >
                 <Filter className="w-5 h-5" />
@@ -211,25 +211,25 @@ export const GlobalComplianceHub: React.FC = () => {
                   exit={{ height: 0, opacity: 0 }}
                   className="mt-3 overflow-hidden"
                 >
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                     <select
                       value={selectedRegion}
                       onChange={(e) => setSelectedRegion(e.target.value)}
-                      className="px-3 py-2 text-sm bg-surface-100 dark:bg-surface-700 rounded-lg border-none focus:ring-2 focus:ring-brand-500"
+                      className="rounded-xl border border-surface-border bg-surface-sunken px-3 py-2.5 text-sm text-text-primary focus:border-accent/40 focus:outline-none focus:ring-2 focus:ring-accent/15"
                     >
                       {regions.map(r => <option key={r}>{r}</option>)}
                     </select>
                     <select
                       value={selectedCategory}
                       onChange={(e) => setSelectedCategory(e.target.value)}
-                      className="px-3 py-2 text-sm bg-surface-100 dark:bg-surface-700 rounded-lg border-none focus:ring-2 focus:ring-brand-500"
+                      className="rounded-xl border border-surface-border bg-surface-sunken px-3 py-2.5 text-sm text-text-primary focus:border-accent/40 focus:outline-none focus:ring-2 focus:ring-accent/15"
                     >
                       {categories.map(c => <option key={c}>{c}</option>)}
                     </select>
                     <select
                       value={selectedStatus}
                       onChange={(e) => setSelectedStatus(e.target.value)}
-                      className="px-3 py-2 text-sm bg-surface-100 dark:bg-surface-700 rounded-lg border-none focus:ring-2 focus:ring-brand-500"
+                      className="rounded-xl border border-surface-border bg-surface-sunken px-3 py-2.5 text-sm text-text-primary focus:border-accent/40 focus:outline-none focus:ring-2 focus:ring-accent/15"
                     >
                       {statuses.map(s => <option key={s}>{s}</option>)}
                     </select>
@@ -240,44 +240,44 @@ export const GlobalComplianceHub: React.FC = () => {
           </div>
         </header>
 
-        <main className="p-4 pb-24 space-y-6">
+        <main className="mx-auto max-w-[1440px] space-y-6 px-4 py-6 pb-24 sm:px-6 lg:px-8">
           {/* Stats Overview */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="grid grid-cols-2 md:grid-cols-4 gap-3"
+            className="grid grid-cols-2 gap-3 xl:grid-cols-4"
           >
-            <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl p-4 border border-surface-200 dark:border-surface-700">
+            <motion.div variants={itemVariants} className="rounded-2xl border border-surface-border bg-surface-raised p-5 shadow-soft">
               <div className="flex items-center gap-2 mb-2">
                 <Globe className="w-5 h-5 text-blue-500" />
-                <span className="text-xs text-surface-500">Frameworks</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-text-muted">Frameworks</span>
               </div>
-              <p className="text-2xl font-bold text-surface-900 dark:text-white">{complianceStats.total}</p>
+              <p className="text-2xl font-bold text-text-primary">{complianceStats.total}</p>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl p-4 border border-surface-200 dark:border-surface-700">
+            <motion.div variants={itemVariants} className="rounded-2xl border border-surface-border bg-surface-raised p-5 shadow-soft">
               <div className="flex items-center gap-2 mb-2">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-xs text-surface-500">Compliant</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-text-muted">Compliant</span>
               </div>
-              <p className="text-2xl font-bold text-green-600">{complianceStats.compliant}</p>
+              <p className="text-2xl font-bold text-success">{complianceStats.compliant}</p>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl p-4 border border-surface-200 dark:border-surface-700">
+            <motion.div variants={itemVariants} className="rounded-2xl border border-surface-border bg-surface-raised p-5 shadow-soft">
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle className="w-5 h-5 text-red-500" />
-                <span className="text-xs text-surface-500">Gaps</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-text-muted">Gaps</span>
               </div>
-              <p className="text-2xl font-bold text-red-600">{complianceStats.nonCompliant}</p>
+              <p className="text-2xl font-bold text-danger">{complianceStats.nonCompliant}</p>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl p-4 border border-surface-200 dark:border-surface-700">
+            <motion.div variants={itemVariants} className="rounded-2xl border border-surface-border bg-surface-raised p-5 shadow-soft">
               <div className="flex items-center gap-2 mb-2">
-                <Shield className="w-5 h-5 text-brand-500" />
-                <span className="text-xs text-surface-500">Avg Score</span>
+                <Shield className="w-5 h-5 text-accent" />
+                <span className="text-xs font-bold uppercase tracking-wider text-text-muted">Avg Score</span>
               </div>
-              <p className="text-2xl font-bold text-surface-900 dark:text-white">{complianceStats.avgScore}%</p>
+              <p className="text-2xl font-bold text-text-primary">{complianceStats.avgScore}%</p>
             </motion.div>
           </motion.div>
 
@@ -302,14 +302,14 @@ export const GlobalComplianceHub: React.FC = () => {
                   <motion.button
                     key={framework.id}
                     variants={itemVariants}
-                    className="w-full text-left p-4 bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 hover:border-brand-400 dark:hover:border-brand-500 transition-all"
+                    className="w-full rounded-2xl border border-surface-border bg-surface-raised p-5 text-left shadow-soft transition-all hover:border-accent/30 hover:bg-surface-overlay"
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-semibold text-surface-900 dark:text-white">{framework.shortName}</h3>
+                          <h3 className="font-semibold text-text-primary">{framework.shortName}</h3>
                           <span className={`px-2 py-0.5 rounded-full text-xs font-medium flex items-center gap-1 ${statusConfig.color}`}>
                             <statusConfig.icon className="w-3 h-3" />
                             {statusConfig.label}
@@ -338,9 +338,9 @@ export const GlobalComplianceHub: React.FC = () => {
                     <div className="mb-3">
                       <div className="flex justify-between text-xs mb-1">
                         <span className="text-surface-500">{framework.completed}/{framework.requirements} requirements</span>
-                        <span className="text-surface-600 dark:text-surface-400 font-medium">{progress}%</span>
+                        <span className="font-medium text-text-secondary">{progress}%</span>
                       </div>
-                      <div className="h-1.5 bg-surface-100 dark:bg-surface-700 rounded-full overflow-hidden">
+                      <div className="h-1.5 overflow-hidden rounded-full bg-surface-sunken">
                         <div 
                           className={`h-full rounded-full transition-all ${
                             framework.status === 'compliant' ? 'bg-green-500' :
@@ -392,12 +392,12 @@ export const GlobalComplianceHub: React.FC = () => {
                   key={action.label}
                   variants={itemVariants}
                   onClick={() => navigate(action.path)}
-                  className="flex items-center gap-3 p-4 bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 hover:border-brand-400 transition-all"
+                  className="flex items-center gap-3 rounded-2xl border border-surface-border bg-surface-raised p-4 shadow-soft transition-all hover:border-accent/30 hover:bg-surface-overlay"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <span className="text-2xl">{action.icon}</span>
-                  <span className="text-sm font-medium text-surface-700 dark:text-surface-300">{action.label}</span>
+                  <span className="text-sm font-medium text-text-secondary">{action.label}</span>
                 </motion.button>
               ))}
             </motion.div>
