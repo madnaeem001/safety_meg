@@ -78,11 +78,11 @@ export const PropertyIncidentReport = () => {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-text-muted ml-1">Date of Incident</label>
                 <div className="relative">
-                  <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-400" />
+                  <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
                   <input
                     type="date"
                     required
-                    className="w-full pl-12 pr-4 py-3 bg-surface-100 border border-surface-border rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+                    className="w-full pl-12 pr-4 py-3 bg-surface-sunken border border-surface-border rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none transition-all"
                     value={formData.date}
                     onChange={e => setFormData({...formData, date: e.target.value})}
                   />
@@ -92,11 +92,11 @@ export const PropertyIncidentReport = () => {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-text-muted ml-1">Time</label>
                 <div className="relative">
-                  <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-400" />
+                  <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
                   <input
                     type="time"
                     required
-                    className="w-full pl-12 pr-4 py-3 bg-surface-100 border border-surface-border rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+                    className="w-full pl-12 pr-4 py-3 bg-surface-sunken border border-surface-border rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none transition-all"
                     value={formData.time}
                     onChange={e => setFormData({...formData, time: e.target.value})}
                   />
@@ -106,12 +106,12 @@ export const PropertyIncidentReport = () => {
               <div className="space-y-2 md:col-span-2">
                 <label className="text-sm font-bold text-text-muted ml-1">Location</label>
                 <div className="relative">
-                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-400" />
+                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
                   <input
                     type="text"
                     placeholder="Specific area or facility"
                     required
-                    className="w-full pl-12 pr-4 py-3 bg-surface-100 border border-surface-border rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+                    className="w-full pl-12 pr-4 py-3 bg-surface-sunken border border-surface-border rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none transition-all"
                     value={formData.location}
                     onChange={e => setFormData({...formData, location: e.target.value})}
                   />
@@ -132,7 +132,7 @@ export const PropertyIncidentReport = () => {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-text-muted ml-1">Property Type</label>
                 <select
-                  className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+                  className="w-full px-4 py-3 bg-surface-sunken border border-surface-border rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none transition-all"
                   value={formData.propertyType}
                   onChange={e => setFormData({...formData, propertyType: e.target.value})}
                 >
@@ -147,7 +147,7 @@ export const PropertyIncidentReport = () => {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-text-muted ml-1">Damage Severity</label>
                 <select
-                  className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+                  className="w-full px-4 py-3 bg-surface-sunken border border-surface-border rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none transition-all"
                   value={formData.damageSeverity}
                   onChange={e => setFormData({...formData, damageSeverity: e.target.value})}
                 >
@@ -162,11 +162,11 @@ export const PropertyIncidentReport = () => {
               <div className="space-y-2 md:col-span-2">
                 <label className="text-sm font-bold text-text-muted ml-1">Estimated Loss (USD)</label>
                 <div className="relative">
-                  <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-400" />
+                  <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
                   <input
                     type="number"
                     placeholder="Approximate value of damage"
-                    className="w-full pl-12 pr-4 py-3 bg-surface-100 border border-surface-border rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+                    className="w-full pl-12 pr-4 py-3 bg-surface-sunken border border-surface-border rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none transition-all"
                     value={formData.estimatedLoss}
                     onChange={e => setFormData({...formData, estimatedLoss: e.target.value})}
                   />
@@ -179,7 +179,7 @@ export const PropertyIncidentReport = () => {
                   rows={4}
                   placeholder="Describe what happened and the extent of damage..."
                   required
-                  className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none transition-all resize-none"
+                  className="w-full px-4 py-3 bg-surface-sunken border border-surface-border rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none transition-all resize-none"
                   value={formData.description}
                   onChange={e => setFormData({...formData, description: e.target.value})}
                 />

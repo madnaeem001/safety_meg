@@ -73,7 +73,7 @@ const getSeverityColor = (severity: string) => {
     case 'Low':
       return { bg: 'bg-success/10', text: 'text-success', border: 'border-success/20' };
     default:
-      return { bg: 'bg-surface-100', text: 'text-text-muted', border: 'border-surface-border' };
+      return { bg: 'bg-surface-raised', text: 'text-text-muted', border: 'border-surface-border' };
   }
 };
 
@@ -324,7 +324,7 @@ export const InvestigationReports: React.FC = () => {
                       setExpandedId(isExpanded ? null : Number(item.id.replace('INV-', '')));
                     }
                   }}
-                  className="w-full p-5 text-left flex items-start gap-4 hover:bg-surface-50/50 transition-colors cursor-pointer"
+                  className="w-full p-5 text-left flex items-start gap-4 hover:bg-surface-overlay/50 transition-colors cursor-pointer"
                 >
                   <div className={`flex-shrink-0 w-12 h-12 rounded-2xl ${severityColors.bg} border ${severityColors.border} flex items-center justify-center`}>
                     <AlertTriangle className={`w-5 h-5 ${severityColors.text}`} />
@@ -358,19 +358,19 @@ export const InvestigationReports: React.FC = () => {
                           className={`p-2 rounded-lg transition-colors ${
                             exportingId === item.id
                               ? 'bg-green-100 text-green-600'
-                              : 'bg-surface-100 hover:bg-primary-100 text-surface-500 hover:text-primary-600'
+                              : 'bg-surface-raised hover:bg-accent/10 text-text-muted hover:text-accent'
                           }`}
                           title="Export to Excel"
                         >
                           {exportingId === item.id ? <CheckCircle2 className="w-4 h-4" /> : <Download className="w-4 h-4" />}
                         </motion.button>
                         <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                          <ChevronDown className="w-5 h-5 text-surface-300" />
+                          <ChevronDown className="w-5 h-5 text-text-muted" />
                         </motion.div>
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-3 text-xs text-surface-400">
+                    <div className="flex flex-wrap items-center gap-3 text-xs text-text-muted">
                       <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{item.date}</span>
                       <span className="flex items-center gap-1"><User className="w-3 h-3" />{item.investigator}</span>
                       <span className="flex items-center gap-1"><Building2 className="w-3 h-3" />{item.industry}</span>
@@ -388,10 +388,10 @@ export const InvestigationReports: React.FC = () => {
                       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                       className="overflow-hidden"
                     >
-                      <div className="px-5 pb-5 space-y-5 border-t border-surface-100">
+                      <div className="px-5 pb-5 space-y-5 border-t border-surface-border">
                         <div className="pt-4 flex flex-wrap items-center justify-between gap-3">
                           <div>
-                            <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2">Findings Summary</h4>
+                            <h4 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Findings Summary</h4>
                             <p className="text-sm text-text-primary leading-relaxed">{detailModel.findings}</p>
                           </div>
                           <SMButton
@@ -423,21 +423,21 @@ export const InvestigationReports: React.FC = () => {
                             )}
                           </div>
 
-                          <div className="p-4 bg-surface-50 rounded-2xl border border-surface-200">
-                            <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-3 flex items-center gap-2">
+                          <div className="p-4 bg-surface-50 rounded-2xl border border-surface-border">
+                            <h4 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-3 flex items-center gap-2">
                               <TrendingUp className="w-4 h-4" />Contributing Factors
                             </h4>
                             {detailModel.contributingFactors.length > 0 ? (
                               <ul className="space-y-2">
                                 {detailModel.contributingFactors.map((factor, factorIndex) => (
-                                  <li key={`${detailModel.id}-factor-${factorIndex}`} className="text-sm text-surface-600 flex items-start gap-2">
-                                    <span className="text-surface-400">•</span>
+                                  <li key={`${detailModel.id}-factor-${factorIndex}`} className="text-sm text-text-secondary flex items-start gap-2">
+                                    <span className="text-text-muted">•</span>
                                     {factor}
                                   </li>
                                 ))}
                               </ul>
                             ) : (
-                              <p className="text-sm text-surface-600">No contributing factors saved yet.</p>
+                              <p className="text-sm text-text-secondary">No contributing factors saved yet.</p>
                             )}
                           </div>
                         </div>
@@ -453,7 +453,7 @@ export const InvestigationReports: React.FC = () => {
                                   <div className="flex items-start justify-between gap-3">
                                     <div className="flex-1">
                                       <p className="text-sm font-medium text-text-primary">{action.action}</p>
-                                      <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-surface-500">
+                                      <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-text-muted">
                                         <span className="flex items-center gap-1"><User className="w-3.5 h-3.5" />{action.assignedTo}</span>
                                         <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />Due: {action.dueDate}</span>
                                       </div>
@@ -471,7 +471,7 @@ export const InvestigationReports: React.FC = () => {
                         </div>
 
                         <div>
-                          <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-3 flex items-center gap-2">
+                          <h4 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-3 flex items-center gap-2">
                             <History className="w-4 h-4" />Backend Activity
                           </h4>
                           {detailModel.auditTrail.length > 0 ? (
@@ -479,24 +479,24 @@ export const InvestigationReports: React.FC = () => {
                               {detailModel.auditTrail.map((event, auditIndex) => (
                                 <div key={event.id} className="flex items-start gap-3 relative">
                                   {auditIndex < detailModel.auditTrail.length - 1 && (
-                                    <div className="absolute left-3 top-6 w-px h-full bg-surface-200" />
+                                    <div className="absolute left-3 top-6 w-px h-full bg-surface-raised" />
                                   )}
-                                  <div className="w-6 h-6 rounded-full bg-surface-100 flex items-center justify-center flex-shrink-0 z-10">
-                                    <CheckCircle2 className="w-3.5 h-3.5 text-surface-500" />
+                                  <div className="w-6 h-6 rounded-full bg-surface-raised flex items-center justify-center flex-shrink-0 z-10">
+                                    <CheckCircle2 className="w-3.5 h-3.5 text-text-muted" />
                                   </div>
                                   <div className="flex-1 pb-3">
                                     <div className="flex items-center gap-2">
                                       <span className="font-semibold text-xs text-text-primary">{event.action}</span>
-                                      <span className="text-[10px] text-surface-400">by {event.user}</span>
+                                      <span className="text-[10px] text-text-muted">by {event.user}</span>
                                     </div>
-                                    <p className="text-xs text-surface-500 mt-0.5">{event.details}</p>
+                                    <p className="text-xs text-text-muted mt-0.5">{event.details}</p>
                                     <p className="text-[10px] text-surface-300 mt-1">{new Date(event.timestamp).toLocaleString()}</p>
                                   </div>
                                 </div>
                               ))}
                             </div>
                           ) : (
-                            <p className="text-sm text-surface-500">No backend timeline events are available yet.</p>
+                            <p className="text-sm text-text-muted">No backend timeline events are available yet.</p>
                           )}
                         </div>
                       </div>

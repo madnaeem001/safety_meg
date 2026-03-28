@@ -290,7 +290,7 @@ export const RiskRegister: React.FC = () => {
                   <p className="text-sm text-text-muted mt-1">Backend register items sorted by current risk score.</p>
                 </div>
                 <div className="flex flex-wrap gap-3">
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-50 border border-surface-200 text-sm text-surface-500">
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-raised border border-surface-border text-sm text-text-muted">
                     <Filter className="w-4 h-4" />
                     <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value as RiskStatusFilter)} className="bg-transparent outline-none">
                       <option value="all">All Statuses</option>
@@ -300,7 +300,7 @@ export const RiskRegister: React.FC = () => {
                       <option value="Monitoring">Monitoring</option>
                     </select>
                   </div>
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-50 border border-surface-200 text-sm text-surface-500">
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-raised border border-surface-border text-sm text-text-muted">
                     <select value={riskLevelFilter} onChange={(event) => setRiskLevelFilter(event.target.value as RiskLevelFilter)} className="bg-transparent outline-none">
                       <option value="all">All Levels</option>
                       <option value="Low">Low</option>
@@ -318,7 +318,7 @@ export const RiskRegister: React.FC = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-left">
                   <thead>
-                    <tr className="border-b border-surface-50">
+                    <tr className="border-b border-surface-border">
                       <th className="pb-4 text-xs font-semibold text-text-muted uppercase tracking-widest">Hazard</th>
                       <th className="pb-4 text-xs font-semibold text-text-muted uppercase tracking-widest text-center">L x S</th>
                       <th className="pb-4 text-xs font-semibold text-text-muted uppercase tracking-widest text-center">Score</th>
@@ -332,14 +332,14 @@ export const RiskRegister: React.FC = () => {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.03 }}
-                        className={`group transition-colors cursor-pointer ${selectedRiskId === risk.id ? 'bg-accent-50/70' : 'hover:bg-surface-50/50'}`}
+                        className={`group transition-colors cursor-pointer ${selectedRiskId === risk.id ? 'bg-accent/10' : 'hover:bg-surface-overlay/50'}`}
                         onClick={() => setSelectedRiskId(risk.id)}
                       >
                         <td className="py-4">
                           <div className="font-bold text-text-primary text-sm">{risk.hazard}</div>
                           <div className="text-xs text-text-muted mt-0.5">{risk.consequence}</div>
                         </td>
-                        <td className="py-4 text-center text-xs font-medium text-surface-600">
+                        <td className="py-4 text-center text-xs font-medium text-text-secondary">
                           {risk.likelihood} x {risk.severity}
                         </td>
                         <td className="py-4 text-center">
@@ -400,22 +400,22 @@ export const RiskRegister: React.FC = () => {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-                    <div className="p-4 rounded-2xl bg-surface-50 border border-surface-100">
+                    <div className="p-4 rounded-2xl bg-surface-raised border border-surface-border">
                       <div className="flex items-center gap-2 text-text-muted text-xs uppercase tracking-widest font-semibold"><Activity className="w-3 h-3" />Likelihood</div>
                       <div className="text-xl font-bold text-text-primary mt-2">{selectedRisk.likelihood}</div>
                       <div className="text-xs text-text-muted">{selectedRisk.likelihoodLabel || 'Risk likelihood'}</div>
                     </div>
-                    <div className="p-4 rounded-2xl bg-surface-50 border border-surface-100">
+                    <div className="p-4 rounded-2xl bg-surface-raised border border-surface-border">
                       <div className="flex items-center gap-2 text-text-muted text-xs uppercase tracking-widest font-semibold"><ShieldAlert className="w-3 h-3" />Severity</div>
                       <div className="text-xl font-bold text-text-primary mt-2">{selectedRisk.severity}</div>
                       <div className="text-xs text-text-muted">{selectedRisk.severityLabel || 'Risk severity'}</div>
                     </div>
-                    <div className="p-4 rounded-2xl bg-surface-50 border border-surface-100">
+                    <div className="p-4 rounded-2xl bg-surface-raised border border-surface-border">
                       <div className="flex items-center gap-2 text-text-muted text-xs uppercase tracking-widest font-semibold"><Target className="w-3 h-3" />Owner</div>
                       <div className="text-xl font-bold text-text-primary mt-2">{selectedRisk.responsiblePerson || 'Unassigned'}</div>
                       <div className="text-xs text-text-muted">{selectedRisk.controlType || 'No control type'}</div>
                     </div>
-                    <div className="p-4 rounded-2xl bg-surface-50 border border-surface-100">
+                    <div className="p-4 rounded-2xl bg-surface-raised border border-surface-border">
                       <div className="flex items-center gap-2 text-text-muted text-xs uppercase tracking-widest font-semibold"><Clock className="w-3 h-3" />Target Date</div>
                       <div className="text-xl font-bold text-text-primary mt-2">{formatDate(selectedRisk.targetDate)}</div>
                       <div className="text-xs text-text-muted">Due for mitigation review</div>
@@ -423,17 +423,17 @@ export const RiskRegister: React.FC = () => {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="p-5 rounded-2xl bg-surface-50 border border-surface-100">
+                    <div className="p-5 rounded-2xl bg-surface-raised border border-surface-border">
                       <div className="flex items-center gap-2 text-text-primary font-bold mb-2"><MapPin className="w-4 h-4" />Location</div>
                       <div className="text-sm text-text-secondary">{selectedRisk.location || 'No location assigned'}</div>
                     </div>
-                    <div className="p-5 rounded-2xl bg-surface-50 border border-surface-100">
+                    <div className="p-5 rounded-2xl bg-surface-raised border border-surface-border">
                       <div className="flex items-center gap-2 text-text-primary font-bold mb-2"><User className="w-4 h-4" />Department</div>
                       <div className="text-sm text-text-secondary">{selectedRisk.department || 'No department assigned'}</div>
                     </div>
                   </div>
 
-                  <div className="p-5 rounded-2xl bg-surface-50 border border-surface-100">
+                  <div className="p-5 rounded-2xl bg-surface-raised border border-surface-border">
                     <div className="text-text-primary font-bold mb-2">Mitigation Strategy</div>
                     <div className="text-sm text-text-secondary whitespace-pre-wrap">{selectedRisk.mitigation || 'No mitigation plan recorded yet.'}</div>
                   </div>

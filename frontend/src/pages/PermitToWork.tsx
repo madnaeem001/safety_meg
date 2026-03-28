@@ -260,14 +260,14 @@ export const PermitToWork = () => {
   const actionBusy = creatingPermit || updatingPermit || approvingPermit || rejectingPermit || deletingPermit;
 
   return (
-    <div className="min-h-screen bg-surface-50 pb-20">
-      <header className="sticky top-[var(--nav-height)] z-40 border-b border-surface-200/70 bg-white/85 px-6 py-4 backdrop-blur-xl">
+    <div className="min-h-screen bg-surface-base pb-20">
+      <header className="sticky top-[var(--nav-height)] z-40 border-b border-surface-border bg-surface-overlay/85 px-6 py-4 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <SMButton variant="ghost" size="sm" leftIcon={<ArrowLeft className="h-5 w-5" />} onClick={() => navigate('/')} aria-label="Back to home" />
             <div>
-              <h1 className="text-xl font-bold text-surface-900">Permit to Work</h1>
-              <p className="text-sm text-surface-500">Live backend workflow for permit creation, approval, activation, and closure.</p>
+              <h1 className="text-xl font-bold text-text-primary">Permit to Work</h1>
+              <p className="text-sm text-text-muted">Live backend workflow for permit creation, approval, activation, and closure.</p>
             </div>
           </div>
 
@@ -301,12 +301,12 @@ export const PermitToWork = () => {
               initial={{ opacity: 0, y: -12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
-              className="rounded-[2rem] border border-surface-200 bg-white p-6 shadow-soft"
+              className="rounded-[2rem] border border-surface-border bg-surface-raised p-6 shadow-soft"
             >
               <div className="mb-6 flex items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-lg font-bold text-surface-900">Create Permit</h2>
-                  <p className="text-sm text-surface-500">New permits are created as drafts and can then move through approval and activation.</p>
+                  <h2 className="text-lg font-bold text-text-primary">Create Permit</h2>
+                  <p className="text-sm text-text-muted">New permits are created as drafts and can then move through approval and activation.</p>
                 </div>
               </div>
 
@@ -439,7 +439,7 @@ export const PermitToWork = () => {
           )}
         </AnimatePresence>
 
-        <section className="rounded-[2rem] border border-surface-200 bg-white p-5 shadow-soft">
+        <section className="rounded-[2rem] border border-surface-border bg-surface-raised p-5 shadow-soft">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
             <SMSelect
               label="Status"
@@ -480,8 +480,8 @@ export const PermitToWork = () => {
         <section className="grid grid-cols-1 gap-8 xl:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-4">
             <div>
-              <h2 className="text-lg font-bold text-surface-900">Live Permit Queue</h2>
-              <p className="text-sm text-surface-500">{loading ? 'Loading permits...' : `${permits.length} permits matched`}</p>
+              <h2 className="text-lg font-bold text-text-primary">Live Permit Queue</h2>
+              <p className="text-sm text-text-muted">{loading ? 'Loading permits...' : `${permits.length} permits matched`}</p>
             </div>
 
             {permits.map((permit) => (
@@ -493,16 +493,16 @@ export const PermitToWork = () => {
                 className={`w-full rounded-[2rem] border p-5 text-left shadow-soft transition-all ${
                   selectedPermitId === permit.id
                     ? 'border-brand-300 bg-brand-50/40'
-                    : 'border-surface-200 bg-white hover:border-brand-200 hover:bg-surface-50'
+                    : 'border-surface-border bg-surface-raised hover:border-accent/30 hover:bg-surface-overlay'
                 }`}
               >
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                   <div className="space-y-3">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="text-base font-bold text-surface-900">{permit.title}</h3>
-                      <span className="text-xs font-semibold text-surface-400">{permit.permitNumber}</span>
+                      <h3 className="text-base font-bold text-text-primary">{permit.title}</h3>
+                      <span className="text-xs font-semibold text-text-muted">{permit.permitNumber}</span>
                     </div>
-                    <div className="flex flex-wrap items-center gap-3 text-sm text-surface-500">
+                    <div className="flex flex-wrap items-center gap-3 text-sm text-text-muted">
                       <span className="inline-flex items-center gap-1"><ClipboardCheck className="h-4 w-4" />{getPermitTypeLabel(permit.permitType)}</span>
                       <span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4" />{permit.location}</span>
                       <span className="inline-flex items-center gap-1"><Clock className="h-4 w-4" />{getTimeRemaining(permit.endDate)}</span>
@@ -519,26 +519,26 @@ export const PermitToWork = () => {
 
             {!loading && permits.length === 0 && (
               <div className="rounded-[2rem] border border-dashed border-surface-300 bg-white p-10 text-center shadow-soft">
-                <h3 className="text-lg font-semibold text-surface-900">No permits found</h3>
-                <p className="mt-2 text-sm text-surface-500">Adjust the filters or create the first live permit.</p>
+                <h3 className="text-lg font-semibold text-text-primary">No permits found</h3>
+                <p className="mt-2 text-sm text-text-muted">Adjust the filters or create the first live permit.</p>
               </div>
             )}
           </div>
 
-          <div className="rounded-[2rem] border border-surface-200 bg-white p-6 shadow-soft">
+          <div className="rounded-[2rem] border border-surface-border bg-surface-raised p-6 shadow-soft">
             {!selectedPermitId || !selectedPermit ? (
               <div className="flex min-h-[420px] flex-col items-center justify-center text-center">
                 <FileCheck className="h-12 w-12 text-surface-300" />
-                <h3 className="mt-4 text-lg font-semibold text-surface-900">Select a permit</h3>
-                <p className="mt-2 max-w-sm text-sm text-surface-500">Choose a permit from the queue to review details, approvals, PPE, and status transitions.</p>
+                <h3 className="mt-4 text-lg font-semibold text-text-primary">Select a permit</h3>
+                <p className="mt-2 max-w-sm text-sm text-text-muted">Choose a permit from the queue to review details, approvals, PPE, and status transitions.</p>
               </div>
             ) : (
               <div className="space-y-6">
                 <div className="flex flex-col gap-4 border-b border-surface-200 pb-5">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-surface-400">{selectedPermit.permitNumber}</p>
-                      <h2 className="mt-2 text-2xl font-bold text-surface-900">{selectedPermit.title}</h2>
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-muted">{selectedPermit.permitNumber}</p>
+                      <h2 className="mt-2 text-2xl font-bold text-text-primary">{selectedPermit.title}</h2>
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                       <SMBadge variant={getStatusVariant(selectedPermit.status)}>{formatStatus(selectedPermit.status)}</SMBadge>
@@ -547,12 +547,12 @@ export const PermitToWork = () => {
                   </div>
 
                   <div className="grid grid-cols-1 gap-3 text-sm text-surface-600 md:grid-cols-2">
-                    <div className="inline-flex items-center gap-2"><ClipboardCheck className="h-4 w-4 text-surface-400" />{getPermitTypeLabel(selectedPermit.permitType)}</div>
-                    <div className="inline-flex items-center gap-2"><MapPin className="h-4 w-4 text-surface-400" />{selectedPermit.location}</div>
-                    <div className="inline-flex items-center gap-2"><User className="h-4 w-4 text-surface-400" />{selectedPermit.requestedBy || 'Unassigned requester'}</div>
-                    <div className="inline-flex items-center gap-2"><Building2 className="h-4 w-4 text-surface-400" />{selectedPermit.department || 'No department'}</div>
-                    <div className="inline-flex items-center gap-2"><CalendarDays className="h-4 w-4 text-surface-400" />Start: {formatDate(selectedPermit.startDate)}</div>
-                    <div className="inline-flex items-center gap-2"><Clock className="h-4 w-4 text-surface-400" />End: {formatDate(selectedPermit.endDate)}</div>
+                    <div className="inline-flex items-center gap-2"><ClipboardCheck className="h-4 w-4 text-text-muted" />{getPermitTypeLabel(selectedPermit.permitType)}</div>
+                    <div className="inline-flex items-center gap-2"><MapPin className="h-4 w-4 text-text-muted" />{selectedPermit.location}</div>
+                    <div className="inline-flex items-center gap-2"><User className="h-4 w-4 text-text-muted" />{selectedPermit.requestedBy || 'Unassigned requester'}</div>
+                    <div className="inline-flex items-center gap-2"><Building2 className="h-4 w-4 text-text-muted" />{selectedPermit.department || 'No department'}</div>
+                    <div className="inline-flex items-center gap-2"><CalendarDays className="h-4 w-4 text-text-muted" />Start: {formatDate(selectedPermit.startDate)}</div>
+                    <div className="inline-flex items-center gap-2"><Clock className="h-4 w-4 text-text-muted" />End: {formatDate(selectedPermit.endDate)}</div>
                   </div>
                 </div>
 
@@ -627,67 +627,67 @@ export const PermitToWork = () => {
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div className="rounded-[1.5rem] bg-surface-50 p-4">
-                    <h3 className="text-sm font-semibold text-surface-900">Description</h3>
+                    <h3 className="text-sm font-semibold text-text-primary">Description</h3>
                     <p className="mt-2 text-sm leading-6 text-surface-600">{selectedPermit.description || 'No description provided.'}</p>
                   </div>
 
                   <div className="rounded-[1.5rem] bg-surface-50 p-4">
-                    <h3 className="text-sm font-semibold text-surface-900">Emergency Procedure</h3>
+                    <h3 className="text-sm font-semibold text-text-primary">Emergency Procedure</h3>
                     <p className="mt-2 text-sm leading-6 text-surface-600">{selectedPermit.emergencyProcedure || 'No emergency procedure recorded.'}</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                   <div>
-                    <h3 className="text-sm font-semibold text-surface-900">PPE Required</h3>
+                    <h3 className="text-sm font-semibold text-text-primary">PPE Required</h3>
                     <div className="mt-3 flex flex-wrap gap-2">
                       {selectedPermit.ppeRequired.length ? selectedPermit.ppeRequired.map((item) => (
                         <span key={item} className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">{item}</span>
-                      )) : <span className="text-sm text-surface-500">No PPE listed</span>}
+                      )) : <span className="text-sm text-text-muted">No PPE listed</span>}
                     </div>
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-semibold text-surface-900">Precautions</h3>
+                    <h3 className="text-sm font-semibold text-text-primary">Precautions</h3>
                     <div className="mt-3 flex flex-wrap gap-2">
                       {selectedPermit.precautions.length ? selectedPermit.precautions.map((item) => (
                         <span key={item} className="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">{item}</span>
-                      )) : <span className="text-sm text-surface-500">No precautions listed</span>}
+                      )) : <span className="text-sm text-text-muted">No precautions listed</span>}
                     </div>
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-semibold text-surface-900">Linked Sensors</h3>
+                    <h3 className="text-sm font-semibold text-text-primary">Linked Sensors</h3>
                     <div className="mt-3 flex flex-wrap gap-2">
                       {selectedPermit.iotSensorIds.length ? selectedPermit.iotSensorIds.map((item) => (
                         <span key={item} className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">{item}</span>
-                      )) : <span className="text-sm text-surface-500">No sensors linked</span>}
+                      )) : <span className="text-sm text-text-muted">No sensors linked</span>}
                     </div>
                   </div>
                 </div>
 
                 <div className="rounded-[1.5rem] border border-surface-200 p-4">
-                  <h3 className="text-sm font-semibold text-surface-900">Approval Trail</h3>
+                  <h3 className="text-sm font-semibold text-text-primary">Approval Trail</h3>
                   <div className="mt-4 space-y-3">
                     {selectedPermit.approvals?.length ? selectedPermit.approvals.map((approval) => (
                       <div key={approval.id} className="rounded-2xl bg-surface-50 p-4">
                         <div className="flex flex-wrap items-center justify-between gap-3">
                           <div>
-                            <p className="text-sm font-semibold text-surface-900">{approval.approverName}</p>
-                            <p className="text-xs text-surface-500">{approval.approverRole || 'Reviewer'} • {formatDate(approval.approvedAt || approval.createdAt)}</p>
+                            <p className="text-sm font-semibold text-text-primary">{approval.approverName}</p>
+                            <p className="text-xs text-text-muted">{approval.approverRole || 'Reviewer'} • {formatDate(approval.approvedAt || approval.createdAt)}</p>
                           </div>
                           <SMBadge variant={approval.status === 'approved' ? 'success' : 'danger'}>{formatStatus(approval.status)}</SMBadge>
                         </div>
                         {approval.comments && <p className="mt-3 text-sm text-surface-600">{approval.comments}</p>}
                       </div>
-                    )) : <p className="text-sm text-surface-500">No approvals recorded yet.</p>}
+                    )) : <p className="text-sm text-text-muted">No approvals recorded yet.</p>}
                   </div>
                 </div>
 
                 <div className="rounded-[1.5rem] bg-surface-50 p-4 text-sm text-surface-600">
-                  <p><span className="font-semibold text-surface-900">Created:</span> {formatDate(selectedPermit.createdAt)}</p>
-                  <p className="mt-2"><span className="font-semibold text-surface-900">Updated:</span> {detailLoading ? 'Refreshing...' : formatDate(selectedPermit.updatedAt)}</p>
-                  <p className="mt-2"><span className="font-semibold text-surface-900">Notes:</span> {selectedPermit.notes || 'No notes recorded.'}</p>
+                  <p><span className="font-semibold text-text-primary">Created:</span> {formatDate(selectedPermit.createdAt)}</p>
+                  <p className="mt-2"><span className="font-semibold text-text-primary">Updated:</span> {detailLoading ? 'Refreshing...' : formatDate(selectedPermit.updatedAt)}</p>
+                  <p className="mt-2"><span className="font-semibold text-text-primary">Notes:</span> {selectedPermit.notes || 'No notes recorded.'}</p>
                 </div>
               </div>
             )}
