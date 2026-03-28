@@ -54,11 +54,11 @@ export const StageStepper: React.FC<StageStepperProps> = ({
   const isHorizontal = orientation === 'horizontal';
 
   return (
-    <div className={`${isHorizontal ? 'w-full overflow-x-auto pb-2' : ''}`}>
+    <div className={`${isHorizontal ? 'w-full overflow-x-auto pt-2 pb-3' : ''}`}>
       <div
         className={`${
           isHorizontal
-            ? 'flex items-start gap-1 min-w-max px-1'
+            ? 'flex items-stretch gap-2 min-w-max pr-4'
             : 'flex flex-col gap-2'
         }`}
       >
@@ -75,7 +75,7 @@ export const StageStepper: React.FC<StageStepperProps> = ({
                 whileTap={{ scale: 0.98 }}
                 onClick={() => onStageClick(stage.id)}
                 className={`
-                  relative flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-200
+                  relative flex items-center justify-start gap-2.5 min-w-[132px] xl:min-w-[144px] px-3 py-3 rounded-xl transition-all duration-200
                   ${isActive
                     ? `${colors.activeBg} text-white shadow-lg`
                     : `${colors.bg} ${colors.border} border ${colors.text} hover:shadow-md`
@@ -92,9 +92,9 @@ export const StageStepper: React.FC<StageStepperProps> = ({
                   )}
                 </div>
                 
-                <div className={`${isHorizontal ? 'hidden sm:block' : ''} text-left`}>
+                <div className={`${isHorizontal ? 'block' : ''} text-left min-w-0`}>
                   <div className={`text-xs font-semibold ${isActive ? 'text-white' : colors.text}`}>
-                    {stage.shortName}
+                    <span className="block truncate whitespace-nowrap">{stage.shortName}</span>
                   </div>
                   {!isHorizontal && (
                     <div className={`text-[10px] ${isActive ? 'text-white/80' : 'text-surface-500'}`}>
@@ -105,7 +105,7 @@ export const StageStepper: React.FC<StageStepperProps> = ({
 
                 {count > 0 && (
                   <span className={`
-                    absolute -top-1 -right-1 flex items-center justify-center
+                    absolute top-1 right-1 flex items-center justify-center
                     min-w-[18px] h-[18px] px-1 text-[10px] font-bold rounded-full
                     ${isActive ? 'bg-white text-gray-800' : `${colors.activeBg} text-white`}
                   `}>
@@ -116,7 +116,7 @@ export const StageStepper: React.FC<StageStepperProps> = ({
 
               {/* Connector Arrow */}
               {index < workflowStages.length - 1 && isHorizontal && (
-                <div className="flex items-center justify-center flex-shrink-0 px-1">
+                <div className="flex items-center justify-center flex-shrink-0 px-0.5">
                   <ChevronRight className="w-4 h-4 text-surface-300" />
                 </div>
               )}

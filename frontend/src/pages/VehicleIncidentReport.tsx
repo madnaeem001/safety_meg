@@ -113,7 +113,7 @@ export const VehicleIncidentReport: React.FC = () => {
             <CheckCircle2 className="w-10 h-10 text-emerald-600" />
           </div>
           <h2 className="text-2xl font-bold text-text-primary">Report Submitted</h2>
-          <p className="text-surface-500 text-sm">Vehicle incident report has been logged and fleet management notified.</p>
+          <p className="text-text-muted text-sm">Vehicle incident report has been logged and fleet management notified.</p>
         </motion.div>
       </div>
     );
@@ -139,7 +139,7 @@ export const VehicleIncidentReport: React.FC = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border space-y-4">
             <h3 className="font-bold text-text-primary flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-brand-500" />
+              <Calendar className="w-5 h-5 text-accent" />
               Incident Information
             </h3>
             
@@ -148,19 +148,19 @@ export const VehicleIncidentReport: React.FC = () => {
                 <label className="text-xs font-bold text-text-muted uppercase">Date</label>
                 <input type="date" required value={formData.date}
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary" />
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary" />
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold text-text-muted uppercase">Time</label>
                 <input type="time" value={formData.time}
                   onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary" />
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary" />
               </div>
               <div className="space-y-2 col-span-2">
                 <label className="text-xs font-bold text-text-muted uppercase">Location/Address</label>
                 <input type="text" required placeholder="Street address or GPS coordinates" value={formData.location}
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary" />
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary" />
               </div>
             </div>
 
@@ -169,7 +169,7 @@ export const VehicleIncidentReport: React.FC = () => {
                 <label className="text-xs font-bold text-text-muted uppercase">Incident Type</label>
                 <select required value={formData.incidentType}
                   onChange={(e) => setFormData({ ...formData, incidentType: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary">
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary">
                   <option value="">Select Type</option>
                   {INCIDENT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
@@ -178,7 +178,7 @@ export const VehicleIncidentReport: React.FC = () => {
                 <label className="text-xs font-bold text-text-muted uppercase">Damage Severity</label>
                 <select required value={formData.damageSeverity}
                   onChange={(e) => setFormData({ ...formData, damageSeverity: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary">
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary">
                   <option value="">Select Severity</option>
                   {DAMAGE_SEVERITY.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
@@ -187,7 +187,7 @@ export const VehicleIncidentReport: React.FC = () => {
                 <label className="text-xs font-bold text-text-muted uppercase">Est. Repair Cost</label>
                 <input type="text" placeholder="$0.00" value={formData.estimatedCost}
                   onChange={(e) => setFormData({ ...formData, estimatedCost: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary" />
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary" />
               </div>
             </div>
           </motion.div>
@@ -196,7 +196,7 @@ export const VehicleIncidentReport: React.FC = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
             className="bg-surface-raised p-6 rounded-3xl shadow-soft border border-surface-border space-y-4">
             <h3 className="font-bold text-text-primary flex items-center gap-2">
-              <User className="w-5 h-5 text-brand-500" />
+              <User className="w-5 h-5 text-accent" />
               Driver Information
             </h3>
             
@@ -205,24 +205,24 @@ export const VehicleIncidentReport: React.FC = () => {
                 <label className="text-xs font-bold text-text-muted uppercase">Driver Name</label>
                 <input type="text" required placeholder="Full Name" value={formData.driver}
                   onChange={(e) => setFormData({ ...formData, driver: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary" />
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary" />
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold text-text-muted uppercase">Employee ID</label>
                 <input type="text" placeholder="EMP-XXXX" value={formData.employeeId}
                   onChange={(e) => setFormData({ ...formData, employeeId: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary" />
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary" />
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold text-text-muted uppercase">License #</label>
                 <input type="text" placeholder="Driver's License" value={formData.licenseNumber}
                   onChange={(e) => setFormData({ ...formData, licenseNumber: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary" />
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary" />
               </div>
             </div>
 
             <h4 className="font-semibold text-text-primary mt-4 flex items-center gap-2">
-              <Truck className="w-4 h-4 text-brand-500" />
+              <Truck className="w-4 h-4 text-accent" />
               Vehicle Details
             </h4>
             
@@ -231,7 +231,7 @@ export const VehicleIncidentReport: React.FC = () => {
                 <label className="text-xs font-bold text-text-muted uppercase">Vehicle Type</label>
                 <select value={formData.vehicleType}
                   onChange={(e) => setFormData({ ...formData, vehicleType: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary">
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary">
                   <option value="">Select Type</option>
                   {VEHICLE_TYPES.map(v => <option key={v} value={v}>{v}</option>)}
                 </select>
@@ -240,37 +240,37 @@ export const VehicleIncidentReport: React.FC = () => {
                 <label className="text-xs font-bold text-text-muted uppercase">Vehicle ID</label>
                 <input type="text" placeholder="Fleet #" value={formData.vehicleId}
                   onChange={(e) => setFormData({ ...formData, vehicleId: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary" />
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary" />
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold text-text-muted uppercase">Make</label>
                 <input type="text" placeholder="Ford, Toyota..." value={formData.make}
                   onChange={(e) => setFormData({ ...formData, make: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary" />
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary" />
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold text-text-muted uppercase">Model</label>
                 <input type="text" placeholder="F-150, Camry..." value={formData.model}
                   onChange={(e) => setFormData({ ...formData, model: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary" />
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary" />
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold text-text-muted uppercase">Year</label>
                 <input type="text" placeholder="2024" value={formData.year}
                   onChange={(e) => setFormData({ ...formData, year: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary" />
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary" />
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold text-text-muted uppercase">License Plate</label>
                 <input type="text" placeholder="ABC-1234" value={formData.licensePlate}
                   onChange={(e) => setFormData({ ...formData, licensePlate: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary" />
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary" />
               </div>
               <div className="space-y-2 col-span-2">
                 <label className="text-xs font-bold text-text-muted uppercase">Odometer Reading</label>
                 <input type="text" placeholder="Miles at time of incident" value={formData.mileage}
                   onChange={(e) => setFormData({ ...formData, mileage: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary" />
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary" />
               </div>
             </div>
           </motion.div>
@@ -285,7 +285,7 @@ export const VehicleIncidentReport: React.FC = () => {
                 <label className="text-xs font-bold text-text-muted uppercase">Road Condition</label>
                 <select value={formData.roadCondition}
                   onChange={(e) => setFormData({ ...formData, roadCondition: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary">
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary">
                   <option value="">Select</option>
                   {ROAD_CONDITIONS.map(r => <option key={r} value={r}>{r}</option>)}
                 </select>
@@ -294,7 +294,7 @@ export const VehicleIncidentReport: React.FC = () => {
                 <label className="text-xs font-bold text-text-muted uppercase">Lighting</label>
                 <select value={formData.lighting}
                   onChange={(e) => setFormData({ ...formData, lighting: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary">
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary">
                   <option value="">Select</option>
                   {LIGHTING_CONDITIONS.map(l => <option key={l} value={l}>{l}</option>)}
                 </select>
@@ -303,13 +303,13 @@ export const VehicleIncidentReport: React.FC = () => {
                 <label className="text-xs font-bold text-text-muted uppercase">Speed Limit</label>
                 <input type="text" placeholder="MPH" value={formData.speedLimit}
                   onChange={(e) => setFormData({ ...formData, speedLimit: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary" />
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary" />
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold text-text-muted uppercase">Est. Speed</label>
                 <input type="text" placeholder="MPH" value={formData.estimatedSpeed}
                   onChange={(e) => setFormData({ ...formData, estimatedSpeed: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm text-text-primary" />
+                  className="w-full px-3 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary" />
               </div>
             </div>
           </motion.div>
@@ -323,22 +323,22 @@ export const VehicleIncidentReport: React.FC = () => {
               <label className="text-xs font-bold text-text-muted uppercase">Detailed Description</label>
               <textarea required rows={4} placeholder="Describe what happened..." value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl text-sm resize-none text-text-primary" />
+                className="w-full px-4 py-3 bg-surface-sunken border border-surface-border rounded-xl text-sm resize-none text-text-primary" />
             </div>
 
             <div className="space-y-2">
               <label className="text-xs font-bold text-text-muted uppercase">Other Vehicles/Property Involved</label>
               <textarea rows={2} placeholder="Describe other vehicles, property damage, third parties..." value={formData.otherVehicles}
                 onChange={(e) => setFormData({ ...formData, otherVehicles: e.target.value })}
-                className="w-full px-4 py-3 bg-surface-100 border border-surface-border rounded-xl text-sm resize-none text-text-primary" />
+                className="w-full px-4 py-3 bg-surface-sunken border border-surface-border rounded-xl text-sm resize-none text-text-primary" />
             </div>
 
             {/* Checkboxes */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="flex items-center gap-3 p-4 bg-surface-100 rounded-xl">
+              <div className="flex items-center gap-3 p-4 bg-surface-raised rounded-xl">
                 <input type="checkbox" id="police" checked={formData.policeReport}
                   onChange={(e) => setFormData({ ...formData, policeReport: e.target.checked })}
-                  className="w-5 h-5 text-brand-600 border-surface-300 rounded" />
+                  className="w-5 h-5 text-accent border-surface-border rounded" />
                 <label htmlFor="police" className="text-sm font-medium text-text-primary">Police Report Filed</label>
               </div>
               <div className="flex items-center gap-3 p-4 bg-danger/5 rounded-xl border border-danger/15">

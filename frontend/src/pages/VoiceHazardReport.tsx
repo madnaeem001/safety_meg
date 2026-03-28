@@ -136,7 +136,7 @@ export const VoiceHazardReport: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 dark:bg-surface-900 pb-20">
+    <div className="min-h-screen bg-surface-base pb-20">
       {/* Header */}
       <div className="bg-gradient-to-br from-amber-600 via-orange-500 to-red-500 pt-12 pb-6 px-4 safe-top">
         <div className="flex items-center gap-3 mb-4">
@@ -179,7 +179,7 @@ export const VoiceHazardReport: React.FC = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="mx-4 mt-4 p-3 bg-red-100 border border-red-200 rounded-xl flex items-center gap-3"
+            className="mx-4 mt-4 p-3 bg-danger/10 border border-danger/30 rounded-xl flex items-center gap-3"
           >
             <div className="relative">
               <span className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-75" />
@@ -188,7 +188,7 @@ export const VoiceHazardReport: React.FC = () => {
             <div className="flex-1">
               <p className="text-sm font-medium text-red-800">Listening for {activeField}...</p>
               {interimTranscript && (
-                <p className="text-xs text-red-600 italic">"{interimTranscript}"</p>
+                <p className="text-xs text-danger italic">"{interimTranscript}"</p>
               )}
             </div>
             <button
@@ -279,7 +279,7 @@ export const VoiceHazardReport: React.FC = () => {
                     value={report.location || ''}
                     onChange={(e) => setReport(prev => ({ ...prev, location: e.target.value }))}
                     placeholder="e.g., Warehouse Section B, near loading dock..."
-                    className="w-full h-32 p-4 pr-14 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full h-32 p-4 pr-14 bg-surface-raised border border-surface-border rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-amber-500 text-text-primary"
                   />
                   {isSupported && (
                     <button
@@ -304,7 +304,7 @@ export const VoiceHazardReport: React.FC = () => {
                 <div className="flex gap-3">
                   <button
                     onClick={() => setStep('type')}
-                    className="flex-1 py-3 bg-surface-100 dark:bg-surface-800 text-surface-700 dark:text-surface-300 rounded-xl font-medium"
+                    className="flex-1 py-3 bg-surface-raised text-text-secondary rounded-xl font-medium"
                   >
                     Back
                   </button>
@@ -338,7 +338,7 @@ export const VoiceHazardReport: React.FC = () => {
                     value={report.description || ''}
                     onChange={(e) => setReport(prev => ({ ...prev, description: e.target.value }))}
                     placeholder="Describe the hazard condition, what caused it, and any immediate risks..."
-                    className="w-full h-40 p-4 pr-14 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full h-40 p-4 pr-14 bg-surface-raised border border-surface-border rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-amber-500 text-text-primary"
                   />
                   {isSupported && (
                     <button
@@ -363,7 +363,7 @@ export const VoiceHazardReport: React.FC = () => {
                 <div className="flex gap-3">
                   <button
                     onClick={() => setStep('location')}
-                    className="flex-1 py-3 bg-surface-100 dark:bg-surface-800 text-surface-700 dark:text-surface-300 rounded-xl font-medium"
+                    className="flex-1 py-3 bg-surface-raised text-text-secondary rounded-xl font-medium"
                   >
                     Back
                   </button>
@@ -412,7 +412,7 @@ export const VoiceHazardReport: React.FC = () => {
                         className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
                           report.severity === level
                             ? `${config.borderColor} ${config.bgColor}`
-                            : 'border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-800'
+                            : 'border-surface-border bg-surface-raised'
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1">
@@ -421,15 +421,15 @@ export const VoiceHazardReport: React.FC = () => {
                             {level === 'critical' ? '🚨' : level === 'high' ? '⚠️' : level === 'medium' ? '📋' : '💡'}
                           </span>
                         </div>
-                        <p className="text-sm text-surface-600 dark:text-surface-400">{descriptions[level]}</p>
+                        <p className="text-sm text-text-muted">{descriptions[level]}</p>
                       </button>
                     );
                   })}
                 </div>
 
-                <button
+                  <button
                   onClick={() => setStep('description')}
-                  className="w-full py-3 bg-surface-100 dark:bg-surface-800 text-surface-700 dark:text-surface-300 rounded-xl font-medium"
+                  className="w-full py-3 bg-surface-raised text-text-secondary rounded-xl font-medium"
                 >
                   Back
                 </button>
@@ -449,26 +449,26 @@ export const VoiceHazardReport: React.FC = () => {
                   Review your report
                 </h2>
 
-                <div className="bg-white dark:bg-surface-800 rounded-xl p-4 space-y-4 border border-surface-200 dark:border-surface-700">
+                <div className="bg-surface-raised rounded-xl p-4 space-y-4 border border-surface-border">
                   <div>
-                    <p className="text-xs font-semibold text-surface-500 uppercase">Hazard Type</p>
-                    <p className="font-medium text-surface-900 dark:text-surface-100">
+                    <p className="text-xs font-semibold text-text-muted uppercase">Hazard Type</p>
+                    <p className="font-medium text-text-primary">
                       {hazardTypes.find(t => t.id === report.type)?.icon} {hazardTypes.find(t => t.id === report.type)?.label}
                     </p>
                   </div>
 
                   <div>
-                    <p className="text-xs font-semibold text-surface-500 uppercase">Location</p>
-                    <p className="text-surface-700 dark:text-surface-300">{report.location}</p>
+                    <p className="text-xs font-semibold text-text-muted uppercase">Location</p>
+                    <p className="text-text-secondary">{report.location}</p>
                   </div>
 
                   <div>
-                    <p className="text-xs font-semibold text-surface-500 uppercase">Description</p>
-                    <p className="text-surface-700 dark:text-surface-300">{report.description}</p>
+                    <p className="text-xs font-semibold text-text-muted uppercase">Description</p>
+                    <p className="text-text-secondary">{report.description}</p>
                   </div>
 
                   <div>
-                    <p className="text-xs font-semibold text-surface-500 uppercase">Severity</p>
+                    <p className="text-xs font-semibold text-text-muted uppercase">Severity</p>
                     {report.severity && (
                       <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium capitalize ${severityConfig[report.severity].bgColor} ${severityConfig[report.severity].color}`}>
                         {report.severity}
@@ -480,7 +480,7 @@ export const VoiceHazardReport: React.FC = () => {
                 <div className="flex gap-3">
                   <button
                     onClick={() => setStep('severity')}
-                    className="flex-1 py-3 bg-surface-100 dark:bg-surface-800 text-surface-700 dark:text-surface-300 rounded-xl font-medium"
+                    className="flex-1 py-3 bg-surface-raised text-text-secondary rounded-xl font-medium"
                   >
                     Edit
                   </button>
@@ -521,7 +521,7 @@ export const VoiceHazardReport: React.FC = () => {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              className="bg-white dark:bg-surface-800 rounded-2xl p-6 w-full max-w-sm text-center"
+              className="bg-surface-overlay rounded-2xl p-6 w-full max-w-sm text-center"
             >
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
                 <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">

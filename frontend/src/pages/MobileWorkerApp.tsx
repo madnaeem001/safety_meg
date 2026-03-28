@@ -219,7 +219,7 @@ const priorityConfig = {
   low: { color: 'bg-green-100 text-green-700', label: 'Low' },
   medium: { color: 'bg-yellow-100 text-yellow-700', label: 'Medium' },
   high: { color: 'bg-orange-100 text-orange-700', label: 'High' },
-  critical: { color: 'bg-red-100 text-red-700', label: 'Critical' }
+  critical: { color: 'bg-danger/10 text-danger', label: 'Critical' }
 };
 
 const taskTypeConfig = {
@@ -403,12 +403,12 @@ export const MobileWorkerApp: React.FC = () => {
                 key={item.label}
                 whileTap={{ scale: 0.95 }}
                 onClick={item.action}
-                className="flex flex-col items-center gap-2 p-4 bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700"
+                className="flex flex-col items-center gap-2 p-4 bg-surface-raised rounded-2xl shadow-sm border border-surface-border"
               >
                 <div className={`p-3 rounded-xl ${item.color}`}>
                   <Icon className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-xs font-medium text-surface-700 dark:text-surface-300">{item.label}</span>
+                <span className="text-xs font-medium text-text-secondary">{item.label}</span>
               </motion.button>
             );
           })}
@@ -429,9 +429,9 @@ export const MobileWorkerApp: React.FC = () => {
         )}
 
         {/* Environmental Readings */}
-        <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 p-4">
+        <div className="bg-surface-raised rounded-2xl shadow-sm border border-surface-border p-4">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-surface-900 dark:text-white">Environmental</h3>
+            <h3 className="font-semibold text-text-primary">Environmental</h3>
             <button 
               onClick={() => setViewMode('environmental')}
               className="text-xs text-brand-600"
@@ -448,21 +448,21 @@ export const MobileWorkerApp: React.FC = () => {
                   className={`p-3 rounded-xl ${
                     reading.status === 'danger' ? 'bg-red-50 dark:bg-red-900/20' :
                     reading.status === 'warning' ? 'bg-amber-50 dark:bg-amber-900/20' :
-                    'bg-surface-50 dark:bg-surface-700'
+                    'bg-surface-overlay'
                   }`}
                 >
                   <div className="flex items-center gap-2 mb-1">
                     <Icon className={`w-4 h-4 ${
                       reading.status === 'danger' ? 'text-red-500' :
                       reading.status === 'warning' ? 'text-amber-500' :
-                      'text-surface-400'
+                      'text-text-muted'
                     }`} />
-                    <span className="text-xs text-surface-500">{reading.type}</span>
+                    <span className="text-xs text-text-muted">{reading.type}</span>
                   </div>
                   <p className={`text-lg font-bold ${
                     reading.status === 'danger' ? 'text-red-600' :
                     reading.status === 'warning' ? 'text-amber-600' :
-                    'text-surface-900 dark:text-white'
+                    'text-text-primary'
                   }`}>
                     {reading.value}{reading.unit}
                   </p>
@@ -473,10 +473,10 @@ export const MobileWorkerApp: React.FC = () => {
         </div>
 
         {/* Today's Tasks */}
-        <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700">
-          <div className="p-4 border-b border-surface-100 dark:border-surface-700">
+        <div className="bg-surface-raised rounded-2xl shadow-sm border border-surface-border">
+          <div className="p-4 border-b border-surface-border">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-surface-900 dark:text-white">Today's Tasks</h3>
+              <h3 className="font-semibold text-text-primary">Today's Tasks</h3>
               <button 
                 onClick={() => setViewMode('tasks')}
                 className="text-xs text-brand-600 flex items-center gap-1"
@@ -499,19 +499,19 @@ export const MobileWorkerApp: React.FC = () => {
                     setSelectedTask(task);
                     setViewMode('task_detail');
                   }}
-                  className="w-full p-4 flex items-center gap-4 text-left active:bg-surface-50 dark:active:bg-surface-700"
+                  className="w-full p-4 flex items-center gap-4 text-left active:bg-surface-overlay"
                 >
                   <div className={`p-3 rounded-xl ${typeConf.color}`}>
                     <TypeIcon className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="font-medium text-surface-900 dark:text-white truncate">{task.title}</span>
+                      <span className="font-medium text-text-primary truncate">{task.title}</span>
                       <span className={`px-2 py-0.5 text-xs rounded-full ${prioConf.color}`}>
                         {prioConf.label}
                       </span>
                     </div>
-                    <div className="flex items-center gap-3 text-xs text-surface-500">
+                    <div className="flex items-center gap-3 text-xs text-text-muted">
                       <span className="flex items-center gap-1">
                         <MapPin className="w-3 h-3" />
                         {task.location}
@@ -522,7 +522,7 @@ export const MobileWorkerApp: React.FC = () => {
                       </span>
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-surface-400" />
+                  <ChevronRight className="w-5 h-5 text-text-muted" />
                 </motion.button>
               );
             })}
@@ -542,7 +542,7 @@ export const MobileWorkerApp: React.FC = () => {
             className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${
               filter === 'All' 
                 ? 'bg-brand-500 text-white' 
-                : 'bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-400'
+                : 'bg-surface-overlay text-text-muted'
             }`}
           >
             {filter}
@@ -565,7 +565,7 @@ export const MobileWorkerApp: React.FC = () => {
                 setSelectedTask(task);
                 setViewMode('task_detail');
               }}
-              className="w-full bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 p-4 text-left active:bg-surface-50 dark:active:bg-surface-700"
+              className="w-full bg-surface-raised rounded-2xl shadow-sm border border-surface-border p-4 text-left active:bg-surface-overlay"
             >
               <div className="flex items-start gap-4">
                 <div className={`p-3 rounded-xl ${typeConf.color}`}>
@@ -573,21 +573,21 @@ export const MobileWorkerApp: React.FC = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-medium text-surface-900 dark:text-white">{task.title}</span>
+                    <span className="font-medium text-text-primary">{task.title}</span>
                     {task.syncStatus === 'pending' && (
                       <Cloud className="w-3 h-3 text-amber-500" />
                     )}
                   </div>
-                  <p className="text-sm text-surface-500 mb-2">{task.description}</p>
+                  <p className="text-sm text-text-muted mb-2">{task.description}</p>
                   <div className="flex flex-wrap items-center gap-2">
                     <span className={`px-2 py-0.5 text-xs rounded-full ${prioConf.color}`}>
                       {prioConf.label}
                     </span>
-                    <span className="flex items-center gap-1 text-xs text-surface-500">
+                    <span className="flex items-center gap-1 text-xs text-text-muted">
                       <MapPin className="w-3 h-3" />
                       {task.location}
                     </span>
-                    <span className="flex items-center gap-1 text-xs text-surface-500">
+                    <span className="flex items-center gap-1 text-xs text-text-muted">
                       <Clock className="w-3 h-3" />
                       {task.dueTime}
                     </span>
@@ -601,7 +601,7 @@ export const MobileWorkerApp: React.FC = () => {
                   }`}>
                     {task.status.replace('_', ' ')}
                   </span>
-                  <ChevronRight className="w-5 h-5 text-surface-400" />
+                  <ChevronRight className="w-5 h-5 text-text-muted" />
                 </div>
               </div>
             </motion.button>
@@ -623,14 +623,14 @@ export const MobileWorkerApp: React.FC = () => {
     return (
       <div className="space-y-4">
         {/* Task Header */}
-        <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 p-5">
+        <div className="bg-surface-raised rounded-2xl shadow-sm border border-surface-border p-5">
           <div className="flex items-start gap-4 mb-4">
             <div className={`p-4 rounded-xl ${typeConf.color}`}>
               <TypeIcon className="w-6 h-6 text-white" />
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <h2 className="text-lg font-bold text-surface-900 dark:text-white">{selectedTask.title}</h2>
+                <h2 className="text-lg font-bold text-text-primary">{selectedTask.title}</h2>
               </div>
               <div className="flex flex-wrap gap-2 mb-3">
                 <span className={`px-2 py-0.5 text-xs rounded-full ${prioConf.color}`}>
@@ -644,24 +644,24 @@ export const MobileWorkerApp: React.FC = () => {
                   {selectedTask.status.replace('_', ' ')}
                 </span>
               </div>
-              <p className="text-sm text-surface-600 dark:text-surface-400">{selectedTask.description}</p>
+              <p className="text-sm text-text-muted">{selectedTask.description}</p>
             </div>
           </div>
           
-          <div className="grid grid-cols-2 gap-3 pt-4 border-t border-surface-100 dark:border-surface-700">
-            <div className="flex items-center gap-2 text-sm text-surface-500">
+          <div className="grid grid-cols-2 gap-3 pt-4 border-t border-surface-border">
+            <div className="flex items-center gap-2 text-sm text-text-muted">
               <MapPin className="w-4 h-4" />
               {selectedTask.location}
             </div>
-            <div className="flex items-center gap-2 text-sm text-surface-500">
+            <div className="flex items-center gap-2 text-sm text-text-muted">
               <Clock className="w-4 h-4" />
               Due: {selectedTask.dueTime}
             </div>
-            <div className="flex items-center gap-2 text-sm text-surface-500">
+            <div className="flex items-center gap-2 text-sm text-text-muted">
               <User className="w-4 h-4" />
               {selectedTask.assignedBy}
             </div>
-            <div className="flex items-center gap-2 text-sm text-surface-500">
+            <div className="flex items-center gap-2 text-sm text-text-muted">
               {selectedTask.syncStatus === 'synced' ? (
                 <>
                   <Cloud className="w-4 h-4 text-green-500" />
@@ -679,11 +679,11 @@ export const MobileWorkerApp: React.FC = () => {
 
         {/* Checklist */}
         {selectedTask.checklist && (
-          <div className="bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700">
-            <div className="p-4 border-b border-surface-100 dark:border-surface-700">
+          <div className="bg-surface-raised rounded-2xl shadow-sm border border-surface-border">
+            <div className="p-4 border-b border-surface-border">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-surface-900 dark:text-white">Checklist</h3>
-                <span className="text-sm text-surface-500">{completedItems}/{totalItems} completed</span>
+                <h3 className="font-semibold text-text-primary">Checklist</h3>
+                <span className="text-sm text-text-muted">{completedItems}/{totalItems} completed</span>
               </div>
               <div className="mt-2 h-2 bg-surface-200 dark:bg-surface-700 rounded-full overflow-hidden">
                 <div 
@@ -698,17 +698,17 @@ export const MobileWorkerApp: React.FC = () => {
                   key={item.id}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => toggleChecklistItem(selectedTask.id, item.id)}
-                  className="w-full p-4 flex items-center gap-4 text-left active:bg-surface-50 dark:active:bg-surface-700"
+                  className="w-full p-4 flex items-center gap-4 text-left active:bg-surface-overlay"
                 >
                   <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
                     item.completed 
                       ? 'bg-green-500 border-green-500' 
-                      : 'border-surface-300 dark:border-surface-600'
+                      : 'border-surface-border'
                   }`}>
                     {item.completed && <CheckCircle2 className="w-4 h-4 text-white" />}
                   </div>
                   <div className="flex-1">
-                    <span className={`text-sm ${item.completed ? 'text-surface-400 line-through' : 'text-surface-700 dark:text-surface-300'}`}>
+                    <span className={`text-sm ${item.completed ? 'text-text-muted line-through' : 'text-text-secondary'}`}>
                       {item.text}
                     </span>
                     {item.required && !item.completed && (
@@ -723,17 +723,17 @@ export const MobileWorkerApp: React.FC = () => {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-3 gap-3">
-          <button className="flex flex-col items-center gap-2 p-4 bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700">
+          <button className="flex flex-col items-center gap-2 p-4 bg-surface-raised rounded-2xl shadow-sm border border-surface-border">
             <Camera className="w-6 h-6 text-blue-500" />
-            <span className="text-xs text-surface-600 dark:text-surface-400">Add Photo</span>
+            <span className="text-xs text-text-muted">Add Photo</span>
           </button>
-          <button className="flex flex-col items-center gap-2 p-4 bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700">
+          <button className="flex flex-col items-center gap-2 p-4 bg-surface-raised rounded-2xl shadow-sm border border-surface-border">
             <MessageSquare className="w-6 h-6 text-green-500" />
-            <span className="text-xs text-surface-600 dark:text-surface-400">Add Note</span>
+            <span className="text-xs text-text-muted">Add Note</span>
           </button>
-          <button className="flex flex-col items-center gap-2 p-4 bg-white dark:bg-surface-800 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700">
+          <button className="flex flex-col items-center gap-2 p-4 bg-surface-raised rounded-2xl shadow-sm border border-surface-border">
             <AlertTriangle className="w-6 h-6 text-orange-500" />
-            <span className="text-xs text-surface-600 dark:text-surface-400">Flag Issue</span>
+            <span className="text-xs text-text-muted">Flag Issue</span>
           </button>
         </div>
 
@@ -770,10 +770,10 @@ export const MobileWorkerApp: React.FC = () => {
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full bg-white dark:bg-surface-800 rounded-t-3xl p-6 safe-area-bottom"
+            className="w-full bg-surface-overlay rounded-t-3xl p-6 safe-area-bottom"
           >
             <div className="w-12 h-1 bg-surface-300 dark:bg-surface-600 rounded-full mx-auto mb-6" />
-            <h3 className="text-lg font-bold text-surface-900 dark:text-white mb-4">Quick Report</h3>
+            <h3 className="text-lg font-bold text-text-primary mb-4">Quick Report</h3>
             
             <div className="grid grid-cols-2 gap-3 mb-6">
               {Object.entries(reportTypeConfig).map(([key, conf]) => {
@@ -783,12 +783,12 @@ export const MobileWorkerApp: React.FC = () => {
                     key={key}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => handleQuickReportType(key as QuickReport['type'])}
-                    className="p-4 bg-surface-50 dark:bg-surface-700 rounded-xl flex flex-col items-center gap-2"
+                    className="p-4 bg-surface-overlay rounded-xl flex flex-col items-center gap-2"
                   >
                     <div className={`p-3 rounded-xl ${conf.color}`}>
                       <Icon className="w-5 h-5 text-white" />
                     </div>
-                    <span className="text-sm font-medium text-surface-700 dark:text-surface-300">{conf.label}</span>
+                    <span className="text-sm font-medium text-text-secondary">{conf.label}</span>
                   </motion.button>
                 );
               })}
@@ -796,7 +796,7 @@ export const MobileWorkerApp: React.FC = () => {
 
             <button
               onClick={() => setShowQuickReport(false)}
-              className="w-full py-3 bg-surface-100 dark:bg-surface-700 rounded-xl text-surface-600 dark:text-surface-400 font-medium"
+              className="w-full py-3 bg-surface-overlay rounded-xl text-text-muted font-medium"
             >
               Cancel
             </button>
@@ -807,7 +807,7 @@ export const MobileWorkerApp: React.FC = () => {
   );
 
   const renderBottomNav = () => (
-    <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-surface-800 border-t border-surface-200 dark:border-surface-700 safe-area-bottom">
+    <div className="fixed bottom-0 left-0 right-0 bg-surface-raised border-t border-surface-border safe-area-bottom">
       <div className="flex items-center justify-around py-2">
         {[
           { icon: Home, label: 'Home', view: 'home' as ViewMode },
@@ -834,9 +834,9 @@ export const MobileWorkerApp: React.FC = () => {
                   <Icon className="w-6 h-6 text-white" />
                 </div>
               ) : (
-                <Icon className={`w-6 h-6 ${isActive ? 'text-brand-500' : 'text-surface-400'}`} />
+                <Icon className={`w-6 h-6 ${isActive ? 'text-brand-500' : 'text-text-muted'}`} />
               )}
-              <span className={`text-xs ${isActive ? 'text-brand-500 font-medium' : 'text-surface-400'}`}>
+              <span className={`text-xs ${isActive ? 'text-accent font-medium' : 'text-text-muted'}`}>
                 {item.label}
               </span>
             </motion.button>
@@ -857,11 +857,11 @@ export const MobileWorkerApp: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-100 dark:bg-surface-900">
+    <div className="min-h-screen bg-surface-base">
       {renderStatusBar()}
       
       {/* Header */}
-      <div className="sticky top-8 z-40 bg-surface-100 dark:bg-surface-900 px-4 py-3">
+      <div className="sticky top-8 z-40 bg-surface-base px-4 py-3">
         <div className="flex items-center justify-between">
           {viewMode !== 'home' ? (
             <button
@@ -875,23 +875,23 @@ export const MobileWorkerApp: React.FC = () => {
               }}
               className="p-2 -ml-2 active:bg-surface-200 dark:active:bg-surface-700 rounded-xl"
             >
-              <ArrowLeft className="w-6 h-6 text-surface-700 dark:text-surface-300" />
+              <ArrowLeft className="w-6 h-6 text-text-secondary" />
             </button>
           ) : (
             <button
               onClick={() => navigate(-1)}
               className="p-2 -ml-2 active:bg-surface-200 dark:active:bg-surface-700 rounded-xl"
             >
-              <ArrowLeft className="w-6 h-6 text-surface-700 dark:text-surface-300" />
+              <ArrowLeft className="w-6 h-6 text-text-secondary" />
             </button>
           )}
           
-          <h1 className="text-lg font-semibold text-surface-900 dark:text-white">
+          <h1 className="text-lg font-semibold text-text-primary">
             {getViewTitle() || 'Mobile Worker'}
           </h1>
           
           <button className="p-2 -mr-2 active:bg-surface-200 dark:active:bg-surface-700 rounded-xl relative">
-            <Bell className="w-6 h-6 text-surface-700 dark:text-surface-300" />
+            <Bell className="w-6 h-6 text-text-secondary" />
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
           </button>
         </div>

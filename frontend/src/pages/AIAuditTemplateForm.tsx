@@ -1091,16 +1091,16 @@ export const AIAuditTemplateForm: React.FC = () => {
                 </div>
 
                 {/* AI Insights Section */}
-                <div className="bg-primary/10 border border-primary/20 rounded-[2.5rem] p-8 relative overflow-hidden">
+                <div className="bg-primary border border-primary/30 rounded-[2.5rem] p-8 relative overflow-hidden">
                   <div className="absolute top-0 right-0 p-8 opacity-10">
-                    <Brain className="w-24 h-24 text-primary" />
+                    <Brain className="w-24 h-24 text-white" />
                   </div>
                   <div className="relative z-10">
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-sm">
-                        <Sparkles className="w-5 h-5 text-text-onAccent" />
+                      <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shadow-sm">
+                        <Sparkles className="w-5 h-5 text-white" />
                       </div>
-                      <h3 className="text-lg font-bold text-text-primary">AI Audit Assistant</h3>
+                      <h3 className="text-lg font-bold text-white">AI Audit Assistant</h3>
                     </div>
                     
                     {aiSummary ? (
@@ -1113,7 +1113,7 @@ export const AIAuditTemplateForm: React.FC = () => {
                       </motion.div>
                     ) : (
                       <div className="flex flex-col items-center justify-center py-8 text-center">
-                        <p className="text-text-muted text-sm mb-6">Complete the audit questions to generate an intelligent summary and risk forecast.</p>
+                        <p className="text-text-muted text-sm mb-6 text-white/70">Complete the audit questions to generate an intelligent summary and risk forecast.</p>
                         <button
                           type="button"
                           onClick={generateAiSummary}
@@ -1304,10 +1304,10 @@ export const AIAuditTemplateForm: React.FC = () => {
                                     <h4 className="text-lg font-bold text-text-primary leading-snug">{q.text}</h4>
                                     
                                     {/* AI Hint */}
-                                    <div className="mt-4 p-4 bg-primary/5 border border-primary/10 rounded-2xl flex items-start gap-3">
-                                      <Brain className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                                      <p className="text-xs text-text-muted leading-relaxed">
-                                        <span className="font-black text-primary uppercase tracking-tighter mr-2">AI Auditor Hint:</span>
+                                    <div className="mt-4 p-4 bg-primary border border-primary/20 rounded-2xl flex items-start gap-3">
+                                      <Brain className="w-4 h-4 text-white mt-0.5 shrink-0" />
+                                      <p className="text-xs text-white/90 leading-relaxed">
+                                        <span className="font-black text-white uppercase tracking-tighter mr-2">AI Auditor Hint:</span>
                                         {q.aiHint}
                                       </p>
                                     </div>

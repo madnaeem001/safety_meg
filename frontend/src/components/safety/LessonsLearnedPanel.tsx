@@ -513,8 +513,8 @@ Please provide:
           <p className="text-xs text-red-600 text-center mt-2">{aiError}</p>
         )}
         {aiSuggestions.length > 0 && (
-          <div className="mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-xl space-y-2">
-            <p className="text-xs font-semibold text-emerald-700">AI Recommendations — click to add as a lesson:</p>
+          <div className="mt-3 p-3 bg-emerald-600 border border-emerald-600 rounded-xl space-y-2">
+            <p className="text-xs font-semibold text-white">AI Recommendations — click to add as a lesson:</p>
             {aiSuggestions.map((s, i) => (
               <button
                 key={i}

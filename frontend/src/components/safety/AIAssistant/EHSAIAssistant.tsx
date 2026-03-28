@@ -200,7 +200,7 @@ export const EHSAIAssistant: React.FC<EHSAIAssistantProps> = ({
           <button
             onClick={() => handleSend()}
             disabled={!inputValue.trim()}
-            className="w-10 h-10 bg-brand-600 text-white rounded-xl flex items-center justify-center hover:bg-brand-700 disabled:opacity-50 transition-colors"
+            className="w-10 h-10 bg-brand-600 text-black rounded-xl flex items-center justify-center hover:bg-brand-700 disabled:opacity-50 transition-colors"
           >
             <Send className="w-5 h-5" />
           </button>

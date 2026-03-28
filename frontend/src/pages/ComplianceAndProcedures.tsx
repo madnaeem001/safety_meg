@@ -140,9 +140,9 @@ const ProcedureCard: React.FC<{ procedure: ComplianceProcedureRecord; onSelect: 
               {/* AI Risk Analysis */}
               <div className={`mt-4 p-4 rounded-2xl ${riskColors.bg} border ${riskColors.border}`}>
                 <div className="flex items-center gap-2 mb-2">
-                  <Brain className="w-4 h-4 text-brand-600" />
-                  <span className="text-xs font-bold text-brand-700 uppercase tracking-wider">AI Risk Analysis</span>
-                  <Sparkles className="w-3 h-3 text-brand-400 animate-pulse" />
+                  <Brain className="w-4 h-4 text-white" />
+                  <span className="text-xs font-bold text-white uppercase tracking-wider">AI Risk Analysis</span>
+                  <Sparkles className="w-3 h-3 text-white animate-pulse" />
                 </div>
                 <p className="text-sm text-brand-800 leading-relaxed">{procedure.aiRisk.rationale}</p>
                 <p className="text-[10px] text-surface-400 mt-2">Last analyzed: {new Date(procedure.aiRisk.lastAnalyzed).toLocaleString()}</p>

@@ -187,50 +187,50 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
 
       {/* Key Metrics */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
+        <div className="bg-surface-raised rounded-xl p-4 border border-surface-border shadow-soft">
           <div className="flex items-center gap-2 mb-2">
             <FileText className="w-5 h-5 text-brand-500" />
-            <span className="text-xs font-bold text-surface-400 uppercase">Recordable</span>
+            <span className="text-xs font-bold text-text-muted uppercase">Recordable</span>
           </div>
-          <p className="text-2xl font-bold text-surface-800">{stats.recordableIncidents}</p>
-          <p className="text-xs text-surface-500">YTD incidents</p>
+          <p className="text-2xl font-bold text-text-primary">{stats.recordableIncidents}</p>
+          <p className="text-xs text-text-muted">YTD incidents</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
+        <div className="bg-surface-raised rounded-xl p-4 border border-surface-border shadow-soft">
           <div className="flex items-center gap-2 mb-2">
             <Clock className="w-5 h-5 text-red-500" />
-            <span className="text-xs font-bold text-surface-400 uppercase">Days Away</span>
+            <span className="text-xs font-bold text-text-muted uppercase">Days Away</span>
           </div>
           <p className="text-2xl font-bold text-red-600">{stats.totalDaysAway}</p>
-          <p className="text-xs text-surface-500">Lost workdays</p>
+          <p className="text-xs text-text-muted">Lost workdays</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
+        <div className="bg-surface-raised rounded-xl p-4 border border-surface-border shadow-soft">
           <div className="flex items-center gap-2 mb-2">
             <Target className="w-5 h-5 text-amber-500" />
-            <span className="text-xs font-bold text-surface-400 uppercase">Restricted</span>
+            <span className="text-xs font-bold text-text-muted uppercase">Restricted</span>
           </div>
           <p className="text-2xl font-bold text-amber-600">{stats.totalDaysRestricted}</p>
-          <p className="text-xs text-surface-500">Restricted days</p>
+          <p className="text-xs text-text-muted">Restricted days</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
+        <div className="bg-surface-raised rounded-xl p-4 border border-surface-border shadow-soft">
           <div className="flex items-center gap-2 mb-2">
-            <Activity className="w-5 h-5 text-purple-500" />
-            <span className="text-xs font-bold text-surface-400 uppercase">Pending CAPAs</span>
+            <Activity className="w-5 h-5 text-primary" />
+            <span className="text-xs font-bold text-text-muted uppercase">Pending CAPAs</span>
           </div>
-          <p className="text-2xl font-bold text-purple-600">{stats.pendingCAPAs}</p>
-          <p className="text-xs text-surface-500">Open actions</p>
+          <p className="text-2xl font-bold text-primary">{stats.pendingCAPAs}</p>
+          <p className="text-xs text-text-muted">Open actions</p>
         </div>
       </div>
 
       {/* OSHA vs ISO Comparison */}
-      <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
-        <h3 className="font-bold text-brand-900 mb-4">OSHA vs ISO 45001 Approach</h3>
+      <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
+        <h3 className="font-bold text-text-primary mb-4">OSHA vs ISO 45001 Approach</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-4 bg-blue-50 rounded-xl border border-blue-100">
+          <div className="p-4 bg-accent/10 rounded-xl border border-accent/20">
             <div className="flex items-center gap-2 mb-3">
-              <Shield className="w-5 h-5 text-blue-600" />
-              <h4 className="font-bold text-blue-800">OSHA Requirements</h4>
+              <Shield className="w-5 h-5 text-accent" />
+              <h4 className="font-bold text-accent">OSHA Requirements</h4>
             </div>
-            <ul className="space-y-2 text-sm text-blue-700">
+            <ul className="space-y-2 text-sm text-accent">
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" />
                 <span>Recordkeeping for work-related injuries/illnesses</span>
@@ -277,11 +277,11 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
       </div>
 
       {/* Incident Classification Guide */}
-      <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
-        <h3 className="font-bold text-brand-900 mb-4">OSHA Incident Classification</h3>
+      <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
+        <h3 className="font-bold text-text-primary mb-4">OSHA Incident Classification</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {INCIDENT_CLASSIFICATIONS.map(classification => (
-            <div key={classification.id} className="p-3 bg-surface-50 rounded-xl">
+            <div key={classification.id} className="p-3 bg-surface-sunken rounded-xl">
               <div className={`px-2 py-1 rounded text-xs font-bold inline-block mb-2 ${classification.color}`}>
                 {classification.label}
               </div>
@@ -291,7 +291,7 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
                 </p>
               )}
               {!classification.oshaRequired && classification.id !== 'first-aid' && (
-                <p className="text-xs text-surface-500">OSHA Recordable</p>
+                <p className="text-xs text-text-muted">OSHA Recordable</p>
               )}
               {classification.id === 'first-aid' && (
                 <p className="text-xs text-green-600">Not recordable</p>
@@ -309,16 +309,16 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
       {/* Search and Actions */}
       <div className="flex items-center gap-3">
         <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
           <input
             type="text"
             placeholder="Search incidents..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-surface-50 border border-surface-100 rounded-xl text-sm"
+            className="w-full pl-10 pr-4 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm"
           />
         </div>
-        <button className="px-4 py-2.5 bg-surface-100 text-surface-700 font-semibold rounded-xl hover:bg-surface-200 transition-colors flex items-center gap-2">
+        <button className="px-4 py-2.5 bg-surface-overlay text-text-secondary font-semibold rounded-xl hover:bg-surface-overlay transition-colors flex items-center gap-2">
           <Download className="w-5 h-5" />
           Export 300
         </button>
@@ -326,36 +326,36 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
       </div>
 
       {/* OSHA 300 Log Table */}
-      <div className="bg-white rounded-2xl border border-surface-100 shadow-soft overflow-hidden">
-        <div className="p-4 border-b border-surface-100 bg-surface-50">
-          <h3 className="font-bold text-brand-900">OSHA Form 300 - Log of Work-Related Injuries and Illnesses</h3>
-          <p className="text-sm text-surface-500">Year: 2026 | Establishment: Safety Hub Manufacturing Facility</p>
+      <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-soft overflow-hidden">
+        <div className="p-4 border-b border-surface-border bg-surface-sunken">
+          <h3 className="font-bold text-text-primary">OSHA Form 300 - Log of Work-Related Injuries and Illnesses</h3>
+          <p className="text-sm text-text-muted">Year: 2026 | Establishment: Safety Hub Manufacturing Facility</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-surface-50 border-b border-surface-100">
+            <thead className="bg-surface-sunken border-b border-surface-border">
               <tr>
-                <th className="px-4 py-3 text-left font-bold text-surface-600">Case #</th>
-                <th className="px-4 py-3 text-left font-bold text-surface-600">Employee Name</th>
-                <th className="px-4 py-3 text-left font-bold text-surface-600">Job Title</th>
-                <th className="px-4 py-3 text-left font-bold text-surface-600">Date</th>
-                <th className="px-4 py-3 text-left font-bold text-surface-600">Location</th>
-                <th className="px-4 py-3 text-left font-bold text-surface-600">Classification</th>
-                <th className="px-4 py-3 text-center font-bold text-surface-600">Days Away</th>
-                <th className="px-4 py-3 text-center font-bold text-surface-600">Restricted</th>
-                <th className="px-4 py-3 text-center font-bold text-surface-600">Actions</th>
+                <th className="px-4 py-3 text-left font-bold text-text-secondary">Case #</th>
+                <th className="px-4 py-3 text-left font-bold text-text-secondary">Employee Name</th>
+                <th className="px-4 py-3 text-left font-bold text-text-secondary">Job Title</th>
+                <th className="px-4 py-3 text-left font-bold text-text-secondary">Date</th>
+                <th className="px-4 py-3 text-left font-bold text-text-secondary">Location</th>
+                <th className="px-4 py-3 text-left font-bold text-text-secondary">Classification</th>
+                <th className="px-4 py-3 text-center font-bold text-text-secondary">Days Away</th>
+                <th className="px-4 py-3 text-center font-bold text-text-secondary">Restricted</th>
+                <th className="px-4 py-3 text-center font-bold text-text-secondary">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filteredIncidents.filter(i => i.oshaRecordable).map((incident, index) => {
                 const classification = getClassificationInfo(incident.classification);
                 return (
-                  <tr key={incident.id} className={index % 2 === 0 ? 'bg-white' : 'bg-surface-50'}>
+                  <tr key={incident.id} className={index % 2 === 0 ? 'bg-surface-raised' : 'bg-surface-sunken'}>
                     <td className="px-4 py-3 font-medium">{incident.caseNumber}</td>
                     <td className="px-4 py-3">{incident.employeeName}</td>
-                    <td className="px-4 py-3 text-surface-600">{incident.jobTitle}</td>
+                    <td className="px-4 py-3 text-text-secondary">{incident.jobTitle}</td>
                     <td className="px-4 py-3">{incident.dateOfInjury}</td>
-                    <td className="px-4 py-3 text-surface-600">{incident.location}</td>
+                    <td className="px-4 py-3 text-text-secondary">{incident.location}</td>
                     <td className="px-4 py-3">
                       <span className={`px-2 py-1 rounded text-xs font-bold ${classification?.color}`}>
                         {classification?.label}
@@ -364,8 +364,8 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
                     <td className="px-4 py-3 text-center font-medium">{incident.daysAway || '-'}</td>
                     <td className="px-4 py-3 text-center font-medium">{incident.daysRestricted || '-'}</td>
                     <td className="px-4 py-3 text-center">
-                      <button className="p-1 hover:bg-surface-100 rounded">
-                        <Eye className="w-4 h-4 text-surface-500" />
+                      <button className="p-1 hover:bg-surface-overlay rounded">
+                        <Eye className="w-4 h-4 text-text-muted" />
                       </button>
                     </td>
                   </tr>
@@ -386,7 +386,7 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
         <button
           onClick={() => setSelectedStage(null)}
           className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-            !selectedStage ? 'bg-brand-500 text-white' : 'bg-surface-50 text-surface-600 hover:bg-surface-100'
+            !selectedStage ? 'bg-accent text-text-onAccent' : 'bg-surface-sunken text-text-secondary hover:bg-surface-overlay'
           }`}
         >
           All Stages
@@ -396,47 +396,13 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
             key={stage.id}
             onClick={() => setSelectedStage(selectedStage === stage.id ? null : stage.id)}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
-              selectedStage === stage.id ? 'bg-brand-500 text-white' : 'bg-surface-50 text-surface-600 hover:bg-surface-100'
+              selectedStage === stage.id ? 'bg-accent text-text-onAccent' : 'bg-surface-sunken text-text-secondary hover:bg-surface-overlay'
             }`}
           >
             <stage.icon className="w-4 h-4" />
             {stage.label}
           </button>
         ))}
-      </div>
-
-      {/* CAPA Stage Pipeline */}
-      <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
-        <h3 className="font-bold text-brand-900 mb-4">ISO 45001 CAPA Pipeline</h3>
-        <div className="flex items-center justify-between overflow-x-auto pb-4">
-          {ISO_CAPA_STAGES.map((stage, index) => {
-            const count = mockOSHAIncidents.filter(i => i.isoStage === stage.id).length;
-            const StageIcon = stage.icon;
-            return (
-              <div key={stage.id} className="flex items-center">
-                <div
-                  onClick={() => setSelectedStage(selectedStage === stage.id ? null : stage.id)}
-                  className={`flex flex-col items-center cursor-pointer transition-all ${
-                    selectedStage === stage.id ? 'scale-110' : ''
-                  }`}
-                >
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 ${
-                    selectedStage === stage.id ? 'bg-brand-500 text-white' : 'bg-surface-100 text-surface-600'
-                  }`}>
-                    <StageIcon className="w-6 h-6" />
-                  </div>
-                  <span className="text-xs font-medium text-surface-600 whitespace-nowrap">{stage.label}</span>
-                  <span className={`text-lg font-bold ${count > 0 ? 'text-brand-600' : 'text-surface-400'}`}>
-                    {count}
-                  </span>
-                </div>
-                {index < ISO_CAPA_STAGES.length - 1 && (
-                  <div className="w-8 h-0.5 bg-surface-200 mx-2" />
-                )}
-              </div>
-            );
-          })}
-        </div>
       </div>
 
       {/* Incident Cards */}
@@ -452,29 +418,29 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="bg-white rounded-xl border border-surface-100 shadow-soft overflow-hidden"
+              className="bg-surface-raised rounded-xl border border-surface-border shadow-soft overflow-hidden"
             >
               <div
-                className="p-4 cursor-pointer hover:bg-surface-50 transition-colors"
+                className="p-4 cursor-pointer hover:bg-surface-sunken transition-colors"
                 onClick={() => setExpandedIncident(expandedIncident === incident.id ? null : incident.id)}
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-brand-100 rounded-xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center">
                     <StageIcon className="w-5 h-5 text-brand-600" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs font-bold text-surface-400">{incident.id}</span>
+                      <span className="text-xs font-bold text-text-muted">{incident.id}</span>
                       <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full ${classification?.color}`}>
                         {classification?.label}
                       </span>
-                      <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-purple-100 text-purple-700">
+                      <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-primary/20 text-primary">
                         {stage?.label}
                       </span>
                     </div>
-                    <h4 className="font-semibold text-surface-800">{incident.employeeName} - {incident.bodyPart}</h4>
-                    <p className="text-sm text-surface-500 truncate">{incident.description}</p>
-                    <div className="flex items-center gap-4 mt-2 text-xs text-surface-500">
+                    <h4 className="font-semibold text-text-primary">{incident.employeeName} - {incident.bodyPart}</h4>
+                    <p className="text-sm text-text-muted truncate">{incident.description}</p>
+                    <div className="flex items-center gap-4 mt-2 text-xs text-text-muted">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-3.5 h-3.5" />
                         {incident.dateOfInjury}
@@ -486,9 +452,9 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
                     </div>
                   </div>
                   {expandedIncident === incident.id ? (
-                    <ChevronUp className="w-5 h-5 text-surface-400" />
+                    <ChevronUp className="w-5 h-5 text-text-muted" />
                   ) : (
-                    <ChevronDown className="w-5 h-5 text-surface-400" />
+                    <ChevronDown className="w-5 h-5 text-text-muted" />
                   )}
                 </div>
               </div>
@@ -499,36 +465,36 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    className="border-t border-surface-100 p-4 bg-surface-50"
+                    className="border-t border-surface-border p-4 bg-surface-sunken"
                   >
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                       <div>
-                        <span className="text-xs text-surface-400">Days Away</span>
-                        <p className="font-medium text-surface-800">{incident.daysAway}</p>
+                        <span className="text-xs text-text-muted">Days Away</span>
+                        <p className="font-medium text-text-primary">{incident.daysAway}</p>
                       </div>
                       <div>
-                        <span className="text-xs text-surface-400">Restricted Days</span>
-                        <p className="font-medium text-surface-800">{incident.daysRestricted}</p>
+                        <span className="text-xs text-text-muted">Restricted Days</span>
+                        <p className="font-medium text-text-primary">{incident.daysRestricted}</p>
                       </div>
                       <div>
-                        <span className="text-xs text-surface-400">OSHA Recordable</span>
+                        <span className="text-xs text-text-muted">OSHA Recordable</span>
                         <p className={`font-medium ${incident.oshaRecordable ? 'text-red-600' : 'text-green-600'}`}>
                           {incident.oshaRecordable ? 'Yes' : 'No'}
                         </p>
                       </div>
                       <div>
-                        <span className="text-xs text-surface-400">Form 301</span>
+                        <span className="text-xs text-text-muted">Form 301</span>
                         <p className={`font-medium ${incident.form301Completed ? 'text-green-600' : 'text-amber-600'}`}>
                           {incident.form301Completed ? 'Completed' : 'Pending'}
                         </p>
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <button className="px-3 py-1.5 bg-brand-100 text-brand-700 font-medium rounded-lg text-sm flex items-center gap-1">
+                      <button className="px-3 py-1.5 bg-accent/10 text-accent font-medium rounded-lg text-sm flex items-center gap-1">
                         <Eye className="w-4 h-4" />
                         View Details
                       </button>
-                      <button className="px-3 py-1.5 bg-surface-100 text-surface-700 font-medium rounded-lg text-sm flex items-center gap-1">
+                      <button className="px-3 py-1.5 bg-surface-overlay text-text-secondary font-medium rounded-lg text-sm flex items-center gap-1">
                         <Edit2 className="w-4 h-4" />
                         Update CAPA
                       </button>
@@ -550,29 +516,29 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
   // Forms Tab
   const renderForms = () => (
     <div className="space-y-6">
-      <h3 className="font-bold text-brand-900">OSHA Required Forms</h3>
+      <h3 className="font-bold text-text-primary">OSHA Required Forms</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {OSHA_FORMS.map(form => (
-          <div key={form.id} className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
+          <div key={form.id} className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
                 <FileText className="w-6 h-6 text-brand-600" />
               </div>
               <div>
-                <h4 className="font-bold text-surface-800">{form.label}</h4>
+                <h4 className="font-bold text-text-primary">{form.label}</h4>
                 {form.required && (
                   <span className="text-xs text-red-600 font-medium">Required</span>
                 )}
               </div>
             </div>
-            <p className="text-sm text-surface-600 mb-4">{form.description}</p>
+            <p className="text-sm text-text-secondary mb-4">{form.description}</p>
             <div className="flex gap-2">
-              <button className="flex-1 px-3 py-2 bg-brand-100 text-brand-700 font-medium rounded-lg text-sm flex items-center justify-center gap-1">
+              <button className="flex-1 px-3 py-2 bg-accent/10 text-accent font-medium rounded-lg text-sm flex items-center justify-center gap-1">
                 <Download className="w-4 h-4" />
                 Download
               </button>
-              <button className="flex-1 px-3 py-2 bg-surface-100 text-surface-700 font-medium rounded-lg text-sm flex items-center justify-center gap-1">
+              <button className="flex-1 px-3 py-2 bg-surface-overlay text-text-secondary font-medium rounded-lg text-sm flex items-center justify-center gap-1">
                 <Eye className="w-4 h-4" />
                 View
               </button>
@@ -582,11 +548,11 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
       </div>
 
       {/* 300A Summary Preview */}
-      <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
+      <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-bold text-brand-900">Form 300A Summary Preview ({osha300ASummary.year})</h3>
+          <h3 className="font-bold text-text-primary">Form 300A Summary Preview ({osha300ASummary.year})</h3>
           <div className="flex gap-2">
-            <button className="px-3 py-1.5 bg-brand-100 text-brand-700 font-medium rounded-lg text-sm flex items-center gap-1">
+            <button className="px-3 py-1.5 bg-accent/10 text-accent font-medium rounded-lg text-sm flex items-center gap-1">
               <Download className="w-4 h-4" />
               Export PDF
             </button>
@@ -598,21 +564,21 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="p-3 bg-surface-50 rounded-xl">
-            <span className="text-xs text-surface-400">Total Recordable Incidents</span>
-            <p className="text-2xl font-bold text-surface-800">{osha300ASummary.totalInjuries + osha300ASummary.totalIllnesses}</p>
+          <div className="p-3 bg-surface-sunken rounded-xl">
+            <span className="text-xs text-text-muted">Total Recordable Incidents</span>
+            <p className="text-2xl font-bold text-text-primary">{osha300ASummary.totalInjuries + osha300ASummary.totalIllnesses}</p>
           </div>
-          <div className="p-3 bg-surface-50 rounded-xl">
-            <span className="text-xs text-surface-400">TRIR</span>
+          <div className="p-3 bg-surface-sunken rounded-xl">
+            <span className="text-xs text-text-muted">TRIR</span>
             <p className="text-2xl font-bold text-amber-600">{osha300ASummary.trir}</p>
           </div>
-          <div className="p-3 bg-surface-50 rounded-xl">
-            <span className="text-xs text-surface-400">DART Rate</span>
+          <div className="p-3 bg-surface-sunken rounded-xl">
+            <span className="text-xs text-text-muted">DART Rate</span>
             <p className="text-2xl font-bold text-orange-600">{osha300ASummary.dart}</p>
           </div>
-          <div className="p-3 bg-surface-50 rounded-xl">
-            <span className="text-xs text-surface-400">Hours Worked</span>
-            <p className="text-2xl font-bold text-surface-800">{(osha300ASummary.hoursWorked / 1000).toFixed(0)}K</p>
+          <div className="p-3 bg-surface-sunken rounded-xl">
+            <span className="text-xs text-text-muted">Hours Worked</span>
+            <p className="text-2xl font-bold text-text-primary">{(osha300ASummary.hoursWorked / 1000).toFixed(0)}K</p>
           </div>
         </div>
       </div>
@@ -622,11 +588,11 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
   // Reporting Tab
   const renderReporting = () => (
     <div className="space-y-6">
-      <h3 className="font-bold text-brand-900">OSHA Reporting & Deadlines</h3>
+      <h3 className="font-bold text-text-primary">OSHA Reporting & Deadlines</h3>
       
       {/* Reporting Timeline */}
-      <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
-        <h4 className="font-bold text-surface-800 mb-4 flex items-center gap-2">
+      <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
+        <h4 className="font-bold text-text-primary mb-4 flex items-center gap-2">
           <Calendar className="w-5 h-5 text-brand-500" />
           Key Deadlines
         </h4>
@@ -655,17 +621,17 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
             </div>
             <span className="text-sm font-bold text-orange-700">24 HOURS</span>
           </div>
-          <div className="flex items-center justify-between p-3 bg-blue-50 rounded-xl border border-blue-100">
+          <div className="flex items-center justify-between p-3 bg-accent/10 rounded-xl border border-accent/20">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                <FileText className="w-5 h-5 text-blue-600" />
+              <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
+                <FileText className="w-5 h-5 text-accent" />
               </div>
               <div>
-                <h5 className="font-semibold text-blue-800">Electronic Submission (ITA)</h5>
-                <p className="text-xs text-blue-600">For establishments with 100+ employees</p>
+                <h5 className="font-semibold text-accent">Electronic Submission (ITA)</h5>
+                <p className="text-xs text-accent">For establishments with 100+ employees</p>
               </div>
             </div>
-            <span className="text-sm font-bold text-blue-700">March 2, 2026</span>
+            <span className="text-sm font-bold text-accent">March 2, 2026</span>
           </div>
           <div className="flex items-center justify-between p-3 bg-green-50 rounded-xl border border-green-100">
             <div className="flex items-center gap-3">
@@ -683,23 +649,23 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
       </div>
 
       {/* Recent OSHA Reports */}
-      <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
-        <h4 className="font-bold text-surface-800 mb-4 flex items-center gap-2">
+      <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
+        <h4 className="font-bold text-text-primary mb-4 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-brand-500" />
           Recent OSHA Submissions
         </h4>
         <div className="space-y-2">
           {mockOSHAIncidents.filter(i => i.oshaReportedDate).map(incident => (
-            <div key={incident.id} className="flex items-center justify-between p-3 bg-surface-50 rounded-xl">
+            <div key={incident.id} className="flex items-center justify-between p-3 bg-surface-sunken rounded-xl">
               <div>
-                <p className="font-medium text-surface-800">{incident.id} - {incident.classification}</p>
-                <p className="text-xs text-surface-500">Reported to {incident.oshaReportedTo}</p>
+                <p className="font-medium text-text-primary">{incident.id} - {incident.classification}</p>
+                <p className="text-xs text-text-muted">Reported to {incident.oshaReportedTo}</p>
               </div>
-              <span className="text-sm text-surface-600">{incident.oshaReportedDate}</span>
+              <span className="text-sm text-text-secondary">{incident.oshaReportedDate}</span>
             </div>
           ))}
           {mockOSHAIncidents.filter(i => i.oshaReportedDate).length === 0 && (
-            <p className="text-sm text-surface-500 text-center py-4">No recent OSHA submissions</p>
+            <p className="text-sm text-text-muted text-center py-4">No recent OSHA submissions</p>
           )}
         </div>
       </div>
@@ -718,14 +684,14 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
           {onBack && (
             <button
               onClick={onBack}
-              className="p-2 hover:bg-surface-100 rounded-full transition-colors"
+              className="p-2 hover:bg-surface-overlay rounded-full transition-colors"
             >
-              <ArrowLeft className="w-5 h-5 text-surface-600" />
+              <ArrowLeft className="w-5 h-5 text-text-secondary" />
             </button>
           )}
           <div>
-            <h2 className="text-xl font-bold text-brand-900">OSHA & ISO 45001 Workflow</h2>
-            <p className="text-sm text-surface-500">Integrated compliance and incident management</p>
+            <h2 className="text-xl font-bold text-text-primary">OSHA & ISO 45001 Workflow</h2>
+            <p className="text-sm text-text-muted">Integrated compliance and incident management</p>
           </div>
         </div>
       </div>
@@ -744,8 +710,8 @@ export const OSHAISOWorkflow: React.FC<OSHAISOWorkflowProps> = ({ onNavigate, on
             onClick={() => setActiveTab(tab.id as typeof activeTab)}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${
               activeTab === tab.id
-                ? 'bg-brand-100 text-brand-700 border border-brand-200'
-                : 'bg-white text-surface-500 border border-surface-100 hover:bg-surface-50'
+                ? 'bg-accent/10 text-accent border border-accent/30'
+                : 'bg-surface-raised text-text-muted border border-surface-border hover:bg-surface-sunken'
             }`}
           >
             <tab.icon className="w-4 h-4" />

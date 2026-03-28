@@ -413,7 +413,7 @@ export const PropertyDamageReport: React.FC<PropertyDamageReportProps> = ({ onNa
         </div>
         <button
           onClick={() => setActiveView('new')}
-          className="px-4 py-2.5 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 transition-colors flex items-center gap-2"
+          className="px-4 py-2.5 bg-accent text-text-onAccent font-semibold rounded-xl hover:bg-accent/90 transition-colors flex items-center gap-2"
         >
           <Plus className="w-5 h-5" />
           New Report
@@ -472,7 +472,7 @@ export const PropertyDamageReport: React.FC<PropertyDamageReportProps> = ({ onNa
           <button
             onClick={() => setTypeFilter('all')}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-              typeFilter === 'all' ? 'bg-brand-500 text-white' : 'bg-surface-50 text-surface-600 hover:bg-surface-100'
+              typeFilter === 'all' ? 'bg-accent text-text-onAccent' : 'bg-surface-overlay text-text-secondary hover:bg-surface-raised'
             }`}
           >
             All
@@ -482,7 +482,7 @@ export const PropertyDamageReport: React.FC<PropertyDamageReportProps> = ({ onNa
               key={type.id}
               onClick={() => setTypeFilter(type.id)}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
-                typeFilter === type.id ? 'bg-brand-500 text-white' : 'bg-surface-50 text-surface-600 hover:bg-surface-100'
+                typeFilter === type.id ? 'bg-accent text-text-onAccent' : 'bg-surface-overlay text-text-secondary hover:bg-surface-raised'
               }`}
             >
               <type.icon className="w-4 h-4" />

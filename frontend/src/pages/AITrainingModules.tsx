@@ -105,9 +105,9 @@ const ModuleCard: React.FC<{ mod: typeof AI_MODULES[0]; index: number }> = ({ mo
       className={`relative overflow-hidden p-5 rounded-2xl bg-slate-900/80 backdrop-blur-xl border ${c.border} hover:scale-[1.02] transition-all duration-300 group cursor-pointer`}
     >
       {mod.aiGenerated && (
-        <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 bg-cyan-500/10 border border-cyan-500/20 rounded-lg">
-          <Sparkles className="w-3 h-3 text-cyan-400" />
-          <span className="text-[9px] font-bold text-cyan-400 uppercase tracking-wider">AI Generated</span>
+        <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 bg-cyan-500 border border-cyan-500 rounded-lg">
+          <Sparkles className="w-3 h-3 text-white" />
+          <span className="text-[9px] font-bold text-white uppercase tracking-wider">AI Generated</span>
         </div>
       )}
       
@@ -235,7 +235,7 @@ export const AITrainingModules: React.FC = () => {
               <Brain className="w-6 h-6 text-purple-400" />
             </div>
             <div>
-              <div className="flex items-center gap-2 text-purple-400 font-bold text-[10px] uppercase tracking-[0.3em]">
+              <div className="flex items-center gap-2 text-white font-bold text-[10px] uppercase tracking-[0.3em]">
                 <Sparkles className="w-3 h-3" /> AI-Powered Training
               </div>
               <h1 className="text-2xl md:text-3xl font-bold text-white font-display">AI Training Modules</h1>

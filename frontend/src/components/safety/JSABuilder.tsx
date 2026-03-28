@@ -587,16 +587,16 @@ export const JSABuilder: React.FC<JSABuilderProps> = ({ onSave, onCancel, initia
         </div>
 
         {/* International Standards Info Panel */}
-        <div className="bg-surface-900 rounded-3xl p-8 text-white relative overflow-hidden">
+        <div className="bg-surface-overlay border border-surface-border rounded-3xl p-8 relative overflow-hidden">
           <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-brand-500 rounded-lg">
-                  <Globe className="w-6 h-6 text-white" />
+                <div className="p-2 bg-accent rounded-lg">
+                  <Globe className="w-6 h-6 text-text-onAccent" />
                 </div>
-                <h3 className="text-xl font-bold">International Safety Standards</h3>
+                <h3 className="text-xl font-bold text-text-primary">International Safety Standards</h3>
               </div>
-              <p className="text-surface-400 text-sm leading-relaxed">
+              <p className="text-text-secondary text-sm leading-relaxed">
                 This JSA builder is designed to meet the rigorous requirements of **ISO 45001:2018** (Occupational Health and Safety Management Systems) and **OSHA 1910/1926** standards.
               </p>
               <ul className="space-y-2">
@@ -606,15 +606,15 @@ export const JSABuilder: React.FC<JSABuilderProps> = ({ onSave, onCancel, initia
                   'Hierarchy of Controls Implementation (Clause 8.1.2)',
                   'OSHA Job Hazard Analysis (OSHA 3071)'
                 ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-2 text-xs font-medium text-surface-300">
-                    <CheckCircle2 className="w-4 h-4 text-brand-400" />
+                  <li key={i} className="flex items-center gap-2 text-xs font-medium text-text-secondary">
+                    <CheckCircle2 className="w-4 h-4 text-accent" />
                     {item}
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 space-y-4">
-              <h4 className="font-bold text-brand-400 uppercase text-xs tracking-widest">Pro Tip: Hierarchy of Controls</h4>
+            <div className="bg-surface-sunken rounded-2xl p-6 border border-surface-border space-y-4">
+              <h4 className="font-bold text-text-muted uppercase text-xs tracking-widest">Pro Tip: Hierarchy of Controls</h4>
               <div className="space-y-3">
                 {[
                   { l: 'Elimination', d: 'Physically remove the hazard', c: 'bg-emerald-500' },
@@ -626,15 +626,15 @@ export const JSABuilder: React.FC<JSABuilderProps> = ({ onSave, onCancel, initia
                   <div key={i} className="flex items-center gap-3">
                     <div className={`w-2 h-2 rounded-full ${h.c}`} />
                     <div>
-                      <span className="text-xs font-bold block">{h.l}</span>
-                      <span className="text-[10px] text-surface-500">{h.d}</span>
+                      <span className="text-xs font-bold block text-text-primary">{h.l}</span>
+                      <span className="text-[10px] text-text-muted">{h.d}</span>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
-          <div className="absolute top-0 right-0 w-96 h-96 bg-brand-500/10 rounded-full -mr-48 -mt-48 blur-3xl" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-accent/10 rounded-full -mr-48 -mt-48 blur-3xl" />
         </div>
       </div>
     </SMCard>

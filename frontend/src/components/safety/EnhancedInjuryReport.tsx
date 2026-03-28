@@ -309,6 +309,21 @@ export const EnhancedInjuryReport: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showAIPanel, setShowAIPanel] = useState(true);
   const [activeTab, setActiveTab] = useState<'details' | 'timeline' | 'capa' | 'ai'>('details');
+  const [isEditing, setIsEditing] = useState(false);
+  const [showAddCapa, setShowAddCapa] = useState(false);
+  const [newCapaDesc, setNewCapaDesc] = useState('');
+  const [newCapaAssignee, setNewCapaAssignee] = useState('');
+  const [newCapaDue, setNewCapaDue] = useState('');
+
+  const handlePrint = () => window.print();
+
+  const handleAddCapa = () => {
+    if (!newCapaDesc.trim()) return;
+    setNewCapaDesc('');
+    setNewCapaAssignee('');
+    setNewCapaDue('');
+    setShowAddCapa(false);
+  };
 
   // Filter cases
   const filteredCases = useMemo(() => {
@@ -348,6 +363,85 @@ export const EnhancedInjuryReport: React.FC = () => {
     });
     exportToPDF(config, `${injuryCase.id}_injury_report.pdf`);
   };
+
+  const renderNew = () => (
+    <div className="space-y-6 max-w-3xl mx-auto">
+      <SMCard className="p-6">
+        <h2 className="text-lg font-bold text-text-primary mb-5 flex items-center gap-2">
+          <Heart className="w-5 h-5 text-red-500" /> New Injury Case
+        </h2>
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <SMInput label="Employee Name" placeholder="Full name" />
+            <SMInput label="Employee ID" placeholder="EMP-XXXX" />
+            <SMInput label="Department" placeholder="e.g. Manufacturing" />
+            <SMInput label="Job Title" placeholder="e.g. Machine Operator" />
+            <SMInput label="Supervisor Name" placeholder="Supervisor" />
+            <SMInput label="Location" placeholder="e.g. Production Floor B" />
+            <SMInput label="Injury Date" type="date" />
+            <SMInput label="Injury Time" type="time" />
+          </div>
+          <SMSelect
+            label="Injury Type"
+            value=""
+            onChange={() => {}}
+            options={[
+              { value: '', label: 'Select injury type...' },
+              ...injuryTypes.map(t => ({ value: t.id, label: t.name }))
+            ]}
+          />
+          <SMSelect
+            label="Severity"
+            value=""
+            onChange={() => {}}
+            options={[
+              { value: '', label: 'Select severity...' },
+              { value: 'minor', label: 'Minor' },
+              { value: 'moderate', label: 'Moderate' },
+              { value: 'severe', label: 'Severe' },
+              { value: 'critical', label: 'Critical' },
+            ]}
+          />
+          <SMSelect
+            label="Treatment Type"
+            value=""
+            onChange={() => {}}
+            options={[
+              { value: '', label: 'Select treatment...' },
+              { value: 'none', label: 'No Treatment Required' },
+              { value: 'first_aid', label: 'First Aid Only' },
+              { value: 'medical_treatment', label: 'Medical Treatment' },
+              { value: 'hospitalization', label: 'Hospitalization' },
+            ]}
+          />
+          <div>
+            <label className="block text-sm font-medium text-text-secondary mb-1">Incident Description</label>
+            <textarea
+              rows={4}
+              placeholder="Describe what happened..."
+              className="w-full bg-surface-sunken border border-surface-border rounded-xl px-4 py-2.5 text-text-primary placeholder:text-text-muted text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 resize-none"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-text-secondary mb-1">Immediate Actions Taken</label>
+            <textarea
+              rows={3}
+              placeholder="Describe immediate actions taken..."
+              className="w-full bg-surface-sunken border border-surface-border rounded-xl px-4 py-2.5 text-text-primary placeholder:text-text-muted text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 resize-none"
+            />
+          </div>
+          <div className="flex items-center gap-3 pt-2">
+            <SMButton variant="ghost" onClick={() => setViewMode('list')}>
+              Cancel
+            </SMButton>
+            <SMButton variant="primary" leftIcon={<Plus className="w-4 h-4" />} onClick={() => setViewMode('list')}>
+              Submit Case
+            </SMButton>
+          </div>
+        </div>
+      </SMCard>
+    </div>
+  );
 
   const renderList = () => (
     <div className="space-y-6">
@@ -532,12 +626,17 @@ export const EnhancedInjuryReport: React.FC = () => {
               <SMButton variant="icon" size="sm" onClick={() => handleExportPDF(selectedCase)}>
                 <Download className="w-5 h-5" />
               </SMButton>
-              <SMButton variant="icon" size="sm">
+              <SMButton variant="icon" size="sm" onClick={handlePrint}>
                 <Printer className="w-5 h-5" />
               </SMButton>
-              <SMButton variant="icon" size="sm">
-                <Edit3 className="w-5 h-5" />
+              <SMButton variant="icon" size="sm" onClick={() => setIsEditing(!isEditing)}>
+                <Edit3 className={`w-5 h-5 ${isEditing ? 'text-accent' : ''}`} />
               </SMButton>
+              {isEditing && (
+                <SMButton variant="primary" size="sm" onClick={() => setIsEditing(false)}>
+                  Save Changes
+                </SMButton>
+              )}
             </div>
           </div>
 
@@ -606,17 +705,41 @@ export const EnhancedInjuryReport: React.FC = () => {
             >
               <SMCard className="p-5">
                 <h3 className="font-semibold text-surface-900 dark:text-white mb-3">Injury Description</h3>
-                <p className="text-surface-600 dark:text-surface-400">{selectedCase.description}</p>
+                {isEditing ? (
+                  <textarea
+                    className="w-full bg-surface-sunken border border-surface-border rounded-lg px-3 py-2 text-text-primary text-sm resize-none focus:outline-none focus:ring-2 focus:ring-accent/50"
+                    rows={4}
+                    defaultValue={selectedCase.description}
+                  />
+                ) : (
+                  <p className="text-surface-600 dark:text-surface-400">{selectedCase.description}</p>
+                )}
               </SMCard>
 
               <SMCard className="p-5">
                 <h3 className="font-semibold text-surface-900 dark:text-white mb-3">Immediate Actions Taken</h3>
-                <p className="text-surface-600 dark:text-surface-400">{selectedCase.immediateActions}</p>
+                {isEditing ? (
+                  <textarea
+                    className="w-full bg-surface-sunken border border-surface-border rounded-lg px-3 py-2 text-text-primary text-sm resize-none focus:outline-none focus:ring-2 focus:ring-accent/50"
+                    rows={4}
+                    defaultValue={selectedCase.immediateActions}
+                  />
+                ) : (
+                  <p className="text-surface-600 dark:text-surface-400">{selectedCase.immediateActions}</p>
+                )}
               </SMCard>
 
               <SMCard className="p-5">
                 <h3 className="font-semibold text-surface-900 dark:text-white mb-3">Root Cause</h3>
-                <p className="text-surface-600 dark:text-surface-400">{selectedCase.rootCause}</p>
+                {isEditing ? (
+                  <textarea
+                    className="w-full bg-surface-sunken border border-surface-border rounded-lg px-3 py-2 text-text-primary text-sm resize-none focus:outline-none focus:ring-2 focus:ring-accent/50"
+                    rows={4}
+                    defaultValue={selectedCase.rootCause}
+                  />
+                ) : (
+                  <p className="text-surface-600 dark:text-surface-400">{selectedCase.rootCause}</p>
+                )}
               </SMCard>
 
               {selectedCase.witnesses.length > 0 && (
@@ -720,9 +843,45 @@ export const EnhancedInjuryReport: React.FC = () => {
                 variant="secondary"
                 className="w-full py-3 border-2 border-dashed"
                 leftIcon={<Plus className="w-4 h-4" />}
+                onClick={() => setShowAddCapa(true)}
               >
                 Add Corrective Action
               </SMButton>
+              {showAddCapa && (
+                <SMCard className="p-4 border border-accent/30">
+                  <h4 className="text-sm font-semibold text-text-primary mb-3">New Corrective Action</h4>
+                  <div className="space-y-3">
+                    <SMInput
+                      label="Description"
+                      placeholder="Describe the corrective action..."
+                      value={newCapaDesc}
+                      onChange={(e) => setNewCapaDesc(e.target.value)}
+                    />
+                    <div className="grid grid-cols-2 gap-3">
+                      <SMInput
+                        label="Assignee"
+                        placeholder="Responsible person"
+                        value={newCapaAssignee}
+                        onChange={(e) => setNewCapaAssignee(e.target.value)}
+                      />
+                      <SMInput
+                        label="Due Date"
+                        type="date"
+                        value={newCapaDue}
+                        onChange={(e) => setNewCapaDue(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex gap-2 justify-end">
+                      <SMButton variant="ghost" size="sm" onClick={() => { setShowAddCapa(false); setNewCapaDesc(''); setNewCapaAssignee(''); setNewCapaDue(''); }}>
+                        Cancel
+                      </SMButton>
+                      <SMButton variant="primary" size="sm" onClick={handleAddCapa}>
+                        Add Action
+                      </SMButton>
+                    </div>
+                  </div>
+                </SMCard>
+              )}
             </motion.div>
           )}
 
@@ -817,6 +976,8 @@ export const EnhancedInjuryReport: React.FC = () => {
                   if (viewMode === 'detail') {
                     setViewMode('list');
                     setSelectedCase(null);
+                  } else if (viewMode === 'new') {
+                    setViewMode('list');
                   }
                 }}
                 className="p-2 rounded-xl"
@@ -839,6 +1000,7 @@ export const EnhancedInjuryReport: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {viewMode === 'list' && renderList()}
         {viewMode === 'detail' && renderDetail()}
+        {viewMode === 'new' && renderNew()}
       </div>
     </div>
   );

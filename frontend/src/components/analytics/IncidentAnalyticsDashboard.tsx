@@ -545,7 +545,7 @@ export const IncidentAnalyticsDashboard: React.FC = () => {
                 onClick={() => setTimeRange(range)}
                 className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-all ${
                   timeRange === range
-                    ? 'bg-brand-500 text-white'
+                    ? 'bg-accent text-text-onAccent'
                     : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
                 }`}
               >

@@ -373,7 +373,7 @@ export const SafetyLeaderboard: React.FC = () => {
                     onClick={() => setTimeFilter(filter.id as TimeFilter)}
                     className={`px-4 py-2 rounded-xl font-medium transition-all ${
                       timeFilter === filter.id
-                        ? 'bg-orange-500 text-white'
+                        ? 'bg-accent text-text-onAccent'
                         : 'bg-white text-surface-600 border border-surface-200'
                     }`}
                   >

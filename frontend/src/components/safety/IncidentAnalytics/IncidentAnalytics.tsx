@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   BarChart3, TrendingUp, TrendingDown, Filter, Download, Calendar,
@@ -430,13 +430,35 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
   onExport,
   onFilterChange
 }) => {
-  const [selectedType, setSelectedType] = useState<string>('all');
+  const [selectedType, setSelectedType] = useState<string>('incident');
   const [dateRange, setDateRange] = useState<string>('30');
   const [showFilters, setShowFilters] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [severityFilter, setSeverityFilter] = useState<string>('all');
   const [selectedIncident, setSelectedIncident] = useState<IncidentRecord | null>(null);
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const [uploadedAttachments, setUploadedAttachments] = useState<Record<string, IncidentAttachment[]>>({});
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleUploadClick = () => fileInputRef.current?.click();
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!selectedIncident || !e.target.files) return;
+    const newAttachments: IncidentAttachment[] = Array.from(e.target.files).map((file, i) => ({
+      id: `UP-${Date.now()}-${i}`,
+      name: file.name,
+      type: file.type.startsWith('image/') ? 'photo' : file.type.startsWith('video/') ? 'video' : 'document',
+      url: URL.createObjectURL(file),
+      uploadedBy: 'You',
+      uploadedAt: new Date().toLocaleString(),
+      size: file.size > 1048576 ? `${(file.size / 1048576).toFixed(1)} MB` : `${Math.round(file.size / 1024)} KB`,
+    }));
+    setUploadedAttachments(prev => ({
+      ...prev,
+      [selectedIncident.id]: [...(prev[selectedIncident.id] ?? []), ...newAttachments],
+    }));
+    e.target.value = '';
+  };
 
   // Filter incidents
   const filteredIncidents = useMemo(() => {
@@ -738,7 +760,7 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
           <div className="relative">
             <button
               onClick={() => setShowExportMenu(!showExportMenu)}
-              className="px-4 py-2 bg-brand-600 text-white rounded-xl hover:bg-brand-700 transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-accent text-text-onAccent rounded-xl hover:bg-accent/90 transition-colors flex items-center gap-2"
             >
               <Download className="w-4 h-4" />
               Export
@@ -791,7 +813,7 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
                 key={type.id}
                 onClick={() => setSelectedType(type.id)}
                 className={`px-3 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${
-                  isSelected ? 'bg-brand-500 text-white' : 'bg-surface-50 text-surface-600 hover:bg-surface-100'
+                  isSelected ? 'bg-accent text-text-onAccent' : 'bg-surface-50 text-surface-600 hover:bg-surface-100'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -1355,8 +1377,34 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
                     </div>
                   )}
 
+                  {/* Newly uploaded attachments */}
+                  {(uploadedAttachments[selectedIncident.id] ?? []).length > 0 && (
+                    <div className="mt-3 space-y-2">
+                      {(uploadedAttachments[selectedIncident.id] ?? []).map(att => (
+                        <div key={att.id} className="flex items-center gap-3 p-2 bg-surface-sunken rounded-lg">
+                          <File className="w-4 h-4 text-accent flex-shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-text-primary truncate text-sm">{att.name}</p>
+                            <p className="text-xs text-text-muted">{att.size} • {att.uploadedAt}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
                   {/* Upload Button */}
-                  <button className="mt-4 w-full px-4 py-3 border-2 border-dashed border-slate-300 rounded-xl text-slate-500 hover:border-brand-400 hover:text-brand-600 transition-colors flex items-center justify-center gap-2">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                  <button
+                    onClick={handleUploadClick}
+                    className="mt-4 w-full px-4 py-3 border-2 border-dashed border-surface-border rounded-xl text-text-secondary hover:border-accent hover:text-accent transition-colors flex items-center justify-center gap-2"
+                  >
                     <Upload className="w-5 h-5" />
                     Upload Photos or Documents
                   </button>

@@ -557,18 +557,18 @@ export const OSHALogGenerator: React.FC<OSHALogGeneratorProps> = ({
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-brand-900 flex items-center gap-2">
+          <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
             <FileText className="w-6 h-6 text-brand-500" />
             OSHA Log Generator
           </h2>
-          <p className="text-sm text-surface-500">Generate OSHA Forms 300, 300A, and 301</p>
+          <p className="text-sm text-text-muted">Generate OSHA Forms 300, 300A, and 301</p>
         </div>
         
         {/* Export Button */}
         <div className="relative">
           <button
             onClick={() => setShowExportMenu(!showExportMenu)}
-            className="px-4 py-2 bg-brand-600 text-white rounded-xl hover:bg-brand-700 transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-accent text-text-onAccent rounded-xl hover:bg-accent/90 transition-colors flex items-center gap-2"
           >
             <Download className="w-4 h-4" />
             Export
@@ -581,26 +581,26 @@ export const OSHALogGenerator: React.FC<OSHALogGeneratorProps> = ({
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-surface-100 overflow-hidden z-50"
+                className="absolute right-0 mt-2 w-56 bg-surface-raised rounded-xl shadow-lg border border-surface-border overflow-hidden z-50"
               >
                 <button
                   onClick={exportOSHA300ToCSV}
-                  className="w-full px-4 py-3 text-left hover:bg-surface-50 flex items-center gap-3 transition-colors"
+                  className="w-full px-4 py-3 text-left hover:bg-surface-sunken flex items-center gap-3 transition-colors"
                 >
                   <FileSpreadsheet className="w-5 h-5 text-green-600" />
                   <div>
                     <p className="font-medium text-surface-800">Form 300 (CSV)</p>
-                    <p className="text-xs text-surface-500">Log of Injuries/Illnesses</p>
+                    <p className="text-xs text-text-muted">Log of Injuries/Illnesses</p>
                   </div>
                 </button>
                 <button
                   onClick={exportOSHA300APrint}
-                  className="w-full px-4 py-3 text-left hover:bg-surface-50 flex items-center gap-3 transition-colors border-t border-surface-100"
+                  className="w-full px-4 py-3 text-left hover:bg-surface-sunken flex items-center gap-3 transition-colors border-t border-surface-border"
                 >
                   <Printer className="w-5 h-5 text-red-600" />
                   <div>
                     <p className="font-medium text-surface-800">Form 300A (PDF)</p>
-                    <p className="text-xs text-surface-500">Annual Summary</p>
+                    <p className="text-xs text-text-muted">Annual Summary</p>
                   </div>
                 </button>
               </motion.div>
@@ -610,7 +610,7 @@ export const OSHALogGenerator: React.FC<OSHALogGeneratorProps> = ({
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex gap-2 bg-white rounded-2xl p-2 border border-surface-100 shadow-soft">
+      <div className="flex gap-2 bg-surface-raised rounded-2xl p-2 border border-surface-border shadow-soft">
         {[
           { id: '300', label: 'Form 300', desc: 'Log of Injuries', icon: ClipboardList },
           { id: '300A', label: 'Form 300A', desc: 'Annual Summary', icon: TrendingUp },
@@ -621,14 +621,14 @@ export const OSHALogGenerator: React.FC<OSHALogGeneratorProps> = ({
             onClick={() => setActiveTab(tab.id as '300' | '300A' | '301')}
             className={`flex-1 px-4 py-3 rounded-xl transition-colors flex items-center justify-center gap-2 ${
               activeTab === tab.id
-                ? 'bg-brand-500 text-white'
-                : 'bg-surface-50 text-surface-600 hover:bg-surface-100'
+                ? 'bg-accent text-text-onAccent'
+                : 'bg-surface-sunken text-text-secondary hover:bg-surface-overlay'
             }`}
           >
             <tab.icon className="w-4 h-4" />
             <div className="text-left">
               <p className="font-bold text-sm">{tab.label}</p>
-              <p className={`text-xs ${activeTab === tab.id ? 'text-brand-100' : 'text-surface-400'}`}>{tab.desc}</p>
+              <p className={`text-xs ${activeTab === tab.id ? 'text-brand-100' : 'text-text-muted'}`}>{tab.desc}</p>
             </div>
           </button>
         ))}
@@ -636,37 +636,37 @@ export const OSHALogGenerator: React.FC<OSHALogGeneratorProps> = ({
 
       {/* Form 300 - Log View */}
       {activeTab === '300' && (
-        <div className="bg-white rounded-2xl border border-surface-100 shadow-soft overflow-hidden">
-          <div className="p-4 border-b border-surface-100 bg-surface-50">
-            <h3 className="font-bold text-brand-900">OSHA Form 300 - Log of Work-Related Injuries and Illnesses</h3>
-            <p className="text-sm text-surface-500">Year: {year} | Establishment: {establishment.name}</p>
+        <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-soft overflow-hidden">
+          <div className="p-4 border-b border-surface-border bg-surface-sunken">
+            <h3 className="font-bold text-text-primary">OSHA Form 300 - Log of Work-Related Injuries and Illnesses</h3>
+            <p className="text-sm text-text-muted">Year: {year} | Establishment: {establishment.name}</p>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-brand-50">
+              <thead className="bg-accent/5">
                 <tr>
-                  <th className="text-left p-3 font-bold text-brand-800 border-b border-brand-100">Case No.</th>
-                  <th className="text-left p-3 font-bold text-brand-800 border-b border-brand-100">Employee</th>
-                  <th className="text-left p-3 font-bold text-brand-800 border-b border-brand-100">Job Title</th>
-                  <th className="text-left p-3 font-bold text-brand-800 border-b border-brand-100">Date</th>
-                  <th className="text-left p-3 font-bold text-brand-800 border-b border-brand-100">Location</th>
-                  <th className="text-center p-3 font-bold text-brand-800 border-b border-brand-100" title="Death">G</th>
-                  <th className="text-center p-3 font-bold text-brand-800 border-b border-brand-100" title="Days Away">H</th>
-                  <th className="text-center p-3 font-bold text-brand-800 border-b border-brand-100" title="Job Transfer">I</th>
-                  <th className="text-center p-3 font-bold text-brand-800 border-b border-brand-100" title="Other">J</th>
-                  <th className="text-center p-3 font-bold text-brand-800 border-b border-brand-100">Days Away</th>
-                  <th className="text-center p-3 font-bold text-brand-800 border-b border-brand-100">Days Restricted</th>
-                  <th className="text-center p-3 font-bold text-brand-800 border-b border-brand-100">Actions</th>
+                  <th className="text-left p-3 font-bold text-text-primary border-b border-accent/20">Case No.</th>
+                  <th className="text-left p-3 font-bold text-text-primary border-b border-accent/20">Employee</th>
+                  <th className="text-left p-3 font-bold text-text-primary border-b border-accent/20">Job Title</th>
+                  <th className="text-left p-3 font-bold text-text-primary border-b border-accent/20">Date</th>
+                  <th className="text-left p-3 font-bold text-text-primary border-b border-accent/20">Location</th>
+                  <th className="text-center p-3 font-bold text-text-primary border-b border-accent/20" title="Death">G</th>
+                  <th className="text-center p-3 font-bold text-text-primary border-b border-accent/20" title="Days Away">H</th>
+                  <th className="text-center p-3 font-bold text-text-primary border-b border-accent/20" title="Job Transfer">I</th>
+                  <th className="text-center p-3 font-bold text-text-primary border-b border-accent/20" title="Other">J</th>
+                  <th className="text-center p-3 font-bold text-text-primary border-b border-accent/20">Days Away</th>
+                  <th className="text-center p-3 font-bold text-text-primary border-b border-accent/20">Days Restricted</th>
+                  <th className="text-center p-3 font-bold text-text-primary border-b border-accent/20">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {incidents.map((entry, index) => (
-                  <tr key={entry.caseNumber} className={index % 2 === 0 ? 'bg-white' : 'bg-surface-50'}>
+                  <tr key={entry.caseNumber} className={index % 2 === 0 ? 'bg-surface-raised' : 'bg-surface-sunken'}>
                     <td className="p-3 font-mono text-xs">{entry.caseNumber}</td>
                     <td className="p-3 font-medium">{entry.employeeName}</td>
-                    <td className="p-3 text-surface-600">{entry.jobTitle}</td>
-                    <td className="p-3 text-surface-600">{entry.dateOfInjury}</td>
-                    <td className="p-3 text-surface-600 max-w-[150px] truncate">{entry.whereOccurred}</td>
+                    <td className="p-3 text-text-secondary">{entry.jobTitle}</td>
+                    <td className="p-3 text-text-secondary">{entry.dateOfInjury}</td>
+                    <td className="p-3 text-text-secondary max-w-[150px] truncate">{entry.whereOccurred}</td>
                     <td className="p-3 text-center">
                       {entry.death && <XCircle className="w-4 h-4 text-red-600 mx-auto" />}
                     </td>
@@ -677,14 +677,14 @@ export const OSHALogGenerator: React.FC<OSHALogGeneratorProps> = ({
                       {entry.jobTransferOrRestriction && <CheckCircle className="w-4 h-4 text-amber-600 mx-auto" />}
                     </td>
                     <td className="p-3 text-center">
-                      {entry.otherRecordableCase && <CheckCircle className="w-4 h-4 text-blue-600 mx-auto" />}
+                      {entry.otherRecordableCase && <CheckCircle className="w-4 h-4 text-accent mx-auto" />}
                     </td>
                     <td className="p-3 text-center font-bold">{entry.daysAway}</td>
                     <td className="p-3 text-center font-bold">{entry.daysRestricted}</td>
                     <td className="p-3 text-center">
                       <button
                         onClick={() => exportOSHA301(entry)}
-                        className="p-2 hover:bg-brand-100 rounded-lg transition-colors"
+                        className="p-2 hover:bg-accent/10 rounded-lg transition-colors"
                         title="Export Form 301"
                       >
                         <FileText className="w-4 h-4 text-brand-600" />
@@ -702,26 +702,26 @@ export const OSHALogGenerator: React.FC<OSHALogGeneratorProps> = ({
       {activeTab === '300A' && (
         <div className="space-y-6">
           {/* Establishment Info */}
-          <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
-            <h3 className="font-bold text-brand-900 mb-4 flex items-center gap-2">
+          <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
+            <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
               <Building2 className="w-5 h-5 text-brand-500" />
               Establishment Information
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <p className="text-xs font-bold text-surface-400 uppercase mb-1">Name</p>
+                <p className="text-xs font-bold text-text-muted uppercase mb-1">Name</p>
                 <p className="font-medium">{establishment.name}</p>
               </div>
               <div>
-                <p className="text-xs font-bold text-surface-400 uppercase mb-1">Industry</p>
+                <p className="text-xs font-bold text-text-muted uppercase mb-1">Industry</p>
                 <p className="font-medium">{establishment.industry}</p>
               </div>
               <div>
-                <p className="text-xs font-bold text-surface-400 uppercase mb-1">NAICS Code</p>
+                <p className="text-xs font-bold text-text-muted uppercase mb-1">NAICS Code</p>
                 <p className="font-medium">{establishment.naicsCode}</p>
               </div>
               <div>
-                <p className="text-xs font-bold text-surface-400 uppercase mb-1">Year</p>
+                <p className="text-xs font-bold text-text-muted uppercase mb-1">Year</p>
                 <p className="font-medium">{year}</p>
               </div>
             </div>
@@ -729,31 +729,31 @@ export const OSHALogGenerator: React.FC<OSHALogGeneratorProps> = ({
 
           {/* Employment & Rates */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
-              <p className="text-xs font-bold text-surface-400 uppercase mb-1">Avg. Employees</p>
+            <div className="bg-surface-raised rounded-xl p-4 border border-surface-border shadow-soft">
+              <p className="text-xs font-bold text-text-muted uppercase mb-1">Avg. Employees</p>
               <p className="text-2xl font-bold text-surface-800">{establishment.annualAvgEmployees}</p>
             </div>
-            <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
-              <p className="text-xs font-bold text-surface-400 uppercase mb-1">Hours Worked</p>
+            <div className="bg-surface-raised rounded-xl p-4 border border-surface-border shadow-soft">
+              <p className="text-xs font-bold text-text-muted uppercase mb-1">Hours Worked</p>
               <p className="text-2xl font-bold text-surface-800">{(establishment.totalHoursWorked / 1000).toFixed(0)}K</p>
             </div>
-            <div className="bg-brand-50 rounded-xl p-4 border border-brand-100">
+            <div className="bg-accent/5 rounded-xl p-4 border border-accent/20">
               <p className="text-xs font-bold text-brand-400 uppercase mb-1">TRIR</p>
-              <p className="text-2xl font-bold text-brand-700">{summaryStats.trir}</p>
+              <p className="text-2xl font-bold text-text-secondary">{summaryStats.trir}</p>
             </div>
-            <div className="bg-brand-50 rounded-xl p-4 border border-brand-100">
+            <div className="bg-accent/5 rounded-xl p-4 border border-accent/20">
               <p className="text-xs font-bold text-brand-400 uppercase mb-1">DART Rate</p>
-              <p className="text-2xl font-bold text-brand-700">{summaryStats.dart}</p>
+              <p className="text-2xl font-bold text-text-secondary">{summaryStats.dart}</p>
             </div>
           </div>
 
           {/* Case Classification */}
-          <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
-            <h3 className="font-bold text-brand-900 mb-4">Number of Cases</h3>
+          <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
+            <h3 className="font-bold text-text-primary mb-4">Number of Cases</h3>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              <div className="text-center p-4 bg-surface-50 rounded-xl">
+              <div className="text-center p-4 bg-surface-sunken rounded-xl">
                 <p className="text-3xl font-bold text-surface-800">{summaryStats.totalCases}</p>
-                <p className="text-xs text-surface-500 uppercase font-bold">Total Cases</p>
+                <p className="text-xs text-text-muted uppercase font-bold">Total Cases</p>
               </div>
               <div className="text-center p-4 bg-red-50 rounded-xl">
                 <p className="text-3xl font-bold text-red-600">{summaryStats.deaths}</p>
@@ -767,21 +767,21 @@ export const OSHALogGenerator: React.FC<OSHALogGeneratorProps> = ({
                 <p className="text-3xl font-bold text-amber-600">{summaryStats.jobTransfer}</p>
                 <p className="text-xs text-amber-500 uppercase font-bold">(I) Job Transfer</p>
               </div>
-              <div className="text-center p-4 bg-blue-50 rounded-xl">
-                <p className="text-3xl font-bold text-blue-600">{summaryStats.otherRecordable}</p>
-                <p className="text-xs text-blue-500 uppercase font-bold">(J) Other</p>
+              <div className="text-center p-4 bg-accent/10 rounded-xl">
+                <p className="text-3xl font-bold text-accent">{summaryStats.otherRecordable}</p>
+                <p className="text-xs text-accent uppercase font-bold">(J) Other</p>
               </div>
             </div>
           </div>
 
           {/* Days Count & Injury Types */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
-              <h3 className="font-bold text-brand-900 mb-4">Number of Days</h3>
+            <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
+              <h3 className="font-bold text-text-primary mb-4">Number of Days</h3>
               <div className="grid grid-cols-2 gap-4">
-                <div className="text-center p-6 bg-purple-50 rounded-xl">
-                  <p className="text-4xl font-bold text-purple-600">{summaryStats.totalDaysAway}</p>
-                  <p className="text-sm text-purple-500 font-medium">Days Away (K)</p>
+                <div className="text-center p-6 bg-primary/10 rounded-xl">
+                  <p className="text-4xl font-bold text-primary">{summaryStats.totalDaysAway}</p>
+                  <p className="text-sm text-primary font-medium">Days Away (K)</p>
                 </div>
                 <div className="text-center p-6 bg-indigo-50 rounded-xl">
                   <p className="text-4xl font-bold text-indigo-600">{summaryStats.totalDaysRestricted}</p>
@@ -790,32 +790,32 @@ export const OSHALogGenerator: React.FC<OSHALogGeneratorProps> = ({
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
-              <h3 className="font-bold text-brand-900 mb-4">Injury & Illness Types</h3>
+            <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
+              <h3 className="font-bold text-text-primary mb-4">Injury & Illness Types</h3>
               <div className="grid grid-cols-3 gap-3">
-                <div className="text-center p-3 bg-surface-50 rounded-lg">
+                <div className="text-center p-3 bg-surface-sunken rounded-lg">
                   <p className="text-xl font-bold">{summaryStats.injuries}</p>
-                  <p className="text-xs text-surface-500">Injuries (M1)</p>
+                  <p className="text-xs text-text-muted">Injuries (M1)</p>
                 </div>
-                <div className="text-center p-3 bg-surface-50 rounded-lg">
+                <div className="text-center p-3 bg-surface-sunken rounded-lg">
                   <p className="text-xl font-bold">{summaryStats.skinDisorders}</p>
-                  <p className="text-xs text-surface-500">Skin (M2)</p>
+                  <p className="text-xs text-text-muted">Skin (M2)</p>
                 </div>
-                <div className="text-center p-3 bg-surface-50 rounded-lg">
+                <div className="text-center p-3 bg-surface-sunken rounded-lg">
                   <p className="text-xl font-bold">{summaryStats.respiratoryConditions}</p>
-                  <p className="text-xs text-surface-500">Respiratory (M3)</p>
+                  <p className="text-xs text-text-muted">Respiratory (M3)</p>
                 </div>
-                <div className="text-center p-3 bg-surface-50 rounded-lg">
+                <div className="text-center p-3 bg-surface-sunken rounded-lg">
                   <p className="text-xl font-bold">{summaryStats.poisonings}</p>
-                  <p className="text-xs text-surface-500">Poisoning (M4)</p>
+                  <p className="text-xs text-text-muted">Poisoning (M4)</p>
                 </div>
-                <div className="text-center p-3 bg-surface-50 rounded-lg">
+                <div className="text-center p-3 bg-surface-sunken rounded-lg">
                   <p className="text-xl font-bold">{summaryStats.hearingLoss}</p>
-                  <p className="text-xs text-surface-500">Hearing (M5)</p>
+                  <p className="text-xs text-text-muted">Hearing (M5)</p>
                 </div>
-                <div className="text-center p-3 bg-surface-50 rounded-lg">
+                <div className="text-center p-3 bg-surface-sunken rounded-lg">
                   <p className="text-xl font-bold">{summaryStats.otherIllnesses}</p>
-                  <p className="text-xs text-surface-500">Other (M6)</p>
+                  <p className="text-xs text-text-muted">Other (M6)</p>
                 </div>
               </div>
             </div>
@@ -825,7 +825,7 @@ export const OSHALogGenerator: React.FC<OSHALogGeneratorProps> = ({
           <div className="flex justify-center">
             <button
               onClick={exportOSHA300APrint}
-              className="px-6 py-3 bg-brand-600 text-white rounded-xl hover:bg-brand-700 transition-colors flex items-center gap-2"
+              className="px-6 py-3 bg-accent text-text-onAccent rounded-xl hover:bg-accent/90 transition-colors flex items-center gap-2"
             >
               <Printer className="w-5 h-5" />
               Print Form 300A Summary
@@ -849,19 +849,19 @@ export const OSHALogGenerator: React.FC<OSHALogGeneratorProps> = ({
             {incidents.map(entry => (
               <motion.div
                 key={entry.caseNumber}
-                className="bg-white rounded-2xl border border-surface-100 shadow-soft p-4 hover:shadow-md transition-shadow"
+                className="bg-surface-raised rounded-2xl border border-surface-border shadow-soft p-4 hover:shadow-md transition-shadow"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="px-3 py-1 bg-brand-100 text-brand-700 rounded-full text-sm font-bold">
+                      <span className="px-3 py-1 bg-accent/10 text-accent rounded-full text-sm font-bold">
                         {entry.caseNumber}
                       </span>
-                      <span className="text-surface-500 text-sm">{entry.dateOfInjury}</span>
+                      <span className="text-text-muted text-sm">{entry.dateOfInjury}</span>
                     </div>
                     <h4 className="font-bold text-surface-800 mb-1">{entry.employeeName}</h4>
-                    <p className="text-sm text-surface-500 mb-2">{entry.jobTitle} • {entry.whereOccurred}</p>
-                    <p className="text-sm text-surface-600">{entry.descriptionOfInjury}</p>
+                    <p className="text-sm text-text-muted mb-2">{entry.jobTitle} • {entry.whereOccurred}</p>
+                    <p className="text-sm text-text-secondary">{entry.descriptionOfInjury}</p>
                     <div className="flex gap-4 mt-3 text-xs">
                       {entry.daysAway > 0 && (
                         <span className="text-orange-600">{entry.daysAway} days away</span>
@@ -873,7 +873,7 @@ export const OSHALogGenerator: React.FC<OSHALogGeneratorProps> = ({
                   </div>
                   <button
                     onClick={() => exportOSHA301(entry)}
-                    className="px-4 py-2 bg-brand-600 text-white rounded-xl hover:bg-brand-700 transition-colors flex items-center gap-2"
+                    className="px-4 py-2 bg-accent text-text-onAccent rounded-xl hover:bg-accent/90 transition-colors flex items-center gap-2"
                   >
                     <Printer className="w-4 h-4" />
                     Print 301

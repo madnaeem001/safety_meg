@@ -184,11 +184,11 @@ export const HazardAssessment: React.FC = () => {
             <div className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary to-accent p-6 text-text-onAccent xl:col-span-2">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-                  <Zap className="w-5 h-5" />
+                  <Zap className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">AI Predictive Hazard Insights</h3>
-                  <p className="text-xs text-text-onAccent/80">Machine learning analysis of historical incident patterns</p>
+                  <h3 className="font-bold text-lg text-white">AI Predictive Hazard Insights</h3>
+                  <p className="text-xs text-white/70">Machine learning analysis of historical incident patterns</p>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -198,11 +198,11 @@ export const HazardAssessment: React.FC = () => {
                   { title: 'Equipment Fatigue Warning', desc: 'Vibration sensors on Conveyor Line 4 show degradation patterns matching pre-failure signatures. Estimated 14 days before mechanical integrity is compromised.', action: 'Schedule preventive maintenance', confidence: 94 },
                 ].map((insight, i) => (
                   <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.15 }} className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-sm">
-                    <h4 className="font-bold text-sm mb-2">{insight.title}</h4>
-                    <p className="mb-3 text-xs text-text-onAccent/80">{insight.desc}</p>
+                    <h4 className="font-bold text-sm mb-2 text-white">{insight.title}</h4>
+                    <p className="mb-3 text-xs text-white/80">{insight.desc}</p>
                     <div className="flex justify-between items-center">
-                      <span className="font-mono text-[10px] text-text-onAccent/75">Confidence: {insight.confidence}%</span>
-                      <button className="rounded-lg bg-white/20 px-3 py-1 text-[10px] font-bold transition hover:bg-white/30">{insight.action}</button>
+                      <span className="font-mono text-[10px] text-white/75">Confidence: {insight.confidence}%</span>
+                      <button className="rounded-lg bg-white/20 px-3 py-1 text-[10px] font-bold text-white transition hover:bg-white/30">{insight.action}</button>
                     </div>
                   </motion.div>
                 ))}

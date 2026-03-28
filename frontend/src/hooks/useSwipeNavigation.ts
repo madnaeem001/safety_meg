@@ -65,7 +65,7 @@ export function useSwipeNavigation(options: UseSwipeNavigationOptions = {}) {
   const navigateToIndex = useCallback((index: number) => {
     if (index >= 0 && index < SWIPE_ROUTES.length) {
       const route = SWIPE_ROUTES[index];
-      navigate(route.path);
+      navigate(route.path, { replace: true });
       return true;
     }
     return false;

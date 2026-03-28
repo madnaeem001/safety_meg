@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X,
@@ -172,11 +173,11 @@ const IncidentDetail: React.FC<{ item: Incident }> = ({ item }) => {
       </div>
 
       {item.aiSuggestedDescription && (
-        <div className="p-4 bg-purple-50 rounded-xl border border-purple-100">
-          <div className="flex items-center gap-2 text-purple-700 text-xs font-semibold mb-2">
+        <div className="p-4 bg-purple-600 rounded-xl border border-purple-600">
+          <div className="flex items-center gap-2 text-white text-xs font-semibold mb-2">
             <Target className="w-4 h-4" /> AI Suggested Description
           </div>
-          <p className="text-sm text-purple-800">{item.aiSuggestedDescription}</p>
+          <p className="text-sm text-white/90">{item.aiSuggestedDescription}</p>
         </div>
       )}
 
@@ -580,11 +581,11 @@ const InvestigationDetail: React.FC<{ item: Investigation }> = ({ item }) => {
       )}
 
       {item.aiSuggestedRootCause && (
-        <div className="p-4 bg-purple-50 rounded-xl border border-purple-100">
-          <div className="flex items-center gap-2 text-purple-700 text-xs font-semibold mb-2">
-            <Target className="w-4 h-4" /> AI Suggested Root Cause
-          </div>
-          <p className="text-sm text-purple-800">{item.aiSuggestedRootCause}</p>
+          <div className="p-4 bg-purple-600 rounded-xl border border-purple-600">
+            <div className="flex items-center gap-2 text-white text-xs font-semibold mb-2">
+              <Target className="w-4 h-4" /> AI Suggested Root Cause
+            </div>
+            <p className="text-sm text-white/90">{item.aiSuggestedRootCause}</p>
         </div>
       )}
     </div>
@@ -633,7 +634,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
     }
   };
 
-  return (
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
         <>
@@ -646,45 +647,53 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
           />
 
-          {/* Modal */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-2xl bg-white rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col max-h-[90vh]"
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-surface-100">
-              <h2 className="text-lg font-semibold text-surface-800">{getTitle()}</h2>
-              <button
-                onClick={onClose}
-                className="p-1.5 rounded-lg hover:bg-surface-100 transition-colors"
-              >
-                <X className="w-5 h-5 text-surface-500" />
-              </button>
-            </div>
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 pointer-events-none">
+            {/* Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="pointer-events-auto w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b border-surface-100">
+                <h2 className="text-lg font-semibold text-surface-800">{getTitle()}</h2>
+                <button
+                  onClick={onClose}
+                  className="p-1.5 rounded-lg hover:bg-surface-100 transition-colors"
+                >
+                  <X className="w-5 h-5 text-surface-500" />
+                </button>
+              </div>
 
-            {/* Content */}
-            <div className="flex-1 overflow-y-auto p-4">
-              {renderContent()}
-            </div>
+              {/* Content */}
+              <div className="flex-1 overflow-y-auto p-4">
+                {renderContent()}
+              </div>
 
-            {/* Footer */}
-            <div className="p-4 border-t border-surface-100 flex justify-end gap-2">
-              <button
-                onClick={onClose}
-                className="px-4 py-2 text-sm font-medium text-surface-600 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors"
-              >
-                Close
-              </button>
-              <SMButton variant="primary" size="sm" leftIcon={<ExternalLink className="w-4 h-4" />}>Open Full View</SMButton>
-            </div>
-          </motion.div>
+              {/* Footer */}
+              <div className="p-4 border-t border-surface-100 flex justify-end gap-2">
+                <button
+                  onClick={onClose}
+                  className="px-4 py-2 text-sm font-medium text-surface-600 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors"
+                >
+                  Close
+                </button>
+                <SMButton variant="primary" size="sm" leftIcon={<ExternalLink className="w-4 h-4" />}>Open Full View</SMButton>
+              </div>
+            </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>
   );
+
+  if (typeof document === 'undefined') {
+    return modalContent;
+  }
+
+  return createPortal(modalContent, document.body);
 };
 
 export default DetailModal;

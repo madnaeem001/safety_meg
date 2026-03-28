@@ -1,6 +1,5 @@
 import React, { Suspense, lazy, useEffect, useState, useCallback } from 'react';
 import { HashRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { PWAInstaller } from './components/pwa';
 import { AISafetyAssistant } from './components/AISafetyAssistant';
 import { FeedbackWidget } from './components/widgets/FeedbackWidget';
 import { OnboardingWalkthrough } from './components/widgets/OnboardingWalkthrough';
@@ -335,7 +334,6 @@ function App() {
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <SMToastProvider />
       <AnimatedRoutes />
-      <PWAInstaller />
       <AuthAwareWidgets />
     </Router>
   );

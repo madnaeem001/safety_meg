@@ -41,7 +41,7 @@ const statusConfig: Record<string, { bg: string; text: string; label: string }> 
 const priorityConfig: Record<string, { dot: string }> = {
   high: { dot: 'bg-red-400' },
   medium: { dot: 'bg-amber-400' },
-  low: { dot: 'bg-slate-400' },
+  low: { dot: 'bg-text-muted' },
 };
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -122,7 +122,7 @@ export const ComplianceCalendar: React.FC = () => {
               <h1 className="text-2xl md:text-3xl font-bold text-white font-display">Compliance Calendar</h1>
             </div>
           </div>
-          <p className="text-sm text-slate-400 max-w-2xl">
+          <p className="text-sm text-text-muted max-w-2xl">
             Track audit schedules, certification renewals, regulatory deadlines, and training expirations in one unified compliance timeline.
           </p>
         </motion.div>
@@ -139,11 +139,11 @@ export const ComplianceCalendar: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 }}
-              className={`p-4 rounded-2xl bg-slate-900/80 backdrop-blur-xl border ${stat.border}`}
+              className={`p-4 rounded-2xl bg-surface-overlay border ${stat.border}`}
             >
               <div className="flex items-center gap-2 mb-2">
                 <stat.icon className={`w-4 h-4 ${stat.color}`} />
-                <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">{stat.label}</span>
+                <span className="text-[10px] text-text-muted uppercase tracking-wider font-bold">{stat.label}</span>
               </div>
               <p className={`text-2xl font-black font-display ${stat.color}`}>{stat.value}</p>
             </motion.div>
@@ -154,14 +154,14 @@ export const ComplianceCalendar: React.FC = () => {
         <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
           <button
             onClick={() => setFilterType('all')}
-            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all ${filterType === 'all' ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' : 'text-slate-500 border border-slate-700/30'}`}
+            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all ${filterType === 'all' ? 'bg-accent/10 text-accent border border-accent/30' : 'text-text-muted border border-surface-border'}`}
           >All</button>
           {Object.entries(typeConfig).map(([key, config]) => (
             <button
               key={key}
               onClick={() => setFilterType(key as EventType)}
               className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all flex items-center gap-1 ${
-                filterType === key ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' : 'text-slate-500 border border-slate-700/30'
+                filterType === key ? 'bg-accent/10 text-accent border border-accent/30' : 'text-text-muted border border-surface-border'
               }`}
             >
               <config.icon className="w-3 h-3" />
@@ -172,14 +172,14 @@ export const ComplianceCalendar: React.FC = () => {
 
         <div className="grid lg:grid-cols-5 gap-6">
           {/* Calendar Grid */}
-          <div className="lg:col-span-3 p-5 rounded-2xl bg-slate-900/80 backdrop-blur-xl border border-cyan-500/15">
+          <div className="lg:col-span-3 p-5 rounded-2xl bg-surface-overlay border border-cyan-500/15">
             <div className="flex items-center justify-between mb-5">
               <button onClick={() => navigateMonth(-1)} className="p-2 rounded-lg hover:bg-slate-800 transition-colors">
-                <ChevronLeft className="w-5 h-5 text-slate-400" />
+                <ChevronLeft className="w-5 h-5 text-text-muted" />
               </button>
               <h3 className="text-lg font-bold text-white font-display">{MONTHS[currentMonth]} {currentYear}</h3>
               <button onClick={() => navigateMonth(1)} className="p-2 rounded-lg hover:bg-slate-800 transition-colors">
-                <ChevronRight className="w-5 h-5 text-slate-400" />
+                <ChevronRight className="w-5 h-5 text-text-muted" />
               </button>
             </div>
             
@@ -207,11 +207,11 @@ export const ComplianceCalendar: React.FC = () => {
                     className={`aspect-square rounded-xl flex flex-col items-center justify-center relative transition-all ${
                       isSelected ? 'bg-cyan-500/20 border border-cyan-500/40' :
                       isToday ? 'bg-cyan-500/10 border border-cyan-500/20' :
-                      dayEvents.length > 0 ? 'bg-slate-800/50 hover:bg-slate-800 border border-slate-700/30' :
+                      dayEvents.length > 0 ? 'bg-slate-800/50 hover:bg-slate-800 border border-surface-border' :
                       'hover:bg-slate-800/30 border border-transparent'
                     }`}
                   >
-                    <span className={`text-xs font-bold ${isToday ? 'text-cyan-400' : isSelected ? 'text-white' : 'text-slate-400'}`}>{day}</span>
+                    <span className={`text-xs font-bold ${isToday ? 'text-cyan-400' : isSelected ? 'text-white' : 'text-text-muted'}`}>{day}</span>
                     {dayEvents.length > 0 && (
                       <div className="flex gap-0.5 mt-1">
                         {dayEvents.slice(0, 3).map((ev, idx) => (
@@ -248,7 +248,7 @@ export const ComplianceCalendar: React.FC = () => {
                       initial={{ opacity: 0, x: 10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.05 }}
-                      className={`p-4 rounded-xl bg-slate-900/80 border ${event.status === 'overdue' ? 'border-red-500/30' : 'border-slate-700/30'} hover:border-cyan-500/20 transition-all`}
+                      className={`p-4 rounded-xl bg-slate-900/80 border ${event.status === 'overdue' ? 'border-red-500/30' : 'border-surface-border'} hover:border-cyan-500/20 transition-all`}
                     >
                       <div className="flex items-start gap-3">
                         <div className={`p-2 rounded-lg ${event.status === 'overdue' ? 'bg-red-500/10' : 'bg-slate-800/50'}`}>
@@ -261,15 +261,15 @@ export const ComplianceCalendar: React.FC = () => {
                           </div>
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${sc.bg} ${sc.text}`}>{sc.label}</span>
-                            <span className="text-[9px] text-slate-500">{new Date(event.date + 'T00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                            <span className="text-[9px] text-text-muted">{new Date(event.date + 'T00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                             {event.regulation && (
                               <span className="text-[9px] text-slate-600 bg-slate-800/50 px-1.5 py-0.5 rounded">{event.regulation}</span>
                             )}
                           </div>
                           <div className="flex items-center gap-2 mt-1.5">
-                            <span className="text-[10px] text-slate-500">{event.assignee}</span>
+                            <span className="text-[10px] text-text-muted">{event.assignee}</span>
                             {event.daysLeft !== undefined && (
-                              <span className={`text-[9px] font-bold ${event.daysLeft < 0 ? 'text-red-400' : event.daysLeft <= 3 ? 'text-amber-400' : 'text-slate-500'}`}>
+                              <span className={`text-[9px] font-bold ${event.daysLeft < 0 ? 'text-red-400' : event.daysLeft <= 3 ? 'text-amber-400' : 'text-text-muted'}`}>
                                 {event.daysLeft < 0 ? `${Math.abs(event.daysLeft)}d overdue` : event.daysLeft === 0 ? 'Today' : `${event.daysLeft}d left`}
                               </span>
                             )}

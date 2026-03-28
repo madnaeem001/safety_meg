@@ -175,8 +175,8 @@ export const InjuryPhotoUpload: React.FC<InjuryPhotoUploadProps> = ({
         onDrop={handleDrop}
         className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all ${
           isDragActive 
-            ? 'border-brand-500 bg-brand-500/10' 
-            : 'border-slate-600 hover:border-slate-500 bg-slate-800/50'
+            ? 'border-accent bg-accent/10' 
+            : 'border-surface-border hover:border-accent/50 bg-surface-sunken'
         } ${photos.length >= maxPhotos ? 'opacity-50 pointer-events-none' : ''}`}
       >
         <input
@@ -194,7 +194,7 @@ export const InjuryPhotoUpload: React.FC<InjuryPhotoUploadProps> = ({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-2 px-6 py-3 bg-slate-700 hover:bg-slate-600 rounded-xl text-white font-semibold transition-colors"
+              className="flex items-center gap-2 px-6 py-3 bg-surface-raised hover:bg-surface-overlay border border-surface-border rounded-xl text-text-primary font-semibold transition-colors"
             >
               <Upload className="w-5 h-5" />
               Upload Photos
@@ -203,16 +203,16 @@ export const InjuryPhotoUpload: React.FC<InjuryPhotoUploadProps> = ({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={startCamera}
-              className="flex items-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-500 rounded-xl text-white font-semibold transition-colors"
+              className="flex items-center gap-2 px-6 py-3 bg-accent hover:bg-accent/90 rounded-xl text-text-onAccent font-semibold transition-colors"
             >
               <Camera className="w-5 h-5" />
               Take Photo
             </motion.button>
           </div>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-text-secondary">
             Drag and drop images here, or click to select • Max {maxPhotos} photos
           </p>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-text-muted">
             {photos.length} / {maxPhotos} photos uploaded
           </p>
         </div>
@@ -246,14 +246,14 @@ export const InjuryPhotoUpload: React.FC<InjuryPhotoUploadProps> = ({
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={capturePhoto}
-                  className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-xl"
+                  className="w-16 h-16 bg-surface-raised rounded-full flex items-center justify-center shadow-xl"
                 >
-                  <div className="w-12 h-12 bg-brand-500 rounded-full" />
+                  <div className="w-12 h-12 bg-accent rounded-full" />
                 </motion.button>
               </div>
               <button
                 onClick={stopCamera}
-                className="absolute top-4 right-4 w-10 h-10 bg-slate-800/80 rounded-full flex items-center justify-center text-white"
+                className="absolute top-4 right-4 w-10 h-10 bg-surface-overlay/80 rounded-full flex items-center justify-center text-text-primary"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -271,7 +271,7 @@ export const InjuryPhotoUpload: React.FC<InjuryPhotoUploadProps> = ({
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="group relative aspect-square rounded-xl overflow-hidden bg-slate-800 border border-slate-700"
+              className="group relative aspect-square rounded-xl overflow-hidden bg-surface-overlay border border-surface-border"
             >
               <img
                 src={photo.preview}
@@ -287,7 +287,7 @@ export const InjuryPhotoUpload: React.FC<InjuryPhotoUploadProps> = ({
                     value={photo.caption}
                     onChange={(e) => updatePhotoCaption(photo.id, e.target.value)}
                     placeholder="Add caption..."
-                    className="w-full text-xs bg-slate-900/80 border border-slate-600 rounded-lg px-2 py-1.5 text-white placeholder:text-slate-500"
+                    className="w-full text-xs bg-surface-sunken border border-surface-border rounded-lg px-2 py-1.5 text-text-primary placeholder:text-text-muted"
                   />
                 </div>
               </div>
@@ -296,7 +296,7 @@ export const InjuryPhotoUpload: React.FC<InjuryPhotoUploadProps> = ({
               <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
                   onClick={() => setSelectedPhoto(photo)}
-                  className="w-8 h-8 bg-slate-900/80 rounded-lg flex items-center justify-center text-white hover:bg-slate-800"
+                  className="w-8 h-8 bg-surface-overlay/80 rounded-lg flex items-center justify-center text-text-primary hover:bg-surface-raised"
                 >
                   <ZoomIn className="w-4 h-4" />
                 </button>
@@ -310,7 +310,7 @@ export const InjuryPhotoUpload: React.FC<InjuryPhotoUploadProps> = ({
 
               {/* Body Part Tag */}
               {photo.bodyPart && (
-                <div className="absolute top-2 left-2 px-2 py-1 bg-brand-600/90 rounded-lg text-xs font-medium text-white">
+                <div className="absolute top-2 left-2 px-2 py-1 bg-accent/90 rounded-lg text-xs font-medium text-text-onAccent">
                   {photo.bodyPart}
                 </div>
               )}
@@ -323,7 +323,7 @@ export const InjuryPhotoUpload: React.FC<InjuryPhotoUploadProps> = ({
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => fileInputRef.current?.click()}
-              className="aspect-square rounded-xl border-2 border-dashed border-slate-600 hover:border-brand-500 flex flex-col items-center justify-center gap-2 text-slate-400 hover:text-brand-400 transition-colors"
+              className="aspect-square rounded-xl border-2 border-dashed border-surface-border hover:border-accent flex flex-col items-center justify-center gap-2 text-text-muted hover:text-accent transition-colors"
             >
               <Plus className="w-8 h-8" />
               <span className="text-sm font-medium">Add Photo</span>
@@ -361,14 +361,14 @@ export const InjuryPhotoUpload: React.FC<InjuryPhotoUploadProps> = ({
                   value={selectedPhoto.caption}
                   onChange={(e) => updatePhotoCaption(selectedPhoto.id, e.target.value)}
                   placeholder="Add caption..."
-                  className="w-full text-lg bg-slate-900/80 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder:text-slate-500 mb-3"
+                  className="w-full text-lg bg-surface-sunken border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted mb-3"
                 />
                 
                 {bodyParts.length > 0 && (
                   <select
                     value={selectedPhoto.bodyPart || ''}
                     onChange={(e) => updatePhotoBodyPart(selectedPhoto.id, e.target.value)}
-                    className="w-full bg-slate-900/80 border border-slate-600 rounded-xl px-4 py-2.5 text-white"
+                    className="w-full bg-surface-sunken border border-surface-border rounded-xl px-4 py-2.5 text-text-primary"
                   >
                     <option value="">Select body part...</option>
                     {bodyParts.map(part => (
@@ -377,14 +377,14 @@ export const InjuryPhotoUpload: React.FC<InjuryPhotoUploadProps> = ({
                   </select>
                 )}
                 
-                <p className="text-xs text-slate-400 mt-2">
+                <p className="text-xs text-text-muted mt-2">
                   Captured: {new Date(selectedPhoto.timestamp).toLocaleString()}
                 </p>
               </div>
 
               <button
                 onClick={() => setSelectedPhoto(null)}
-                className="absolute top-4 right-4 w-12 h-12 bg-slate-800/80 rounded-full flex items-center justify-center text-white hover:bg-slate-700 transition-colors"
+                className="absolute top-4 right-4 w-12 h-12 bg-surface-overlay/80 rounded-full flex items-center justify-center text-text-primary hover:bg-surface-raised transition-colors"
               >
                 <X className="w-6 h-6" />
               </button>

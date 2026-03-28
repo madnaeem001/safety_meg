@@ -119,7 +119,7 @@ const STATUS_CONFIG = {
   compliant: { color: 'bg-emerald-100 text-emerald-700 border-emerald-200', icon: CheckCircle2, label: 'Compliant' },
   due: { color: 'bg-amber-100 text-amber-700 border-amber-200', icon: Clock, label: 'Due Soon' },
   overdue: { color: 'bg-red-100 text-red-700 border-red-200', icon: AlertCircle, label: 'Overdue' },
-  in_progress: { color: 'bg-blue-100 text-blue-700 border-blue-200', icon: Scan, label: 'In Progress' },
+  in_progress: { color: 'bg-accent/20 text-accent border-accent/30', icon: Scan, label: 'In Progress' },
 };
 
 export const QRCodeAudit: React.FC = () => {
@@ -183,8 +183,8 @@ export const QRCodeAudit: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-brand-900">QR Code Equipment Audits</h2>
-          <p className="text-surface-500 mt-1">Scan QR codes to instantly access checklists, maintenance records, and safety protocols</p>
+          <h2 className="text-2xl font-bold text-text-primary">QR Code Equipment Audits</h2>
+          <p className="text-text-muted mt-1">Scan QR codes to instantly access checklists, maintenance records, and safety protocols</p>
         </div>
         <div className="flex gap-3">
           <motion.button
@@ -192,8 +192,8 @@ export const QRCodeAudit: React.FC = () => {
             onClick={() => setScanMode(!scanMode)}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all ${
               scanMode 
-                ? 'bg-brand-600 text-white' 
-                : 'bg-white border border-surface-200 text-surface-700 hover:bg-surface-50'
+                ? 'bg-accent text-text-onAccent' 
+                : 'bg-surface-raised border border-surface-border text-text-secondary hover:bg-surface-sunken'
             }`}
           >
             <Scan className="w-5 h-5" />
@@ -202,7 +202,7 @@ export const QRCodeAudit: React.FC = () => {
           <motion.button
             whileTap={{ scale: 0.97 }}
             onClick={() => setShowGenerateModal(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-br from-brand-600 to-brand-700 text-white font-medium rounded-xl hover:from-brand-700 hover:to-brand-800 transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-br from-teal-500 to-teal-600 text-white font-medium rounded-xl hover:from-teal-600 hover:to-teal-700 transition-all shadow-sm"
           >
             <Plus className="w-5 h-5" />
             Generate QR Code
@@ -222,15 +222,15 @@ export const QRCodeAudit: React.FC = () => {
             key={stat.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white p-4 rounded-2xl shadow-soft border border-surface-100"
+            className="bg-surface-raised p-4 rounded-2xl shadow-soft border border-surface-border"
           >
             <div className="flex items-center gap-3">
               <div className={`p-2 rounded-xl bg-${stat.color}-50`}>
                 <stat.icon className={`w-5 h-5 text-${stat.color}-500`} />
               </div>
               <div>
-                <div className="text-2xl font-bold text-brand-900">{stat.value}</div>
-                <div className="text-[10px] font-medium text-surface-500 uppercase tracking-wider">{stat.label}</div>
+                <div className="text-2xl font-bold text-text-primary">{stat.value}</div>
+                <div className="text-[10px] font-medium text-text-muted uppercase tracking-wider">{stat.label}</div>
               </div>
             </div>
           </motion.div>
@@ -247,7 +247,7 @@ export const QRCodeAudit: React.FC = () => {
             className="bg-gradient-to-br from-brand-50 to-indigo-50 p-6 rounded-2xl border border-brand-100"
           >
             <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="w-48 h-48 bg-white rounded-2xl flex items-center justify-center border-2 border-dashed border-brand-200 relative overflow-hidden">
+              <div className="w-48 h-48 bg-surface-raised rounded-2xl flex items-center justify-center border-2 border-dashed border-brand-200 relative overflow-hidden">
                 <div className="absolute inset-0 bg-brand-500/5" />
                 <div className="text-center">
                   <Camera className="w-12 h-12 text-brand-400 mx-auto mb-2" />
@@ -260,16 +260,16 @@ export const QRCodeAudit: React.FC = () => {
                 />
               </div>
               <div className="flex-1 text-center md:text-left">
-                <h3 className="text-lg font-bold text-brand-900 mb-2">QR Scanner Active</h3>
-                <p className="text-surface-600 mb-4">Point your device camera at any equipment QR code to instantly access:</p>
+                <h3 className="text-lg font-bold text-text-primary mb-2">QR Scanner Active</h3>
+                <p className="text-text-secondary mb-4">Point your device camera at any equipment QR code to instantly access:</p>
                 <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                  <span className="px-3 py-1 bg-white rounded-lg text-sm text-brand-700 border border-brand-100">
+                  <span className="px-3 py-1 bg-surface-raised rounded-lg text-sm text-text-secondary border border-brand-100">
                     <ClipboardList className="w-4 h-4 inline mr-1" /> Checklists
                   </span>
-                  <span className="px-3 py-1 bg-white rounded-lg text-sm text-brand-700 border border-brand-100">
+                  <span className="px-3 py-1 bg-surface-raised rounded-lg text-sm text-text-secondary border border-brand-100">
                     <History className="w-4 h-4 inline mr-1" /> Maintenance History
                   </span>
-                  <span className="px-3 py-1 bg-white rounded-lg text-sm text-brand-700 border border-brand-100">
+                  <span className="px-3 py-1 bg-surface-raised rounded-lg text-sm text-text-secondary border border-brand-100">
                     <Shield className="w-4 h-4 inline mr-1" /> Safety Protocols
                   </span>
                 </div>
@@ -282,13 +282,13 @@ export const QRCodeAudit: React.FC = () => {
       {/* Search and Filter */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search equipment by name, location, or QR code..."
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-surface-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-surface-border focus:ring-2 focus:ring-brand-500 focus:border-transparent"
           />
         </div>
         <div className="flex gap-2">
@@ -298,8 +298,8 @@ export const QRCodeAudit: React.FC = () => {
               onClick={() => setFilterStatus(status)}
               className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
                 filterStatus === status
-                  ? 'bg-brand-600 text-white'
-                  : 'bg-white border border-surface-200 text-surface-600 hover:bg-surface-50'
+                  ? 'bg-accent text-text-onAccent'
+                  : 'bg-surface-raised border border-surface-border text-text-secondary hover:bg-surface-sunken'
               }`}
             >
               {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -319,7 +319,7 @@ export const QRCodeAudit: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               whileHover={{ y: -2 }}
               onClick={() => setSelectedEquipment(eq)}
-              className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100 cursor-pointer hover:shadow-md transition-all"
+              className="bg-surface-raised p-5 rounded-2xl shadow-soft border border-surface-border cursor-pointer hover:shadow-md transition-all"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
@@ -327,8 +327,8 @@ export const QRCodeAudit: React.FC = () => {
                     <QrCode className="w-6 h-6 text-brand-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-brand-900">{eq.name}</h3>
-                    <p className="text-xs text-surface-500">{eq.type}</p>
+                    <h3 className="font-semibold text-text-primary">{eq.name}</h3>
+                    <p className="text-xs text-text-muted">{eq.type}</p>
                   </div>
                 </div>
                 <span className={`px-2 py-1 text-[10px] font-bold rounded-lg border ${STATUS_CONFIG[eq.status].color}`}>
@@ -338,27 +338,27 @@ export const QRCodeAudit: React.FC = () => {
               </div>
               
               <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2 text-surface-600">
-                  <span className="text-surface-400">Location:</span>
+                <div className="flex items-center gap-2 text-text-secondary">
+                  <span className="text-text-muted">Location:</span>
                   {eq.location}
                 </div>
-                <div className="flex items-center gap-2 text-surface-600">
-                  <span className="text-surface-400">QR Code:</span>
-                  <code className="px-2 py-0.5 bg-surface-50 rounded font-mono text-xs">{eq.qrCode}</code>
+                <div className="flex items-center gap-2 text-text-secondary">
+                  <span className="text-text-muted">QR Code:</span>
+                  <code className="px-2 py-0.5 bg-surface-sunken rounded font-mono text-xs">{eq.qrCode}</code>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-surface-600">
-                    <span className="text-surface-400">Last Inspection:</span>
+                  <div className="flex items-center gap-2 text-text-secondary">
+                    <span className="text-text-muted">Last Inspection:</span>
                     {eq.lastInspection}
                   </div>
                 </div>
               </div>
 
-              <div className="mt-4 pt-4 border-t border-surface-50 flex justify-between items-center">
-                <div className="text-xs text-surface-500">
+              <div className="mt-4 pt-4 border-t border-surface-border flex justify-between items-center">
+                <div className="text-xs text-text-muted">
                   Next: <span className={eq.status === 'overdue' ? 'text-red-600 font-bold' : 'text-brand-600'}>{eq.nextInspection}</span>
                 </div>
-                <button className="text-brand-600 text-xs font-medium flex items-center gap-1 hover:text-brand-700">
+                <button className="text-brand-600 text-xs font-medium flex items-center gap-1 hover:text-text-secondary">
                   View Details <ExternalLink className="w-3 h-3" />
                 </button>
               </div>
@@ -382,34 +382,34 @@ export const QRCodeAudit: React.FC = () => {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-3xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden"
+              className="bg-surface-raised rounded-3xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden"
             >
               {/* Modal Header */}
-              <div className="p-6 border-b border-surface-100 bg-gradient-to-r from-brand-50 to-indigo-50">
+              <div className="p-6 border-b border-surface-border bg-gradient-to-r from-brand-50 to-indigo-50">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-soft">
+                    <div className="w-16 h-16 bg-surface-raised rounded-2xl flex items-center justify-center shadow-soft">
                       <QrCode className="w-8 h-8 text-brand-600" />
                     </div>
                     <div>
-                      <h2 className="text-xl font-bold text-brand-900">{selectedEquipment.name}</h2>
-                      <p className="text-surface-600">{selectedEquipment.location}</p>
-                      <code className="mt-1 px-2 py-0.5 bg-white rounded text-xs font-mono text-brand-600 inline-block">
+                      <h2 className="text-xl font-bold text-text-primary">{selectedEquipment.name}</h2>
+                      <p className="text-text-secondary">{selectedEquipment.location}</p>
+                      <code className="mt-1 px-2 py-0.5 bg-surface-raised rounded text-xs font-mono text-brand-600 inline-block">
                         {selectedEquipment.qrCode}
                       </code>
                     </div>
                   </div>
                   <button
                     onClick={() => setSelectedEquipment(null)}
-                    className="p-2 rounded-xl hover:bg-white transition-colors"
+                    className="p-2 rounded-xl hover:bg-surface-raised transition-colors"
                   >
-                    <X className="w-5 h-5 text-surface-500" />
+                    <X className="w-5 h-5 text-text-muted" />
                   </button>
                 </div>
               </div>
 
               {/* Modal Tabs */}
-              <div className="flex border-b border-surface-100">
+              <div className="flex border-b border-surface-border">
                 {[
                   { id: 'checklist', label: 'Checklist', icon: ClipboardList },
                   { id: 'history', label: 'History', icon: History },
@@ -421,7 +421,7 @@ export const QRCodeAudit: React.FC = () => {
                     className={`flex-1 px-4 py-3 flex items-center justify-center gap-2 text-sm font-medium transition-all ${
                       activeTab === tab.id
                         ? 'text-brand-600 border-b-2 border-brand-600 bg-brand-50/50'
-                        : 'text-surface-500 hover:text-brand-600'
+                        : 'text-text-muted hover:text-brand-600'
                     }`}
                   >
                     <tab.icon className="w-4 h-4" />
@@ -435,8 +435,8 @@ export const QRCodeAudit: React.FC = () => {
                 {activeTab === 'checklist' && (
                   <div className="space-y-3">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-semibold text-brand-900">Inspection Checklist</h3>
-                      <span className="text-xs text-surface-500">
+                      <h3 className="font-semibold text-text-primary">Inspection Checklist</h3>
+                      <span className="text-xs text-text-muted">
                         {selectedEquipment.checklistItems.filter(i => i.completed).length}/{selectedEquipment.checklistItems.length} completed
                       </span>
                     </div>
@@ -448,7 +448,7 @@ export const QRCodeAudit: React.FC = () => {
                         className={`p-4 rounded-xl border cursor-pointer transition-all ${
                           item.completed
                             ? 'bg-emerald-50 border-emerald-200'
-                            : 'bg-white border-surface-200 hover:border-brand-200'
+                            : 'bg-surface-raised border-surface-border hover:border-brand-200'
                         }`}
                       >
                         <div className="flex items-center gap-3">
@@ -457,11 +457,11 @@ export const QRCodeAudit: React.FC = () => {
                           }`}>
                             {item.completed && <CheckCircle2 className="w-4 h-4 text-white" />}
                           </div>
-                          <span className={item.completed ? 'text-surface-600 line-through' : 'text-brand-900'}>
+                          <span className={item.completed ? 'text-text-secondary line-through' : 'text-text-primary'}>
                             {item.item}
                           </span>
                           {item.date && (
-                            <span className="ml-auto text-xs text-surface-400">{item.date}</span>
+                            <span className="ml-auto text-xs text-text-muted">{item.date}</span>
                           )}
                         </div>
                       </motion.div>
@@ -474,19 +474,19 @@ export const QRCodeAudit: React.FC = () => {
 
                 {activeTab === 'history' && (
                   <div className="space-y-4">
-                    <h3 className="font-semibold text-brand-900 mb-4">Maintenance History</h3>
+                    <h3 className="font-semibold text-text-primary mb-4">Maintenance History</h3>
                     <div className="relative">
                       <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-surface-200" />
                       {selectedEquipment.maintenanceHistory.map((record, idx) => (
                         <div key={idx} className="relative pl-10 pb-4">
-                          <div className="absolute left-2.5 w-3 h-3 rounded-full bg-brand-500 border-2 border-white" />
-                          <div className="bg-surface-50 p-4 rounded-xl">
+                          <div className="absolute left-2.5 w-3 h-3 rounded-full bg-accent border-2 border-surface-raised" />
+                          <div className="bg-surface-sunken p-4 rounded-xl">
                             <div className="flex items-center justify-between mb-2">
-                              <span className="font-medium text-brand-900">{record.type}</span>
-                              <span className="text-xs text-surface-500">{record.date}</span>
+                              <span className="font-medium text-text-primary">{record.type}</span>
+                              <span className="text-xs text-text-muted">{record.date}</span>
                             </div>
-                            <p className="text-sm text-surface-600">{record.notes}</p>
-                            <p className="text-xs text-surface-400 mt-2">By: {record.technician}</p>
+                            <p className="text-sm text-text-secondary">{record.notes}</p>
+                            <p className="text-xs text-text-muted mt-2">By: {record.technician}</p>
                           </div>
                         </div>
                       ))}
@@ -496,7 +496,7 @@ export const QRCodeAudit: React.FC = () => {
 
                 {activeTab === 'protocols' && (
                   <div className="space-y-4">
-                    <h3 className="font-semibold text-brand-900 mb-4">Safety Protocols</h3>
+                    <h3 className="font-semibold text-text-primary mb-4">Safety Protocols</h3>
                     <div className="bg-amber-50 p-4 rounded-xl border border-amber-200 mb-4">
                       <div className="flex items-center gap-2 text-amber-700 font-medium mb-2">
                         <AlertCircle className="w-5 h-5" />
@@ -508,11 +508,11 @@ export const QRCodeAudit: React.FC = () => {
                     </div>
                     <div className="space-y-2">
                       {selectedEquipment.safetyProtocols.map((protocol, idx) => (
-                        <div key={idx} className="flex items-start gap-3 p-3 bg-surface-50 rounded-xl">
+                        <div key={idx} className="flex items-start gap-3 p-3 bg-surface-sunken rounded-xl">
                           <div className="w-6 h-6 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center text-xs font-bold flex-shrink-0">
                             {idx + 1}
                           </div>
-                          <span className="text-surface-700">{protocol}</span>
+                          <span className="text-text-secondary">{protocol}</span>
                         </div>
                       ))}
                     </div>
@@ -543,30 +543,30 @@ export const QRCodeAudit: React.FC = () => {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-3xl shadow-xl max-w-md w-full p-6"
+              className="bg-surface-raised rounded-3xl shadow-xl max-w-md w-full p-6"
             >
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-brand-900">Generate QR Code</h2>
+                <h2 className="text-xl font-bold text-text-primary">Generate QR Code</h2>
                 <button
                   onClick={() => setShowGenerateModal(false)}
-                  className="p-2 rounded-xl hover:bg-surface-50 transition-colors"
+                  className="p-2 rounded-xl hover:bg-surface-sunken transition-colors"
                 >
-                  <X className="w-5 h-5 text-surface-500" />
+                  <X className="w-5 h-5 text-text-muted" />
                 </button>
               </div>
               
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-brand-900 mb-1">Equipment Name</label>
+                  <label className="block text-sm font-medium text-text-primary mb-1">Equipment Name</label>
                   <input
                     type="text"
                     placeholder="e.g., Fire Extinguisher B-201"
-                    className="w-full px-4 py-2.5 rounded-xl border border-surface-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                    className="w-full px-4 py-2.5 rounded-xl border border-surface-border focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-brand-900 mb-1">Equipment Type</label>
-                  <select className="w-full px-4 py-2.5 rounded-xl border border-surface-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+                  <label className="block text-sm font-medium text-text-primary mb-1">Equipment Type</label>
+                  <select className="w-full px-4 py-2.5 rounded-xl border border-surface-border focus:ring-2 focus:ring-brand-500 focus:border-transparent">
                     <option>Fire Safety</option>
                     <option>Emergency Response</option>
                     <option>Heavy Equipment</option>
@@ -575,16 +575,16 @@ export const QRCodeAudit: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-brand-900 mb-1">Location</label>
+                  <label className="block text-sm font-medium text-text-primary mb-1">Location</label>
                   <input
                     type="text"
                     placeholder="e.g., Building A - Floor 2"
-                    className="w-full px-4 py-2.5 rounded-xl border border-surface-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                    className="w-full px-4 py-2.5 rounded-xl border border-surface-border focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-brand-900 mb-1">Inspection Frequency</label>
-                  <select className="w-full px-4 py-2.5 rounded-xl border border-surface-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+                  <label className="block text-sm font-medium text-text-primary mb-1">Inspection Frequency</label>
+                  <select className="w-full px-4 py-2.5 rounded-xl border border-surface-border focus:ring-2 focus:ring-brand-500 focus:border-transparent">
                     <option>Daily</option>
                     <option>Weekly</option>
                     <option>Monthly</option>
@@ -597,7 +597,7 @@ export const QRCodeAudit: React.FC = () => {
               <div className="mt-6 flex gap-3">
                 <button
                   onClick={() => setShowGenerateModal(false)}
-                  className="flex-1 py-3 border border-surface-200 text-surface-600 font-medium rounded-xl hover:bg-surface-50 transition-all"
+                  className="flex-1 py-3 border border-surface-border text-text-secondary font-medium rounded-xl hover:bg-surface-sunken transition-all"
                 >
                   Cancel
                 </button>

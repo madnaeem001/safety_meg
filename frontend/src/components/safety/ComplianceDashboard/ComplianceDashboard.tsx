@@ -185,7 +185,7 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
       case 'pending': return <Clock className="w-4 h-4 text-warning" />;
       case 'overdue': return <XCircle className="w-4 h-4 text-danger" />;
       case 'review': return <AlertCircle className="w-4 h-4 text-accent" />;
-      default: return <AlertTriangle className="w-4 h-4 text-gray-600" />;
+      default: return <AlertTriangle className="w-4 h-4 text-text-muted" />;
     }
   };
 

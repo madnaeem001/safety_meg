@@ -41,7 +41,7 @@ export const RegisterPage: React.FC = () => {
   // Redirect if already logged in
   React.useEffect(() => {
     if (isAuthenticated) {
-      navigate('/');
+      navigate('/', { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
@@ -92,7 +92,7 @@ export const RegisterPage: React.FC = () => {
     const success = await register(payload);
     if (success) {
       localStorage.setItem('safetymeg_show_onboarding', 'true');
-      navigate('/');
+      navigate('/', { replace: true });
     }
   };
 

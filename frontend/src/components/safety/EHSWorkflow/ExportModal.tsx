@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { 
   FileSpreadsheet, 
   FileText, 
@@ -304,7 +305,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
     improvement: 'Improvement'
   };
 
-  return (
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
         <>
@@ -316,85 +317,93 @@ export const ExportModal: React.FC<ExportModalProps> = ({
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
           />
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed inset-x-4 top-1/2 -translate-y-1/2 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-md bg-white rounded-2xl shadow-2xl z-50 overflow-hidden"
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-surface-100">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-brand-100 rounded-xl flex items-center justify-center">
-                  <Download className="w-5 h-5 text-brand-600" />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 pointer-events-none">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="pointer-events-auto w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b border-surface-100">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-brand-100 rounded-xl flex items-center justify-center">
+                    <Download className="w-5 h-5 text-brand-600" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-surface-800">Export Data</h2>
+                    <p className="text-xs text-surface-500">{stageLabels[stage]}</p>
+                  </div>
                 </div>
-                <div>
-                  <h2 className="text-lg font-semibold text-surface-800">Export Data</h2>
-                  <p className="text-xs text-surface-500">{stageLabels[stage]}</p>
-                </div>
+                <button
+                  onClick={onClose}
+                  className="p-1.5 rounded-lg hover:bg-surface-100 transition-colors"
+                >
+                  <X className="w-5 h-5 text-surface-500" />
+                </button>
               </div>
-              <button
-                onClick={onClose}
-                className="p-1.5 rounded-lg hover:bg-surface-100 transition-colors"
-              >
-                <X className="w-5 h-5 text-surface-500" />
-              </button>
-            </div>
 
-            {/* Content */}
-            <div className="p-4 space-y-3">
-              <p className="text-sm text-surface-600 mb-4">
-                Choose your preferred export format for the {stageLabels[stage].toLowerCase()} data.
-              </p>
+              {/* Content */}
+              <div className="p-4 space-y-3">
+                <p className="text-sm text-surface-600 mb-4">
+                  Choose your preferred export format for the {stageLabels[stage].toLowerCase()} data.
+                </p>
 
-              {/* Excel/CSV Export */}
-              <motion.button
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
-                onClick={handleExportCSV}
-                className="w-full flex items-center gap-4 p-4 bg-green-50 hover:bg-green-100 border border-green-200 rounded-xl transition-colors"
-              >
-                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                  <FileSpreadsheet className="w-6 h-6 text-green-600" />
-                </div>
-                <div className="text-left flex-1">
-                  <h3 className="font-semibold text-green-800">Export to Excel (CSV)</h3>
-                  <p className="text-xs text-green-600">Download spreadsheet for analysis</p>
-                </div>
-              </motion.button>
+                {/* Excel/CSV Export */}
+                <motion.button
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
+                  onClick={handleExportCSV}
+                  className="w-full flex items-center gap-4 p-4 bg-green-50 hover:bg-green-100 border border-green-200 rounded-xl transition-colors"
+                >
+                  <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                    <FileSpreadsheet className="w-6 h-6 text-green-600" />
+                  </div>
+                  <div className="text-left flex-1">
+                    <h3 className="font-semibold text-green-800">Export to Excel (CSV)</h3>
+                    <p className="text-xs text-green-600">Download spreadsheet for analysis</p>
+                  </div>
+                </motion.button>
 
-              {/* PDF Export */}
-              <motion.button
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
-                onClick={handleExportPDF}
-                className="w-full flex items-center gap-4 p-4 bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl transition-colors"
-              >
-                <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
-                  <FileText className="w-6 h-6 text-red-600" />
-                </div>
-                <div className="text-left flex-1">
-                  <h3 className="font-semibold text-red-800">Export to PDF</h3>
-                  <p className="text-xs text-red-600">Print-ready formatted report</p>
-                </div>
-              </motion.button>
-            </div>
+                {/* PDF Export */}
+                <motion.button
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
+                  onClick={handleExportPDF}
+                  className="w-full flex items-center gap-4 p-4 bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl transition-colors"
+                >
+                  <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                    <FileText className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div className="text-left flex-1">
+                    <h3 className="font-semibold text-red-800">Export to PDF</h3>
+                    <p className="text-xs text-red-600">Print-ready formatted report</p>
+                  </div>
+                </motion.button>
+              </div>
 
-            {/* Footer */}
-            <div className="p-4 border-t border-surface-100">
-              <button
-                onClick={onClose}
-                className="w-full py-2 text-sm font-medium text-surface-600 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors"
-              >
-                Cancel
-              </button>
-            </div>
-          </motion.div>
+              {/* Footer */}
+              <div className="p-4 border-t border-surface-100">
+                <button
+                  onClick={onClose}
+                  className="w-full py-2 text-sm font-medium text-surface-600 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>
   );
+
+  if (typeof document === 'undefined') {
+    return modalContent;
+  }
+
+  return createPortal(modalContent, document.body);
 };
 
 export default ExportModal;

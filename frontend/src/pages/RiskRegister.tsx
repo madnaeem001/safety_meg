@@ -63,45 +63,73 @@ const formatDate = (value?: string | number | null) => {
 
 const buildRiskCode = () => `R-${Date.now().toString().slice(-6)}`;
 
+const rowLabels = ['Very High', 'High', 'Medium', 'Low', 'Very Low'];
+const colLabels = ['Very Low', 'Low', 'Medium', 'High', 'Very High'];
+
 const RiskMatrix: React.FC = () => {
   const { data, loading } = useRiskMatrix();
 
   return (
-    <SMCard className="p-8">
+    <SMCard className="p-6">
       <h3 className="text-xl font-bold text-text-primary tracking-tight mb-6">Risk Matrix (5x5)</h3>
       {loading && <div className="text-sm text-text-muted">Loading matrix...</div>}
       {data && (
-        <div className="grid grid-cols-6 gap-2">
-          <div className="col-span-1 flex flex-col justify-between py-8 text-xs font-bold text-text-muted uppercase tracking-widest">
-            <span>High</span>
-            <span>Severity</span>
-            <span>Low</span>
-          </div>
-          <div className="col-span-5 grid grid-cols-5 gap-2">
-            {data.matrix.map((row, rowIndex) => (
-              row.map((cell, colIndex) => (
-                <div
-                  key={`${rowIndex}-${colIndex}`}
-                  className={`aspect-square rounded-xl flex flex-col items-center justify-center text-white font-bold shadow-sm ${
-                    cell.level === 'Critical'
-                      ? 'bg-danger'
-                      : cell.level === 'High'
-                        ? 'bg-warning'
-                        : cell.level === 'Medium'
-                          ? 'bg-amber-500'
-                          : 'bg-success'
-                  }`}
-                >
-                  <span className="text-lg leading-none">{cell.score}</span>
-                  <span className="text-xs uppercase tracking-widest opacity-80">{cell.level}</span>
+        <div className="overflow-x-auto">
+          <div className="flex gap-2">
+            {/* Y-axis label */}
+            <div className="flex flex-col items-center justify-center w-6 shrink-0 mt-8 mb-10">
+              <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest rotate-[-90deg] whitespace-nowrap">Severity</span>
+            </div>
+
+            <div className="flex-1">
+              {/* Matrix rows with row labels */}
+              <div className="flex flex-col gap-1.5">
+                {data.matrix.map((row, rowIndex) => (
+                  <div key={rowIndex} className="flex items-center gap-1.5">
+                    {/* Row label */}
+                    <div className="w-[72px] shrink-0 text-right">
+                      <span className="text-[10px] font-bold text-text-muted uppercase tracking-wide leading-tight">{rowLabels[rowIndex]}</span>
+                    </div>
+                    {/* Cells */}
+                    {row.map((cell, colIndex) => (
+                      <div
+                        key={`${rowIndex}-${colIndex}`}
+                        className={`flex-1 h-14 rounded-xl flex flex-col items-center justify-center text-white font-bold shadow-sm ${
+                          cell.level === 'Critical'
+                            ? 'bg-danger'
+                            : cell.level === 'High'
+                              ? 'bg-warning'
+                              : cell.level === 'Medium'
+                                ? 'bg-amber-500'
+                                : 'bg-success'
+                        }`}
+                      >
+                        <span className="text-base leading-none">{cell.score}</span>
+                        <span className="text-[10px] uppercase tracking-wide opacity-90 mt-0.5">{cell.level}</span>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+
+              {/* Column labels */}
+              <div className="flex items-center gap-1.5 mt-2">
+                <div className="w-[72px] shrink-0" />
+                {colLabels.map((label) => (
+                  <div key={label} className="flex-1 text-center">
+                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wide leading-tight">{label}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* X-axis label */}
+              <div className="flex items-center gap-1.5 mt-1">
+                <div className="w-[72px] shrink-0" />
+                <div className="flex-1 text-center">
+                  <span className="text-[10px] font-bold text-text-secondary uppercase tracking-widest">Likelihood</span>
                 </div>
-              ))
-            ))}
-          </div>
-          <div className="col-start-2 col-span-5 flex justify-between px-4 text-xs font-bold text-text-muted uppercase tracking-widest mt-2">
-            <span>Low</span>
-            <span>Likelihood</span>
-            <span>High</span>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -249,12 +277,12 @@ export const RiskRegister: React.FC = () => {
           )}
         </AnimatePresence>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-1">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+          <div className="lg:col-span-2">
             <RiskMatrix />
           </div>
 
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-3 space-y-6">
             <SMCard className="p-8 overflow-hidden">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                 <div>

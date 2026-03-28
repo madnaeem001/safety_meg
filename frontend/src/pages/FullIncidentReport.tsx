@@ -418,12 +418,12 @@ export const FullIncidentReport: React.FC = () => {
             <CheckCircle2 className="w-10 h-10 text-success" />
           </div>
           <h2 className="text-2xl font-bold text-text-primary">Full Report Submitted</h2>
-          <p className="text-surface-500 text-sm">
+          <p className="text-text-muted text-sm">
             Your comprehensive incident report has been logged. Safety officers and management have been notified.
           </p>
           <div className="pt-4 flex flex-wrap justify-center gap-2">
             {selectedBodyParts.length > 0 && (
-              <div className="text-xs text-surface-400">
+              <div className="text-xs text-text-muted">
                 Affected areas: {selectedBodyParts.map(p => getBodyPartName(p)).join(', ')}
               </div>
             )}
@@ -522,7 +522,7 @@ export const FullIncidentReport: React.FC = () => {
                       className={`py-2.5 rounded-xl text-sm font-bold transition-all border ${
                         formData.severity === level
                           ? 'border-accent bg-accent text-text-onAccent'
-                          : 'border-surface-300 bg-surface-200 text-surface-800 hover:border-accent/40 hover:text-text-primary'
+                          : 'border-surface-border bg-surface-raised text-text-secondary hover:border-accent/40 hover:text-text-primary'
                       }`}
                     >
                       {level}
@@ -537,7 +537,7 @@ export const FullIncidentReport: React.FC = () => {
                     type="button"
                     onClick={() => requestAI('description')}
                     disabled={aiLoading && aiField === 'description'}
-                    className="flex items-center gap-1.5 rounded-lg border border-accent/30 bg-accent/10 px-2.5 py-1 text-[11px] font-semibold text-accent transition-colors hover:bg-accent/15 disabled:opacity-50"
+                    className="flex items-center gap-1.5 rounded-lg border border-accent bg-accent px-2.5 py-1 text-[11px] font-semibold text-white transition-colors hover:bg-accent/90 disabled:opacity-50"
                   >
                     {aiLoading && aiField === 'description' ? <Loader2 className="w-3 h-3 animate-spin" /> : <Brain className="w-3 h-3" />}
                     AI Assist
@@ -549,16 +549,16 @@ export const FullIncidentReport: React.FC = () => {
                   placeholder="Describe what happened in detail..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-4 py-3 bg-surface-200 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary placeholder:text-text-muted resize-none"
+                  className="w-full px-4 py-3 bg-surface-sunken border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary placeholder:text-text-muted resize-none"
                 />
                 {aiSuggestions.length > 0 && aiField === 'description' && (
-                  <div className="space-y-2 rounded-xl border border-accent/20 bg-accent/10 p-3">
-                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-accent">
+                  <div className="space-y-2 rounded-xl border border-accent bg-accent p-3">
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-white">
                       <Sparkles className="w-3 h-3" /> AI Suggestions — click to apply
                     </div>
                     {aiSuggestions.map((s, i) => (
                       <button key={i} type="button" onClick={() => applyAISuggestion(s)}
-                        className="w-full rounded-lg border border-surface-300 bg-surface-200 px-3 py-2 text-left text-xs text-text-primary transition-colors hover:border-accent/40 hover:bg-surface-300">
+                        className="w-full rounded-lg border border-surface-border bg-surface-raised px-3 py-2 text-left text-xs text-text-primary transition-colors hover:border-accent/40 hover:bg-surface-overlay">
                         {s}
                       </button>
                     ))}
@@ -663,7 +663,7 @@ export const FullIncidentReport: React.FC = () => {
                   </label>
                 </div>
                 {formData.oshaRecordable && (
-                  <div className="grid grid-cols-2 gap-3 p-4 bg-surface-200 rounded-xl">
+                  <div className="grid grid-cols-2 gap-3 p-4 bg-surface-raised rounded-xl">
                     <InputField
                       label="Days Away from Work" type="number"
                       value={String(formData.daysAway)}
@@ -698,7 +698,7 @@ export const FullIncidentReport: React.FC = () => {
               onToggle={() => toggleSection(3)}
             >
               <div className="space-y-4">
-                <p className="text-sm text-surface-500">
+                <p className="text-sm text-text-muted">
                   Click on the body diagram to select affected areas (front and back views). Multiple selections allowed.
                 </p>
                 <div className="flex flex-col items-center gap-6">
@@ -710,10 +710,10 @@ export const FullIncidentReport: React.FC = () => {
                     showBothViews={true}
                   />
                   <div className="flex-1 w-full">
-                    <label className="text-xs font-bold text-surface-400 uppercase mb-2 block">
+                    <label className="text-xs font-bold text-text-muted uppercase mb-2 block">
                       Selected Body Parts
                     </label>
-                    <div className="min-h-[80px] p-4 bg-surface-200 rounded-xl border border-surface-300">
+                    <div className="min-h-[80px] p-4 bg-surface-raised rounded-xl border border-surface-border">
                       {selectedBodyParts.length > 0 ? (
                         <div className="flex flex-wrap gap-2">
                           {selectedBodyParts.map(part => (
@@ -727,7 +727,7 @@ export const FullIncidentReport: React.FC = () => {
                           ))}
                         </div>
                       ) : (
-                        <p className="text-sm text-surface-600">No body parts selected yet</p>
+                        <p className="text-sm text-text-muted">No body parts selected yet</p>
                       )}
                     </div>
                   </div>
@@ -821,7 +821,7 @@ export const FullIncidentReport: React.FC = () => {
                       className={`px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                         selectedPPE.includes(ppe)
                           ? 'bg-accent text-text-onAccent'
-                          : 'bg-surface-200 text-surface-800 hover:bg-surface-300'
+                          : 'bg-surface-raised text-text-secondary hover:bg-surface-overlay'
                       }`}
                     >
                       {ppe}
@@ -876,7 +876,7 @@ export const FullIncidentReport: React.FC = () => {
                       className="space-y-4 overflow-hidden"
                     >
                       {/* 5 Whys */}
-                      <div className="p-4 bg-surface-200 rounded-xl border border-surface-300">
+                      <div className="p-4 bg-surface-raised rounded-xl border border-surface-border">
                         <FiveWhysAnalysis
                           initialProblem={formData.description || ''}
                           onWhysChange={(whys) => setFiveWhysData(whys.map(w => w.answer))}
@@ -885,7 +885,7 @@ export const FullIncidentReport: React.FC = () => {
                       </div>
                       
                       {/* Fishbone Diagram */}
-                      <div className="p-4 bg-surface-200 rounded-xl border border-surface-300">
+                      <div className="p-4 bg-surface-raised rounded-xl border border-surface-border">
                         <FishboneDiagram
                           problem={formData.description || ''}
                           onProblemChange={(p) => setFormData(prev => ({ ...prev, description: p }))}
@@ -905,7 +905,7 @@ export const FullIncidentReport: React.FC = () => {
                     type="button"
                     onClick={() => requestAI('rootCauses')}
                     disabled={aiLoading && aiField === 'rootCauses'}
-                    className="flex items-center gap-1.5 rounded-lg border border-accent/30 bg-accent/10 px-2.5 py-1 text-[11px] font-semibold text-accent transition-colors hover:bg-accent/15 disabled:opacity-50"
+                    className="flex items-center gap-1.5 rounded-lg border border-accent bg-accent px-2.5 py-1 text-[11px] font-semibold text-white transition-colors hover:bg-accent/90 disabled:opacity-50"
                   >
                     {aiLoading && aiField === 'rootCauses' ? <Loader2 className="w-3 h-3 animate-spin" /> : <Brain className="w-3 h-3" />}
                     AI Analyse
@@ -914,16 +914,16 @@ export const FullIncidentReport: React.FC = () => {
                 <textarea rows={3} placeholder="What caused this incident?"
                   value={formData.rootCauses}
                   onChange={(e) => setFormData({ ...formData, rootCauses: e.target.value })}
-                  className="w-full px-4 py-3 bg-surface-200 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary placeholder:text-text-muted resize-none"
+                  className="w-full px-4 py-3 bg-surface-sunken border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary placeholder:text-text-muted resize-none"
                 />
                 {aiSuggestions.length > 0 && aiField === 'rootCauses' && (
-                  <div className="space-y-2 rounded-xl border border-accent/20 bg-accent/10 p-3">
-                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-accent">
+                  <div className="space-y-2 rounded-xl border border-accent bg-accent p-3">
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-white">
                       <Sparkles className="w-3 h-3" /> AI Root Cause Suggestions — click to apply
                     </div>
                     {aiSuggestions.map((s, i) => (
                       <button key={i} type="button" onClick={() => applyAISuggestion(s)}
-                        className="w-full rounded-lg border border-surface-300 bg-surface-200 px-3 py-2 text-left text-xs text-text-primary transition-colors hover:border-accent/40 hover:bg-surface-300">
+                        className="w-full rounded-lg border border-surface-border bg-surface-raised px-3 py-2 text-left text-xs text-text-primary transition-colors hover:border-accent/40 hover:bg-surface-overlay">
                         {s}
                       </button>
                     ))}
@@ -939,7 +939,7 @@ export const FullIncidentReport: React.FC = () => {
                     type="button"
                     onClick={() => requestAI('correctiveActions')}
                     disabled={aiLoading && aiField === 'correctiveActions'}
-                    className="flex items-center gap-1.5 rounded-lg border border-accent/30 bg-accent/10 px-2.5 py-1 text-[11px] font-semibold text-accent transition-colors hover:bg-accent/15 disabled:opacity-50"
+                    className="flex items-center gap-1.5 rounded-lg border border-accent bg-accent px-2.5 py-1 text-[11px] font-semibold text-white transition-colors hover:bg-accent/90 disabled:opacity-50"
                   >
                     {aiLoading && aiField === 'correctiveActions' ? <Loader2 className="w-3 h-3 animate-spin" /> : <Brain className="w-3 h-3" />}
                     AI Suggest
@@ -948,16 +948,16 @@ export const FullIncidentReport: React.FC = () => {
                 <textarea rows={3} placeholder="Actions to address the root cause"
                   value={formData.correctiveActions}
                   onChange={(e) => setFormData({ ...formData, correctiveActions: e.target.value })}
-                  className="w-full px-4 py-3 bg-surface-200 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary placeholder:text-text-muted resize-none"
+                  className="w-full px-4 py-3 bg-surface-sunken border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary placeholder:text-text-muted resize-none"
                 />
                 {aiSuggestions.length > 0 && aiField === 'correctiveActions' && (
-                  <div className="space-y-2 rounded-xl border border-accent/20 bg-accent/10 p-3">
-                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-accent">
+                  <div className="space-y-2 rounded-xl border border-accent bg-accent p-3">
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-white">
                       <Sparkles className="w-3 h-3" /> AI Corrective Action Suggestions — click to apply
                     </div>
                     {aiSuggestions.map((s, i) => (
                       <button key={i} type="button" onClick={() => applyAISuggestion(s)}
-                        className="w-full rounded-lg border border-surface-300 bg-surface-200 px-3 py-2 text-left text-xs text-text-primary transition-colors hover:border-accent/40 hover:bg-surface-300">
+                        className="w-full rounded-lg border border-surface-border bg-surface-raised px-3 py-2 text-left text-xs text-text-primary transition-colors hover:border-accent/40 hover:bg-surface-overlay">
                         {s}
                       </button>
                     ))}
@@ -1017,7 +1017,7 @@ export const FullIncidentReport: React.FC = () => {
                 </label>
               </div>
               {formData.regulatoryReportable && (
-                <div className="space-y-3 p-4 bg-surface-200 rounded-xl">
+                <div className="space-y-3 p-4 bg-surface-raised rounded-xl">
                   <SelectField
                     label="Regulatory Agency"
                     value={formData.regulatoryAgency}
@@ -1050,7 +1050,7 @@ export const FullIncidentReport: React.FC = () => {
             onToggle={() => toggleSection(8)}
           >
             <div className="space-y-6">
-              <p className="text-sm text-surface-500">
+              <p className="text-sm text-text-muted">
                 Please provide signatures to validate this report. All signatures are required for final submission.
               </p>
               
@@ -1092,7 +1092,7 @@ export const FullIncidentReport: React.FC = () => {
               </div>
               
               {/* Signature Status */}
-              <div className="flex items-center gap-4 p-4 bg-surface-200 rounded-xl">
+              <div className="flex items-center gap-4 p-4 bg-surface-raised rounded-xl">
                 <div className="flex items-center gap-2">
                   {reporterSignature ? (
                     <CheckCircle2 className="w-4 h-4 text-green-500" />
@@ -1107,9 +1107,9 @@ export const FullIncidentReport: React.FC = () => {
                   {witnessSignature ? (
                     <CheckCircle2 className="w-4 h-4 text-green-500" />
                   ) : (
-                    <span className="w-4 h-4 rounded-full border-2 border-surface-500" />
+                    <span className="w-4 h-4 rounded-full border-2 border-surface-border" />
                   )}
-                  <span className={`text-sm font-medium ${witnessSignature ? 'text-green-400' : 'text-surface-600'}`}>
+                  <span className={`text-sm font-medium ${witnessSignature ? 'text-green-400' : 'text-text-muted'}`}>
                     Witness
                   </span>
                 </div>
@@ -1135,7 +1135,7 @@ export const FullIncidentReport: React.FC = () => {
           >
             <label className="text-xs font-bold text-text-muted uppercase tracking-wide">Evidence Photos</label>
             <label
-              className="mt-3 flex w-full cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-surface-300 py-8 text-surface-600 transition-all hover:border-accent hover:text-accent"
+              className="mt-3 flex w-full cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-surface-border py-8 text-text-muted transition-all hover:border-accent hover:text-accent"
             >
               <input
                 type="file" accept="image/*" multiple className="hidden"
@@ -1154,7 +1154,7 @@ export const FullIncidentReport: React.FC = () => {
               <div className="mt-3 flex flex-wrap gap-2">
                 {photoUrls.map((url, i) => (
                   <div key={i} className="relative group">
-                    <img src={url} alt={`Evidence ${i + 1}`} className="w-20 h-20 object-cover rounded-xl border border-surface-300" />
+                    <img src={url} alt={`Evidence ${i + 1}`} className="w-20 h-20 object-cover rounded-xl border border-surface-border" />
                     <button
                       type="button"
                       onClick={() => removePhoto(i)}
@@ -1182,7 +1182,7 @@ export const FullIncidentReport: React.FC = () => {
               onClick={handlePrint}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex-1 py-5 bg-surface-200 text-surface-800 border-2 border-surface-300 rounded-3xl font-bold text-lg flex items-center justify-center gap-3 hover:bg-surface-300 transition-colors"
+              className="flex-1 py-5 bg-surface-raised text-text-primary border-2 border-surface-border rounded-3xl font-bold text-lg flex items-center justify-center gap-3 hover:bg-surface-overlay transition-colors"
             >
               <Printer className="w-5 h-5" />
               Print
@@ -1193,7 +1193,7 @@ export const FullIncidentReport: React.FC = () => {
               onClick={handleExportPDF}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex-1 flex items-center justify-center gap-3 rounded-3xl border-2 border-accent/30 bg-surface-200 py-5 text-lg font-bold text-accent transition-colors hover:bg-surface-300"
+              className="flex-1 flex items-center justify-center gap-3 rounded-3xl border-2 border-accent/30 bg-surface-raised py-5 text-lg font-bold text-accent transition-colors hover:bg-surface-overlay"
             >
               <Download className="w-5 h-5" />
               Export PDF
@@ -1238,16 +1238,16 @@ const SectionCard: React.FC<SectionCardProps> = ({
     <button
       type="button"
       onClick={onToggle}
-      className="w-full px-6 py-4 flex items-center justify-between hover:bg-surface-200 transition-colors"
+      className="w-full px-6 py-4 flex items-center justify-between hover:bg-surface-overlay transition-colors"
     >
       <div className="flex items-center gap-3">
         <Icon className={`w-5 h-5 ${color}`} />
         <span className="font-bold text-text-primary">{title}</span>
       </div>
       {isExpanded ? (
-        <ChevronUp className="w-5 h-5 text-surface-600" />
+        <ChevronUp className="w-5 h-5 text-text-muted" />
       ) : (
-        <ChevronDown className="w-5 h-5 text-surface-600" />
+        <ChevronDown className="w-5 h-5 text-text-muted" />
       )}
     </button>
     <AnimatePresence>
@@ -1288,7 +1288,7 @@ const InputField: React.FC<InputFieldProps> = ({
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full px-4 py-3 bg-surface-200 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary placeholder:text-text-muted"
+      className="w-full px-4 py-3 bg-surface-sunken border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary placeholder:text-text-muted"
     />
   </div>
 );
@@ -1310,7 +1310,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
       required={required}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full px-4 py-3 bg-surface-200 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary appearance-none"
+      className="w-full px-4 py-3 bg-surface-sunken border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary appearance-none"
     >
       <option value="">Select...</option>
       {options.map(opt => (
@@ -1340,7 +1340,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full px-4 py-3 bg-surface-200 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary placeholder:text-text-muted resize-none"
+      className="w-full px-4 py-3 bg-surface-sunken border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm text-text-primary placeholder:text-text-muted resize-none"
     />
   </div>
 );

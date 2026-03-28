@@ -19,7 +19,7 @@ export const LoginPage: React.FC = () => {
   // Redirect if already logged in
   React.useEffect(() => {
     if (isAuthenticated) {
-      navigate('/');
+      navigate('/', { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
@@ -49,7 +49,7 @@ export const LoginPage: React.FC = () => {
     const success = await login(email.trim(), password);
     if (success) {
       toast.success('Signed in successfully.');
-      navigate('/');
+      navigate('/', { replace: true });
     }
   };
 

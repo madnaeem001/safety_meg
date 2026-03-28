@@ -150,20 +150,20 @@ export const SensorConfiguration: React.FC = () => {
   const hasChanges = Object.keys(thresholdEdits).length > 0 || Object.keys(typeEdits).length > 0;
 
   return (
-    <div className="min-h-screen bg-surface-50 pb-20">
+    <div className="min-h-screen bg-surface-base pb-20">
       {/* Header */}
-      <header className="sticky top-[72px] z-40 bg-white/80 backdrop-blur-xl border-b border-surface-200/60 px-6 py-4">
+      <header className="sticky top-[72px] z-40 bg-surface-overlay/80 backdrop-blur-xl border-b border-surface-border px-6 py-4">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center gap-4">
-            <button onClick={() => navigate(-1)} className="p-2 hover:bg-surface-100 rounded-full transition-colors">
-              <ArrowLeft className="w-6 h-6 text-surface-600" />
+            <button onClick={() => navigate(-1)} className="p-2 hover:bg-surface-overlay rounded-full transition-colors">
+              <ArrowLeft className="w-6 h-6 text-text-secondary" />
             </button>
             <div>
-              <h1 className="text-xl font-bold text-surface-900 flex items-center gap-2">
+              <h1 className="text-xl font-bold text-text-primary flex items-center gap-2">
                 <Sliders className="w-6 h-6 text-brand-600" />
                 Sensor Configuration
               </h1>
-              <p className="text-sm text-surface-500">Configure thresholds and alerts</p>
+              <p className="text-sm text-text-muted">Configure thresholds and alerts</p>
             </div>
           </div>
           <button 
@@ -172,7 +172,7 @@ export const SensorConfiguration: React.FC = () => {
             className={`px-4 py-2 rounded-xl font-bold text-sm flex items-center gap-2 transition-all ${
               hasChanges 
                 ? 'bg-brand-600 text-white hover:bg-brand-700' 
-                : 'bg-surface-200 text-surface-400 cursor-not-allowed'
+                : 'bg-surface-200 text-text-muted cursor-not-allowed'
             }`}
           >
             <Save className="w-4 h-4" />
@@ -204,7 +204,7 @@ export const SensorConfiguration: React.FC = () => {
             className={`px-5 py-3 rounded-2xl font-bold text-sm transition-all ${
               editMode === 'individual' 
                 ? 'bg-brand-900 text-white shadow-lg' 
-                : 'bg-white text-surface-600 border border-surface-100'
+                : 'bg-surface-raised text-text-secondary border border-surface-border'
             }`}
           >
             Individual Sensors
@@ -214,7 +214,7 @@ export const SensorConfiguration: React.FC = () => {
             className={`px-5 py-3 rounded-2xl font-bold text-sm transition-all ${
               editMode === 'type' 
                 ? 'bg-brand-900 text-white shadow-lg' 
-                : 'bg-white text-surface-600 border border-surface-100'
+                : 'bg-surface-raised text-text-secondary border border-surface-border'
             }`}
           >
             By Sensor Type
@@ -237,8 +237,8 @@ export const SensorConfiguration: React.FC = () => {
                   key={sensor.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`bg-white p-6 rounded-3xl border shadow-soft transition-all ${
-                    hasEdit ? 'border-brand-300 ring-2 ring-brand-100' : 'border-surface-100'
+                  className={`bg-surface-raised p-6 rounded-3xl border shadow-soft transition-all ${
+                    hasEdit ? 'border-brand-300 ring-2 ring-brand-100' : 'border-surface-border'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-6">
@@ -251,10 +251,10 @@ export const SensorConfiguration: React.FC = () => {
                         <Icon className="w-7 h-7" />
                       </div>
                       <div>
-                        <h3 className="font-bold text-surface-900">{sensor.name}</h3>
-                        <p className="text-sm text-surface-500">{sensor.location} • {sensor.id}</p>
+                        <h3 className="font-bold text-text-primary">{sensor.name}</h3>
+                        <p className="text-sm text-text-muted">{sensor.location} • {sensor.id}</p>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="text-lg font-bold text-surface-900">{sensor.value}{sensor.unit}</span>
+                          <span className="text-lg font-bold text-text-primary">{sensor.value}{sensor.unit}</span>
                           <span className={`px-2 py-0.5 rounded text-xs font-bold uppercase ${
                             sensor.status === 'critical' ? 'bg-red-100 text-red-600' :
                             sensor.status === 'warning' ? 'bg-yellow-100 text-yellow-600' :
@@ -269,33 +269,33 @@ export const SensorConfiguration: React.FC = () => {
                     <div className="flex-1 max-w-md">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="text-xs font-bold text-surface-400 uppercase mb-1 block">Min Threshold</label>
+                          <label className="text-xs font-bold text-text-muted uppercase mb-1 block">Min Threshold</label>
                           <div className="flex items-center gap-2">
                             <input
                               type="number"
                               value={currentMin}
                               onChange={(e) => handleSensorThresholdChange(sensor.id, 'minThreshold', parseFloat(e.target.value))}
-                              className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
+                              className="w-full px-4 py-3 bg-surface-raised border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
                             />
-                            <span className="text-sm text-surface-500">{sensor.unit}</span>
+                            <span className="text-sm text-text-muted">{sensor.unit}</span>
                           </div>
                         </div>
                         <div>
-                          <label className="text-xs font-bold text-surface-400 uppercase mb-1 block">Max Threshold</label>
+                          <label className="text-xs font-bold text-text-muted uppercase mb-1 block">Max Threshold</label>
                           <div className="flex items-center gap-2">
                             <input
                               type="number"
                               value={currentMax}
                               onChange={(e) => handleSensorThresholdChange(sensor.id, 'maxThreshold', parseFloat(e.target.value))}
-                              className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
+                              className="w-full px-4 py-3 bg-surface-raised border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
                             />
-                            <span className="text-sm text-surface-500">{sensor.unit}</span>
+                            <span className="text-sm text-text-muted">{sensor.unit}</span>
                           </div>
                         </div>
                       </div>
                       {defaults && (
                         <div className="flex items-center justify-between mt-3">
-                          <p className="text-xs text-surface-400">
+                          <p className="text-xs text-text-muted">
                             Default: {defaults.defaultMin} - {defaults.defaultMax}{sensor.unit}
                             {defaults.regulatoryReference && ` (${defaults.regulatoryReference})`}
                           </p>
@@ -328,7 +328,7 @@ export const SensorConfiguration: React.FC = () => {
               return (
                 <div
                   key={config.sensorType}
-                  className="bg-white p-6 rounded-3xl border border-surface-100 shadow-soft"
+                  className="bg-surface-raised p-6 rounded-3xl border border-surface-border shadow-soft"
                 >
                   <div className="flex items-start justify-between gap-6 mb-6">
                     <div className="flex items-center gap-4">
@@ -336,10 +336,10 @@ export const SensorConfiguration: React.FC = () => {
                         <Icon className="w-7 h-7" />
                       </div>
                       <div>
-                        <h3 className="font-bold text-surface-900 capitalize">{config.sensorType} Sensors</h3>
-                        <p className="text-sm text-surface-500">{config.description}</p>
+                        <h3 className="font-bold text-text-primary capitalize">{config.sensorType} Sensors</h3>
+                        <p className="text-sm text-text-muted">{config.description}</p>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="px-2 py-0.5 bg-surface-100 text-surface-600 rounded text-xs font-bold">
+                          <span className="px-2 py-0.5 bg-surface-100 text-text-secondary rounded text-xs font-bold">
                             {sensorCount} sensors
                           </span>
                           {config.regulatoryReference && (
@@ -356,7 +356,7 @@ export const SensorConfiguration: React.FC = () => {
                       className={`px-4 py-2 rounded-xl font-bold text-sm transition-all ${
                         edit 
                           ? 'bg-brand-600 text-white hover:bg-brand-700' 
-                          : 'bg-surface-100 text-surface-400 cursor-not-allowed'
+                          : 'bg-surface-100 text-text-muted cursor-not-allowed'
                       }`}
                     >
                       Apply to All
@@ -365,48 +365,48 @@ export const SensorConfiguration: React.FC = () => {
 
                   <div className="grid grid-cols-3 gap-4">
                     <div>
-                      <label className="text-xs font-bold text-surface-400 uppercase mb-1 block">Min Threshold</label>
+                      <label className="text-xs font-bold text-text-muted uppercase mb-1 block">Min Threshold</label>
                       <div className="flex items-center gap-2">
                         <input
                           type="number"
                           value={currentConfig.defaultMin}
                           onChange={(e) => handleTypeThresholdChange(config.sensorType, 'defaultMin', parseFloat(e.target.value))}
-                          className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
+                          className="w-full px-4 py-3 bg-surface-raised border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
                         />
-                        <span className="text-sm text-surface-500">{config.unit}</span>
+                        <span className="text-sm text-text-muted">{config.unit}</span>
                       </div>
                     </div>
                     <div>
-                      <label className="text-xs font-bold text-surface-400 uppercase mb-1 block">Max Threshold</label>
+                      <label className="text-xs font-bold text-text-muted uppercase mb-1 block">Max Threshold</label>
                       <div className="flex items-center gap-2">
                         <input
                           type="number"
                           value={currentConfig.defaultMax}
                           onChange={(e) => handleTypeThresholdChange(config.sensorType, 'defaultMax', parseFloat(e.target.value))}
-                          className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
+                          className="w-full px-4 py-3 bg-surface-raised border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
                         />
-                        <span className="text-sm text-surface-500">{config.unit}</span>
+                        <span className="text-sm text-text-muted">{config.unit}</span>
                       </div>
                     </div>
                     <div>
-                      <label className="text-xs font-bold text-surface-400 uppercase mb-1 block">Warning at %</label>
+                      <label className="text-xs font-bold text-text-muted uppercase mb-1 block">Warning at %</label>
                       <div className="flex items-center gap-2">
                         <input
                           type="number"
                           value={currentConfig.warningPercent}
                           onChange={(e) => handleTypeThresholdChange(config.sensorType, 'warningPercent', parseFloat(e.target.value))}
-                          className="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
+                          className="w-full px-4 py-3 bg-surface-raised border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
                           min={50}
                           max={100}
                         />
-                        <span className="text-sm text-surface-500">%</span>
+                        <span className="text-sm text-text-muted">%</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="mt-4 p-3 bg-surface-50 rounded-xl flex items-start gap-2">
-                    <Info className="w-4 h-4 text-surface-400 mt-0.5" />
-                    <p className="text-xs text-surface-500">
+                  <div className="mt-4 p-3 bg-surface-raised rounded-xl flex items-start gap-2">
+                    <Info className="w-4 h-4 text-text-muted mt-0.5" />
+                    <p className="text-xs text-text-muted">
                       Warning alerts trigger at {currentConfig.warningPercent}% of max threshold ({Math.round(currentConfig.defaultMax * currentConfig.warningPercent / 100)}{config.unit}).
                       Critical alerts trigger when value exceeds max threshold.
                     </p>

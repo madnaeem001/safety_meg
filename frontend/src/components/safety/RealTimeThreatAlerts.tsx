@@ -47,19 +47,19 @@ const NEW_ALERT_POOL: ThreatAlert[] = [
 ];
 
 const severityConfig = {
-  critical: { color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/30', glow: 'shadow-red-500/20', badge: 'bg-red-500 text-white' },
-  high: { color: 'text-orange-400', bg: 'bg-orange-500/10', border: 'border-orange-500/30', glow: 'shadow-orange-500/20', badge: 'bg-orange-500 text-white' },
-  medium: { color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30', glow: 'shadow-amber-500/20', badge: 'bg-amber-500 text-white' },
-  low: { color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/30', glow: 'shadow-green-500/20', badge: 'bg-green-500 text-white' },
-  info: { color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/30', glow: 'shadow-blue-500/20', badge: 'bg-blue-500 text-white' },
+  critical: { color: 'text-red-700', bg: 'bg-red-50', border: 'border-red-200', glow: 'shadow-red-100', badge: 'bg-red-500 text-white' },
+  high: { color: 'text-orange-700', bg: 'bg-orange-50', border: 'border-orange-200', glow: 'shadow-orange-100', badge: 'bg-orange-500 text-white' },
+  medium: { color: 'text-amber-700', bg: 'bg-amber-50', border: 'border-amber-200', glow: 'shadow-amber-100', badge: 'bg-amber-500 text-white' },
+  low: { color: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-200', glow: 'shadow-emerald-100', badge: 'bg-emerald-500 text-white' },
+  info: { color: 'text-sky-700', bg: 'bg-sky-50', border: 'border-sky-200', glow: 'shadow-sky-100', badge: 'bg-sky-500 text-white' },
 };
 
 const statusConfig = {
-  active: { color: 'text-red-400', bg: 'bg-red-500/15', icon: AlertCircle, pulse: true },
-  contained: { color: 'text-amber-400', bg: 'bg-amber-500/15', icon: Shield, pulse: false },
-  investigating: { color: 'text-blue-400', bg: 'bg-blue-500/15', icon: Search, pulse: true },
-  resolved: { color: 'text-emerald-400', bg: 'bg-emerald-500/15', icon: CheckCircle2, pulse: false },
-  escalated: { color: 'text-purple-400', bg: 'bg-purple-500/15', icon: TrendingUp, pulse: true },
+  active: { color: 'text-red-700', bg: 'bg-red-50', icon: AlertCircle, pulse: true },
+  contained: { color: 'text-amber-700', bg: 'bg-amber-50', icon: Shield, pulse: false },
+  investigating: { color: 'text-sky-700', bg: 'bg-sky-50', icon: Search, pulse: true },
+  resolved: { color: 'text-emerald-700', bg: 'bg-emerald-50', icon: CheckCircle2, pulse: false },
+  escalated: { color: 'text-violet-700', bg: 'bg-violet-50', icon: TrendingUp, pulse: true },
 };
 
 const typeIcons: Record<string, typeof Shield> = {
@@ -118,13 +118,13 @@ export const RealTimeThreatAlerts: React.FC = () => {
     <div className="space-y-6">
       {/* Live Status Bar */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-slate-900 via-red-900/20 to-slate-900 rounded-2xl p-5 border border-red-500/20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-500/5 via-transparent to-transparent" />
+        className="bg-surface-raised rounded-2xl p-5 border border-surface-border relative overflow-hidden shadow-soft">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent/10 via-transparent to-transparent" />
         <div className="relative flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <div className="relative">
-              <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center">
-                <BellRing className="w-6 h-6 text-red-400 animate-pulse" />
+              <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
+                <BellRing className="w-6 h-6 text-accent animate-pulse" />
               </div>
               {stats.active > 0 && (
                 <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
@@ -133,24 +133,24 @@ export const RealTimeThreatAlerts: React.FC = () => {
               )}
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+              <h3 className="text-lg font-bold text-text-primary flex items-center gap-2">
                 Real-Time Threat Alert Center
-                <span className="text-[10px] font-mono bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full border border-red-500/30">LIVE</span>
+                <span className="text-[10px] font-mono bg-red-50 text-red-700 px-2 py-0.5 rounded-full border border-red-200">LIVE</span>
               </h3>
-              <p className="text-xs text-red-300/70 font-mono">SOAR ENGINE • 12 AI MODELS • MITRE ATT&CK MAPPED</p>
+              <p className="text-xs text-text-secondary font-mono">SOAR ENGINE • 12 AI MODELS • MITRE ATT&CK MAPPED</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <button onClick={() => setSoundEnabled(!soundEnabled)}
-              className={`p-2 rounded-lg border transition-all ${soundEnabled ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400' : 'bg-slate-800 border-slate-700 text-slate-500'}`}>
+              className={`p-2 rounded-lg border transition-all ${soundEnabled ? 'bg-accent/10 border-accent/20 text-accent' : 'bg-surface-overlay border-surface-border text-text-muted'}`}>
               {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
             </button>
             <button onClick={() => setAutoRefresh(!autoRefresh)}
-              className={`p-2 rounded-lg border transition-all ${autoRefresh ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-slate-800 border-slate-700 text-slate-500'}`}>
+              className={`p-2 rounded-lg border transition-all ${autoRefresh ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-surface-overlay border-surface-border text-text-muted'}`}>
               <RefreshCw className={`w-4 h-4 ${autoRefresh ? 'animate-spin' : ''}`} style={autoRefresh ? { animationDuration: '3s' } : {}} />
             </button>
             <button onClick={() => setShowFullscreen(!showFullscreen)}
-              className="p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-400 hover:text-white transition-all">
+              className="p-2 rounded-lg bg-surface-overlay border border-surface-border text-text-secondary hover:text-text-primary transition-all">
               {showFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
             </button>
           </div>
@@ -168,9 +168,9 @@ export const RealTimeThreatAlerts: React.FC = () => {
             { label: 'Block Rate', value: stats.blockRate, color: 'text-emerald-400' },
             { label: 'AI Accuracy', value: stats.aiAccuracy, color: 'text-purple-400' },
           ].map((m, i) => (
-            <div key={i} className="bg-slate-800/60 rounded-xl p-3 border border-slate-700/50 text-center">
+            <div key={i} className="bg-surface-overlay rounded-xl p-3 border border-surface-border text-center">
               <p className={`text-lg font-black ${m.color}`}>{m.value}</p>
-              <p className="text-[8px] text-slate-500 uppercase tracking-wider">{m.label}</p>
+              <p className="text-[8px] text-text-muted uppercase tracking-wider">{m.label}</p>
             </div>
           ))}
         </div>
@@ -179,13 +179,13 @@ export const RealTimeThreatAlerts: React.FC = () => {
       {/* Filter Bar */}
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
           <input value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 border border-slate-700/50 rounded-xl text-sm text-white placeholder-slate-500 focus:border-cyan-500/50 focus:outline-none"
+            className="w-full pl-10 pr-4 py-2.5 bg-surface-raised border border-surface-border rounded-xl text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
             placeholder="Search alerts by type, description..." />
         </div>
         <select value={severityFilter} onChange={e => setSeverityFilter(e.target.value)}
-          className="px-3 py-2.5 bg-slate-800/80 border border-slate-700/50 rounded-xl text-sm text-white focus:border-cyan-500/50 focus:outline-none">
+          className="px-3 py-2.5 bg-surface-raised border border-surface-border rounded-xl text-sm text-text-primary focus:border-accent focus:outline-none">
           <option value="all">All Severity</option>
           <option value="critical">Critical</option>
           <option value="high">High</option>
@@ -193,7 +193,7 @@ export const RealTimeThreatAlerts: React.FC = () => {
           <option value="low">Low</option>
         </select>
         <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}
-          className="px-3 py-2.5 bg-slate-800/80 border border-slate-700/50 rounded-xl text-sm text-white focus:border-cyan-500/50 focus:outline-none">
+          className="px-3 py-2.5 bg-surface-raised border border-surface-border rounded-xl text-sm text-text-primary focus:border-accent focus:outline-none">
           <option value="all">All Status</option>
           <option value="active">Active</option>
           <option value="contained">Contained</option>
@@ -220,7 +220,7 @@ export const RealTimeThreatAlerts: React.FC = () => {
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0, x: 20, scale: 0.98 }}
                 layout
-                className={`rounded-xl border transition-all cursor-pointer ${sev.bg} ${sev.border} ${isNew ? `ring-2 ring-red-500/50 ${sev.glow} shadow-lg` : 'hover:border-cyan-500/30'}`}
+                className={`rounded-xl border transition-all cursor-pointer ${sev.bg} ${sev.border} ${isNew ? `ring-2 ring-red-300 ${sev.glow} shadow-lg` : 'hover:border-accent/30'}`}
                 onClick={() => setExpandedAlert(isExpanded ? null : alert.id)}>
                 
                 {/* Alert Header */}
@@ -231,15 +231,15 @@ export const RealTimeThreatAlerts: React.FC = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-1">
                       <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded ${sev.badge}`}>{alert.severity}</span>
-                      <span className="text-[10px] font-bold text-slate-500 uppercase">{alert.type.replace('-', ' ')}</span>
-                      {alert.mitreAttackId && <span className="text-[10px] font-mono text-cyan-400/70 bg-cyan-500/10 px-1.5 py-0.5 rounded">{alert.mitreAttackId}</span>}
-                      {alert.cveId && <span className="text-[10px] font-mono text-orange-400/70 bg-orange-500/10 px-1.5 py-0.5 rounded">{alert.cveId}</span>}
+                      <span className="text-[10px] font-bold text-text-muted uppercase">{alert.type.replace('-', ' ')}</span>
+                      {alert.mitreAttackId && <span className="text-[10px] font-mono text-accent bg-accent/10 px-1.5 py-0.5 rounded">{alert.mitreAttackId}</span>}
+                      {alert.cveId && <span className="text-[10px] font-mono text-orange-700 bg-orange-50 px-1.5 py-0.5 rounded">{alert.cveId}</span>}
                     </div>
-                    <p className="text-sm font-semibold text-white/90 mb-1">{alert.description}</p>
-                    <div className="flex items-center gap-4 text-[10px] text-slate-400">
+                    <p className="text-sm font-semibold text-text-primary mb-1">{alert.description}</p>
+                    <div className="flex items-center gap-4 text-[10px] text-text-secondary">
                       <span className="font-mono">{alert.timestamp}</span>
-                      <span>Source: <span className="text-slate-300">{alert.source}</span></span>
-                      <span>Target: <span className="text-slate-300">{alert.target}</span></span>
+                      <span>Source: <span className="text-text-primary">{alert.source}</span></span>
+                      <span>Target: <span className="text-text-primary">{alert.target}</span></span>
                     </div>
                   </div>
                   <div className="flex flex-col items-end gap-2 shrink-0">
@@ -247,11 +247,11 @@ export const RealTimeThreatAlerts: React.FC = () => {
                       <StatusIcon className={`w-3.5 h-3.5 ${stat.color}`} />
                       <span className={`text-[10px] font-bold uppercase ${stat.color}`}>{alert.status}</span>
                     </div>
-                    <div className="flex items-center gap-1 text-[10px] text-slate-500">
+                    <div className="flex items-center gap-1 text-[10px] text-text-muted">
                       <Brain className="w-3 h-3" />
                       <span>{alert.aiConfidence}% AI</span>
                     </div>
-                    {isExpanded ? <ChevronDown className="w-4 h-4 text-slate-500" /> : <ChevronRight className="w-4 h-4 text-slate-500" />}
+                    {isExpanded ? <ChevronDown className="w-4 h-4 text-text-muted" /> : <ChevronRight className="w-4 h-4 text-text-muted" />}
                   </div>
                 </div>
 
@@ -263,47 +263,47 @@ export const RealTimeThreatAlerts: React.FC = () => {
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden">
-                      <div className="px-4 pb-4 space-y-4 border-t border-white/5 pt-4">
+                      <div className="px-4 pb-4 space-y-4 border-t border-surface-border pt-4">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                          <div className="bg-slate-800/60 rounded-lg p-3">
-                            <p className="text-[9px] text-slate-500 uppercase tracking-wider">Time to Detect</p>
-                            <p className="text-lg font-black text-cyan-400">{alert.ttd}</p>
+                          <div className="bg-surface-overlay rounded-lg p-3 border border-surface-border">
+                            <p className="text-[9px] text-text-muted uppercase tracking-wider">Time to Detect</p>
+                            <p className="text-lg font-black text-accent">{alert.ttd}</p>
                           </div>
-                          <div className="bg-slate-800/60 rounded-lg p-3">
-                            <p className="text-[9px] text-slate-500 uppercase tracking-wider">Time to Respond</p>
-                            <p className="text-lg font-black text-emerald-400">{alert.ttr}</p>
+                          <div className="bg-surface-overlay rounded-lg p-3 border border-surface-border">
+                            <p className="text-[9px] text-text-muted uppercase tracking-wider">Time to Respond</p>
+                            <p className="text-lg font-black text-emerald-700">{alert.ttr}</p>
                           </div>
-                          <div className="bg-slate-800/60 rounded-lg p-3">
-                            <p className="text-[9px] text-slate-500 uppercase tracking-wider">AI Confidence</p>
-                            <p className="text-lg font-black text-purple-400">{alert.aiConfidence}%</p>
+                          <div className="bg-surface-overlay rounded-lg p-3 border border-surface-border">
+                            <p className="text-[9px] text-text-muted uppercase tracking-wider">AI Confidence</p>
+                            <p className="text-lg font-black text-violet-700">{alert.aiConfidence}%</p>
                           </div>
-                          <div className="bg-slate-800/60 rounded-lg p-3">
-                            <p className="text-[9px] text-slate-500 uppercase tracking-wider">Affected Systems</p>
-                            <p className="text-lg font-black text-amber-400">{alert.affectedSystems.length}</p>
+                          <div className="bg-surface-overlay rounded-lg p-3 border border-surface-border">
+                            <p className="text-[9px] text-text-muted uppercase tracking-wider">Affected Systems</p>
+                            <p className="text-lg font-black text-amber-700">{alert.affectedSystems.length}</p>
                           </div>
                         </div>
-                        <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-4">
-                          <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider mb-2 flex items-center gap-2">
+                        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+                          <p className="text-[10px] text-emerald-700 font-bold uppercase tracking-wider mb-2 flex items-center gap-2">
                             <Zap className="w-3.5 h-3.5" /> AI Response Action
                           </p>
-                          <p className="text-sm text-emerald-200/80">{alert.responseAction}</p>
+                          <p className="text-sm text-emerald-800">{alert.responseAction}</p>
                         </div>
                         <div>
-                          <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-2">Affected Systems</p>
+                          <p className="text-[10px] text-text-muted uppercase tracking-wider mb-2">Affected Systems</p>
                           <div className="flex flex-wrap gap-2">
                             {alert.affectedSystems.map((sys, i) => (
-                              <span key={i} className="text-[10px] font-mono text-cyan-300 bg-cyan-500/10 border border-cyan-500/20 px-2 py-1 rounded-lg">{sys}</span>
+                              <span key={i} className="text-[10px] font-mono text-accent bg-accent/10 border border-accent/20 px-2 py-1 rounded-lg">{sys}</span>
                             ))}
                           </div>
                         </div>
                         <div className="flex gap-3">
-                          <button className="flex-1 py-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold hover:bg-cyan-500/20 transition-all flex items-center justify-center gap-2">
+                          <button className="flex-1 py-2.5 rounded-xl bg-accent/10 border border-accent/20 text-accent text-xs font-bold hover:bg-accent/15 transition-all flex items-center justify-center gap-2">
                             <Eye className="w-3.5 h-3.5" /> Investigate
                           </button>
-                          <button className="flex-1 py-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold hover:bg-red-500/20 transition-all flex items-center justify-center gap-2">
+                          <button className="flex-1 py-2.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-bold hover:bg-red-100 transition-all flex items-center justify-center gap-2">
                             <ShieldAlert className="w-3.5 h-3.5" /> Escalate
                           </button>
-                          <button className="flex-1 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold hover:bg-emerald-500/20 transition-all flex items-center justify-center gap-2">
+                          <button className="flex-1 py-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold hover:bg-emerald-100 transition-all flex items-center justify-center gap-2">
                             <CheckCircle2 className="w-3.5 h-3.5" /> Resolve
                           </button>
                         </div>

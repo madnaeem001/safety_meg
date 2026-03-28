@@ -438,20 +438,20 @@ const KPICard: React.FC<{
     if (status === 'green') return 'text-emerald-600 bg-emerald-50';
     if (status === 'yellow') return 'text-amber-600 bg-amber-50';
     if (status === 'red') return 'text-red-600 bg-red-50';
-    return 'text-slate-600 bg-slate-50';
+    return 'text-text-muted bg-surface-overlay';
   };
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
-      <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">{label}</p>
+    <div className="bg-surface-raised rounded-xl p-4 border border-surface-border">
+      <p className="text-sm text-text-muted dark:text-text-muted mb-1">{label}</p>
       <div className="flex items-end justify-between">
-        <div className="text-2xl font-bold text-slate-900 dark:text-white">
+        <div className="text-2xl font-bold text-text-primary">
           {typeof value === 'number' ? value.toLocaleString() : value}
-          {maxValue && <span className="text-sm font-normal text-slate-400">/{maxValue}</span>}
+          {maxValue && <span className="text-sm font-normal text-text-muted">/{maxValue}</span>}
         </div>
         {change !== undefined && (
           <div className={`flex items-center gap-1 text-sm ${
-            trend === 'down' ? 'text-emerald-600' : trend === 'up' && change > 0 ? 'text-red-600' : 'text-slate-500'
+            trend === 'down' ? 'text-emerald-600' : trend === 'up' && change > 0 ? 'text-red-600' : 'text-text-muted'
           }`}>
             {trend === 'up' ? <TrendingUp className="w-4 h-4" /> : trend === 'down' ? <TrendingDown className="w-4 h-4" /> : null}
             {Math.abs(change)}%
@@ -494,17 +494,17 @@ const ReportPreview: React.FC<{
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-slate-800 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl border border-slate-700"
+        className="bg-surface-raised rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl border border-surface-border"
       >
         {/* Header */}
-        <div className="p-6 border-b border-slate-700 flex items-center justify-between">
+        <div className="p-6 border-b border-surface-border flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className={`p-3 rounded-xl ${template.color} text-white`}>
               <template.icon className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-white">{data.title}</h2>
-              <p className="text-sm text-slate-400">
+              <h2 className="text-xl font-bold text-text-primary">{data.title}</h2>
+              <p className="text-sm text-text-muted">
                 Generated: {data.generatedDate} | Period: {data.reportPeriod}
               </p>
             </div>
@@ -528,15 +528,15 @@ const ReportPreview: React.FC<{
             </button>
             <button
               onClick={handlePrint}
-              className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+              className="p-2 hover:bg-surface-overlay rounded-lg transition-colors"
             >
-              <Printer className="w-5 h-5 text-slate-400" />
+              <Printer className="w-5 h-5 text-text-muted" />
             </button>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+              className="p-2 hover:bg-surface-overlay rounded-lg transition-colors"
             >
-              <X className="w-5 h-5 text-slate-400" />
+              <X className="w-5 h-5 text-text-muted" />
             </button>
           </div>
         </div>
@@ -545,25 +545,25 @@ const ReportPreview: React.FC<{
         <div ref={printRef} className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
           {data.sections.map((section, idx) => (
             <div key={idx} className="mb-8">
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                <div className="w-1 h-6 bg-brand-500 rounded-full" />
+              <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
+                <div className="w-1 h-6 bg-accent rounded-full" />
                 {section.title}
               </h3>
 
               {/* Summary Section */}
               {section.type === 'summary' && (
-                <div className="bg-slate-50 dark:bg-slate-700/50 rounded-xl p-5">
+                <div className="bg-surface-overlay rounded-xl p-5">
                   {section.data.highlights ? (
                     <ul className="space-y-2">
                       {section.data.highlights.map((highlight: string, i: number) => (
-                        <li key={i} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                        <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
                           <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
                           {highlight}
                         </li>
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-slate-600 dark:text-slate-400">{section.data.message || JSON.stringify(section.data)}</p>
+                    <p className="text-text-muted dark:text-text-muted">{section.data.message || JSON.stringify(section.data)}</p>
                   )}
                 </div>
               )}
@@ -581,10 +581,10 @@ const ReportPreview: React.FC<{
               {section.type === 'table' && (
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-slate-100 dark:bg-slate-700">
+                    <thead className="bg-surface-overlay">
                       <tr>
                         {Object.keys(section.data[0] || {}).map((key) => (
-                          <th key={key} className="px-4 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
+                          <th key={key} className="px-4 py-3 text-left text-xs font-semibold text-text-muted dark:text-text-secondary uppercase tracking-wider">
                             {key.replace(/([A-Z])/g, ' $1').trim()}
                           </th>
                         ))}
@@ -592,9 +592,9 @@ const ReportPreview: React.FC<{
                     </thead>
                     <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
                       {section.data.map((row: any, i: number) => (
-                        <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                        <tr key={i} className="hover:bg-surface-overlay/60">
                           {Object.values(row).map((val: any, j: number) => (
-                            <td key={j} className="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">
+                            <td key={j} className="px-4 py-3 text-sm text-text-secondary">
                               {typeof val === 'number' ? val.toLocaleString() : String(val)}
                             </td>
                           ))}
@@ -609,12 +609,12 @@ const ReportPreview: React.FC<{
               {section.type === 'checklist' && (
                 <div className="space-y-3">
                   {section.data.map((item: any, i: number) => (
-                    <div key={i} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
+                    <div key={i} className="flex items-center justify-between p-4 bg-surface-overlay rounded-xl">
                       <div className="flex items-center gap-3">
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                           item.status === 'completed' || item.status === 'achieved' ? 'bg-emerald-100 text-emerald-600' :
                           item.status === 'in-progress' ? 'bg-amber-100 text-amber-600' :
-                          'bg-slate-200 text-slate-500'
+                          'bg-surface-overlay text-text-muted'
                         }`}>
                           {item.status === 'completed' || item.status === 'achieved' ? (
                             <CheckCircle2 className="w-5 h-5" />
@@ -623,22 +623,22 @@ const ReportPreview: React.FC<{
                           )}
                         </div>
                         <div>
-                          <p className="font-medium text-slate-900 dark:text-white">{item.action || item.goal}</p>
-                          {item.owner && <p className="text-xs text-slate-500">Owner: {item.owner}</p>}
-                          {item.dueDate && <p className="text-xs text-slate-500">Due: {item.dueDate}</p>}
+                          <p className="font-medium text-text-primary">{item.action || item.goal}</p>
+                          {item.owner && <p className="text-xs text-text-muted">Owner: {item.owner}</p>}
+                          {item.dueDate && <p className="text-xs text-text-muted">Due: {item.dueDate}</p>}
                         </div>
                       </div>
                       {item.progress !== undefined && (
                         <div className="flex items-center gap-2">
-                          <div className="w-24 h-2 bg-slate-200 dark:bg-slate-600 rounded-full overflow-hidden">
+                            <div className="w-24 h-2 bg-surface-overlay rounded-full overflow-hidden">
                             <div 
                               className={`h-full rounded-full ${
-                                item.progress >= 100 ? 'bg-emerald-500' : 'bg-brand-500'
+                                item.progress >= 100 ? 'bg-emerald-500' : 'bg-accent'
                               }`}
                               style={{ width: `${item.progress}%` }}
                             />
                           </div>
-                          <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{item.progress}%</span>
+                          <span className="text-sm font-medium text-text-muted dark:text-text-muted">{item.progress}%</span>
                         </div>
                       )}
                     </div>
@@ -785,7 +785,7 @@ export const SafetyReportTemplates: React.FC = () => {
       <div className="relative">
         <button
           onClick={() => setShowCustomBuilder(false)}
-          className="absolute top-4 right-4 z-10 flex items-center gap-2 px-4 py-2 bg-slate-700 text-slate-300 rounded-xl hover:bg-slate-600 transition-colors"
+          className="absolute top-4 right-4 z-10 flex items-center gap-2 px-4 py-2 bg-surface-overlay text-text-secondary rounded-xl hover:bg-surface-raised transition-colors"
         >
           <X className="w-4 h-4" />
           Back to Templates
@@ -796,17 +796,17 @@ export const SafetyReportTemplates: React.FC = () => {
   }
 
   return (
-    <div className="p-4 md:p-6 lg:p-8 min-h-screen bg-slate-900">
+    <div className="p-4 md:p-6 lg:p-8 min-h-screen bg-surface-base">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-white flex items-center gap-3">
-            <div className="p-2 bg-brand-900/30 rounded-xl">
-              <FileText className="w-6 h-6 text-brand-400" />
+          <h1 className="text-2xl md:text-3xl font-bold text-text-primary flex items-center gap-3">
+            <div className="p-2 bg-accent/10 rounded-xl">
+              <FileText className="w-6 h-6 text-accent" />
             </div>
             Safety Report Templates
           </h1>
-          <p className="text-slate-400 mt-1">
+          <p className="text-text-muted mt-1">
             Generate professional safety reports with pre-built templates
           </p>
         </div>
@@ -820,17 +820,17 @@ export const SafetyReportTemplates: React.FC = () => {
             Custom Builder
           </button>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search templates..."
-              className="pl-9 pr-4 py-2.5 bg-slate-800 border border-slate-700 
-                       rounded-xl text-sm w-64 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+              className="pl-9 pr-4 py-2.5 bg-surface-raised border border-surface-border 
+                       rounded-xl text-sm w-64 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
             />
           </div>
-          <button className="p-2.5 bg-slate-800 rounded-xl border border-slate-700 text-slate-400 hover:bg-slate-700 transition-colors">
+          <button className="p-2.5 bg-surface-raised rounded-xl border border-surface-border text-text-muted hover:bg-surface-overlay transition-colors">
             <Filter className="w-5 h-5" />
           </button>
         </div>
@@ -842,7 +842,7 @@ export const SafetyReportTemplates: React.FC = () => {
           <motion.div
             key={template.id}
             whileHover={{ y: -4, boxShadow: '0 12px 40px rgba(0,0,0,0.2)' }}
-            className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden"
+            className="bg-surface-raised rounded-2xl border border-surface-border overflow-hidden"
           >
             {/* Card Header */}
             <div className={`p-4 ${template.color} text-white`}>
@@ -856,22 +856,22 @@ export const SafetyReportTemplates: React.FC = () => {
 
             {/* Card Body */}
             <div className="p-5">
-              <h3 className="font-semibold text-white mb-2">{template.name}</h3>
-              <p className="text-sm text-slate-400 mb-4 line-clamp-2">
+              <h3 className="font-semibold text-text-primary mb-2">{template.name}</h3>
+              <p className="text-sm text-text-muted mb-4 line-clamp-2">
                 {template.description}
               </p>
 
               {/* Sections Preview */}
               <div className="mb-4">
-                <p className="text-xs font-medium text-slate-500 mb-2">Includes:</p>
+                <p className="text-xs font-medium text-text-muted mb-2">Includes:</p>
                 <div className="flex flex-wrap gap-1">
                   {template.sections.slice(0, 3).map((section, i) => (
-                    <span key={i} className="text-xs px-2 py-1 bg-slate-700/50 rounded-md text-slate-300">
+                    <span key={i} className="text-xs px-2 py-1 bg-surface-overlay rounded-md text-text-secondary">
                       {section}
                     </span>
                   ))}
                   {template.sections.length > 3 && (
-                    <span className="text-xs px-2 py-1 bg-slate-700/50 rounded-md text-slate-500">
+                    <span className="text-xs px-2 py-1 bg-surface-overlay rounded-md text-text-muted">
                       +{template.sections.length - 3} more
                     </span>
                   )}
@@ -880,7 +880,7 @@ export const SafetyReportTemplates: React.FC = () => {
 
               {/* Last Generated */}
               {template.lastGenerated && (
-                <p className="text-xs text-slate-500 mb-4">
+                <p className="text-xs text-text-muted mb-4">
                   Last generated: {template.lastGenerated}
                 </p>
               )}
@@ -925,47 +925,47 @@ export const SafetyReportTemplates: React.FC = () => {
 
       {/* Quick Stats */}
       <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+        <div className="bg-surface-raised rounded-xl p-4 border border-surface-border">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-900/30 rounded-lg">
               <FileText className="w-5 h-5 text-blue-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">48</p>
-              <p className="text-sm text-slate-400">Reports Generated</p>
+              <p className="text-2xl font-bold text-text-primary">48</p>
+              <p className="text-sm text-text-muted">Reports Generated</p>
             </div>
           </div>
         </div>
-        <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+        <div className="bg-surface-raised rounded-xl p-4 border border-surface-border">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-emerald-900/30 rounded-lg">
               <Calendar className="w-5 h-5 text-emerald-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">12</p>
-              <p className="text-sm text-slate-400">This Month</p>
+              <p className="text-2xl font-bold text-text-primary">12</p>
+              <p className="text-sm text-text-muted">This Month</p>
             </div>
           </div>
         </div>
-        <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+        <div className="bg-surface-raised rounded-xl p-4 border border-surface-border">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-purple-900/30 rounded-lg">
               <Download className="w-5 h-5 text-purple-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">156</p>
-              <p className="text-sm text-slate-400">Downloads</p>
+              <p className="text-2xl font-bold text-text-primary">156</p>
+              <p className="text-sm text-text-muted">Downloads</p>
             </div>
           </div>
         </div>
-        <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+        <div className="bg-surface-raised rounded-xl p-4 border border-surface-border">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-amber-900/30 rounded-lg">
               <Clock className="w-5 h-5 text-amber-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">3</p>
-              <p className="text-sm text-slate-400">Scheduled</p>
+              <p className="text-2xl font-bold text-text-primary">3</p>
+              <p className="text-sm text-text-muted">Scheduled</p>
             </div>
           </div>
         </div>

@@ -296,7 +296,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
       case 'CREATE': return 'bg-success/10 text-success border-success/20';
       case 'UPDATE': return 'bg-accent/10 text-accent border-accent/20';
       case 'DELETE': return 'bg-danger/10 text-danger border-danger/20';
-      case 'VIEW': return 'bg-surface-100 text-text-muted border-surface-border';
+      case 'VIEW': return 'bg-surface-overlay text-text-muted border-surface-border';
       case 'SUBMIT': return 'bg-primary/10 text-text-primary border-primary/20';
       case 'APPROVE': return 'bg-success/10 text-success border-success/20';
       case 'REJECT': return 'bg-danger/10 text-danger border-danger/20';
@@ -306,7 +306,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
       case 'COMMENT': return 'bg-primary/10 text-text-primary border-primary/20';
       case 'ATTACH': return 'bg-primary/10 text-text-primary border-primary/20';
       case 'STATUS_CHANGE': return 'bg-warning/10 text-warning border-warning/20';
-      default: return 'bg-surface-100 text-text-muted border-surface-border';
+      default: return 'bg-surface-overlay text-text-muted border-surface-border';
     }
   };
 
@@ -399,7 +399,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
         </div>
         <button
           onClick={exportAuditLog}
-          className="px-4 py-2.5 bg-surface-100 text-surface-700 font-semibold rounded-xl hover:bg-surface-200 transition-colors flex items-center gap-2"
+          className="px-4 py-2.5 bg-surface-overlay text-text-secondary font-semibold rounded-xl hover:bg-surface-overlay transition-colors flex items-center gap-2"
         >
           <Download className="w-5 h-5" />
           Export Log
@@ -410,19 +410,19 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
       <div className="bg-surface-raised rounded-2xl p-4 border border-surface-border shadow-soft space-y-4">
         <div className="flex items-center gap-3">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
             <input
               type="text"
               placeholder="Search by user, entity, or details..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-surface-100 border border-surface-border rounded-xl text-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-surface-overlay border border-surface-border rounded-xl text-sm"
             />
           </div>
           <button
             onClick={() => setShowFilters(!showFilters)}
             className={`p-2.5 rounded-xl border transition-colors flex items-center gap-2 ${
-              showFilters ? 'bg-primary/5 border-primary/20 text-text-primary' : 'bg-surface-100 border-surface-border text-text-muted'
+              showFilters ? 'bg-primary/5 border-primary/20 text-text-primary' : 'bg-surface-overlay border-surface-border text-text-muted'
             }`}
           >
             <Filter className="w-5 h-5" />
@@ -444,7 +444,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
                   <select
                     value={selectedAction}
                     onChange={(e) => setSelectedAction(e.target.value as AuditAction | 'all')}
-                    className="w-full px-3 py-2 bg-surface-100 border border-surface-border rounded-xl text-sm"
+                    className="w-full px-3 py-2 bg-surface-overlay border border-surface-border rounded-xl text-sm"
                   >
                     <option value="all">All Actions</option>
                     {actions.map(action => (
@@ -457,7 +457,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
                   <select
                     value={selectedEntityType}
                     onChange={(e) => setSelectedEntityType(e.target.value)}
-                    className="w-full px-3 py-2 bg-surface-100 border border-surface-border rounded-xl text-sm"
+                    className="w-full px-3 py-2 bg-surface-overlay border border-surface-border rounded-xl text-sm"
                   >
                     <option value="all">All Types</option>
                     {entityTypes.map(type => (
@@ -471,7 +471,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
                     type="date"
                     value={dateRange.from}
                     onChange={(e) => setDateRange(prev => ({ ...prev, from: e.target.value }))}
-                    className="w-full px-3 py-2 bg-surface-100 border border-surface-border rounded-xl text-sm"
+                    className="w-full px-3 py-2 bg-surface-overlay border border-surface-border rounded-xl text-sm"
                   />
                 </div>
                 <div className="space-y-2">
@@ -480,7 +480,7 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
                     type="date"
                     value={dateRange.to}
                     onChange={(e) => setDateRange(prev => ({ ...prev, to: e.target.value }))}
-                    className="w-full px-3 py-2 bg-surface-100 border border-surface-border rounded-xl text-sm"
+                    className="w-full px-3 py-2 bg-surface-overlay border border-surface-border rounded-xl text-sm"
                   />
                 </div>
               </div>
@@ -509,11 +509,11 @@ export const AuditTrail: React.FC<AuditTrailProps> = ({ entityFilter, compact = 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.02 }}
-              className="bg-white rounded-xl border border-surface-100 shadow-soft overflow-hidden"
+              className="bg-surface-raised rounded-xl border border-surface-border shadow-soft overflow-hidden"
             >
               <button
                 onClick={() => setExpandedEntry(isExpanded ? null : entry.id)}
-                className="w-full p-4 flex items-start gap-4 text-left hover:bg-surface-100/50 transition-colors"
+                className="w-full p-4 flex items-start gap-4 text-left hover:bg-surface-overlay/50 transition-colors"
               >
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 border ${getActionColor(entry.action)}`}>
                   {getActionIcon(entry.action)}

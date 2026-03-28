@@ -55,6 +55,23 @@ const monthlyTrendData = [
   { month: 'Dec', injuries: 6, nearMisses: 33, severity: 1.9, daysLost: 8 },
 ];
 
+const weeklyTrendData = [
+  { month: 'Mon', injuries: 2, nearMisses: 5, severity: 2.1, daysLost: 2 },
+  { month: 'Tue', injuries: 3, nearMisses: 7, severity: 2.8, daysLost: 4 },
+  { month: 'Wed', injuries: 1, nearMisses: 4, severity: 1.5, daysLost: 1 },
+  { month: 'Thu', injuries: 2, nearMisses: 8, severity: 2.3, daysLost: 3 },
+  { month: 'Fri', injuries: 4, nearMisses: 6, severity: 3.0, daysLost: 5 },
+  { month: 'Sat', injuries: 1, nearMisses: 3, severity: 1.8, daysLost: 1 },
+  { month: 'Sun', injuries: 0, nearMisses: 2, severity: 0.0, daysLost: 0 },
+];
+
+const monthWeeksTrendData = [
+  { month: 'Week 1', injuries: 2, nearMisses: 8, severity: 1.6, daysLost: 2 },
+  { month: 'Week 2', injuries: 1, nearMisses: 10, severity: 1.2, daysLost: 1 },
+  { month: 'Week 3', injuries: 2, nearMisses: 9, severity: 2.1, daysLost: 2 },
+  { month: 'Week 4', injuries: 1, nearMisses: 6, severity: 1.9, daysLost: 3 },
+];
+
 const injuryByTypeData = [
   { type: 'Laceration', count: 28, color: '#ef4444' },
   { type: 'Strain/Sprain', count: 22, color: '#f97316' },
@@ -108,64 +125,68 @@ export const InjuryTrendAnalytics: React.FC<InjuryTrendAnalyticsProps> = ({
 }) => {
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'quarter' | 'year'>('year');
   const [showFilters, setShowFilters] = useState(false);
+  const [filterDept, setFilterDept] = useState('all');
+  const [filterSeverity, setFilterSeverity] = useState('all');
+  const [filterType, setFilterType] = useState('all');
 
-  const kpiCards = [
-    {
-      title: 'Total Injuries (YTD)',
-      value: 93,
-      trend: -18,
-      trendLabel: 'vs last year',
-      icon: Heart,
-      color: 'from-red-500 to-pink-500',
-      positive: true
-    },
-    {
-      title: 'Average Severity',
-      value: '2.1',
-      trend: -0.5,
-      trendLabel: 'vs last quarter',
-      icon: Activity,
-      color: 'from-amber-500 to-orange-500',
-      positive: true
-    },
-    {
-      title: 'Days Lost',
-      value: 138,
-      trend: -24,
-      trendLabel: 'vs last year',
-      icon: Clock,
-      color: 'from-blue-500 to-indigo-500',
-      positive: true
-    },
-    {
-      title: 'TRIR',
-      value: '2.8',
-      trend: -0.6,
-      trendLabel: 'vs last year',
-      icon: TrendingDown,
-      color: 'from-emerald-500 to-green-500',
-      positive: true
-    },
-  ];
+  // Derive trend data from selectedPeriod
+  const trendData = useMemo(() => {
+    switch (selectedPeriod) {
+      case 'week':    return weeklyTrendData;
+      case 'month':   return monthWeeksTrendData;
+      case 'quarter': return monthlyTrendData.slice(-3);
+      default:        return monthlyTrendData;
+    }
+  }, [selectedPeriod]);
+
+  // KPIs computed from trendData
+  const kpiCards = useMemo(() => {
+    const totalInjuries = trendData.reduce((s, d) => s + d.injuries, 0);
+    const avgSev = trendData.length ? (trendData.reduce((s, d) => s + d.severity, 0) / trendData.length) : 0;
+    const totalDaysLost = trendData.reduce((s, d) => s + d.daysLost, 0);
+    const trir = trendData.length ? ((totalInjuries / (trendData.length * 20)) * 2).toFixed(1) : '0.0';
+    const periodLabel = selectedPeriod === 'week' ? 'vs last week' : selectedPeriod === 'month' ? 'vs last month' : selectedPeriod === 'quarter' ? 'vs last quarter' : 'vs last year';
+    return [
+      { title: 'Total Injuries', value: totalInjuries, trend: -Math.round(totalInjuries * 0.19), trendLabel: periodLabel, icon: Heart, color: 'from-red-500 to-pink-500', positive: true },
+      { title: 'Average Severity', value: avgSev.toFixed(1), trend: -0.5, trendLabel: periodLabel, icon: Activity, color: 'from-amber-500 to-orange-500', positive: true },
+      { title: 'Days Lost', value: totalDaysLost, trend: -Math.round(totalDaysLost * 0.17), trendLabel: periodLabel, icon: Clock, color: 'from-blue-500 to-indigo-500', positive: true },
+      { title: 'TRIR', value: trir, trend: -0.6, trendLabel: periodLabel, icon: TrendingDown, color: 'from-emerald-500 to-green-500', positive: true },
+    ];
+  }, [trendData, selectedPeriod]);
+
+  // Filter department data
+  const filteredDeptData = useMemo(() => {
+    if (filterDept === 'all') return injuryByDepartmentData;
+    return injuryByDepartmentData.filter(d => d.department === filterDept);
+  }, [filterDept]);
+
+  // Filter injury type data
+  const filteredTypeData = useMemo(() => {
+    if (filterType === 'all') return injuryByTypeData;
+    return injuryByTypeData.filter(d => d.type === filterType);
+  }, [filterType]);
+
+  // Active filter count
+  const activeFilters = [filterDept !== 'all', filterSeverity !== 'all', filterType !== 'all'].filter(Boolean).length;
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-white">Injury Trend Analytics</h2>
-          <p className="text-slate-400">Analyze injury patterns, trends, and root causes</p>
+          <h2 className="text-2xl font-bold text-text-primary">Injury Trend Analytics</h2>
+          <p className="text-text-muted">Analyze injury patterns, trends, and root causes</p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex bg-slate-800 rounded-xl p-1 border border-slate-700">
+          <div className="flex bg-surface-raised rounded-xl p-1 border border-surface-border">
             {(['week', 'month', 'quarter', 'year'] as const).map((period) => (
               <button
                 key={period}
                 onClick={() => setSelectedPeriod(period)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   selectedPeriod === period
-                    ? 'bg-brand-600 text-white'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-accent text-text-onAccent'
+                    : 'text-text-muted hover:text-text-primary'
                 }`}
               >
                 {period.charAt(0).toUpperCase() + period.slice(1)}
@@ -174,14 +195,96 @@ export const InjuryTrendAnalytics: React.FC<InjuryTrendAnalyticsProps> = ({
           </div>
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-slate-300 hover:bg-slate-700 transition-colors"
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-colors ${
+              showFilters || activeFilters > 0
+                ? 'bg-accent/10 border-accent/30 text-accent'
+                : 'bg-surface-raised border-surface-border text-text-secondary hover:bg-surface-overlay'
+            }`}
           >
             <Filter className="w-4 h-4" />
             Filters
+            {activeFilters > 0 && (
+              <span className="w-5 h-5 rounded-full bg-accent text-text-onAccent text-xs font-bold flex items-center justify-center">{activeFilters}</span>
+            )}
           </button>
           <SMButton variant="primary" leftIcon={<Download className="w-4 h-4" />}>Export</SMButton>
         </div>
       </div>
+
+      {/* Filter Panel */}
+      {showFilters && (
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          className="bg-surface-raised rounded-2xl p-5 border border-surface-border"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-semibold text-text-primary">Filter Data</h3>
+            {activeFilters > 0 && (
+              <button
+                onClick={() => { setFilterDept('all'); setFilterSeverity('all'); setFilterType('all'); }}
+                className="text-xs text-accent hover:underline"
+              >
+                Clear all ({activeFilters})
+              </button>
+            )}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Department */}
+            <div>
+              <label className="block text-xs font-medium text-text-muted mb-2">Department</label>
+              <div className="flex flex-wrap gap-2">
+                {['all', 'Production', 'Warehouse', 'Maintenance', 'Shipping', 'Quality'].map(dept => (
+                  <button
+                    key={dept}
+                    onClick={() => setFilterDept(dept)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                      filterDept === dept ? 'bg-accent text-text-onAccent' : 'bg-surface-overlay text-text-secondary hover:bg-surface-border'
+                    }`}
+                  >
+                    {dept === 'all' ? 'All' : dept}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {/* Severity */}
+            <div>
+              <label className="block text-xs font-medium text-text-muted mb-2">Severity</label>
+              <div className="flex flex-wrap gap-2">
+                {['all', 'Minor', 'Moderate', 'Severe', 'Critical'].map(sev => (
+                  <button
+                    key={sev}
+                    onClick={() => setFilterSeverity(sev)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                      filterSeverity === sev ? 'bg-accent text-text-onAccent' : 'bg-surface-overlay text-text-secondary hover:bg-surface-border'
+                    }`}
+                  >
+                    {sev === 'all' ? 'All' : sev}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {/* Injury Type */}
+            <div>
+              <label className="block text-xs font-medium text-text-muted mb-2">Injury Type</label>
+              <div className="flex flex-wrap gap-2">
+                {['all', 'Laceration', 'Strain/Sprain', 'Contusion', 'Fracture', 'Burn'].map(type => (
+                  <button
+                    key={type}
+                    onClick={() => setFilterType(type)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                      filterType === type ? 'bg-accent text-text-onAccent' : 'bg-surface-overlay text-text-secondary hover:bg-surface-border'
+                    }`}
+                  >
+                    {type === 'all' ? 'All' : type}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -219,26 +322,26 @@ export const InjuryTrendAnalytics: React.FC<InjuryTrendAnalyticsProps> = ({
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-slate-800 rounded-2xl p-6 border border-slate-700"
+          className="bg-surface-raised rounded-2xl p-6 border border-surface-border"
         >
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-lg font-bold text-white">Injury Trend Over Time</h3>
-              <p className="text-sm text-slate-400">Monthly injuries vs near misses</p>
+              <h3 className="text-lg font-bold text-text-primary">Injury Trend Over Time</h3>
+              <p className="text-sm text-text-muted">Monthly injuries vs near misses</p>
             </div>
             <div className="flex items-center gap-4 text-sm">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-red-500" />
-                <span className="text-slate-400">Injuries</span>
+                <span className="text-text-muted">Injuries</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-amber-500" />
-                <span className="text-slate-400">Near Misses</span>
+                <span className="text-text-muted">Near Misses</span>
               </div>
             </div>
           </div>
           <ResponsiveContainer width="100%" height={280}>
-            <ComposedChart data={monthlyTrendData}>
+            <ComposedChart data={trendData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
               <XAxis dataKey="month" stroke="#64748b" fontSize={12} />
               <YAxis stroke="#64748b" fontSize={12} />
@@ -274,18 +377,18 @@ export const InjuryTrendAnalytics: React.FC<InjuryTrendAnalyticsProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-slate-800 rounded-2xl p-6 border border-slate-700"
+          className="bg-surface-raised rounded-2xl p-6 border border-surface-border"
         >
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-lg font-bold text-white">Injuries by Type</h3>
-              <p className="text-sm text-slate-400">Distribution of injury types</p>
+              <h3 className="text-lg font-bold text-text-primary">Injuries by Type</h3>
+              <p className="text-sm text-text-muted">Distribution of injury types</p>
             </div>
           </div>
           <ResponsiveContainer width="100%" height={280}>
             <RePieChart>
               <Pie
-                data={injuryByTypeData}
+                data={filteredTypeData}
                 cx="50%"
                 cy="50%"
                 innerRadius={60}
@@ -293,7 +396,7 @@ export const InjuryTrendAnalytics: React.FC<InjuryTrendAnalyticsProps> = ({
                 paddingAngle={2}
                 dataKey="count"
               >
-                {injuryByTypeData.map((entry, index) => (
+                {filteredTypeData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Pie>
@@ -307,14 +410,14 @@ export const InjuryTrendAnalytics: React.FC<InjuryTrendAnalyticsProps> = ({
             </RePieChart>
           </ResponsiveContainer>
           <div className="grid grid-cols-3 gap-2 mt-4">
-            {injuryByTypeData.map((type) => (
+            {filteredTypeData.map((type) => (
               <div key={type.type} className="flex items-center gap-2 text-xs">
                 <div
                   className="w-3 h-3 rounded-full"
                   style={{ backgroundColor: type.color }}
                 />
-                <span className="text-slate-400">{type.type}</span>
-                <span className="text-white font-medium ml-auto">{type.count}</span>
+                <span className="text-text-muted">{type.type}</span>
+                <span className="text-text-primary font-medium ml-auto">{type.count}</span>
               </div>
             ))}
           </div>
@@ -328,24 +431,24 @@ export const InjuryTrendAnalytics: React.FC<InjuryTrendAnalyticsProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-slate-800 rounded-2xl p-6 border border-slate-700"
+          className="bg-surface-raised rounded-2xl p-6 border border-surface-border"
         >
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-lg font-bold text-white">Injuries by Body Part</h3>
-              <p className="text-sm text-slate-400">Most affected areas</p>
+              <h3 className="text-lg font-bold text-text-primary">Injuries by Body Part</h3>
+              <p className="text-sm text-text-muted">Most affected areas</p>
             </div>
           </div>
           <div className="space-y-4">
             {injuryByBodyPartData.map((item) => (
               <div key={item.part} className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-300">{item.part}</span>
-                  <span className="text-white font-medium">{item.count} ({item.percentage}%)</span>
+                  <span className="text-text-secondary">{item.part}</span>
+                  <span className="text-text-primary font-medium">{item.count} ({item.percentage}%)</span>
                 </div>
-                <div className="w-full bg-slate-700 rounded-full h-2">
+                <div className="w-full bg-surface-overlay rounded-full h-2">
                   <div
-                    className="bg-gradient-to-r from-brand-500 to-brand-400 h-2 rounded-full transition-all"
+                    className="bg-accent h-2 rounded-full transition-all"
                     style={{ width: `${item.percentage}%` }}
                   />
                 </div>
@@ -359,16 +462,16 @@ export const InjuryTrendAnalytics: React.FC<InjuryTrendAnalyticsProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-slate-800 rounded-2xl p-6 border border-slate-700"
+          className="bg-surface-raised rounded-2xl p-6 border border-surface-border"
         >
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-lg font-bold text-white">Injuries by Department</h3>
-              <p className="text-sm text-slate-400">With incident rate per 100 workers</p>
+              <h3 className="text-lg font-bold text-text-primary">Injuries by Department</h3>
+              <p className="text-sm text-text-muted">With incident rate per 100 workers</p>
             </div>
           </div>
           <ResponsiveContainer width="100%" height={260}>
-            <BarChart data={injuryByDepartmentData} layout="vertical">
+            <BarChart data={filteredDeptData} layout="vertical">
               <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
               <XAxis type="number" stroke="#64748b" fontSize={12} />
               <YAxis dataKey="department" type="category" stroke="#64748b" fontSize={12} width={100} />
@@ -392,22 +495,22 @@ export const InjuryTrendAnalytics: React.FC<InjuryTrendAnalyticsProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-slate-800 rounded-2xl p-6 border border-slate-700"
+          className="bg-surface-raised rounded-2xl p-6 border border-surface-border"
         >
-          <h3 className="text-lg font-bold text-white mb-4">Injuries by Shift</h3>
+          <h3 className="text-lg font-bold text-text-primary mb-4">Injuries by Shift</h3>
           <div className="space-y-4">
             {injuryByShiftData.map((shift) => (
               <div key={shift.shift} className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-slate-700 rounded-xl flex items-center justify-center">
-                  <Clock className="w-6 h-6 text-slate-400" />
+                <div className="w-12 h-12 bg-surface-overlay rounded-xl flex items-center justify-center">
+                  <Clock className="w-6 h-6 text-text-muted" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-white">{shift.shift}</p>
-                  <p className="text-xs text-slate-400">{shift.injuries} injuries ({shift.percentage}%)</p>
+                  <p className="text-sm font-medium text-text-primary">{shift.shift}</p>
+                  <p className="text-xs text-text-muted">{shift.injuries} injuries ({shift.percentage}%)</p>
                 </div>
-                <div className="w-16 bg-slate-700 rounded-full h-2">
+                <div className="w-16 bg-surface-overlay rounded-full h-2">
                   <div
-                    className="bg-brand-500 h-2 rounded-full"
+                    className="bg-accent h-2 rounded-full"
                     style={{ width: `${shift.percentage}%` }}
                   />
                 </div>
@@ -421,12 +524,12 @@ export const InjuryTrendAnalytics: React.FC<InjuryTrendAnalyticsProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="lg:col-span-2 bg-slate-800 rounded-2xl p-6 border border-slate-700"
+          className="lg:col-span-2 bg-surface-raised rounded-2xl p-6 border border-surface-border"
         >
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-lg font-bold text-white">Top Root Causes</h3>
-              <p className="text-sm text-slate-400">Most common contributing factors</p>
+              <h3 className="text-lg font-bold text-text-primary">Top Root Causes</h3>
+              <p className="text-sm text-text-muted">Most common contributing factors</p>
             </div>
           </div>
           <ResponsiveContainer width="100%" height={220}>
@@ -452,16 +555,16 @@ export const InjuryTrendAnalytics: React.FC<InjuryTrendAnalyticsProps> = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-slate-800 rounded-2xl p-6 border border-slate-700"
+        className="bg-surface-raised rounded-2xl p-6 border border-surface-border"
       >
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-lg font-bold text-white">Days Lost & Severity Trend</h3>
-            <p className="text-sm text-slate-400">Monthly lost time days and average severity</p>
+            <h3 className="text-lg font-bold text-text-primary">Days Lost & Severity Trend</h3>
+            <p className="text-sm text-text-muted">Monthly lost time days and average severity</p>
           </div>
         </div>
         <ResponsiveContainer width="100%" height={280}>
-          <ComposedChart data={monthlyTrendData}>
+          <ComposedChart data={trendData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
             <XAxis dataKey="month" stroke="#64748b" fontSize={12} />
             <YAxis yAxisId="left" stroke="#64748b" fontSize={12} />

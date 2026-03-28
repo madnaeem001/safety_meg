@@ -168,7 +168,7 @@ export const EHSWorkflowDashboard: React.FC<EHSWorkflowDashboardProps> = ({ onBa
             <div className="flex gap-2 py-3">
               <button
                 onClick={() => setDashboardTab('ehs')}
-                className="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all bg-surface-100 text-surface-600 hover:bg-surface-200"
+                className="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all bg-surface-overlay text-text-muted hover:bg-surface-overlay"
               >
                 <Shield className="w-4 h-4" />
                 EHS Workflow
@@ -189,7 +189,7 @@ export const EHSWorkflowDashboard: React.FC<EHSWorkflowDashboardProps> = ({ onBa
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br bg-surface-base">
+    <div className="min-h-screen bg-surface-base">
       {/* Dashboard Tab Switcher */}
       <div className="bg-surface-raised border-b border-surface-border sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4">
@@ -213,7 +213,7 @@ export const EHSWorkflowDashboard: React.FC<EHSWorkflowDashboardProps> = ({ onBa
             {/* Export Button */}
             <button
               onClick={() => setExportModalOpen(true)}
-              className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-text-muted bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors"
+              className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-text-muted bg-surface-overlay rounded-lg hover:bg-surface-overlay transition-colors"
             >
               <Download className="w-4 h-4" />
               Export
@@ -224,15 +224,15 @@ export const EHSWorkflowDashboard: React.FC<EHSWorkflowDashboardProps> = ({ onBa
 
       {/* Header */}
       <div className="bg-surface-raised/80 backdrop-blur-xl border-b border-surface-border/60 sticky top-12 z-40">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="max-w-[1600px] mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               {onBack && (
                 <button
                   onClick={onBack}
-                  className="p-2 rounded-xl hover:bg-surface-100 transition-colors"
+                  className="p-2 rounded-xl hover:bg-surface-overlay transition-colors"
                 >
-                  <ArrowLeft className="w-5 h-5 text-surface-600" />
+                  <ArrowLeft className="w-5 h-5 text-text-muted" />
                 </button>
               )}
               <div>
@@ -258,7 +258,7 @@ export const EHSWorkflowDashboard: React.FC<EHSWorkflowDashboardProps> = ({ onBa
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="max-w-[1600px] mx-auto px-4 py-6">
         {/* Quick Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           <motion.div
@@ -413,38 +413,38 @@ const ReportingDashboard: React.FC<{ metrics: typeof mockMetrics }> = ({ metrics
       {/* KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
-          <div className="text-xs text-surface-500 mb-1">Total Recordable Incident Rate</div>
-          <div className="text-3xl font-bold text-surface-800">{metrics.trir}</div>
-          <div className="h-1 bg-surface-100 rounded-full mt-3">
-            <div className="h-full bg-brand-500 rounded-full" style={{ width: `${Math.min(metrics.trir / 5 * 100, 100)}%` }} />
+          <div className="text-xs text-text-muted mb-1">Total Recordable Incident Rate</div>
+          <div className="text-3xl font-bold text-text-primary">{metrics.trir}</div>
+          <div className="h-1 bg-surface-overlay rounded-full mt-3">
+            <div className="h-full bg-accent rounded-full" style={{ width: `${Math.min(metrics.trir / 5 * 100, 100)}%` }} />
           </div>
         </div>
         <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
-          <div className="text-xs text-surface-500 mb-1">Lost Time Incident Rate</div>
-          <div className="text-3xl font-bold text-surface-800">{metrics.ltir}</div>
-          <div className="h-1 bg-surface-100 rounded-full mt-3">
+          <div className="text-xs text-text-muted mb-1">Lost Time Incident Rate</div>
+          <div className="text-3xl font-bold text-text-primary">{metrics.ltir}</div>
+          <div className="h-1 bg-surface-overlay rounded-full mt-3">
             <div className="h-full bg-amber-500 rounded-full" style={{ width: `${Math.min(metrics.ltir / 2 * 100, 100)}%` }} />
           </div>
         </div>
         <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
-          <div className="text-xs text-surface-500 mb-1">CAPA Closure Rate</div>
+          <div className="text-xs text-text-muted mb-1">CAPA Closure Rate</div>
           <div className="text-3xl font-bold text-green-600">{metrics.capaClosureRate}%</div>
-          <div className="h-1 bg-surface-100 rounded-full mt-3">
+          <div className="h-1 bg-surface-overlay rounded-full mt-3">
             <div className="h-full bg-green-500 rounded-full" style={{ width: `${metrics.capaClosureRate}%` }} />
           </div>
         </div>
         <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
-          <div className="text-xs text-surface-500 mb-1">Compliance Rate</div>
-          <div className="text-3xl font-bold text-brand-600">{metrics.complianceRate}%</div>
-          <div className="h-1 bg-surface-100 rounded-full mt-3">
-            <div className="h-full bg-brand-500 rounded-full" style={{ width: `${metrics.complianceRate}%` }} />
+          <div className="text-xs text-text-muted mb-1">Compliance Rate</div>
+          <div className="text-3xl font-bold text-accent">{metrics.complianceRate}%</div>
+          <div className="h-1 bg-surface-overlay rounded-full mt-3">
+            <div className="h-full bg-accent rounded-full" style={{ width: `${metrics.complianceRate}%` }} />
           </div>
         </div>
       </div>
 
       {/* Leading Indicators */}
       <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
-        <h3 className="text-sm font-semibold text-surface-800 mb-4">Leading Indicators (This Month)</h3>
+        <h3 className="text-sm font-semibold text-text-primary mb-4">Leading Indicators (This Month)</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center">
             <div className="text-2xl font-bold text-blue-600">{metrics.leadingIndicators.observations}</div>
@@ -467,12 +467,12 @@ const ReportingDashboard: React.FC<{ metrics: typeof mockMetrics }> = ({ metrics
 
       {/* Incident Rate by Location */}
       <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
-        <h3 className="text-sm font-semibold text-surface-800 mb-4">Incident Rate by Location</h3>
+        <h3 className="text-sm font-semibold text-text-primary mb-4">Incident Rate by Location</h3>
         <div className="space-y-3">
           {metrics.incidentRateByLocation.map((item, idx) => (
             <div key={idx} className="flex items-center gap-3">
-              <div className="w-24 text-xs text-surface-600">{item.location}</div>
-              <div className="flex-1 h-2 bg-surface-100 rounded-full overflow-hidden">
+              <div className="w-24 text-xs text-text-muted">{item.location}</div>
+              <div className="flex-1 h-2 bg-surface-overlay rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full ${
                     item.rate > 4 ? 'bg-red-500' :
@@ -481,7 +481,7 @@ const ReportingDashboard: React.FC<{ metrics: typeof mockMetrics }> = ({ metrics
                   style={{ width: `${Math.min(item.rate / 5 * 100, 100)}%` }}
                 />
               </div>
-              <div className="w-10 text-xs text-surface-600 text-right">{item.rate}</div>
+              <div className="w-10 text-xs text-text-muted text-right">{item.rate}</div>
             </div>
           ))}
         </div>
@@ -489,10 +489,10 @@ const ReportingDashboard: React.FC<{ metrics: typeof mockMetrics }> = ({ metrics
 
       {/* Export Options */}
       <div className="flex gap-3 justify-center">
-        <button className="px-4 py-2 text-xs font-medium text-text-muted bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors">
+        <button className="px-4 py-2 text-xs font-medium text-text-muted bg-surface-overlay rounded-lg hover:bg-surface-overlay transition-colors">
           Export to Excel
         </button>
-        <button className="px-4 py-2 text-xs font-medium text-text-muted bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors">
+        <button className="px-4 py-2 text-xs font-medium text-text-muted bg-surface-overlay rounded-lg hover:bg-surface-overlay transition-colors">
           Export to PDF
         </button>
         <SMButton variant="primary" size="sm">Generate Full Report</SMButton>
@@ -517,29 +517,29 @@ const ImprovementDashboard: React.FC = () => {
       {/* ISO 45001 Alignment */}
       <div className="bg-gradient-to-br from-brand-50 to-brand-100/50 rounded-xl border border-brand-200 p-6">
         <div className="flex items-center gap-3 mb-4">
-          <div className="p-3 bg-white rounded-xl shadow-soft">
-            <RefreshCw className="w-6 h-6 text-brand-600" />
+          <div className="p-3 bg-surface-raised rounded-xl shadow-soft">
+            <RefreshCw className="w-6 h-6 text-accent" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-brand-800">Continuous Improvement Cycle</h3>
-            <p className="text-xs text-brand-600">ISO 45001:2018 Aligned Management System</p>
+            <h3 className="text-lg font-semibold text-text-primary">Continuous Improvement Cycle</h3>
+            <p className="text-xs text-accent">ISO 45001:2018 Aligned Management System</p>
           </div>
         </div>
-        <p className="text-sm text-brand-700 mb-4">
+        <p className="text-sm text-text-secondary mb-4">
           This workflow integrates all EHS modules into a unified continuous improvement loop, 
           ensuring compliance with ISO 45001 requirements for occupational health and safety management.
         </p>
         <div className="flex flex-wrap gap-2">
-          <span className="px-2 py-1 text-xs bg-white/80 rounded-full text-brand-700">Plan</span>
-          <span className="px-2 py-1 text-xs bg-white/80 rounded-full text-brand-700">Do</span>
-          <span className="px-2 py-1 text-xs bg-white/80 rounded-full text-brand-700">Check</span>
-          <span className="px-2 py-1 text-xs bg-white/80 rounded-full text-brand-700">Act</span>
+          <span className="px-2 py-1 text-xs bg-surface-overlay rounded-full text-text-secondary">Plan</span>
+          <span className="px-2 py-1 text-xs bg-surface-overlay rounded-full text-text-secondary">Do</span>
+          <span className="px-2 py-1 text-xs bg-surface-overlay rounded-full text-text-secondary">Check</span>
+          <span className="px-2 py-1 text-xs bg-surface-overlay rounded-full text-text-secondary">Act</span>
         </div>
       </div>
 
       {/* Connected Modules */}
       <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
-        <h3 className="text-sm font-semibold text-surface-800 mb-4">Connected Modules</h3>
+        <h3 className="text-sm font-semibold text-text-primary mb-4">Connected Modules</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {improvementAreas.map((area, idx) => {
             const IconComponent = area.icon;
@@ -551,10 +551,10 @@ const ImprovementDashboard: React.FC = () => {
               >
                 <div className="flex items-center gap-2 mb-2">
                   <IconComponent className={`w-4 h-4 text-${area.color}-600`} />
-                  <span className="text-sm font-medium text-surface-700">{area.name}</span>
+                  <span className="text-sm font-medium text-text-secondary">{area.name}</span>
                 </div>
                 <div className="text-2xl font-bold text-text-primary">{area.linked}</div>
-                <div className="text-[10px] text-surface-500">Linked records</div>
+                <div className="text-[10px] text-text-muted">Linked records</div>
               </motion.div>
             );
           })}
@@ -563,13 +563,13 @@ const ImprovementDashboard: React.FC = () => {
 
       {/* Action Items */}
       <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
-        <h3 className="text-sm font-semibold text-surface-800 mb-4">Improvement Opportunities</h3>
+        <h3 className="text-sm font-semibold text-text-primary mb-4">Improvement Opportunities</h3>
         <div className="space-y-2">
           <div className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg border border-amber-200">
             <AlertTriangle className="w-4 h-4 text-warning" />
             <div className="flex-1">
-              <div className="text-xs font-medium text-surface-700">High forklift near-miss rate in Warehouse</div>
-              <div className="text-[10px] text-surface-500">3 incidents in last 30 days</div>
+              <div className="text-xs font-medium text-text-secondary">High forklift near-miss rate in Warehouse</div>
+              <div className="text-[10px] text-text-muted">3 incidents in last 30 days</div>
             </div>
             <button className="px-2 py-1 text-[10px] font-medium text-amber-700 bg-amber-100 rounded hover:bg-amber-200">
               Review
@@ -578,8 +578,8 @@ const ImprovementDashboard: React.FC = () => {
           <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
             <Activity className="w-4 h-4 text-blue-600" />
             <div className="flex-1">
-              <div className="text-xs font-medium text-surface-700">Observation rate increased 25%</div>
-              <div className="text-[10px] text-surface-500">Employee engagement improving</div>
+              <div className="text-xs font-medium text-text-secondary">Observation rate increased 25%</div>
+              <div className="text-[10px] text-text-muted">Employee engagement improving</div>
             </div>
             <button className="px-2 py-1 text-[10px] font-medium text-blue-700 bg-blue-100 rounded hover:bg-blue-200">
               Celebrate
@@ -588,8 +588,8 @@ const ImprovementDashboard: React.FC = () => {
           <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
             <CheckCircle2 className="w-4 h-4 text-success" />
             <div className="flex-1">
-              <div className="text-xs font-medium text-surface-700">CAPA closure rate at 82%</div>
-              <div className="text-[10px] text-surface-500">Above 80% target</div>
+              <div className="text-xs font-medium text-text-secondary">CAPA closure rate at 82%</div>
+              <div className="text-[10px] text-text-muted">Above 80% target</div>
             </div>
             <button className="px-2 py-1 text-[10px] font-medium text-green-700 bg-green-100 rounded hover:bg-green-200">
               Details

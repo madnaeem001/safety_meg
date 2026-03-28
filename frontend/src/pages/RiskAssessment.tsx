@@ -754,7 +754,7 @@ export const RiskAssessment: React.FC = () => {
                     <button
                       onClick={runAIAnalysis}
                       disabled={isAnalyzingAI}
-                      className="flex items-center gap-2 px-4 py-2 bg-accent/10 text-accent rounded-xl font-medium hover:bg-accent/20 transition-colors disabled:opacity-50"
+                      className="flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-xl font-medium hover:bg-accent/90 transition-colors disabled:opacity-50"
                     >
                       {isAnalyzingAI ? (
                         <><Loader2 className="w-4 h-4 animate-spin" /> Analyzing...</>

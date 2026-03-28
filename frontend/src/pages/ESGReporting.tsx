@@ -29,16 +29,10 @@ import {
 import { useESGMetrics } from '../api/hooks/useAPIHooks';
 import type { ESGMetrics } from '../api/services/apiService';
 
-/* ================================================================
-   ESG REPORTING (HD & DARK THEME)
-   A premium dashboard for Environmental, Social, and Governance
-   performance tracking and disclosure.
-   ================================================================ */
-
 const categoryConfig = {
-  'Environmental': { icon: Leaf, color: 'text-emerald-400', bgColor: 'bg-emerald-500/10', borderColor: 'border-emerald-500/20', gradient: 'from-emerald-500 to-teal-500' },
-  'Social': { icon: Users, color: 'text-blue-400', bgColor: 'bg-blue-500/10', borderColor: 'border-blue-500/20', gradient: 'from-blue-500 to-cyan-500' },
-  'Governance': { icon: Scale, color: 'text-purple-400', bgColor: 'bg-purple-500/10', borderColor: 'border-purple-500/20', gradient: 'from-purple-500 to-indigo-500' }
+  'Environmental': { icon: Leaf, color: 'text-emerald-700', bgColor: 'bg-emerald-50', borderColor: 'border-emerald-200', gradient: 'from-emerald-500 to-teal-500' },
+  'Social': { icon: Users, color: 'text-sky-700', bgColor: 'bg-sky-50', borderColor: 'border-sky-200', gradient: 'from-sky-500 to-cyan-500' },
+  'Governance': { icon: Scale, color: 'text-violet-700', bgColor: 'bg-violet-50', borderColor: 'border-violet-200', gradient: 'from-violet-500 to-indigo-500' }
 };
 
 type CategoryName = 'Environmental' | 'Social' | 'Governance';
@@ -54,12 +48,12 @@ type ESGMetricCard = {
 };
 
 const SectionEmptyState = ({ title, description }: { title: string; description: string }) => (
-  <div className="rounded-[2.5rem] border border-dashed border-surface-800 bg-surface-900/40 p-8 text-center backdrop-blur-md">
-    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-800 text-surface-500">
+  <div className="rounded-[2.5rem] border border-dashed border-surface-border bg-surface-overlay p-8 text-center">
+    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-raised text-text-muted">
       <Database className="h-5 w-5" />
     </div>
-    <h3 className="text-lg font-black text-white">{title}</h3>
-    <p className="mx-auto mt-2 max-w-lg text-sm text-surface-400">{description}</p>
+    <h3 className="text-lg font-black text-text-primary">{title}</h3>
+    <p className="mx-auto mt-2 max-w-lg text-sm text-text-secondary">{description}</p>
   </div>
 );
 
@@ -277,11 +271,10 @@ export const ESGReporting: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-surface-950 text-white pb-20 selection:bg-brand-500/30">
-      {/* HD Background Elements */}
+    <div className="min-h-screen bg-surface-base pb-20 text-text-primary selection:bg-accent/20">
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-brand-500/5 blur-[150px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-violet-500/5 blur-[150px] rounded-full" />
+        <div className="absolute right-[-10%] top-[-10%] h-[50%] w-[50%] rounded-full bg-accent/6 blur-[150px]" />
+        <div className="absolute bottom-[-10%] left-[-10%] h-[50%] w-[50%] rounded-full bg-cyan-500/5 blur-[150px]" />
       </div>
 
 
@@ -295,26 +288,26 @@ export const ESGReporting: React.FC = () => {
             className="max-w-2xl"
           >
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-2xl bg-brand-500 flex items-center justify-center shadow-lg shadow-brand-500/40">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent text-text-onAccent shadow-soft">
                 <Globe className="w-7 h-7 text-white" />
               </div>
-              <span className="px-3 py-1 rounded-full bg-brand-500/20 border border-brand-500/30 text-brand-400 text-[10px] font-bold uppercase tracking-widest">
+              <span className="rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-accent">
                 Sustainability & Governance
               </span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight">
-              ESG <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-violet-400">Performance</span>
+            <h1 className="mb-4 text-4xl font-black tracking-tight text-text-primary md:text-6xl">
+              ESG <span className="bg-gradient-to-r from-accent to-cyan-500 bg-clip-text text-transparent">Performance</span>
             </h1>
-            <p className="text-lg text-surface-400 leading-relaxed">
+            <p className="text-lg leading-relaxed text-text-secondary">
               Consolidated performance metrics for Environmental, Social, and Governance disclosure, aligned with global GRI and SASB standards.
             </p>
           </motion.div>
 
           <div className="flex items-center gap-4">
-            <button className="p-4 bg-surface-900/60 backdrop-blur-xl border border-surface-800 rounded-2xl text-surface-400 hover:text-white transition-all">
+            <button className="rounded-2xl border border-surface-border bg-surface-raised p-4 text-text-secondary transition-all hover:bg-surface-overlay hover:text-text-primary">
               <Download className="w-6 h-6" />
             </button>
-            <button className="p-4 bg-surface-900/60 backdrop-blur-xl border border-surface-800 rounded-2xl text-surface-400 hover:text-white transition-all">
+            <button className="rounded-2xl border border-surface-border bg-surface-raised p-4 text-text-secondary transition-all hover:bg-surface-overlay hover:text-text-primary">
               <Share2 className="w-6 h-6" />
             </button>
           </div>
@@ -324,21 +317,21 @@ export const ESGReporting: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-surface-900/40 border border-surface-800 rounded-[2.5rem] p-8 backdrop-blur-md mb-12"
+          className="mb-12 rounded-[2.5rem] border border-surface-border bg-surface-raised p-8 shadow-soft"
         >
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-brand-500/10 flex items-center justify-center text-brand-400">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 text-accent">
                 <TrendingUp className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-2xl font-black text-white">Global ESG Index</h3>
-                <p className="text-sm text-surface-500">Current backend category score mix across environmental, social, and governance performance</p>
+                <h3 className="text-2xl font-black text-text-primary">Global ESG Index</h3>
+                <p className="text-sm text-text-secondary">Current backend category score mix across environmental, social, and governance performance</p>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-[10px] text-surface-500 uppercase tracking-widest font-bold mb-1">Current Score</p>
-              <h4 className="text-4xl font-black text-brand-400">{liveESGData?.overallScore?.toFixed(1) ?? '0.0'}</h4>
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-text-muted">Current Score</p>
+              <h4 className="text-4xl font-black text-accent">{liveESGData?.overallScore?.toFixed(1) ?? '0.0'}</h4>
             </div>
           </div>
 
@@ -346,10 +339,10 @@ export const ESGReporting: React.FC = () => {
             <div className="h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={scoreData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
-                  <XAxis dataKey="name" stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} domain={[0, 100]} />
-                  <Tooltip contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '12px' }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#d7deeb" vertical={false} />
+                  <XAxis dataKey="name" stroke="#7a8699" fontSize={10} tickLine={false} axisLine={false} />
+                  <YAxis stroke="#7a8699" fontSize={10} tickLine={false} axisLine={false} domain={[0, 100]} />
+                  <Tooltip contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #d7deeb', borderRadius: '12px', color: '#1b2433' }} />
                   <Bar dataKey="score" radius={[12, 12, 0, 0]}>
                     {scoreData.map((entry) => (
                       <Cell key={entry.name} fill={entry.color} />
@@ -383,34 +376,36 @@ export const ESGReporting: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: catIndex * 0.1 }}
-                className="bg-surface-900/40 backdrop-blur-md border border-surface-800 rounded-[2.5rem] p-8 hover:border-brand-500/30 transition-all group"
+                className="group rounded-[2.5rem] border border-surface-border bg-surface-raised p-8 shadow-soft transition-all hover:border-accent/20"
               >
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-4">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${config.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
+                    <div className={`flex h-14 w-14 items-center justify-center rounded-2xl ${config.bgColor} ${config.borderColor} border shadow-soft transition-transform group-hover:scale-110`}>
+                      <div className={`rounded-xl bg-gradient-to-br ${config.gradient} p-2.5 text-white`}>
                       <config.icon className="w-7 h-7 text-white" />
+                      </div>
                     </div>
-                    <h3 className="text-2xl font-black text-white tracking-tight">{cat}</h3>
+                    <h3 className="text-2xl font-black tracking-tight text-text-primary">{cat}</h3>
                   </div>
-                  <ChevronRight className="w-6 h-6 text-surface-600 group-hover:text-brand-400 transition-colors" />
+                  <ChevronRight className="w-6 h-6 text-text-muted transition-colors group-hover:text-accent" />
                 </div>
                 
                 <div className="space-y-8">
                   {metrics.filter((metric) => metric.category === cat).length > 0 ? metrics.filter((metric) => metric.category === cat).map((metric, index) => (
                     <div key={metric.metric} className="space-y-3">
                       <div className="flex justify-between items-end">
-                        <div className="text-sm font-bold text-white group-hover:text-brand-300 transition-colors">{metric.metric}</div>
-                        <div className={`text-[8px] font-black px-2 py-0.5 rounded-full border uppercase tracking-widest ${
-                          metric.status === 'On Track' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                        <div className="text-sm font-bold text-text-primary transition-colors group-hover:text-accent">{metric.metric}</div>
+                        <div className={`rounded-full border px-2 py-0.5 text-[8px] font-black uppercase tracking-widest ${
+                          metric.status === 'On Track' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-amber-200 bg-amber-50 text-amber-700'
                         }`}>
                           {metric.status}
                         </div>
                       </div>
                       <div className="flex justify-between items-baseline">
-                        <div className="text-2xl font-black text-white">{metric.value}</div>
-                        <div className="text-[10px] text-surface-500 font-bold uppercase tracking-widest">Target: {metric.target}</div>
+                        <div className="text-2xl font-black text-text-primary">{metric.value}</div>
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Target: {metric.target}</div>
                       </div>
-                      <div className="h-1.5 bg-surface-800 rounded-full overflow-hidden">
+                      <div className="h-1.5 overflow-hidden rounded-full bg-surface-overlay">
                         <motion.div 
                           initial={{ width: 0 }}
                           animate={{ width: `${metric.progress}%` }}
@@ -418,10 +413,10 @@ export const ESGReporting: React.FC = () => {
                           className={`h-full rounded-full bg-gradient-to-r ${config.gradient}`}
                         />
                       </div>
-                      <p className="text-[10px] text-surface-500 leading-relaxed">{metric.description}</p>
+                      <p className="text-[10px] leading-relaxed text-text-secondary">{metric.description}</p>
                     </div>
                   )) : (
-                    <div className="rounded-3xl border border-dashed border-surface-700 bg-surface-800/20 p-6 text-sm text-surface-400">
+                    <div className="rounded-3xl border border-dashed border-surface-border bg-surface-overlay p-6 text-sm text-text-secondary">
                       No backend {cat.toLowerCase()} metrics are available for the selected ESG period.
                     </div>
                   )}
@@ -435,47 +430,47 @@ export const ESGReporting: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-surface-900/40 border border-surface-800 rounded-[2.5rem] p-8 backdrop-blur-md mb-12 relative overflow-hidden group"
+          className="group relative mb-12 overflow-hidden rounded-[2.5rem] border border-surface-border bg-surface-raised p-8 shadow-soft"
         >
-          <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform">
-            <Zap className="w-64 h-64 text-white" />
+          <div className="absolute right-0 top-0 p-8 opacity-[0.06] transition-transform group-hover:scale-110">
+            <Zap className="w-64 h-64 text-accent" />
           </div>
           
           <div className="relative z-10">
             <div className="flex items-center gap-4 mb-8">
-              <div className="w-14 h-14 rounded-2xl bg-brand-500/10 flex items-center justify-center text-brand-400 shadow-lg shadow-brand-500/5">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-accent/10 text-accent shadow-soft">
                 <TrendingUp className="w-8 h-8" />
               </div>
               <div>
-                <h3 className="text-2xl font-black text-white">AI ESG Forecast</h3>
-                <p className="text-sm text-surface-500">Predictive sustainability modeling and compliance outlook</p>
+                <h3 className="text-2xl font-black text-text-primary">AI ESG Forecast</h3>
+                <p className="text-sm text-text-secondary">Predictive sustainability modeling and compliance outlook</p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="space-y-6">
                 {forecastCards.slice(0, 2).map((card) => (
-                  <div key={card.label} className="p-6 bg-surface-800/30 rounded-3xl border border-surface-700/50">
-                    <h4 className="text-xs font-black text-white uppercase tracking-widest mb-3">{card.label}</h4>
-                    <p className="text-2xl font-black text-brand-300 mb-3">{card.value}</p>
-                    <p className="text-xs text-surface-400 leading-relaxed">{card.detail}</p>
+                  <div key={card.label} className="rounded-3xl border border-surface-border bg-surface-overlay p-6">
+                    <h4 className="mb-3 text-xs font-black uppercase tracking-widest text-text-primary">{card.label}</h4>
+                    <p className="mb-3 text-2xl font-black text-accent">{card.value}</p>
+                    <p className="text-xs leading-relaxed text-text-secondary">{card.detail}</p>
                   </div>
                 ))}
               </div>
               
-              <div className="bg-surface-800/20 rounded-3xl border border-surface-700/50 p-6 flex flex-col justify-between">
+              <div className="flex flex-col justify-between rounded-3xl border border-surface-border bg-surface-overlay p-6">
                 <div>
-                  <h4 className="text-xs font-black text-white uppercase tracking-widest mb-4">Compliance Risk Outlook</h4>
+                  <h4 className="mb-4 text-xs font-black uppercase tracking-widest text-text-primary">Compliance Risk Outlook</h4>
                   <div className="space-y-4">
                     {forecastCards.slice(2).map((item, i) => (
                       <div key={i} className="flex items-center justify-between">
-                        <span className="text-sm text-surface-300">{item.label}</span>
-                        <span className={`text-xs font-bold ${item.value === 'Low' || item.value === 'On Target' ? 'text-emerald-400' : item.value === 'Medium' ? 'text-amber-400' : 'text-brand-300'}`}>{item.value}</span>
+                        <span className="text-sm text-text-secondary">{item.label}</span>
+                        <span className={`text-xs font-bold ${item.value === 'Low' || item.value === 'On Target' ? 'text-emerald-700' : item.value === 'Medium' ? 'text-amber-700' : 'text-accent'}`}>{item.value}</span>
                       </div>
                     ))}
                   </div>
                 </div>
-                <button className="w-full py-3 bg-brand-500/10 border border-brand-500/20 text-brand-400 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-brand-500/20 transition-all mt-6">
+                <button className="mt-6 w-full rounded-xl bg-accent px-4 py-3 text-[10px] font-black uppercase tracking-widest text-text-onAccent transition-all hover:bg-accent/90">
                   Generate AI ESG Report
                 </button>
               </div>
@@ -485,27 +480,27 @@ export const ESGReporting: React.FC = () => {
 
         {/* AI ESG Insights */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="bg-surface-900/40 border border-surface-800 rounded-[2.5rem] p-8 backdrop-blur-md relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform">
-              <Brain className="w-40 h-40 text-white" />
+          <div className="group relative overflow-hidden rounded-[2.5rem] border border-surface-border bg-surface-raised p-8 shadow-soft">
+            <div className="absolute right-0 top-0 p-8 opacity-[0.06] transition-transform group-hover:scale-110">
+              <Brain className="w-40 h-40 text-accent" />
             </div>
             
             <div className="relative z-10">
               <div className="flex items-center gap-4 mb-8">
-                <div className="w-12 h-12 rounded-2xl bg-brand-500/10 flex items-center justify-center text-brand-400">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 text-accent">
                   <Sparkles className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-black text-white">AI ESG Insights</h3>
-                  <p className="text-sm text-surface-500">Predictive analysis for sustainability goals</p>
+                  <h3 className="text-2xl font-black text-text-primary">AI ESG Insights</h3>
+                  <p className="text-sm text-text-secondary">Predictive analysis for sustainability goals</p>
                 </div>
               </div>
 
               <div className="space-y-4">
                 {insights.length > 0 ? insights.map((insight) => (
-                  <div key={insight.title} className="p-6 bg-surface-800/30 rounded-3xl border border-surface-700/50">
-                    <h4 className="text-sm font-bold text-white mb-2 uppercase tracking-widest">{insight.title}</h4>
-                    <p className="text-xs text-surface-400 leading-relaxed">{insight.text}</p>
+                  <div key={insight.title} className="rounded-3xl border border-surface-border bg-surface-overlay p-6">
+                    <h4 className="mb-2 text-sm font-bold uppercase tracking-widest text-text-primary">{insight.title}</h4>
+                    <p className="text-xs leading-relaxed text-text-secondary">{insight.text}</p>
                   </div>
                 )) : (
                   <SectionEmptyState
@@ -517,24 +512,24 @@ export const ESGReporting: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-brand-600 to-violet-700 rounded-[2.5rem] p-8 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
+          <div className="group relative overflow-hidden rounded-[2.5rem] border border-accent/15 bg-gradient-to-br from-accent to-cyan-500 p-8 shadow-soft">
+            <div className="absolute right-0 top-0 p-8 opacity-10 transition-transform group-hover:scale-110">
               <ShieldCheck className="w-40 h-40 text-white" />
             </div>
             <div className="relative z-10 h-full flex flex-col justify-between">
               <div>
-                <h3 className="text-3xl font-black text-white mb-4 leading-tight">
+                <h3 className="mb-4 text-3xl font-black leading-tight text-white">
                   Ready for <br />Disclosure
                 </h3>
-                <p className="text-brand-100 text-sm leading-relaxed mb-8 max-w-xs">
+                <p className="mb-8 max-w-xs text-sm leading-relaxed text-white/85">
                   Backend ESG metrics currently indicate {disclosureReadiness}% disclosure readiness across sustainability, social, and governance reporting signals.
                 </p>
               </div>
               <div className="space-y-3">
-                <button className="w-full py-4 bg-white text-brand-600 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-brand-50 transition-colors shadow-xl shadow-black/20">
+                <button className="w-full rounded-2xl bg-white py-4 text-xs font-bold uppercase tracking-widest text-accent transition-colors hover:bg-slate-50 shadow-soft">
                   Generate GRI Report
                 </button>
-                <button className="w-full py-4 bg-brand-500/20 text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-brand-500/30 transition-colors border border-brand-500/30">
+                <button className="w-full rounded-2xl border border-white/30 bg-white/15 py-4 text-xs font-bold uppercase tracking-widest text-white transition-colors hover:bg-white/20">
                   Sync with CDP
                 </button>
               </div>

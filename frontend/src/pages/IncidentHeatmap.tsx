@@ -718,7 +718,7 @@ export default function IncidentHeatmap() {
                           onClick={() => setTimeRange(option.value as any)}
                           className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
                             timeRange === option.value
-                              ? 'bg-primary text-text-inverted'
+                              ? 'bg-accent text-text-onAccent'
                               : 'bg-surface-100 text-text-muted hover:bg-surface-100'
                           }`}
                         >

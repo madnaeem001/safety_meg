@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence, Reorder } from 'framer-motion';
 import { 
   Shield, 
@@ -98,6 +98,7 @@ import { CAPAReminder } from '../components/safety/CAPAReminder';
 import { AIAnalyticsDashboard, AIChat } from '../components/safety/AIAnalyticsEngine';
 import { PhotoUpload } from '../components/safety/PhotoUpload';
 import { AIMalwareSecurity } from '../components/safety/AIMalwareSecurity';
+import InternationalStandards from './InternationalStandards';
 import { RealTimeThreatAlerts } from '../components/safety/RealTimeThreatAlerts';
 import { SecurityIncidentResponse } from '../components/safety/SecurityIncidentResponse';
 import {
@@ -291,8 +292,9 @@ const toolsSubItems = [
 
 export const SafetyManagementHub = () => {
   const navigate = useNavigate();
-  const [mainSection, setMainSection] = useState<MainSectionType>('dashboard');
-  const [activeSubItem, setActiveSubItem] = useState<string>('all');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const mainSection = (searchParams.get('section') as MainSectionType) ?? 'dashboard';
+  const activeSubItem = searchParams.get('tab') ?? 'all';
   const [searchQuery, setSearchQuery] = useState('');
   const [showAIAssistant, setShowAIAssistant] = useState(false);
   const [showMetricCustomizer, setShowMetricCustomizer] = useState(false);
@@ -388,11 +390,16 @@ export const SafetyManagementHub = () => {
     }
   };
 
-  // Reset sub-item when section changes
+  // Reset sub-item when section changes (only when no tab is specified in URL)
   useEffect(() => {
+    if (searchParams.has('tab')) return;
     const items = getCurrentSubItems();
     if (items.length > 0) {
-      setActiveSubItem(items[0].id);
+      setSearchParams(prev => {
+        const next = new URLSearchParams(prev);
+        next.set('tab', items[0].id);
+        return next;
+      }, { replace: true });
     }
   }, [mainSection]);
 
@@ -468,7 +475,7 @@ export const SafetyManagementHub = () => {
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <span className="px-3 py-1 bg-accent/10 border border-accent/20 rounded-full text-[10px] font-black text-accent uppercase tracking-widest">AI Predictive Insight</span>
+              <span className="px-3 py-1 bg-accent border border-accent rounded-full text-[10px] font-black text-white uppercase tracking-widest">AI Predictive Insight</span>
               <span className="text-text-muted text-[10px] font-bold uppercase tracking-widest">Updated 5m ago</span>
             </div>
             <h2 className="text-2xl font-bold text-text-primary mb-4">Facility-wide risk levels have decreased by 12% following the implementation of AI-guided PPE audits.</h2>
@@ -602,7 +609,7 @@ export const SafetyManagementHub = () => {
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-xl font-black text-text-primary">International Standards Compliance</h3>
-                <span className="px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-bold text-primary uppercase tracking-wider flex items-center gap-1">
+                <span className="px-2 py-0.5 rounded-full bg-primary border border-primary text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1">
                   <Sparkles className="w-3 h-3" /> AI Integrated
                 </span>
               </div>
@@ -850,7 +857,7 @@ export const SafetyManagementHub = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                onClick={() => module.route ? navigate(module.route) : setMainSection(module.section!)}
+                onClick={() => module.route ? navigate(module.route) : setSearchParams({ section: module.section! })}
                 className="group cursor-pointer bg-surface-raised rounded-2xl lg:rounded-3xl p-5 lg:p-6 border border-surface-border hover:border-accent/30 hover:bg-surface-overlay transition-all shadow-card"
               >
                 <div className="flex items-start justify-between mb-4">
@@ -878,7 +885,7 @@ export const SafetyManagementHub = () => {
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-text-primary">Recent Activity</h2>
             <button 
-              onClick={() => setMainSection('incidents')}
+              onClick={() => setSearchParams({ section: 'incidents' })}
               className="text-sm font-medium text-accent hover:opacity-80"
             >
               View all
@@ -969,16 +976,16 @@ export const SafetyManagementHub = () => {
 
     if (mainSection === 'compliance') {
       switch (activeSubItem) {
-        case 'dashboard': return <ComplianceDashboard onBack={() => setMainSection('dashboard')} />;
+        case 'dashboard': return <ComplianceDashboard onBack={() => navigate(-1)} />;
         case 'audit-photos': return <PhotoUpload title="Compliance Audit Photos" description="Upload audit evidence photos, inspection images, and compliance documentation for AI review and archival." showAIAnalysis={true} darkMode={true} />;
         case 'osha-iso': return <OSHAISOWorkflow />;
         case 'osha-logs': return <OSHALogGenerator />;
         case 'audit-trail': return <AuditTrail />;
-        case 'e-signatures': return <ESignatureCertificate onBack={() => setActiveSubItem('dashboard')} />;
+        case 'e-signatures': return <ESignatureCertificate onBack={() => navigate(-1)} />;
         case 'qr-codes': return <QRCodeAudit />;
         case 'api-integration': return <OpenAPIIntegration />;
-        case 'international': return <div className="min-h-[400px]"><iframe src="#/international-standards" className="w-full h-[600px] border-0 rounded-2xl" title="International Standards" /></div>;
-        default: return <ComplianceDashboard onBack={() => setMainSection('dashboard')} />;
+        case 'international': return <InternationalStandards isEmbedded />;
+        default: return <ComplianceDashboard onBack={() => navigate(-1)} />;
       }
     }
 
@@ -997,11 +1004,11 @@ export const SafetyManagementHub = () => {
     if (mainSection === 'tools') {
       switch (activeSubItem) {
         case 'collaboration': return <CollaborationPanel />;
-        case 'photo-upload': return <PhotoUpload title="Safety Photo Hub" description="Central hub for all safety-related photo and video uploads. AI-powered hazard detection across all files." maxFiles={50} showAIAnalysis={true} darkMode={true} />;
+        case 'photo-upload': return <PhotoUpload title="Safety Photo Hub" description="Central hub for all safety-related photo and video uploads. AI-powered hazard detection across all files." maxFiles={50} showAIAnalysis={true} darkMode={false} />;
         case 'voice': return <VoiceCommands onNavigate={navigate} />;
         case 'widgets': return <DashboardWidgets />;
         case 'offline': return <OfflineSyncManager />;
-        case 'notifications': return <RealTimeNotifications onBack={() => setMainSection('dashboard')} />;
+        case 'notifications': return <RealTimeNotifications onBack={() => navigate(-1)} />;
         case 'capa-reminders': return <CAPAReminder />;
         case 'mobile-data': return <MobileDataCollection />;
         case 'alerts': return <RealTimeAlerts />;
@@ -1031,7 +1038,7 @@ export const SafetyManagementHub = () => {
         {/* Sub-section Header */}
         <div className="flex items-center gap-4">
           <button 
-            onClick={() => setMainSection('dashboard')}
+            onClick={() => navigate(-1)}
             className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface-raised border border-surface-border hover:bg-surface-overlay transition-colors"
           >
             <ArrowLeft className="w-5 h-5 text-text-muted" />
@@ -1047,7 +1054,7 @@ export const SafetyManagementHub = () => {
           {subItems.map((item) => (
             <button
               key={item.id}
-              onClick={() => setActiveSubItem(item.id)}
+              onClick={() => setSearchParams(prev => { const next = new URLSearchParams(prev); next.set('tab', item.id); return next; })}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all ${
                 activeSubItem === item.id
                   ? 'bg-accent/10 text-accent border border-accent/20'

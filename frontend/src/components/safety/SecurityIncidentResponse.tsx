@@ -133,10 +133,10 @@ const FORENSIC_TOOLS = [
 ];
 
 const phaseStatusColors = {
-  pending: { bg: 'bg-slate-500/10', text: 'text-slate-400', border: 'border-slate-500/20' },
-  active: { bg: 'bg-cyan-500/10', text: 'text-cyan-400', border: 'border-cyan-500/30' },
-  completed: { bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/20' },
-  skipped: { bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/20' },
+  pending: { bg: 'bg-slate-100', text: 'text-slate-700', border: 'border-slate-200' },
+  active: { bg: 'bg-accent/10', text: 'text-accent', border: 'border-accent/20' },
+  completed: { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
+  skipped: { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200' },
 };
 
 export const SecurityIncidentResponse: React.FC = () => {
@@ -156,28 +156,28 @@ export const SecurityIncidentResponse: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-slate-900 via-orange-900/20 to-slate-900 rounded-2xl p-5 border border-orange-500/20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent" />
+        className="bg-surface-raised rounded-2xl p-5 border border-surface-border relative overflow-hidden shadow-soft">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent/10 via-transparent to-transparent" />
         <div className="relative flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center">
-              <ShieldAlert className="w-6 h-6 text-orange-400" />
+            <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
+              <ShieldAlert className="w-6 h-6 text-accent" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white">Security Incident Response Center</h3>
-              <p className="text-xs text-orange-300/70 font-mono">NIST 800-61 • SANS IR • MITRE ATT&CK FRAMEWORK</p>
+              <h3 className="text-lg font-bold text-text-primary">Security Incident Response Center</h3>
+              <p className="text-xs text-text-secondary font-mono">NIST 800-61 • SANS IR • MITRE ATT&CK FRAMEWORK</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 px-3 py-2 bg-red-500/10 border border-red-500/30 rounded-xl">
+            <div className="flex items-center gap-2 px-3 py-2 bg-red-50 border border-red-200 rounded-xl">
               <div className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
-              <span className="text-xs font-bold text-red-400">{ACTIVE_INCIDENTS.length} ACTIVE</span>
+              <span className="text-xs font-bold text-red-700">{ACTIVE_INCIDENTS.length} ACTIVE</span>
             </div>
-            <div className="flex items-center gap-2 px-3 py-2 bg-emerald-500/10 border border-emerald-500/30 rounded-xl">
-              <span className="text-xs font-bold text-emerald-400">MTTD: 1.2s</span>
+            <div className="flex items-center gap-2 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-xl">
+              <span className="text-xs font-bold text-emerald-700">MTTD: 1.2s</span>
             </div>
-            <div className="flex items-center gap-2 px-3 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-xl">
-              <span className="text-xs font-bold text-cyan-400">MTTR: 4.8s</span>
+            <div className="flex items-center gap-2 px-3 py-2 bg-accent/10 border border-accent/20 rounded-xl">
+              <span className="text-xs font-bold text-accent">MTTR: 4.8s</span>
             </div>
           </div>
         </div>
@@ -192,9 +192,9 @@ export const SecurityIncidentResponse: React.FC = () => {
             { label: 'Team Members', value: '24', color: 'text-blue-400' },
             { label: 'SLA Compliance', value: '99.1%', color: 'text-amber-400' },
           ].map((m, i) => (
-            <div key={i} className="bg-slate-800/60 rounded-xl p-3 border border-slate-700/50 text-center">
+            <div key={i} className="bg-surface-overlay rounded-xl p-3 border border-surface-border text-center">
               <p className={`text-lg font-black ${m.color}`}>{m.value}</p>
-              <p className="text-[8px] text-slate-500 uppercase tracking-wider">{m.label}</p>
+              <p className="text-[8px] text-text-muted uppercase tracking-wider">{m.label}</p>
             </div>
           ))}
         </div>
@@ -204,7 +204,7 @@ export const SecurityIncidentResponse: React.FC = () => {
       <div className="flex overflow-x-auto gap-2 pb-2 scrollbar-hide">
         {tabs.map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id as any)}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${activeTab === tab.id ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30' : 'text-slate-400 hover:text-white bg-slate-800/50 border border-slate-700/30'}`}>
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${activeTab === tab.id ? 'bg-accent text-text-onAccent border border-accent/20' : 'text-text-secondary hover:text-text-primary bg-surface-raised border border-surface-border hover:bg-surface-overlay'}`}>
             <tab.icon className="w-4 h-4" />
             {tab.label}
           </button>
@@ -216,30 +216,30 @@ export const SecurityIncidentResponse: React.FC = () => {
         <div className="space-y-4">
           {ACTIVE_INCIDENTS.map((inc, i) => (
             <motion.div key={inc.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-              className={`rounded-xl border p-5 ${inc.severity === 'critical' ? 'bg-red-500/5 border-red-500/20' : 'bg-orange-500/5 border-orange-500/20'}`}>
+              className={`rounded-xl border p-5 bg-surface-raised shadow-soft ${inc.severity === 'critical' ? 'border-red-200' : 'border-orange-200'}`}>
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] font-mono text-slate-400">{inc.id}</span>
+                    <span className="text-[10px] font-mono text-text-muted">{inc.id}</span>
                     <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded ${inc.severity === 'critical' ? 'bg-red-500 text-white' : 'bg-orange-500 text-white'}`}>{inc.severity}</span>
                   </div>
-                  <h4 className="text-base font-bold text-white">{inc.name}</h4>
-                  <p className="text-xs text-slate-400 mt-1">Phase: <span className="text-cyan-400 font-semibold">{inc.phase}</span> • Commander: {inc.commander} • Team: {inc.team} members</p>
+                  <h4 className="text-base font-bold text-text-primary">{inc.name}</h4>
+                  <p className="text-xs text-text-secondary mt-1">Phase: <span className="text-accent font-semibold">{inc.phase}</span> • Commander: {inc.commander} • Team: {inc.team} members</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-xs text-slate-500">Started</p>
-                  <p className="text-sm font-mono text-white">{inc.started}</p>
+                  <p className="text-xs text-text-muted">Started</p>
+                  <p className="text-sm font-mono text-text-primary">{inc.started}</p>
                 </div>
               </div>
-              <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden mb-2">
+              <div className="w-full h-2 bg-surface-overlay rounded-full overflow-hidden mb-2">
                 <motion.div initial={{ width: 0 }} animate={{ width: `${inc.progress}%` }} transition={{ duration: 1, delay: i * 0.1 }}
                   className={`h-full rounded-full ${inc.severity === 'critical' ? 'bg-gradient-to-r from-red-500 to-orange-500' : 'bg-gradient-to-r from-orange-500 to-amber-500'}`} />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[10px] text-slate-500">{inc.progress}% Complete</span>
+                <span className="text-[10px] text-text-muted">{inc.progress}% Complete</span>
                 <div className="flex gap-2">
-                  <button className="text-[10px] font-bold text-cyan-400 bg-cyan-500/10 px-3 py-1.5 rounded-lg border border-cyan-500/20 hover:bg-cyan-500/20 transition-all">View Details</button>
-                  <button className="text-[10px] font-bold text-red-400 bg-red-500/10 px-3 py-1.5 rounded-lg border border-red-500/20 hover:bg-red-500/20 transition-all">Escalate</button>
+                  <button className="text-[10px] font-bold text-accent bg-accent/10 px-3 py-1.5 rounded-lg border border-accent/20 hover:bg-accent/15 transition-all">View Details</button>
+                  <button className="text-[10px] font-bold text-red-700 bg-red-50 px-3 py-1.5 rounded-lg border border-red-200 hover:bg-red-100 transition-all">Escalate</button>
                 </div>
               </div>
             </motion.div>
@@ -254,30 +254,30 @@ export const SecurityIncidentResponse: React.FC = () => {
             const isSelected = selectedPlaybook === pb.id;
             return (
               <motion.div key={pb.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}
-                className={`rounded-xl border transition-all ${isSelected ? 'bg-slate-800/80 border-cyan-500/30' : 'bg-slate-800/40 border-slate-700/30 hover:border-slate-600/50'}`}>
+                className={`rounded-xl border transition-all shadow-soft ${isSelected ? 'bg-surface-raised border-accent/30' : 'bg-surface-raised border-surface-border hover:border-accent/20'}`}>
                 <div className="p-5 cursor-pointer" onClick={() => setSelectedPlaybook(isSelected ? null : pb.id)}>
                   <div className="flex items-start justify-between mb-2">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
                         <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded ${pb.severity === 'critical' ? 'bg-red-500 text-white' : pb.severity === 'high' ? 'bg-orange-500 text-white' : 'bg-amber-500 text-white'}`}>{pb.severity}</span>
-                        <span className="text-[10px] text-slate-500 font-mono">{pb.id}</span>
+                        <span className="text-[10px] text-text-muted font-mono">{pb.id}</span>
                       </div>
-                      <h4 className="text-sm font-bold text-white">{pb.name}</h4>
-                      <p className="text-xs text-slate-400 mt-1">{pb.description}</p>
+                      <h4 className="text-sm font-bold text-text-primary">{pb.name}</h4>
+                      <p className="text-xs text-text-secondary mt-1">{pb.description}</p>
                     </div>
-                    {isSelected ? <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" /> : <ChevronRight className="w-5 h-5 text-slate-400 shrink-0" />}
+                    {isSelected ? <ChevronDown className="w-5 h-5 text-text-muted shrink-0" /> : <ChevronRight className="w-5 h-5 text-text-muted shrink-0" />}
                   </div>
-                  <div className="flex items-center gap-4 mt-3 text-[10px] text-slate-500">
-                    <span>Duration: <span className="text-white font-semibold">{pb.estimatedDuration}</span></span>
-                    <span>Success: <span className="text-emerald-400 font-semibold">{pb.successRate}%</span></span>
-                    <span>Executed: <span className="text-cyan-400 font-semibold">{pb.timesExecuted}x</span></span>
-                    <span>Last: <span className="text-white font-semibold">{pb.lastUsed}</span></span>
+                  <div className="flex items-center gap-4 mt-3 text-[10px] text-text-muted">
+                    <span>Duration: <span className="text-text-primary font-semibold">{pb.estimatedDuration}</span></span>
+                    <span>Success: <span className="text-emerald-700 font-semibold">{pb.successRate}%</span></span>
+                    <span>Executed: <span className="text-accent font-semibold">{pb.timesExecuted}x</span></span>
+                    <span>Last: <span className="text-text-primary font-semibold">{pb.lastUsed}</span></span>
                   </div>
                 </div>
                 <AnimatePresence>
                   {isSelected && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-                      <div className="px-5 pb-5 space-y-3 border-t border-white/5 pt-4">
+                      <div className="px-5 pb-5 space-y-3 border-t border-surface-border pt-4">
                         {pb.phases.map((phase, pi) => {
                           const pColors = phaseStatusColors[phase.status];
                           const isPhaseExpanded = expandedPhase === `${pb.id}-${phase.id}`;
@@ -294,32 +294,32 @@ export const SecurityIncidentResponse: React.FC = () => {
                                     <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded ${pColors.bg} ${pColors.text} border ${pColors.border}`}>{phase.status}</span>
                                     <span className="text-[9px] text-slate-500">~{phase.duration}</span>
                                   </div>
-                                  <p className="text-xs text-slate-400">{phase.description}</p>
+                                  <p className="text-xs text-text-secondary">{phase.description}</p>
                                 </div>
                               </div>
                               {isPhaseExpanded && (
                                 <div className="mt-3 pl-11 space-y-3">
                                   <div>
-                                    <p className="text-[9px] text-slate-500 uppercase tracking-wider mb-1">Actions</p>
+                                    <p className="text-[9px] text-text-muted uppercase tracking-wider mb-1">Actions</p>
                                     <div className="space-y-1">
                                       {phase.actions.map((action, ai) => (
-                                        <div key={ai} className="flex items-center gap-2 text-xs text-slate-300">
+                                        <div key={ai} className="flex items-center gap-2 text-xs text-text-secondary">
                                           <CheckCircle2 className={`w-3 h-3 shrink-0 ${phase.status === 'completed' ? 'text-emerald-400' : 'text-slate-600'}`} />
                                           {action}
                                         </div>
                                       ))}
                                     </div>
                                   </div>
-                                  <div className="flex items-center gap-4 text-[10px] text-slate-500">
-                                    <span>Assignee: <span className="text-white">{phase.assignee}</span></span>
-                                    <span>Tools: <span className="text-cyan-400">{phase.tools.join(', ')}</span></span>
+                                  <div className="flex items-center gap-4 text-[10px] text-text-muted">
+                                    <span>Assignee: <span className="text-text-primary">{phase.assignee}</span></span>
+                                    <span>Tools: <span className="text-accent">{phase.tools.join(', ')}</span></span>
                                   </div>
                                 </div>
                               )}
                             </div>
                           );
                         })}
-                        <button className="w-full py-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-bold hover:bg-cyan-500/20 transition-all flex items-center justify-center gap-2">
+                        <button className="w-full py-3 rounded-xl bg-accent text-text-onAccent text-sm font-bold hover:bg-accent/90 transition-all flex items-center justify-center gap-2">
                           <PlayCircle className="w-4 h-4" /> Execute Playbook
                         </button>
                       </div>
@@ -338,24 +338,24 @@ export const SecurityIncidentResponse: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {FORENSIC_TOOLS.map((tool, i) => (
               <motion.div key={tool.name} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.05 }}
-                className="bg-slate-800/60 rounded-xl p-5 border border-slate-700/50 hover:border-cyan-500/30 transition-all">
+                className="bg-surface-raised rounded-xl p-5 border border-surface-border hover:border-accent/20 transition-all shadow-soft">
                 <div className="flex items-center justify-between mb-3">
-                  <h4 className="text-sm font-bold text-white">{tool.name}</h4>
+                  <h4 className="text-sm font-bold text-text-primary">{tool.name}</h4>
                   <div className="flex items-center gap-1.5">
                     <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-[10px] font-bold text-emerald-400 uppercase">{tool.status}</span>
+                    <span className="text-[10px] font-bold text-emerald-700 uppercase">{tool.status}</span>
                   </div>
                 </div>
-                <p className="text-xs text-cyan-400 font-mono mb-3">{tool.tool}</p>
-                <div className="flex items-center justify-between text-[10px] text-slate-400">
-                  <span>Last Scan: <span className="text-white">{tool.lastScan}</span></span>
-                  <span>Findings: <span className="text-amber-400 font-bold">{tool.findings}</span></span>
+                <p className="text-xs text-accent font-mono mb-3">{tool.tool}</p>
+                <div className="flex items-center justify-between text-[10px] text-text-secondary">
+                  <span>Last Scan: <span className="text-text-primary">{tool.lastScan}</span></span>
+                  <span>Findings: <span className="text-amber-700 font-bold">{tool.findings}</span></span>
                 </div>
               </motion.div>
             ))}
           </div>
-          <div className="bg-slate-800/40 rounded-xl p-5 border border-slate-700/30">
-            <h4 className="text-sm font-bold text-white mb-4 flex items-center gap-2"><Brain className="w-4 h-4 text-purple-400" /> AI Forensic Analysis Pipeline</h4>
+          <div className="bg-surface-raised rounded-xl p-5 border border-surface-border shadow-soft">
+            <h4 className="text-sm font-bold text-text-primary mb-4 flex items-center gap-2"><Brain className="w-4 h-4 text-violet-600" /> AI Forensic Analysis Pipeline</h4>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
                 { label: 'IOCs Extracted', value: '2,847', color: 'text-cyan-400' },
@@ -363,9 +363,9 @@ export const SecurityIncidentResponse: React.FC = () => {
                 { label: 'Artifacts Preserved', value: '1.2 TB', color: 'text-purple-400' },
                 { label: 'Chain of Custody', value: 'Verified', color: 'text-emerald-400' },
               ].map((m, i) => (
-                <div key={i} className="bg-slate-800/80 rounded-lg p-3 border border-slate-700/50 text-center">
+                <div key={i} className="bg-surface-overlay rounded-lg p-3 border border-surface-border text-center">
                   <p className={`text-lg font-black ${m.color}`}>{m.value}</p>
-                  <p className="text-[8px] text-slate-500 uppercase tracking-wider">{m.label}</p>
+                  <p className="text-[8px] text-text-muted uppercase tracking-wider">{m.label}</p>
                 </div>
               ))}
             </div>
@@ -376,43 +376,43 @@ export const SecurityIncidentResponse: React.FC = () => {
       {/* Communications Tab */}
       {activeTab === 'communications' && (
         <div className="space-y-4">
-          <div className="bg-slate-800/40 rounded-xl p-5 border border-slate-700/30">
-            <h4 className="text-sm font-bold text-white mb-4">Incident Communication Templates</h4>
+          <div className="bg-surface-raised rounded-xl p-5 border border-surface-border shadow-soft">
+            <h4 className="text-sm font-bold text-text-primary mb-4">Incident Communication Templates</h4>
             <div className="space-y-3">
               {COMMUNICATION_TEMPLATES.map((tmpl, i) => (
                 <motion.div key={tmpl.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }}
-                  className="flex items-center justify-between p-4 bg-slate-800/60 rounded-xl border border-slate-700/50 hover:border-cyan-500/30 transition-all">
+                  className="flex items-center justify-between p-4 bg-surface-overlay rounded-xl border border-surface-border hover:border-accent/20 transition-all">
                   <div className="flex items-center gap-3">
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${tmpl.type === 'Internal' ? 'bg-blue-500/10 text-blue-400' : tmpl.type === 'Regulatory' ? 'bg-red-500/10 text-red-400' : tmpl.type === 'External' ? 'bg-amber-500/10 text-amber-400' : tmpl.type === 'Law Enforcement' ? 'bg-purple-500/10 text-purple-400' : tmpl.type === 'Insurance' ? 'bg-emerald-500/10 text-emerald-400' : tmpl.type === 'Supply Chain' ? 'bg-cyan-500/10 text-cyan-400' : 'bg-orange-500/10 text-orange-400'}`}>
                       {tmpl.type === 'Internal' ? <Users className="w-4 h-4" /> : tmpl.type === 'Regulatory' ? <FileWarning className="w-4 h-4" /> : <Mail className="w-4 h-4" />}
                     </div>
                     <div>
-                      <h5 className="text-sm font-bold text-white">{tmpl.name}</h5>
-                      <p className="text-[10px] text-slate-400">To: {tmpl.recipients} • {tmpl.timing}</p>
+                      <h5 className="text-sm font-bold text-text-primary">{tmpl.name}</h5>
+                      <p className="text-[10px] text-text-secondary">To: {tmpl.recipients} • {tmpl.timing}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className={`text-[9px] font-bold uppercase px-2 py-1 rounded-lg ${tmpl.type === 'Internal' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : tmpl.type === 'Regulatory' ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-slate-700 text-slate-300 border border-slate-600'}`}>{tmpl.type}</span>
-                    <button className="text-[10px] font-bold text-cyan-400 bg-cyan-500/10 px-3 py-1.5 rounded-lg border border-cyan-500/20 hover:bg-cyan-500/20 transition-all">Use Template</button>
+                    <button className="text-[10px] font-bold text-accent bg-accent/10 px-3 py-1.5 rounded-lg border border-accent/20 hover:bg-accent/15 transition-all">Use Template</button>
                   </div>
                 </motion.div>
               ))}
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-slate-800/40 rounded-xl p-5 border border-slate-700/30">
-              <h4 className="text-sm font-bold text-white mb-3 flex items-center gap-2"><Phone className="w-4 h-4 text-emerald-400" /> Emergency Contacts</h4>
+            <div className="bg-surface-raised rounded-xl p-5 border border-surface-border shadow-soft">
+              <h4 className="text-sm font-bold text-text-primary mb-3 flex items-center gap-2"><Phone className="w-4 h-4 text-emerald-600" /> Emergency Contacts</h4>
               <div className="space-y-2">
                 {['CISO — Alex Rivera — ext.2001', 'IR Lead — Dr. Sarah Kim — ext.2002', 'Legal Counsel — Mark Johnson — ext.3001', 'FBI Cyber — Field Office — (555) 200-4000', 'Cyber Insurance — Hotline — (800) 555-1234'].map((c, i) => (
-                  <div key={i} className="text-xs text-slate-300 p-2 bg-slate-800/60 rounded-lg">{c}</div>
+                  <div key={i} className="text-xs text-text-secondary p-2 bg-surface-overlay rounded-lg">{c}</div>
                 ))}
               </div>
             </div>
-            <div className="bg-slate-800/40 rounded-xl p-5 border border-slate-700/30">
-              <h4 className="text-sm font-bold text-white mb-3 flex items-center gap-2"><Radio className="w-4 h-4 text-cyan-400" /> War Room Channels</h4>
+            <div className="bg-surface-raised rounded-xl p-5 border border-surface-border shadow-soft">
+              <h4 className="text-sm font-bold text-text-primary mb-3 flex items-center gap-2"><Radio className="w-4 h-4 text-accent" /> War Room Channels</h4>
               <div className="space-y-2">
                 {['#incident-response — Active IR coordination', '#soc-alerts — SOC alert triage', '#forensics — Digital forensics team', '#executive-brief — Leadership updates', '#vendor-comms — Third-party coordination'].map((c, i) => (
-                  <div key={i} className="text-xs text-slate-300 p-2 bg-slate-800/60 rounded-lg">{c}</div>
+                  <div key={i} className="text-xs text-text-secondary p-2 bg-surface-overlay rounded-lg">{c}</div>
                 ))}
               </div>
             </div>
@@ -435,17 +435,17 @@ export const SecurityIncidentResponse: React.FC = () => {
               { label: 'SLA Compliance', value: '99.1%', change: '+0.4%', trend: 'up', good: true },
             ].map((m, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-                className="bg-slate-800/60 rounded-xl p-4 border border-slate-700/50">
-                <p className="text-[9px] text-slate-500 uppercase tracking-wider mb-2">{m.label}</p>
-                <p className="text-2xl font-black text-white">{m.value}</p>
+                className="bg-surface-raised rounded-xl p-4 border border-surface-border shadow-soft">
+                <p className="text-[9px] text-text-muted uppercase tracking-wider mb-2">{m.label}</p>
+                <p className="text-2xl font-black text-text-primary">{m.value}</p>
                 <p className={`text-[10px] font-bold mt-1 ${m.good ? 'text-emerald-400' : 'text-red-400'}`}>
                   {m.change} {m.trend === 'down' ? '↓' : '↑'} vs last month
                 </p>
               </motion.div>
             ))}
           </div>
-          <div className="bg-slate-800/40 rounded-xl p-5 border border-slate-700/30">
-            <h4 className="text-sm font-bold text-white mb-4">Incident Categories (Last 90 Days)</h4>
+          <div className="bg-surface-raised rounded-xl p-5 border border-surface-border shadow-soft">
+            <h4 className="text-sm font-bold text-text-primary mb-4">Incident Categories (Last 90 Days)</h4>
             <div className="space-y-3">
               {[
                 { type: 'Phishing/BEC', count: 156, pct: 45 },
@@ -457,13 +457,13 @@ export const SecurityIncidentResponse: React.FC = () => {
                 { type: 'Other', count: 15, pct: 5 },
               ].map((cat, i) => (
                 <div key={i} className="flex items-center gap-4">
-                  <span className="text-xs text-slate-300 w-32 shrink-0">{cat.type}</span>
-                  <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                  <span className="text-xs text-text-secondary w-32 shrink-0">{cat.type}</span>
+                  <div className="flex-1 h-2 bg-surface-overlay rounded-full overflow-hidden">
                     <motion.div initial={{ width: 0 }} animate={{ width: `${cat.pct}%` }} transition={{ duration: 0.8, delay: i * 0.05 }}
                       className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-500" />
                   </div>
-                  <span className="text-xs text-white font-bold w-12 text-right">{cat.count}</span>
-                  <span className="text-[10px] text-slate-500 w-8 text-right">{cat.pct}%</span>
+                  <span className="text-xs text-text-primary font-bold w-12 text-right">{cat.count}</span>
+                  <span className="text-[10px] text-text-muted w-8 text-right">{cat.pct}%</span>
                 </div>
               ))}
             </div>

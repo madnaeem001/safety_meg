@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence, Reorder } from 'framer-motion';
 import { INITIAL_TASKS, EPICS, ProjectTask, TaskStatus, TaskPriority, Milestone, IssueType, Epic, ScheduleTask, RFI } from '../data/mockProjectManagement';
 import { Calendar, FileText, Clock, AlertCircle, CheckCircle2, ArrowUpRight, Plus, X, User, ListTodo, Loader2, MoreVertical, Trash2, Search, Filter, Target, Flag, GripVertical, Zap, Bug, BookOpen, CheckSquare, Layers, Eye, Play, Archive, BarChart3, Brain } from 'lucide-react';
@@ -499,7 +500,8 @@ export const ProjectManagement: React.FC = () => {
   const [localTasks, setLocalTasks] = useState<ProjectTask[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState<ProjectTask | null>(null);
-  const [activeView, setActiveView] = useState<'kanban' | 'sprint' | 'backlog' | 'velocity' | 'schedule' | 'rfi' | 'milestones' | 'retrospectives' | 'releases' | 'settings' | 'automation' | 'ai-workflows' | 'ai-task-analysis' | 'ai-security' | 'ai-resource-planning' | 'ai-risk-matrix' | 'ai-dependency-analyzer' | 'photo-docs'>('kanban');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeView = (searchParams.get('view') ?? 'kanban') as 'kanban' | 'sprint' | 'backlog' | 'velocity' | 'schedule' | 'rfi' | 'milestones' | 'retrospectives' | 'releases' | 'settings' | 'automation' | 'ai-workflows' | 'ai-task-analysis' | 'ai-security' | 'ai-resource-planning' | 'ai-risk-matrix' | 'ai-dependency-analyzer' | 'photo-docs';
   
   // Filter state
   const [searchQuery, setSearchQuery] = useState('');
@@ -779,7 +781,7 @@ export const ProjectManagement: React.FC = () => {
           ].map(tab => (
             <button
               key={tab.id}
-              onClick={() => { hapticFeedback('light'); setActiveView(tab.id as any); }}
+              onClick={() => { hapticFeedback('light'); setSearchParams({ view: tab.id }); }}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
                 activeView === tab.id 
                   ? 'bg-white shadow-soft text-brand-700' 
@@ -1060,47 +1062,47 @@ export const ProjectManagement: React.FC = () => {
         {activeView === 'ai-workflows' && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
             {/* AI Intelligence Summary */}
-            <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 border border-cyan-500/20 shadow-lg">
+            <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center">
-                    <Zap className="w-5 h-5 text-cyan-400" />
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
+                    <Zap className="w-5 h-5 text-accent" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">AI Project Intelligence</h3>
-                    <p className="text-xs text-cyan-400/70 font-mono">8 AI ENGINES • REAL-TIME ANALYSIS</p>
+                    <h3 className="text-lg font-bold text-text-primary">AI Project Intelligence</h3>
+                    <p className="text-xs text-text-muted font-mono">8 AI ENGINES • REAL-TIME ANALYSIS</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-xs font-bold text-emerald-400">LIVE</span>
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-xs font-bold text-emerald-600">LIVE</span>
                 </div>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                <div className="bg-slate-800/80 p-4 rounded-xl border border-cyan-500/10">
-                  <p className="text-3xl font-black text-white">94%</p>
-                  <p className="text-[10px] text-slate-400 uppercase tracking-wider">Health Score</p>
+                <div className="bg-surface-overlay p-4 rounded-xl border border-surface-border">
+                  <p className="text-3xl font-black text-text-primary">94%</p>
+                  <p className="text-[10px] text-text-muted uppercase tracking-wider">Health Score</p>
                 </div>
-                <div className="bg-slate-800/80 p-4 rounded-xl border border-cyan-500/10">
-                  <p className="text-3xl font-black text-white">142h</p>
-                  <p className="text-[10px] text-slate-400 uppercase tracking-wider">Hours Saved</p>
+                <div className="bg-surface-overlay p-4 rounded-xl border border-surface-border">
+                  <p className="text-3xl font-black text-text-primary">142h</p>
+                  <p className="text-[10px] text-text-muted uppercase tracking-wider">Hours Saved</p>
                 </div>
-                <div className="bg-slate-800/80 p-4 rounded-xl border border-cyan-500/10">
-                  <p className="text-3xl font-black text-white">1,247</p>
-                  <p className="text-[10px] text-slate-400 uppercase tracking-wider">Tasks AI-Touched</p>
+                <div className="bg-surface-overlay p-4 rounded-xl border border-surface-border">
+                  <p className="text-3xl font-black text-text-primary">1,247</p>
+                  <p className="text-[10px] text-text-muted uppercase tracking-wider">Tasks AI-Touched</p>
                 </div>
-                <div className="bg-slate-800/80 p-4 rounded-xl border border-cyan-500/10">
-                  <p className="text-3xl font-black text-cyan-400">97%</p>
-                  <p className="text-[10px] text-slate-400 uppercase tracking-wider">Sprint Completion</p>
+                <div className="bg-surface-overlay p-4 rounded-xl border border-surface-border">
+                  <p className="text-3xl font-black text-accent">97%</p>
+                  <p className="text-[10px] text-text-muted uppercase tracking-wider">Sprint Completion</p>
                 </div>
               </div>
-              <div className="bg-slate-800/60 p-3 rounded-xl border border-cyan-500/10">
-                <p className="text-xs text-cyan-300 font-medium flex items-center gap-2"><Zap className="w-3 h-3" /> AI Recommendations:</p>
+              <div className="bg-accent/5 p-3 rounded-xl border border-accent/20">
+                <p className="text-xs text-accent font-medium flex items-center gap-2"><Zap className="w-3 h-3" /> AI Recommendations:</p>
                 <ul className="mt-2 space-y-1">
-                  <li className="text-xs text-slate-400">• Split SAFE-105 (Environmental Dashboard) into 2 stories to reduce risk</li>
-                  <li className="text-xs text-slate-400">• Sarah Johnson has 40% capacity — assign IoT integration research</li>
-                  <li className="text-xs text-slate-400">• Schedule OSHA 1910.147 (LOTO) training before confined space rollout</li>
-                  <li className="text-xs text-slate-400">• 3 duplicate near-miss reports detected — consolidate into single investigation</li>
+                  <li className="text-xs text-text-secondary">• Split SAFE-105 (Environmental Dashboard) into 2 stories to reduce risk</li>
+                  <li className="text-xs text-text-secondary">• Sarah Johnson has 40% capacity — assign IoT integration research</li>
+                  <li className="text-xs text-text-secondary">• Schedule OSHA 1910.147 (LOTO) training before confined space rollout</li>
+                  <li className="text-xs text-text-secondary">• 3 duplicate near-miss reports detected — consolidate into single investigation</li>
                 </ul>
               </div>
             </div>
@@ -1159,26 +1161,26 @@ export const ProjectManagement: React.FC = () => {
         {/* AI Task Analysis View */}
         {activeView === 'ai-task-analysis' && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <div className="bg-gradient-to-br from-purple-900 to-indigo-900 rounded-2xl p-6 border border-purple-500/20">
+            <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
-                  <Brain className="w-5 h-5 text-purple-400" />
+                <div className="w-10 h-10 rounded-xl bg-purple-100 border border-purple-200 flex items-center justify-center">
+                  <Brain className="w-5 h-5 text-purple-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-white">AI Task Intelligence Engine</h3>
-                  <p className="text-xs text-purple-300 font-mono">DEEP ANALYSIS • 8 AI MODELS ACTIVE</p>
+                  <h3 className="text-lg font-bold text-text-primary">AI Task Intelligence Engine</h3>
+                  <p className="text-xs text-text-muted font-mono">DEEP ANALYSIS • 8 AI MODELS ACTIVE</p>
                 </div>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {[
-                  { label: 'Tasks Analyzed', value: '2,847', color: 'text-purple-400' },
-                  { label: 'Bottlenecks Found', value: '12', color: 'text-red-400' },
-                  { label: 'Auto-Assigned', value: '847', color: 'text-cyan-400' },
-                  { label: 'Risk Predictions', value: '23', color: 'text-amber-400' },
+                  { label: 'Tasks Analyzed', value: '2,847', color: 'text-purple-600' },
+                  { label: 'Bottlenecks Found', value: '12', color: 'text-red-600' },
+                  { label: 'Auto-Assigned', value: '847', color: 'text-accent' },
+                  { label: 'Risk Predictions', value: '23', color: 'text-amber-600' },
                 ].map((m, i) => (
-                  <div key={i} className="bg-white/5 rounded-xl p-3 border border-white/10">
+                  <div key={i} className="bg-surface-overlay rounded-xl p-3 border border-surface-border">
                     <p className={`text-xl font-black ${m.color}`}>{m.value}</p>
-                    <p className="text-[9px] text-purple-300/60 uppercase tracking-wider">{m.label}</p>
+                    <p className="text-[9px] text-text-muted uppercase tracking-wider">{m.label}</p>
                   </div>
                 ))}
               </div>
@@ -1218,14 +1220,14 @@ export const ProjectManagement: React.FC = () => {
         {/* AI Resource Planning View */}
         {activeView === 'ai-resource-planning' && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <div className="bg-gradient-to-br from-emerald-900 to-teal-900 rounded-2xl p-6 border border-emerald-500/20">
+            <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                  <Brain className="w-5 h-5 text-emerald-400" />
+                <div className="w-10 h-10 rounded-xl bg-emerald-100 border border-emerald-200 flex items-center justify-center">
+                  <Brain className="w-5 h-5 text-emerald-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-white">AI Resource Planning Engine</h3>
-                  <p className="text-xs text-emerald-300 font-mono">PREDICTIVE ALLOCATION • LOAD BALANCING • CAPACITY FORECASTING</p>
+                  <h3 className="text-lg font-bold text-text-primary">AI Resource Planning Engine</h3>
+                  <p className="text-xs text-text-muted font-mono">PREDICTIVE ALLOCATION • LOAD BALANCING • CAPACITY FORECASTING</p>
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mt-4">
@@ -1235,10 +1237,10 @@ export const ProjectManagement: React.FC = () => {
                   { label: 'Bottleneck Risk', value: 'Low', trend: '-15%', color: 'green' },
                   { label: 'Sprint Capacity', value: '142 pts', trend: '+12', color: 'teal' },
                 ].map((metric, i) => (
-                  <div key={i} className="bg-white/5 backdrop-blur rounded-xl p-4 border border-white/10">
-                    <p className="text-xs text-emerald-300 mb-1">{metric.label}</p>
-                    <p className="text-xl font-black text-white">{metric.value}</p>
-                    <p className="text-[10px] text-emerald-400 font-mono mt-1">↑ {metric.trend}</p>
+                  <div key={i} className="bg-surface-overlay rounded-xl p-4 border border-surface-border">
+                    <p className="text-xs text-text-muted mb-1">{metric.label}</p>
+                    <p className="text-xl font-black text-text-primary">{metric.value}</p>
+                    <p className="text-[10px] text-emerald-600 font-mono mt-1">↑ {metric.trend}</p>
                   </div>
                 ))}
               </div>
@@ -1286,14 +1288,14 @@ export const ProjectManagement: React.FC = () => {
         {/* AI Risk Matrix View */}
         {activeView === 'ai-risk-matrix' && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <div className="bg-gradient-to-br from-red-900 to-orange-900 rounded-2xl p-6 border border-red-500/20">
+            <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center">
-                  <Target className="w-5 h-5 text-red-400" />
+                <div className="w-10 h-10 rounded-xl bg-red-100 border border-red-200 flex items-center justify-center">
+                  <Target className="w-5 h-5 text-red-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-white">AI Risk Matrix Engine</h3>
-                  <p className="text-xs text-red-300 font-mono">REAL-TIME RISK SCORING • PROBABILITY ANALYSIS • IMPACT ASSESSMENT</p>
+                  <h3 className="text-lg font-bold text-text-primary">AI Risk Matrix Engine</h3>
+                  <p className="text-xs text-text-muted font-mono">REAL-TIME RISK SCORING • PROBABILITY ANALYSIS • IMPACT ASSESSMENT</p>
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mt-4">
@@ -1303,10 +1305,10 @@ export const ProjectManagement: React.FC = () => {
                   { label: 'Mitigated', value: '14', trend: '+4 resolved', color: 'green' },
                   { label: 'AI Predictions', value: '6 alerts', trend: 'Next 2 sprints', color: 'yellow' },
                 ].map((m, i) => (
-                  <div key={i} className="bg-white/5 backdrop-blur rounded-xl p-4 border border-white/10">
-                    <p className="text-xs text-red-300 mb-1">{m.label}</p>
-                    <p className="text-xl font-black text-white">{m.value}</p>
-                    <p className="text-[10px] text-red-400 font-mono mt-1">{m.trend}</p>
+                  <div key={i} className="bg-surface-overlay rounded-xl p-4 border border-surface-border">
+                    <p className="text-xs text-text-muted mb-1">{m.label}</p>
+                    <p className="text-xl font-black text-text-primary">{m.value}</p>
+                    <p className="text-[10px] text-red-600 font-mono mt-1">{m.trend}</p>
                   </div>
                 ))}
               </div>
@@ -1394,14 +1396,14 @@ export const ProjectManagement: React.FC = () => {
         {/* AI Dependency Analyzer View */}
         {activeView === 'ai-dependency-analyzer' && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <div className="bg-gradient-to-br from-violet-900 to-fuchsia-900 rounded-2xl p-6 border border-violet-500/20">
+            <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-violet-500/20 flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-violet-400" />
+                <div className="w-10 h-10 rounded-xl bg-violet-100 border border-violet-200 flex items-center justify-center">
+                  <Zap className="w-5 h-5 text-violet-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-white">AI Dependency Analyzer</h3>
-                  <p className="text-xs text-violet-300 font-mono">DEPENDENCY GRAPH • CRITICAL PATH • BLOCKER DETECTION</p>
+                  <h3 className="text-lg font-bold text-text-primary">AI Dependency Analyzer</h3>
+                  <p className="text-xs text-text-muted font-mono">DEPENDENCY GRAPH • CRITICAL PATH • BLOCKER DETECTION</p>
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mt-4">
@@ -1411,10 +1413,10 @@ export const ProjectManagement: React.FC = () => {
                   { label: 'Blocked Tasks', value: '4', trend: '2 auto-resolved' },
                   { label: 'AI Optimizations', value: '11', trend: 'This sprint' },
                 ].map((m, i) => (
-                  <div key={i} className="bg-white/5 backdrop-blur rounded-xl p-4 border border-white/10">
-                    <p className="text-xs text-violet-300 mb-1">{m.label}</p>
-                    <p className="text-xl font-black text-white">{m.value}</p>
-                    <p className="text-[10px] text-violet-400 font-mono mt-1">{m.trend}</p>
+                  <div key={i} className="bg-surface-overlay rounded-xl p-4 border border-surface-border">
+                    <p className="text-xs text-text-muted mb-1">{m.label}</p>
+                    <p className="text-xl font-black text-text-primary">{m.value}</p>
+                    <p className="text-[10px] text-violet-600 font-mono mt-1">{m.trend}</p>
                   </div>
                 ))}
               </div>

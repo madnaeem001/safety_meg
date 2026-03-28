@@ -14,6 +14,7 @@
 
 import { Hono } from 'hono';
 import { verify } from 'hono/jwt';
+import { streamText } from 'hono/streaming';
 import Database from 'better-sqlite3';
 import { z } from 'zod';
 import { getSharedDb } from '../db';
@@ -22,6 +23,7 @@ import { env } from '../config/env';
 function getDb() { return getSharedDb(); }
 
 const JWT_SECRET = env.JWT_SECRET;
+const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL?.trim() || 'arcee-ai/trinity-large-preview:free';
 
 // ── Schema ────────────────────────────────────────────────────────────────────
 
@@ -182,6 +184,48 @@ ${iso}
 **Prevention Probability:** With recommended actions, similar events can be reduced by ~75%.`;
 }
 
+function buildNearMissAIPrompt(data: {
+  category: string;
+  potentialSeverity: string;
+  industrySector?: string;
+  location?: string;
+  specificArea?: string;
+  oshaReferences?: string[];
+  isoReferences?: string[];
+  contributingFactors?: string[];
+}): string {
+  const sector = data.industrySector || 'General Industry';
+  const area = data.specificArea || data.location || 'the work area';
+  const oshaReferences = data.oshaReferences?.length ? data.oshaReferences.join(', ') : 'None provided';
+  const isoReferences = data.isoReferences?.length ? data.isoReferences.join(', ') : 'None provided';
+  const contributingFactors = data.contributingFactors?.length
+    ? data.contributingFactors.join(', ')
+    : 'None identified yet';
+
+  return [
+    'Generate a near miss safety analysis in clean markdown.',
+    'Do not use code fences. Do not output JSON.',
+    'Use these sections exactly:',
+    '## Executive Summary',
+    '## Risk Assessment',
+    '## Pattern Recognition',
+    '## Contributing Factors',
+    '## Compliance Considerations',
+    '## Priority Actions',
+    '## Prevention Outlook',
+    'Use concise paragraphs and bullet points where helpful.',
+    'Keep the analysis practical, professional, and focused on workplace safety.',
+    '',
+    `Near miss category: ${data.category}`,
+    `Potential severity: ${data.potentialSeverity}`,
+    `Industry sector: ${sector}`,
+    `Location / area: ${area}`,
+    `OSHA references: ${oshaReferences}`,
+    `ISO references: ${isoReferences}`,
+    `Contributing factors: ${contributingFactors}`,
+  ].join('\n');
+}
+
 // ── Zod schemas ───────────────────────────────────────────────────────────────
 
 const CorrectiveActionSchema = z.object({
@@ -246,6 +290,112 @@ const AIAnalysisSchema = z.object({
 
 export function nearMissReportRoutes(app: Hono) {
   initOnce();
+
+  /**
+   * POST /api/near-miss-reports/ai-analysis/stream
+   * Stream OpenRouter-powered AI analysis for near miss form data.
+   */
+  app.post('/api/near-miss-reports/ai-analysis/stream', async (c) => {
+    const user = await requireAuth(c);
+    if (!user) return c.json({ success: false, error: 'Unauthorized' }, 401);
+
+    let body: any;
+    try { body = await c.req.json(); } catch {
+      return c.json({ success: false, error: 'Invalid JSON' }, 400);
+    }
+
+    const parsed = AIAnalysisSchema.safeParse(body);
+    if (!parsed.success) {
+      return c.json({ success: false, error: 'Validation error', issues: parsed.error.issues }, 400);
+    }
+
+    const fallbackAnalysis = buildAIAnalysis(parsed.data);
+    const apiKey = process.env.OPENROUTER_API_KEY;
+
+    if (!apiKey) {
+      return streamText(c, async (stream) => {
+        const segments = fallbackAnalysis.split('\n\n');
+        for (const segment of segments) {
+          await stream.write(`${segment}\n\n`);
+        }
+      });
+    }
+
+    const systemPrompt = [
+      'You are SafetyMEG AI, a workplace safety analyst.',
+      'Respond with structured markdown suitable for direct display in a safety reporting UI.',
+      'Be specific, actionable, and concise.',
+      'Do not include disclaimers, code fences, or conversational filler.',
+    ].join(' ');
+
+    const userPrompt = buildNearMissAIPrompt(parsed.data);
+
+    const orResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://safetymeg.com',
+        'X-Title': 'SafetyMEG Near Miss AI',
+      },
+      body: JSON.stringify({
+        model: OPENROUTER_MODEL,
+        stream: true,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
+        ],
+      }),
+    });
+
+    if (!orResponse.ok || !orResponse.body) {
+      return streamText(c, async (stream) => {
+        await stream.write(fallbackAnalysis);
+      });
+    }
+
+    return streamText(c, async (stream) => {
+      const reader = orResponse.body!.getReader();
+      const decoder = new TextDecoder();
+      let outputLength = 0;
+      const maxLength = 10000;
+
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const raw = decoder.decode(value, { stream: true });
+          const lines = raw.split('\n');
+
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue;
+            const payload = line.slice(6).trim();
+            if (payload === '[DONE]') return;
+
+            try {
+              const parsedChunk = JSON.parse(payload);
+              const content: string = parsedChunk?.choices?.[0]?.delta?.content ?? '';
+              if (!content) continue;
+
+              outputLength += content.length;
+              if (outputLength > maxLength) {
+                await stream.write('\n\n[Response truncated]');
+                return;
+              }
+              await stream.write(content);
+            } catch {
+              // Ignore malformed SSE lines from upstream.
+            }
+          }
+        }
+      } catch {
+        await stream.write('\n\n[Stream interrupted]');
+      } finally {
+        reader.releaseLock();
+      }
+    });
+  });
 
   /**
    * POST /api/near-miss-reports/ai-analysis

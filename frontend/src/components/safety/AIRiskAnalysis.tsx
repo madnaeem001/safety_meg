@@ -155,7 +155,7 @@ export const AIRiskAnalysis: React.FC = () => {
               <Brain className="w-5 h-5 text-white" />
             </div>
             <h2 className="text-2xl font-bold text-brand-900">AI Risk Analysis</h2>
-            <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-[10px] font-bold rounded-full uppercase">
+            <span className="px-2 py-0.5 bg-purple-600 text-white text-[10px] font-bold rounded-full uppercase">
               Beta
             </span>
           </div>

@@ -357,7 +357,7 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
   return (
     <div className="space-y-6">
       {/* Main Voice Control */}
-      <div className="bg-white dark:bg-surface-800 rounded-3xl border border-surface-200 dark:border-surface-700 overflow-hidden">
+      <div className="bg-surface-raised rounded-3xl border border-surface-border overflow-hidden">
         {/* Voice Control Header */}
         <div className="p-6 border-b border-surface-200 dark:border-surface-700">
           <div className="flex items-center justify-between">
@@ -367,14 +367,14 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
                 className={`w-20 h-20 rounded-full flex items-center justify-center transition-all ${
                   isListening 
                     ? 'bg-red-500 shadow-lg shadow-red-500/30 animate-pulse' 
-                    : 'bg-surface-100 dark:bg-surface-700 hover:bg-surface-200 dark:hover:bg-surface-600'
+                    : 'bg-surface-raised hover:bg-surface-overlay'
                 }`}
               >
                 {getStatusIcon()}
               </button>
               <div>
-                <h2 className="text-xl font-bold text-surface-900 dark:text-white">Voice Commands</h2>
-                <p className="text-surface-500 dark:text-surface-400">
+                <h2 className="text-xl font-bold text-text-primary">Voice Commands</h2>
+                <p className="text-text-muted">
                   {isListening ? 'Listening... Speak a command' : 'Tap microphone to start'}
                 </p>
                 {currentTranscript && isListening && (
@@ -385,23 +385,23 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowHelp(true)}
-                className="p-2 rounded-xl hover:bg-surface-100 dark:hover:bg-surface-700 transition-colors"
+                className="p-2 rounded-xl hover:bg-surface-overlay transition-colors"
               >
-                <HelpCircle className="w-5 h-5 text-surface-400" />
+                <HelpCircle className="w-5 h-5 text-text-muted" />
               </button>
               <button
                 onClick={() => setShowSettings(true)}
-                className="p-2 rounded-xl hover:bg-surface-100 dark:hover:bg-surface-700 transition-colors"
+                className="p-2 rounded-xl hover:bg-surface-overlay transition-colors"
               >
-                <Settings className="w-5 h-5 text-surface-400" />
+                <Settings className="w-5 h-5 text-text-muted" />
               </button>
             </div>
           </div>
         </div>
 
         {/* Quick Voice Actions for Incidents */}
-        <div className="p-4 border-b border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-800/50">
-          <p className="text-xs font-semibold text-surface-500 uppercase tracking-wide mb-3">Quick Voice Incident Reporting</p>
+        <div className="p-4 border-b border-surface-border bg-surface-raised">
+          <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-3">Quick Voice Incident Reporting</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
             {[
               { label: 'Report Incident', icon: AlertTriangle, color: 'bg-red-500', action: 'voice-incident' },
@@ -423,12 +423,12 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
                   setIncidentStep(0);
                   speak(`Starting ${item.label}. Please describe the incident.`);
                 }}
-                className="flex items-center gap-2 p-3 bg-white dark:bg-surface-700 rounded-xl border border-surface-200 dark:border-surface-600 hover:border-surface-300 dark:hover:border-surface-500 transition-all"
+                className="flex items-center gap-2 p-3 bg-surface-raised rounded-xl border border-surface-border hover:border-accent/30 transition-all"
               >
                 <div className={`w-8 h-8 ${item.color} rounded-lg flex items-center justify-center`}>
                   <item.icon className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-sm font-medium text-surface-700 dark:text-surface-200">{item.label}</span>
+                <span className="text-sm font-medium text-text-secondary">{item.label}</span>
               </button>
             ))}
           </div>
@@ -437,7 +437,7 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
         {/* Recent Commands */}
         {transcript.length > 0 && (
           <div className="p-4">
-            <p className="text-xs font-semibold text-surface-500 uppercase tracking-wide mb-3">Recent Commands</p>
+            <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-3">Recent Commands</p>
             <div className="space-y-2">
               {transcript.slice(0, 5).map((entry, index) => (
                 <div
@@ -455,13 +455,13 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
                       <X className="w-5 h-5 text-red-500" />
                     )}
                     <div>
-                      <p className="text-sm font-medium text-surface-900 dark:text-white">"{entry.text}"</p>
+                      <p className="text-sm font-medium text-text-primary">"{entry.text}"</p>
                       {entry.command && (
-                        <p className="text-xs text-surface-500">{entry.command.description}</p>
+                        <p className="text-xs text-text-muted">{entry.command.description}</p>
                       )}
                     </div>
                   </div>
-                  <span className="text-xs text-surface-400">
+                  <span className="text-xs text-text-muted">
                     {Math.round(entry.confidence * 100)}% confidence
                   </span>
                 </div>
@@ -486,28 +486,28 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 100, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-lg bg-white dark:bg-surface-800 rounded-t-3xl md:rounded-3xl max-h-[90vh] overflow-auto"
+              className="w-full max-w-lg bg-surface-overlay rounded-t-3xl md:rounded-3xl max-h-[90vh] overflow-auto"
             >
-              <div className="p-6 border-b border-surface-200 dark:border-surface-700">
+              <div className="p-6 border-b border-surface-border">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-500 rounded-2xl flex items-center justify-center">
                       <Mic className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-surface-900 dark:text-white">
+                      <h3 className="text-lg font-bold text-text-primary">
                         Voice Incident Report
                       </h3>
-                      <p className="text-sm text-surface-500">
+                      <p className="text-sm text-text-muted">
                         {voiceIncident.type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                       </p>
                     </div>
                   </div>
                   <button
                     onClick={() => setShowVoiceIncidentForm(false)}
-                    className="p-2 rounded-full hover:bg-surface-100 dark:hover:bg-surface-700"
+                    className="p-2 rounded-full hover:bg-surface-overlay"
                   >
-                    <X className="w-5 h-5 text-surface-400" />
+                    <X className="w-5 h-5 text-text-muted" />
                   </button>
                 </div>
               </div>
@@ -515,7 +515,7 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
               <div className="p-6 space-y-6">
                 {/* Location */}
                 <div>
-                  <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-2">
+                  <label className="block text-sm font-medium text-text-secondary mb-2">
                     <MapPin className="w-4 h-4 inline mr-1" />
                     Location
                   </label>
@@ -524,13 +524,13 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
                     value={voiceIncident.location}
                     onChange={(e) => setVoiceIncident(prev => ({ ...prev, location: e.target.value }))}
                     placeholder="Where did this occur?"
-                    className="w-full px-4 py-3 rounded-xl border border-surface-200 dark:border-surface-600 bg-white dark:bg-surface-700 text-surface-900 dark:text-white focus:ring-2 focus:ring-brand-500"
+                    className="w-full px-4 py-3 rounded-xl border border-surface-border bg-surface-raised text-text-primary focus:ring-2 focus:ring-accent"
                   />
                 </div>
 
                 {/* Voice Description */}
                 <div>
-                  <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-2">
+                  <label className="block text-sm font-medium text-text-secondary mb-2">
                     <FileText className="w-4 h-4 inline mr-1" />
                     Description
                   </label>
@@ -540,14 +540,14 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
                       onChange={(e) => setVoiceIncident(prev => ({ ...prev, description: e.target.value }))}
                       placeholder="Describe what happened or tap the microphone to dictate..."
                       rows={4}
-                      className="w-full px-4 py-3 rounded-xl border border-surface-200 dark:border-surface-600 bg-white dark:bg-surface-700 text-surface-900 dark:text-white focus:ring-2 focus:ring-brand-500 pr-14"
+                      className="w-full px-4 py-3 rounded-xl border border-surface-border bg-surface-raised text-text-primary focus:ring-2 focus:ring-accent pr-14"
                     />
                     <button
                       onClick={isRecordingDescription ? stopDescriptionRecording : startDescriptionRecording}
                       className={`absolute right-3 top-3 w-10 h-10 rounded-full flex items-center justify-center transition-all ${
                         isRecordingDescription 
                           ? 'bg-red-500 animate-pulse' 
-                          : 'bg-surface-100 dark:bg-surface-600 hover:bg-surface-200 dark:hover:bg-surface-500'
+                          : 'bg-surface-raised hover:bg-surface-overlay'
                       }`}
                     >
                       {isRecordingDescription ? (
@@ -555,7 +555,7 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
                           <Mic className="w-5 h-5 text-white" />
                         </motion.div>
                       ) : (
-                        <Mic className="w-5 h-5 text-surface-600 dark:text-surface-300" />
+                        <Mic className="w-5 h-5 text-text-secondary" />
                       )}
                     </button>
                   </div>
@@ -569,7 +569,7 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
 
                 {/* Severity */}
                 <div>
-                  <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-2">
+                  <label className="block text-sm font-medium text-text-secondary mb-2">
                     Severity
                   </label>
                   <div className="grid grid-cols-4 gap-2">
@@ -583,7 +583,7 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
                             : sev === 'high' ? 'bg-orange-500 text-white'
                             : sev === 'medium' ? 'bg-amber-500 text-white'
                             : 'bg-emerald-500 text-white'
-                            : 'bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-300'
+                            : 'bg-surface-overlay text-text-secondary'
                         }`}
                       >
                         {sev}
@@ -594,11 +594,11 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
 
                 {/* Photo Upload */}
                 <div>
-                  <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-2">
+                  <label className="block text-sm font-medium text-text-secondary mb-2">
                     <Camera className="w-4 h-4 inline mr-1" />
                     Add Photo (Optional)
                   </label>
-                  <button className="w-full p-4 border-2 border-dashed border-surface-300 dark:border-surface-600 rounded-xl text-surface-500 hover:border-brand-500 hover:text-brand-500 transition-colors">
+                  <button className="w-full p-4 border-2 border-dashed border-surface-border rounded-xl text-text-muted hover:border-accent hover:text-accent transition-colors">
                     <Camera className="w-6 h-6 mx-auto mb-2" />
                     <span className="text-sm">Tap to capture photo</span>
                   </button>
@@ -634,16 +634,16 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 100, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-2xl bg-white dark:bg-surface-800 rounded-t-3xl md:rounded-3xl max-h-[80vh] overflow-auto"
+              className="w-full max-w-2xl bg-surface-overlay rounded-t-3xl md:rounded-3xl max-h-[80vh] overflow-auto"
             >
-              <div className="p-6 border-b border-surface-200 dark:border-surface-700 sticky top-0 bg-white dark:bg-surface-800">
+              <div className="p-6 border-b border-surface-border sticky top-0 bg-surface-overlay">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-bold text-surface-900 dark:text-white">Voice Commands Guide</h3>
+                  <h3 className="text-xl font-bold text-text-primary">Voice Commands Guide</h3>
                   <button
                     onClick={() => setShowHelp(false)}
-                    className="p-2 rounded-full hover:bg-surface-100 dark:hover:bg-surface-700"
+                    className="p-2 rounded-full hover:bg-surface-raised"
                   >
-                    <X className="w-5 h-5 text-surface-400" />
+                    <X className="w-5 h-5 text-text-muted" />
                   </button>
                 </div>
               </div>
@@ -651,20 +651,20 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
                 <div className="space-y-6">
                   {['incident', 'navigation', 'action', 'search', 'report'].map((category) => (
                     <div key={category}>
-                      <h4 className="text-sm font-bold text-surface-500 uppercase tracking-wide mb-3">
+                      <h4 className="text-sm font-bold text-text-muted uppercase tracking-wide mb-3">
                         {category === 'incident' ? '🎤 Voice Incident Reporting' : category}
                       </h4>
                       <div className="space-y-2">
                         {voiceCommands.filter(cmd => cmd.category === category).map((cmd) => (
                           <div
                             key={cmd.id}
-                            className="flex items-center justify-between p-3 bg-surface-50 dark:bg-surface-700 rounded-xl"
+                            className="flex items-center justify-between p-3 bg-surface-raised rounded-xl"
                           >
                             <div>
-                              <p className="font-medium text-surface-900 dark:text-white">"{cmd.phrase}"</p>
-                              <p className="text-xs text-surface-500 mt-0.5">{cmd.description}</p>
+                              <p className="font-medium text-text-primary">"{cmd.phrase}"</p>
+                              <p className="text-xs text-text-muted mt-0.5">{cmd.description}</p>
                               {cmd.aliases.length > 0 && (
-                                <p className="text-xs text-surface-400 mt-1">
+                                <p className="text-xs text-text-muted mt-1">
                                   Also: {cmd.aliases.slice(0, 2).map(a => `"${a}"`).join(', ')}
                                 </p>
                               )}
@@ -699,25 +699,25 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 100, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-md bg-white dark:bg-surface-800 rounded-t-3xl md:rounded-3xl"
+              className="w-full max-w-md bg-surface-overlay rounded-t-3xl md:rounded-3xl"
             >
-              <div className="p-6 border-b border-surface-200 dark:border-surface-700">
+              <div className="p-6 border-b border-surface-border">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-bold text-surface-900 dark:text-white">Voice Settings</h3>
+                  <h3 className="text-xl font-bold text-text-primary">Voice Settings</h3>
                   <button
                     onClick={() => setShowSettings(false)}
-                    className="p-2 rounded-full hover:bg-surface-100 dark:hover:bg-surface-700"
+                    className="p-2 rounded-full hover:bg-surface-raised"
                   >
-                    <X className="w-5 h-5 text-surface-400" />
+                    <X className="w-5 h-5 text-text-muted" />
                   </button>
                 </div>
               </div>
               <div className="p-6 space-y-4">
-                <div className="flex items-center justify-between p-4 bg-surface-50 dark:bg-surface-700 rounded-xl">
+                <div className="flex items-center justify-between p-4 bg-surface-raised rounded-xl">
                   <div className="flex items-center gap-3">
-                    <Volume2 className="w-5 h-5 text-surface-500" />
+                    <Volume2 className="w-5 h-5 text-text-muted" />
                     <div>
-                      <p className="font-medium text-surface-900 dark:text-white">Voice Feedback</p>
+                      <p className="font-medium text-text-primary">Voice Feedback</p>
                       <p className="text-xs text-surface-500">Speak command confirmations</p>
                     </div>
                   </div>
@@ -734,18 +734,18 @@ export const VoiceCommands: React.FC<VoiceCommandsProps> = ({ onCommand, onNavig
                   </button>
                 </div>
 
-                <div className="flex items-center justify-between p-4 bg-surface-50 dark:bg-surface-700 rounded-xl">
+                <div className="flex items-center justify-between p-4 bg-surface-raised rounded-xl">
                   <div className="flex items-center gap-3">
-                    <Mic className="w-5 h-5 text-surface-500" />
+                    <Mic className="w-5 h-5 text-text-muted" />
                     <div>
-                      <p className="font-medium text-surface-900 dark:text-white">Continuous Listening</p>
-                      <p className="text-xs text-surface-500">Keep listening after command</p>
+                      <p className="font-medium text-text-primary">Continuous Listening</p>
+                      <p className="text-xs text-text-muted">Keep listening after command</p>
                     </div>
                   </div>
                   <button
                     onClick={() => setContinuousMode(!continuousMode)}
                     className={`w-12 h-6 rounded-full transition-colors ${
-                      continuousMode ? 'bg-brand-500' : 'bg-surface-300 dark:bg-surface-600'
+                      continuousMode ? 'bg-accent' : 'bg-surface-border'
                     }`}
                   >
                     <motion.div

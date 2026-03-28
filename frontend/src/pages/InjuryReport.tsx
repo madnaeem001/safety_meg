@@ -24,7 +24,7 @@ export const InjuryReport: React.FC = () => {
             { label: 'Risk Level', value: incidentStats?.dominantSeverity ?? 'Medium', icon: Shield, color: 'text-warning bg-warning/10' },
             { label: 'Auto-Classified', value: '94%', icon: CheckCircle2, color: 'text-success bg-success/10' },
           ].map((stat, i) => (
-            <div key={i} className="bg-surface-raised rounded-2xl p-4 border border-surface-100 shadow-sm">
+            <div key={i} className="bg-surface-raised rounded-2xl p-4 border border-surface-border shadow-sm">
               <div className={`w-8 h-8 rounded-xl flex items-center justify-center mb-2 ${stat.color}`}>
                 <stat.icon className="w-4 h-4" />
               </div>

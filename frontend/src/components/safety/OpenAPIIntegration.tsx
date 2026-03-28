@@ -81,10 +81,10 @@ export const OpenAPIIntegration: React.FC = () => {
   const getMethodColor = (method: string) => {
     switch (method) {
       case 'GET': return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
-      case 'POST': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+      case 'POST': return 'bg-accent/20 text-accent border-accent/30';
       case 'PUT': return 'bg-amber-500/20 text-amber-400 border-amber-500/30';
       case 'DELETE': return 'bg-red-500/20 text-red-400 border-red-500/30';
-      default: return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
+      default: return 'bg-surface-overlay text-text-muted border-surface-border';
     }
   };
 
@@ -123,10 +123,10 @@ export const OpenAPIIntegration: React.FC = () => {
       </div>
 
       {/* Compliance Standards */}
-      <div className="bg-slate-800 rounded-2xl lg:rounded-3xl border border-slate-700 overflow-hidden">
+      <div className="bg-surface-raised rounded-2xl lg:rounded-3xl border border-surface-border overflow-hidden">
         <button
           onClick={() => setExpandedSection(expandedSection === 'compliance' ? '' : 'compliance')}
-          className="w-full p-4 lg:p-6 flex items-center justify-between hover:bg-slate-750 transition-colors"
+          className="w-full p-4 lg:p-6 flex items-center justify-between hover:bg-surface-overlay transition-colors"
         >
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl lg:rounded-2xl flex items-center justify-center">
@@ -134,11 +134,11 @@ export const OpenAPIIntegration: React.FC = () => {
             </div>
             <div className="text-left">
               <h3 className="text-lg font-bold text-white">Safety & Compliance Standards</h3>
-              <p className="text-sm text-slate-400">ISO 9001, 14001, 45001, OSHA, NIOSH, EPA, BSEE</p>
+              <p className="text-sm text-text-muted">ISO 9001, 14001, 45001, OSHA, NIOSH, EPA, BSEE</p>
             </div>
           </div>
           <motion.div animate={{ rotate: expandedSection === 'compliance' ? 180 : 0 }}>
-            <ChevronDown className="w-5 h-5 text-slate-400" />
+            <ChevronDown className="w-5 h-5 text-text-muted" />
           </motion.div>
         </button>
         <AnimatePresence>
@@ -149,12 +149,12 @@ export const OpenAPIIntegration: React.FC = () => {
               exit={{ height: 0, opacity: 0 }}
               className="overflow-hidden"
             >
-              <div className="px-4 pb-4 lg:px-6 lg:pb-6 pt-0 border-t border-slate-700">
+              <div className="px-4 pb-4 lg:px-6 lg:pb-6 pt-0 border-t border-surface-border">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 mt-4">
                   {COMPLIANCE_STANDARDS.map((standard) => (
                     <div 
                       key={standard.id}
-                      className="p-4 bg-slate-700/50 rounded-xl border border-slate-600/50 hover:border-emerald-500/50 hover:bg-slate-700 transition-all"
+                      className="p-4 bg-surface-sunken rounded-xl border border-surface-border hover:border-emerald-500/50 hover:bg-surface-overlay transition-all"
                     >
                       <div className="flex items-center gap-3 mb-2">
                         <div className="w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center">
@@ -162,7 +162,7 @@ export const OpenAPIIntegration: React.FC = () => {
                         </div>
                         <span className="font-bold text-white text-sm">{standard.name}</span>
                       </div>
-                      <p className="text-xs text-slate-400">{standard.description}</p>
+                      <p className="text-xs text-text-muted">{standard.description}</p>
                     </div>
                   ))}
                 </div>
@@ -180,19 +180,19 @@ export const OpenAPIIntegration: React.FC = () => {
           { icon: RefreshCw, label: 'Webhooks', description: 'Event-driven updates', color: 'from-blue-500 to-cyan-500' },
           { icon: Layers, label: 'REST API', description: 'Standard JSON', color: 'from-purple-500 to-indigo-500' },
         ].map((feature, i) => (
-          <div key={i} className="bg-slate-800 rounded-xl lg:rounded-2xl border border-slate-700 p-4">
+          <div key={i} className="bg-surface-raised rounded-xl lg:rounded-2xl border border-surface-border p-4">
             <div className={`w-10 h-10 bg-gradient-to-br ${feature.color} rounded-xl flex items-center justify-center mb-3`}>
               <feature.icon className="w-5 h-5 text-white" />
             </div>
             <h4 className="font-bold text-white text-sm mb-1">{feature.label}</h4>
-            <p className="text-xs text-slate-400">{feature.description}</p>
+            <p className="text-xs text-text-muted">{feature.description}</p>
           </div>
         ))}
       </div>
 
       {/* API Endpoints Section */}
-      <div className="bg-slate-800 rounded-2xl lg:rounded-3xl border border-slate-700 overflow-hidden">
-        <div className="p-4 lg:p-6 border-b border-slate-700">
+      <div className="bg-surface-raised rounded-2xl lg:rounded-3xl border border-surface-border overflow-hidden">
+        <div className="p-4 lg:p-6 border-b border-surface-border">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl lg:rounded-2xl flex items-center justify-center">
@@ -200,7 +200,7 @@ export const OpenAPIIntegration: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white">API Endpoints</h3>
-                <p className="text-sm text-slate-400">RESTful API for EHS data integration</p>
+                <p className="text-sm text-text-muted">RESTful API for EHS data integration</p>
               </div>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -210,8 +210,8 @@ export const OpenAPIIntegration: React.FC = () => {
                   onClick={() => setSelectedCategory(cat)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                     selectedCategory === cat
-                      ? 'bg-brand-500 text-white'
-                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                      ? 'bg-accent text-text-onAccent'
+                      : 'bg-surface-overlay text-text-secondary hover:bg-surface-overlay'
                   }`}
                 >
                   {cat}
@@ -224,25 +224,25 @@ export const OpenAPIIntegration: React.FC = () => {
           {filteredEndpoints.map((endpoint, i) => (
             <div 
               key={i} 
-              className="p-4 hover:bg-slate-750 transition-colors flex items-center justify-between gap-4"
+              className="p-4 hover:bg-surface-overlay transition-colors flex items-center justify-between gap-4"
             >
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 <span className={`px-2.5 py-1 text-[10px] font-bold uppercase rounded-md border ${getMethodColor(endpoint.method)}`}>
                   {endpoint.method}
                 </span>
-                <code className="text-sm text-slate-300 font-mono truncate">{endpoint.path}</code>
+                <code className="text-sm text-text-secondary font-mono truncate">{endpoint.path}</code>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-xs text-slate-500 hidden lg:block">{endpoint.description}</span>
+                <span className="text-xs text-text-muted hidden lg:block">{endpoint.description}</span>
                 <button
                   onClick={() => copyToClipboard(endpoint.path)}
-                  className="p-2 hover:bg-slate-600 rounded-lg transition-colors"
+                  className="p-2 hover:bg-surface-overlay rounded-lg transition-colors"
                   title="Copy endpoint"
                 >
                   {copiedEndpoint === endpoint.path ? (
                     <Check className="w-4 h-4 text-emerald-400" />
                   ) : (
-                    <Copy className="w-4 h-4 text-slate-400" />
+                    <Copy className="w-4 h-4 text-text-muted" />
                   )}
                 </button>
               </div>
@@ -252,43 +252,43 @@ export const OpenAPIIntegration: React.FC = () => {
       </div>
 
       {/* Integrations */}
-      <div className="bg-slate-800 rounded-2xl lg:rounded-3xl border border-slate-700 p-4 lg:p-6">
+      <div className="bg-surface-raised rounded-2xl lg:rounded-3xl border border-surface-border p-4 lg:p-6">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl lg:rounded-2xl flex items-center justify-center">
             <GitBranch className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
           </div>
           <div>
             <h3 className="text-lg font-bold text-white">Pre-Built Integrations</h3>
-            <p className="text-sm text-slate-400">Connect with popular EHS platforms</p>
+            <p className="text-sm text-text-muted">Connect with popular EHS platforms</p>
           </div>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {INTEGRATIONS.map((integration, i) => (
             <div 
               key={i}
-              className="p-3 bg-slate-700/50 rounded-xl border border-slate-600/50 hover:border-purple-500/50 hover:bg-slate-700 transition-all text-center"
+              className="p-3 bg-surface-sunken rounded-xl border border-surface-border hover:border-purple-500/50 hover:bg-surface-overlay transition-all text-center"
             >
               <div className="text-2xl mb-2">{integration.logo}</div>
               <h4 className="font-semibold text-white text-sm mb-0.5">{integration.name}</h4>
-              <p className="text-[10px] text-slate-400">{integration.description}</p>
+              <p className="text-[10px] text-text-muted">{integration.description}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* Authentication */}
-      <div className="bg-slate-800 rounded-2xl lg:rounded-3xl border border-slate-700 p-4 lg:p-6">
+      <div className="bg-surface-raised rounded-2xl lg:rounded-3xl border border-surface-border p-4 lg:p-6">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-amber-500 to-red-600 rounded-xl lg:rounded-2xl flex items-center justify-center">
             <Key className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
           </div>
           <div>
             <h3 className="text-lg font-bold text-white">Authentication</h3>
-            <p className="text-sm text-slate-400">Secure API access methods</p>
+            <p className="text-sm text-text-muted">Secure API access methods</p>
           </div>
         </div>
-        <div className="bg-slate-900/50 rounded-xl p-4 font-mono text-sm overflow-x-auto">
-          <pre className="text-slate-300">
+        <div className="bg-surface-sunken rounded-xl p-4 font-mono text-sm overflow-x-auto">
+          <pre className="text-text-secondary">
 {`// API Key Authentication
 curl -H "X-API-Key: your_api_key" \\
      https://api.safetyhub.com/v1/incidents
@@ -303,7 +303,7 @@ curl -H "Authorization: Bearer your_access_token" \\
       {/* CTA */}
       <div className="bg-gradient-to-r from-slate-800 to-slate-700 rounded-2xl lg:rounded-3xl border border-slate-600 p-6 text-center">
         <h3 className="text-xl font-bold text-white mb-2">Ready to Integrate?</h3>
-        <p className="text-slate-400 text-sm mb-4">Get your API keys and start building with Safety Hub</p>
+        <p className="text-text-muted text-sm mb-4">Get your API keys and start building with Safety Hub</p>
         <button className="px-6 py-3 bg-gradient-to-r from-brand-500 to-indigo-600 text-white rounded-xl font-semibold hover:from-brand-600 hover:to-indigo-700 transition-all flex items-center gap-2 mx-auto">
           Get API Access
           <ArrowRight className="w-4 h-4" />

@@ -144,12 +144,12 @@ const IncidentCard: React.FC<{ item: Incident; onClick: () => void }> = ({ item,
         <span className="text-[10px] text-surface-400">{formatDate(item.reportedDate)}</span>
       </div>
       {item.aiSuggestedDescription && (
-        <div className="mt-3 p-2 bg-purple-50 rounded-lg border border-purple-100">
-          <div className="flex items-center gap-1 text-[9px] text-purple-600 font-semibold mb-1">
+        <div className="mt-3 p-2 bg-purple-600 rounded-lg border border-purple-600">
+          <div className="flex items-center gap-1 text-[9px] text-white font-semibold mb-1">
             <RefreshCw className="w-3 h-3" />
             AI Suggested
           </div>
-          <p className="text-[10px] text-purple-700">{item.aiSuggestedDescription}</p>
+          <p className="text-[10px] text-white/90">{item.aiSuggestedDescription}</p>
         </div>
       )}
     </motion.div>
@@ -419,8 +419,8 @@ const InvestigationCard: React.FC<{ item: Investigation; onClick: () => void }> 
         </div>
       )}
       {item.aiSuggestedRootCause && (
-        <div className="mt-2 p-2 bg-purple-50 rounded-lg">
-          <div className="flex items-center gap-1 text-[9px] text-purple-600 font-semibold">
+        <div className="mt-2 p-2 bg-purple-600 rounded-lg">
+          <div className="flex items-center gap-1 text-[9px] text-white font-semibold">
             <RefreshCw className="w-3 h-3" />
             AI Suggested Root Cause
           </div>

@@ -302,7 +302,7 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4 md:p-6">
+    <div className="min-h-screen bg-surface-base p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div 
@@ -312,18 +312,18 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl">
+              <div className="p-2 bg-accent rounded-xl shadow-soft">
                 <LayoutGrid className="w-6 h-6 text-text-primary" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-text-primary">Dashboard Widgets</h1>
-                <p className="text-slate-400 text-sm">Customizable safety metrics at a glance</p>
+                <p className="text-text-secondary text-sm">Customizable safety metrics at a glance</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowWidgetLibrary(true)}
-                className="px-4 py-2 bg-slate-700 hover:bg-surface-sunken text-text-primary rounded-lg font-medium flex items-center gap-2 transition-colors"
+                className="px-4 py-2 bg-surface-raised hover:bg-surface-overlay border border-surface-border text-text-primary rounded-lg font-medium flex items-center gap-2 transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 Add Widget
@@ -332,8 +332,8 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
                 onClick={() => setEditMode(!editMode)}
                 className={`px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors ${
                   editMode 
-                    ? 'bg-pink-600 text-text-primary' 
-                    : 'bg-slate-700 hover:bg-surface-sunken text-text-primary'
+                    ? 'bg-accent text-text-onAccent' 
+                    : 'bg-surface-raised hover:bg-surface-overlay border border-surface-border text-text-primary'
                 }`}
               >
                 <Settings className="w-4 h-4" />
@@ -352,7 +352,7 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.05 }}
               className={`${getWidgetGridClass(widget.size)} bg-surface-raised border border-surface-border rounded-xl p-4 relative group ${
-                editMode ? 'cursor-move' : 'cursor-pointer hover:border-slate-600'
+                editMode ? 'cursor-move' : 'cursor-pointer hover:border-accent/20'
               }`}
               onClick={() => !editMode && onWidgetClick?.(widget.id)}
             >
@@ -361,7 +361,7 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
                 <div className="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button
                     onClick={(e) => { e.stopPropagation(); changeWidgetSize(widget.id, widget.size === 'small' ? 'medium' : widget.size === 'medium' ? 'large' : 'small'); }}
-                    className="p-1.5 bg-slate-700 hover:bg-surface-sunken rounded-lg"
+                    className="p-1.5 bg-surface-overlay hover:bg-surface-border rounded-lg"
                   >
                     {widget.size === 'large' ? <Minimize2 className="w-3 h-3 text-text-primary" /> : <Maximize2 className="w-3 h-3 text-text-primary" />}
                   </button>
@@ -400,7 +400,7 @@ export const DashboardWidgets: React.FC<DashboardWidgetsProps> = ({
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
                 onClick={(e) => e.stopPropagation()}
-                className="bg-slate-800 border border-slate-700 rounded-xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+                className="bg-surface-raised border border-surface-border rounded-xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto shadow-soft"
               >
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-xl font-bold text-text-primary">Widget Library</h3>

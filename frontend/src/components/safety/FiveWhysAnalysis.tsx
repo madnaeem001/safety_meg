@@ -343,8 +343,8 @@ Please provide:
           <p className="text-xs text-red-400 text-center">{aiError}</p>
         )}
         {aiSuggestions.length > 0 && (
-          <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-2">
-            <p className="text-[10px] font-bold text-amber-600 uppercase tracking-wider flex items-center gap-1">
+          <div className="p-3 rounded-xl bg-amber-500 border border-amber-500 space-y-2">
+            <p className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1">
               <Sparkles className="w-3 h-3" /> AI Root Cause Suggestions — click to add as a why
             </p>
             {aiSuggestions.map((s, i) => (

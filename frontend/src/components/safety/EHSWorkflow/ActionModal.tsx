@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X,
@@ -711,7 +712,7 @@ export const ActionModal: React.FC<ActionModalProps> = ({
     }
   };
 
-  return (
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
         <>
@@ -724,34 +725,42 @@ export const ActionModal: React.FC<ActionModalProps> = ({
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
           />
 
-          {/* Modal */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-lg bg-white rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col max-h-[90vh]"
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-surface-100">
-              <h2 className="text-lg font-semibold text-surface-800">{getTitle()}</h2>
-              <button
-                onClick={onClose}
-                className="p-1.5 rounded-lg hover:bg-surface-100 transition-colors"
-              >
-                <X className="w-5 h-5 text-surface-500" />
-              </button>
-            </div>
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 pointer-events-none">
+            {/* Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="pointer-events-auto w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b border-surface-100">
+                <h2 className="text-lg font-semibold text-surface-800">{getTitle()}</h2>
+                <button
+                  onClick={onClose}
+                  className="p-1.5 rounded-lg hover:bg-surface-100 transition-colors"
+                >
+                  <X className="w-5 h-5 text-surface-500" />
+                </button>
+              </div>
 
-            {/* Content */}
-            <div className="flex-1 overflow-y-auto p-4">
-              {renderForm()}
-            </div>
-          </motion.div>
+              {/* Content */}
+              <div className="flex-1 overflow-y-auto p-4">
+                {renderForm()}
+              </div>
+            </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>
   );
+
+  if (typeof document === 'undefined') {
+    return modalContent;
+  }
+
+  return createPortal(modalContent, document.body);
 };
 
 export default ActionModal;

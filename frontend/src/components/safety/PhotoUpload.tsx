@@ -153,10 +153,10 @@ export const PhotoUpload: React.FC<PhotoUploadProps> = ({
     }, 2000);
   };
 
-  const bgClass = darkMode ? 'bg-slate-800/50 border-slate-700/50' : 'bg-white border-surface-200';
-  const textClass = darkMode ? 'text-white' : 'text-brand-900';
-  const subtextClass = darkMode ? 'text-slate-400' : 'text-surface-500';
-  const cardBg = darkMode ? 'bg-slate-900/60 border-slate-700/50' : 'bg-surface-50 border-surface-200';
+  const bgClass = 'bg-surface-raised border-surface-border';
+  const textClass = 'text-text-primary';
+  const subtextClass = 'text-text-muted';
+  const cardBg = 'bg-surface-overlay border-surface-border';
 
   return (
     <div className="space-y-4">
@@ -190,13 +190,13 @@ export const PhotoUpload: React.FC<PhotoUploadProps> = ({
         onClick={() => fileInputRef.current?.click()}
         className={`relative rounded-2xl border-2 border-dashed transition-all cursor-pointer ${
           isDragOver
-            ? 'border-cyan-500 bg-cyan-500/10 scale-[1.01]'
-            : darkMode ? 'border-slate-600 hover:border-cyan-500/50 bg-slate-800/30' : 'border-surface-300 hover:border-brand-400 bg-surface-50'
+            ? 'border-accent bg-accent/10 scale-[1.01]'
+            : 'border-surface-border hover:border-accent/50 bg-surface-sunken'
         } ${compact ? 'p-4' : 'p-8'}`}
       >
         <div className="flex flex-col items-center gap-3 text-center">
-          <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${isDragOver ? 'bg-cyan-500/20' : darkMode ? 'bg-slate-700/50' : 'bg-surface-100'}`}>
-            <Upload className={`w-7 h-7 ${isDragOver ? 'text-cyan-400' : darkMode ? 'text-slate-400' : 'text-surface-400'}`} />
+          <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${isDragOver ? 'bg-accent/20' : 'bg-surface-overlay'}`}>
+            <Upload className={`w-7 h-7 ${isDragOver ? 'text-accent' : 'text-text-muted'}`} />
           </div>
           {!compact && (
             <>
@@ -220,7 +220,7 @@ export const PhotoUpload: React.FC<PhotoUploadProps> = ({
         <button
           onClick={() => cameraInputRef.current?.click()}
           className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
-            darkMode ? 'bg-slate-700/50 text-cyan-400 hover:bg-slate-700 border border-slate-600' : 'bg-brand-50 text-brand-600 hover:bg-brand-100 border border-brand-200'
+            'bg-surface-raised text-text-primary hover:bg-surface-overlay border border-surface-border'
           }`}
         >
           <Camera className="w-4 h-4" />
@@ -230,7 +230,7 @@ export const PhotoUpload: React.FC<PhotoUploadProps> = ({
         <button
           onClick={() => fileInputRef.current?.click()}
           className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
-            darkMode ? 'bg-slate-700/50 text-purple-400 hover:bg-slate-700 border border-slate-600' : 'bg-purple-50 text-purple-600 hover:bg-purple-100 border border-purple-200'
+            'bg-accent text-text-onAccent hover:bg-accent/90 border border-accent/30'
           }`}
         >
           <Plus className="w-4 h-4" />
@@ -255,8 +255,8 @@ export const PhotoUpload: React.FC<PhotoUploadProps> = ({
                   {file.type === 'image' ? (
                     <img src={file.preview} alt={file.name} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full bg-slate-900 flex items-center justify-center">
-                      <Film className="w-8 h-8 text-slate-500" />
+                    <div className="w-full h-full bg-surface-sunken flex items-center justify-center">
+                      <Film className="w-8 h-8 text-text-muted" />
                     </div>
                   )}
 
@@ -303,12 +303,12 @@ export const PhotoUpload: React.FC<PhotoUploadProps> = ({
                 {/* File Info */}
                 {!compact && (
                   <div className="p-2">
-                    <p className={`text-[10px] font-semibold truncate ${darkMode ? 'text-slate-300' : 'text-brand-900'}`}>{file.name}</p>
+                    <p className="text-[10px] font-semibold truncate text-text-primary">{file.name}</p>
                     <p className={`text-[9px] ${subtextClass}`}>{file.size}</p>
                     {file.aiAnalysis && (
                       <div className="flex flex-wrap gap-1 mt-1">
                         {file.aiAnalysis.tags.slice(0, 3).map(tag => (
-                          <span key={tag} className="text-[8px] px-1.5 py-0.5 bg-cyan-500/10 text-cyan-400 rounded-md font-medium">{tag}</span>
+                          <span key={tag} className="text-[8px] px-1.5 py-0.5 bg-accent/10 text-accent rounded-md font-medium">{tag}</span>
                         ))}
                       </div>
                     )}
@@ -349,12 +349,12 @@ export const PhotoUpload: React.FC<PhotoUploadProps> = ({
                 <video src={previewFile.preview} controls className="w-full max-h-[80vh] rounded-2xl" />
               )}
               {previewFile.aiAnalysis && (
-                <div className="mt-4 bg-slate-900/80 backdrop-blur-sm rounded-xl p-4 border border-slate-700/50">
+                <div className="mt-4 bg-surface-raised/90 backdrop-blur-sm rounded-xl p-4 border border-surface-border">
                   <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                      <Camera className="w-4 h-4 text-cyan-400" /> AI Analysis
+                    <h4 className="text-sm font-bold text-text-primary flex items-center gap-2">
+                      <Camera className="w-4 h-4 text-accent" /> AI Analysis
                     </h4>
-                    <span className="text-xs font-mono text-cyan-400">{previewFile.aiAnalysis.confidence.toFixed(1)}% confidence</span>
+                    <span className="text-xs font-mono text-accent">{previewFile.aiAnalysis.confidence.toFixed(1)}% confidence</span>
                   </div>
                   <div className="space-y-2">
                     {previewFile.aiAnalysis.hazards.map((hazard, i) => (
@@ -366,7 +366,7 @@ export const PhotoUpload: React.FC<PhotoUploadProps> = ({
                   </div>
                   <div className="flex flex-wrap gap-2 mt-3">
                     {previewFile.aiAnalysis.tags.map(tag => (
-                      <span key={tag} className="text-xs px-2 py-1 bg-cyan-500/10 text-cyan-400 rounded-lg">{tag}</span>
+                      <span key={tag} className="text-xs px-2 py-1 bg-accent/10 text-accent rounded-lg">{tag}</span>
                     ))}
                   </div>
                 </div>

@@ -513,19 +513,19 @@ export const IncidentReporting: React.FC = () => {
               {/* International Standards Compliance */}
               <div className="space-y-2">
                 <label className="text-xs font-semibold text-text-muted uppercase tracking-widest ml-1">Applicable International Standards</label>
-                <div className="p-4 bg-surface-50 border border-surface-100 rounded-2xl space-y-3">
+                <div className="p-4 bg-surface-raised border border-surface-border rounded-2xl space-y-3">
                   <p className="text-xs text-text-muted">Select standards relevant to this incident for automated compliance mapping.</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto pr-2">
                     {allInternationalStandards.map(std => (
                       <label key={std.id} className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
                         selectedStandards.includes(std.id)
-                          ? 'bg-accent-50 border-accent-200 shadow-sm'
-                          : 'bg-white border-surface-200 hover:border-accent-200'
+                          ? 'bg-accent/10 border-accent/20 shadow-sm'
+                          : 'bg-surface-raised border-surface-border hover:border-accent/30'
                       }`}>
                         <div className={`mt-0.5 w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${
                           selectedStandards.includes(std.id)
                             ? 'bg-accent border-accent'
-                            : 'border-surface-300 bg-white'
+                            : 'border-surface-border bg-surface-raised'
                         }`}>
                           {selectedStandards.includes(std.id) && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
                         </div>
@@ -552,13 +552,13 @@ export const IncidentReporting: React.FC = () => {
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
-                  className="p-4 bg-accent-50 rounded-2xl border border-accent-100 space-y-4"
+                  className="p-4 bg-accent/10 rounded-2xl border border-accent/15 space-y-4"
                 >
-                  <div className="flex items-center gap-2 text-accent-700 font-bold">
+                  <div className="flex items-center gap-2 text-accent font-bold">
                     <Heart className="w-5 h-5 text-red-500" />
                     <h4>Body Part(s) Affected</h4>
                   </div>
-                  <p className="text-xs text-accent-600">Click on the body diagram to select affected areas (front and back views). Multiple selections allowed.</p>
+                  <p className="text-xs text-accent">Click on the body diagram to select affected areas (front and back views). Multiple selections allowed.</p>
                   
                   <div className="flex flex-col items-center gap-4">
                     <BodyDiagram
@@ -570,11 +570,11 @@ export const IncidentReporting: React.FC = () => {
                     />
                     
                     {selectedBodyParts.length > 0 && (
-                      <div className="w-full p-3 bg-white rounded-xl border border-accent-200">
-                        <label className="text-xs font-bold text-accent-600 uppercase mb-2 block">Selected Body Parts</label>
+                      <div className="w-full p-3 bg-surface-raised rounded-xl border border-accent/20">
+                        <label className="text-xs font-bold text-accent uppercase mb-2 block">Selected Body Parts</label>
                         <div className="flex flex-wrap gap-1">
                           {selectedBodyParts.map(part => (
-                            <span key={part} className="px-2 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-full">
+                            <span key={part} className="px-2 py-1 bg-danger/10 text-danger text-xs font-semibold rounded-full">
                               {getBodyPartName(part)}
                             </span>
                           ))}
@@ -629,13 +629,13 @@ export const IncidentReporting: React.FC = () => {
               />
 
               {/* Regulatory Reportable */}
-              <div className="flex items-center gap-3 p-4 bg-surface-50 rounded-xl">
+              <div className="flex items-center gap-3 p-4 bg-surface-raised rounded-xl">
                 <input
                   type="checkbox"
                   id="regulatory"
                   checked={formData.regulatory_reportable}
                   onChange={(e) => setFormData({ ...formData, regulatory_reportable: e.target.checked })}
-                  className="w-5 h-5 text-accent border-surface-300 rounded focus:ring-accent"
+                  className="w-5 h-5 text-accent border-surface-border rounded focus:ring-accent"
                 />
                 <label htmlFor="regulatory" className="text-sm font-medium text-text-primary">
                   OSHA/Regulatory Reportable Incident
@@ -661,7 +661,7 @@ export const IncidentReporting: React.FC = () => {
                 {aiSeverityHint && (
                   <motion.p
                     initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }}
-                    className="text-xs text-accent-700 bg-accent-50 border border-accent-100 rounded-lg px-3 py-2 leading-relaxed"
+                    className="text-xs text-accent bg-accent/10 border border-accent/15 rounded-lg px-3 py-2 leading-relaxed"
                   >
                     {aiSeverityHint}
                   </motion.p>
@@ -712,7 +712,7 @@ export const IncidentReporting: React.FC = () => {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="space-y-6 pt-6 border-t border-surface-100"
+                  className="space-y-6 pt-6 border-t border-surface-border"
                 >
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-text-primary font-bold text-sm">
@@ -781,7 +781,7 @@ export const IncidentReporting: React.FC = () => {
             {/* Photo Upload */}
             <div className="space-y-3">
               <label className="text-xs font-semibold text-text-muted uppercase tracking-widest ml-1">Evidence Photos (max 5)</label>
-              <label className="w-full py-8 border-2 border-dashed border-surface-200 rounded-2xl flex flex-col items-center justify-center gap-2 text-text-muted hover:text-accent hover:border-accent transition-all bg-surface-50/50 cursor-pointer">
+              <label className="w-full py-8 border-2 border-dashed border-surface-border rounded-2xl flex flex-col items-center justify-center gap-2 text-text-muted hover:text-accent hover:border-accent transition-all bg-surface-raised/50 cursor-pointer">
                 <Camera className="w-8 h-8" />
                 <span className="text-sm font-medium">
                   {photoFiles.length > 0 ? `${photoFiles.length} photo${photoFiles.length > 1 ? 's' : ''} selected — tap to add more` : 'Tap to take or upload photos'}
@@ -798,7 +798,7 @@ export const IncidentReporting: React.FC = () => {
                 <div className="flex gap-2 flex-wrap">
                   {photoUrls.map((url, i) => (
                     <div key={i} className="relative group">
-                      <img src={url} alt={`Evidence ${i + 1}`} className="w-20 h-20 object-cover rounded-xl border border-surface-200" />
+                      <img src={url} alt={`Evidence ${i + 1}`} className="w-20 h-20 object-cover rounded-xl border border-surface-border" />
                       <SMButton
                         type="button"
                         variant="danger"

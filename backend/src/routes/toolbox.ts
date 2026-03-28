@@ -3,6 +3,7 @@ import Database from 'better-sqlite3';
 import { z } from 'zod';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { callAI } from '../services/aiService';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -78,7 +79,128 @@ const AttendanceSchema = z.object({
   })).min(1),
 });
 
+const GenerateToolboxTalkSchema = z.object({
+  industry: z.string().min(1),
+  category: z.string().optional(),
+  topic: z.string().min(1),
+});
+
+function buildFallbackToolboxTalk(industry: string, topic: string) {
+  return {
+    content: `# ${topic}\n\n## Why This Matters\n${topic} is a practical risk topic for ${industry} teams. A short pre-task briefing improves hazard awareness, aligns controls before work starts, and reinforces stop-work expectations when conditions change.\n\n## Talk Track\nWalk through where ${topic.toLowerCase()} hazards can show up, what controls must be in place before work begins, and what workers should do if something feels unsafe or incomplete. Keep the message direct and site-specific.\n\n## Key Points\n- Identify the main hazards before starting the task\n- Confirm required controls, permits, and PPE are in place\n- Pause work immediately if conditions change\n- Report near misses and unsafe conditions without delay\n\n## Safety Tips\n- Use a short pre-task scan before starting work\n- Keep communication clear between team members\n- Escalate missing controls before the task proceeds\n\n## Discussion Questions\n- Where could these hazards appear in today’s work?\n- What would make us stop the job immediately?\n- Who needs to be informed if site conditions change?`,
+    keyPoints: [
+      'Identify the main hazards before work starts',
+      'Review controls, PPE, and permit requirements',
+      'Stop work if conditions change or controls fail',
+      'Escalate unsafe conditions immediately',
+    ],
+    safetyTips: [
+      'Pause for a pre-task check before starting',
+      'Use direct communication when handoffs occur',
+      'Resolve missing controls before the job proceeds',
+    ],
+    discussionQuestions: [
+      'What hazards are most likely in today’s task?',
+      'What control failures would force a stop-work decision?',
+      'How should the team escalate unexpected site changes?',
+    ],
+  };
+}
+
+function parseSection(text: string, heading: string) {
+  const escaped = heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`##\\s+${escaped}\\s*([\\s\\S]*?)(?=\\n##\\s+|$)`, 'i');
+  return text.match(regex)?.[1]?.trim() ?? '';
+}
+
+function parseBullets(section: string) {
+  return section
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => /^[-*•]\s+/.test(line) || /^\d+\.\s+/.test(line))
+    .map(line => line.replace(/^[-*•]\s+/, '').replace(/^\d+\.\s+/, '').trim())
+    .filter(Boolean);
+}
+
 export function toolboxRoutes(app: Hono) {
+  app.post('/api/toolbox-talks/ai-generate', async (c) => {
+    const body = await c.req.json().catch(() => null);
+    const parsed = GenerateToolboxTalkSchema.safeParse(body);
+    if (!parsed.success) {
+      return c.json({ success: false, error: 'Validation failed', details: parsed.error.issues }, 400);
+    }
+
+    const { industry, category, topic } = parsed.data;
+    const fallback = buildFallbackToolboxTalk(industry, topic);
+
+    try {
+      const aiResult = await callAI(
+        [
+          {
+            role: 'system',
+            content: [
+              'You are a senior EHS trainer writing toolbox talks for frontline teams.',
+              'Return concise, field-usable markdown with these exact sections:',
+              '## Why This Matters',
+              '## Talk Track',
+              '## Key Points',
+              '## Safety Tips',
+              '## Discussion Questions',
+              'Use bullet points for Key Points, Safety Tips, and Discussion Questions.',
+              'Do not include code fences or filler.',
+            ].join(' '),
+          },
+          {
+            role: 'user',
+            content: [
+              `Industry: ${industry}`,
+              `Category: ${category ?? 'general_safety'}`,
+              `Topic: ${topic}`,
+              'Create a 10-15 minute toolbox talk for a supervisor-led daily safety briefing.',
+              'Keep it practical, direct, and relevant to real site work.',
+            ].join('\n'),
+          },
+        ],
+        { maxTokens: 900, temperature: 0.5 }
+      );
+
+      const content = aiResult.source === 'fallback' ? fallback.content : aiResult.content;
+      const keyPoints = parseBullets(parseSection(content, 'Key Points'));
+      const safetyTips = parseBullets(parseSection(content, 'Safety Tips'));
+      const discussionQuestions = parseBullets(parseSection(content, 'Discussion Questions'));
+
+      return c.json({
+        success: true,
+        data: {
+          topic,
+          industry,
+          category: category ?? 'general_safety',
+          content,
+          keyPoints: keyPoints.length > 0 ? keyPoints : fallback.keyPoints,
+          safetyTips: safetyTips.length > 0 ? safetyTips : fallback.safetyTips,
+          discussionQuestions: discussionQuestions.length > 0 ? discussionQuestions : fallback.discussionQuestions,
+          source: aiResult.source,
+          model: aiResult.model,
+        },
+      });
+    } catch {
+      return c.json({
+        success: true,
+        data: {
+          topic,
+          industry,
+          category: category ?? 'general_safety',
+          content: fallback.content,
+          keyPoints: fallback.keyPoints,
+          safetyTips: fallback.safetyTips,
+          discussionQuestions: fallback.discussionQuestions,
+          source: 'fallback',
+          model: null,
+        },
+      });
+    }
+  });
+
   // GET /api/toolbox-talks/stats  (static, before /:id)
   app.get('/api/toolbox-talks/stats', (c) => {
     const db = getDb();

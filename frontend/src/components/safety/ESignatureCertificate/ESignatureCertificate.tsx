@@ -116,7 +116,7 @@ export const ESignatureCertificate: React.FC<ESignatureCertificateProps> = ({
       case 'valid': return 'bg-green-100 text-green-700 border-green-200';
       case 'expired': return 'bg-amber-100 text-amber-700 border-amber-200';
       case 'revoked': return 'bg-red-100 text-red-700 border-red-200';
-      default: return 'bg-gray-100 text-gray-700 border-gray-200';
+      default: return 'bg-surface-overlay text-text-secondary border-surface-border';
     }
   };
 
@@ -146,7 +146,7 @@ export const ESignatureCertificate: React.FC<ESignatureCertificateProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 p-4 md:p-6">
+    <div className="min-h-screen bg-surface-base p-4 md:p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <motion.div
@@ -158,7 +158,7 @@ export const ESignatureCertificate: React.FC<ESignatureCertificateProps> = ({
             {onBack && (
               <button
                 onClick={onBack}
-                className="p-2 hover:bg-white/80 rounded-xl transition-colors"
+                className="p-2 hover:bg-surface-raised/80 rounded-xl transition-colors"
               >
                 <ChevronRight className="w-5 h-5 rotate-180" />
               </button>
@@ -167,8 +167,8 @@ export const ESignatureCertificate: React.FC<ESignatureCertificateProps> = ({
               <Award className="w-8 h-8 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-800">E-Signature Certificates</h1>
-              <p className="text-sm text-slate-500">Digital signature verification and certificates</p>
+              <h1 className="text-2xl font-bold text-text-primary">E-Signature Certificates</h1>
+              <p className="text-sm text-text-muted">Digital signature verification and certificates</p>
             </div>
           </div>
 
@@ -185,29 +185,29 @@ export const ESignatureCertificate: React.FC<ESignatureCertificateProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Certificates List */}
           <div className="lg:col-span-1 space-y-4">
-            <h3 className="font-semibold text-slate-800">Recent Certificates</h3>
+            <h3 className="font-semibold text-text-primary">Recent Certificates</h3>
             {mockCertificates.map((cert) => (
               <motion.div
                 key={cert.id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 onClick={() => setSelectedCertificate(cert)}
-                className={`bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all cursor-pointer border-2 ${
+                className={`bg-surface-raised rounded-xl p-4 shadow-sm hover:shadow-md transition-all cursor-pointer border-2 ${
                   selectedCertificate?.id === cert.id ? 'border-emerald-500' : 'border-transparent'
                 }`}
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-slate-400" />
-                    <span className="text-sm font-medium text-slate-800">{cert.id}</span>
+                    <FileText className="w-5 h-5 text-text-muted" />
+                    <span className="text-sm font-medium text-text-primary">{cert.id}</span>
                   </div>
                   <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(cert.status)}`}>
                     {getStatusIcon(cert.status)}
                     {cert.status.charAt(0).toUpperCase() + cert.status.slice(1)}
                   </span>
                 </div>
-                <p className="text-sm text-slate-600 mb-2 line-clamp-1">{cert.documentTitle}</p>
-                <div className="flex items-center gap-2 text-xs text-slate-500">
+                <p className="text-sm text-text-secondary mb-2 line-clamp-1">{cert.documentTitle}</p>
+                <div className="flex items-center gap-2 text-xs text-text-muted">
                   <User className="w-3 h-3" />
                   <span>{cert.signedBy}</span>
                   <span>•</span>
@@ -224,13 +224,13 @@ export const ESignatureCertificate: React.FC<ESignatureCertificateProps> = ({
                 ref={certificateRef}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-white rounded-2xl shadow-lg overflow-hidden"
+                className="bg-surface-raised rounded-2xl shadow-lg overflow-hidden"
               >
                 {/* Certificate Header */}
                 <div className="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 p-6 text-white">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-white/20 rounded-xl">
+                      <div className="p-2 bg-surface-raised/20 rounded-xl">
                         <Award className="w-8 h-8" />
                       </div>
                       <div>
@@ -247,7 +247,7 @@ export const ESignatureCertificate: React.FC<ESignatureCertificateProps> = ({
                       {selectedCertificate.status.toUpperCase()}
                     </span>
                   </div>
-                  <div className="bg-white/10 rounded-xl p-4">
+                  <div className="bg-surface-raised/10 rounded-xl p-4">
                     <p className="text-sm text-emerald-100">Certificate ID</p>
                     <p className="text-lg font-mono font-bold">{selectedCertificate.id}</p>
                   </div>
@@ -256,107 +256,107 @@ export const ESignatureCertificate: React.FC<ESignatureCertificateProps> = ({
                 {/* Certificate Body */}
                 <div className="p-6 space-y-6">
                   {/* Document Info */}
-                  <div className="bg-slate-50 rounded-xl p-4">
-                    <h3 className="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                  <div className="bg-surface-sunken rounded-xl p-4">
+                    <h3 className="font-semibold text-text-primary mb-3 flex items-center gap-2">
                       <FileText className="w-5 h-5 text-emerald-600" />
                       Document Information
                     </h3>
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
-                        <p className="text-slate-500">Document ID</p>
-                        <p className="font-medium text-slate-800">{selectedCertificate.documentId}</p>
+                        <p className="text-text-muted">Document ID</p>
+                        <p className="font-medium text-text-primary">{selectedCertificate.documentId}</p>
                       </div>
                       <div>
-                        <p className="text-slate-500">Document Type</p>
-                        <p className="font-medium text-slate-800">{selectedCertificate.documentType}</p>
+                        <p className="text-text-muted">Document Type</p>
+                        <p className="font-medium text-text-primary">{selectedCertificate.documentType}</p>
                       </div>
                       <div className="col-span-2">
-                        <p className="text-slate-500">Document Title</p>
-                        <p className="font-medium text-slate-800">{selectedCertificate.documentTitle}</p>
+                        <p className="text-text-muted">Document Title</p>
+                        <p className="font-medium text-text-primary">{selectedCertificate.documentTitle}</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Signer Info */}
-                  <div className="bg-slate-50 rounded-xl p-4">
-                    <h3 className="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                  <div className="bg-surface-sunken rounded-xl p-4">
+                    <h3 className="font-semibold text-text-primary mb-3 flex items-center gap-2">
                       <User className="w-5 h-5 text-emerald-600" />
                       Signer Information
                     </h3>
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
-                        <p className="text-slate-500">Signed By</p>
-                        <p className="font-medium text-slate-800">{selectedCertificate.signedBy}</p>
+                        <p className="text-text-muted">Signed By</p>
+                        <p className="font-medium text-text-primary">{selectedCertificate.signedBy}</p>
                       </div>
                       <div>
-                        <p className="text-slate-500">Role</p>
-                        <p className="font-medium text-slate-800">{selectedCertificate.signerRole}</p>
+                        <p className="text-text-muted">Role</p>
+                        <p className="font-medium text-text-primary">{selectedCertificate.signerRole}</p>
                       </div>
                       <div>
-                        <p className="text-slate-500">Email</p>
-                        <p className="font-medium text-slate-800">{selectedCertificate.signerEmail}</p>
+                        <p className="text-text-muted">Email</p>
+                        <p className="font-medium text-text-primary">{selectedCertificate.signerEmail}</p>
                       </div>
                       <div>
-                        <p className="text-slate-500">Signed At</p>
-                        <p className="font-medium text-slate-800">{formatDate(selectedCertificate.signedAt)}</p>
+                        <p className="text-text-muted">Signed At</p>
+                        <p className="font-medium text-text-primary">{formatDate(selectedCertificate.signedAt)}</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Signature Preview */}
-                  <div className="bg-slate-50 rounded-xl p-4">
-                    <h3 className="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                  <div className="bg-surface-sunken rounded-xl p-4">
+                    <h3 className="font-semibold text-text-primary mb-3 flex items-center gap-2">
                       <Fingerprint className="w-5 h-5 text-emerald-600" />
                       Digital Signature
                     </h3>
-                    <div className="bg-white rounded-xl border-2 border-dashed border-slate-200 p-4 flex items-center justify-center">
+                    <div className="bg-surface-raised rounded-xl border-2 border-dashed border-surface-border p-4 flex items-center justify-center">
                       <div className="text-center">
-                        <div className="inline-block bg-slate-100 rounded-lg p-4 mb-2">
-                          <p className="font-script text-2xl text-slate-700" style={{ fontFamily: 'cursive' }}>
+                        <div className="inline-block bg-surface-overlay rounded-lg p-4 mb-2">
+                          <p className="font-script text-2xl text-text-secondary" style={{ fontFamily: 'cursive' }}>
                             {selectedCertificate.signedBy}
                           </p>
                         </div>
-                        <p className="text-xs text-slate-500">Electronically Signed</p>
+                        <p className="text-xs text-text-muted">Electronically Signed</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Security Info */}
-                  <div className="bg-slate-50 rounded-xl p-4">
-                    <h3 className="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                  <div className="bg-surface-sunken rounded-xl p-4">
+                    <h3 className="font-semibold text-text-primary mb-3 flex items-center gap-2">
                       <Lock className="w-5 h-5 text-emerald-600" />
                       Security & Verification
                     </h3>
                     <div className="space-y-3 text-sm">
                       <div>
-                        <p className="text-slate-500 mb-1">Certificate Hash (SHA-256)</p>
+                        <p className="text-text-muted mb-1">Certificate Hash (SHA-256)</p>
                         <div className="flex items-center gap-2">
-                          <code className="flex-1 bg-white px-3 py-2 rounded-lg text-xs font-mono text-slate-600 break-all border">
+                          <code className="flex-1 bg-surface-raised px-3 py-2 rounded-lg text-xs font-mono text-text-secondary break-all border">
                             {selectedCertificate.certificateHash}
                           </code>
                           <button
                             onClick={() => copyToClipboard(selectedCertificate.certificateHash)}
-                            className="p-2 hover:bg-slate-200 rounded-lg transition-colors"
+                            className="p-2 hover:bg-surface-overlay rounded-lg transition-colors"
                             title="Copy hash"
                           >
-                            <Copy className="w-4 h-4 text-slate-500" />
+                            <Copy className="w-4 h-4 text-text-muted" />
                           </button>
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <p className="text-slate-500">IP Address</p>
-                          <p className="font-medium text-slate-800">{selectedCertificate.ipAddress}</p>
+                          <p className="text-text-muted">IP Address</p>
+                          <p className="font-medium text-text-primary">{selectedCertificate.ipAddress}</p>
                         </div>
                         <div>
-                          <p className="text-slate-500">Device Info</p>
-                          <p className="font-medium text-slate-800">{selectedCertificate.deviceInfo}</p>
+                          <p className="text-text-muted">Device Info</p>
+                          <p className="font-medium text-text-primary">{selectedCertificate.deviceInfo}</p>
                         </div>
                       </div>
                       {selectedCertificate.expiresAt && (
                         <div>
-                          <p className="text-slate-500">Expires At</p>
-                          <p className="font-medium text-slate-800">{formatDate(selectedCertificate.expiresAt)}</p>
+                          <p className="text-text-muted">Expires At</p>
+                          <p className="font-medium text-text-primary">{formatDate(selectedCertificate.expiresAt)}</p>
                         </div>
                       )}
                     </div>
@@ -366,16 +366,16 @@ export const ESignatureCertificate: React.FC<ESignatureCertificateProps> = ({
                   <div className="flex flex-wrap gap-3 pt-4 border-t">
                     <button
                       onClick={handlePrint}
-                      className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 rounded-xl text-sm font-medium transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 bg-surface-overlay hover:bg-surface-sunken rounded-xl text-sm font-medium text-text-primary transition-colors"
                     >
                       <Printer className="w-4 h-4" />
                       Print Certificate
                     </button>
-                    <button className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 rounded-xl text-sm font-medium transition-colors">
+                    <button className="flex items-center gap-2 px-4 py-2 bg-surface-overlay hover:bg-surface-sunken rounded-xl text-sm font-medium text-text-primary transition-colors">
                       <Download className="w-4 h-4" />
                       Download PDF
                     </button>
-                    <button className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 rounded-xl text-sm font-medium transition-colors">
+                    <button className="flex items-center gap-2 px-4 py-2 bg-surface-overlay hover:bg-surface-sunken rounded-xl text-sm font-medium text-text-primary transition-colors">
                       <Share2 className="w-4 h-4" />
                       Share
                     </button>
@@ -387,10 +387,10 @@ export const ESignatureCertificate: React.FC<ESignatureCertificateProps> = ({
                 </div>
               </motion.div>
             ) : (
-              <div className="bg-white rounded-2xl p-12 shadow-sm text-center">
-                <Award className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-slate-800 mb-2">Select a Certificate</h3>
-                <p className="text-slate-500">Choose a certificate from the list to view details</p>
+              <div className="bg-surface-raised rounded-2xl p-12 shadow-sm text-center">
+                <Award className="w-16 h-16 text-text-muted mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-text-primary mb-2">Select a Certificate</h3>
+                <p className="text-text-muted">Choose a certificate from the list to view details</p>
               </div>
             )}
           </div>
@@ -415,7 +415,7 @@ export const ESignatureCertificate: React.FC<ESignatureCertificateProps> = ({
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}
                 onClick={(e) => e.stopPropagation()}
-                className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
+                className="bg-surface-raised rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
               >
                 <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-6 text-white">
                   <div className="flex items-center gap-3">
@@ -429,7 +429,7 @@ export const ESignatureCertificate: React.FC<ESignatureCertificateProps> = ({
 
                 <div className="p-6 space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                    <label className="block text-sm font-medium text-text-secondary mb-2">
                       Certificate ID or Hash
                     </label>
                     <input
@@ -437,7 +437,7 @@ export const ESignatureCertificate: React.FC<ESignatureCertificateProps> = ({
                       value={verificationCode}
                       onChange={(e) => setVerificationCode(e.target.value)}
                       placeholder="e.g., CERT-2026-001 or SHA256:..."
-                      className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                      className="w-full px-4 py-3 border border-surface-border rounded-xl bg-surface-sunken text-text-primary focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                     />
                   </div>
 
@@ -447,8 +447,8 @@ export const ESignatureCertificate: React.FC<ESignatureCertificateProps> = ({
                       animate={{ opacity: 1, y: 0 }}
                       className={`p-4 rounded-xl flex items-center gap-3 ${
                         verificationResult === 'valid'
-                          ? 'bg-green-50 text-green-700'
-                          : 'bg-red-50 text-red-700'
+                          ? 'bg-success/10 text-success'
+                          : 'bg-danger/10 text-danger'
                       }`}
                     >
                       {verificationResult === 'valid' ? (
@@ -478,7 +478,7 @@ export const ESignatureCertificate: React.FC<ESignatureCertificateProps> = ({
                         setVerificationResult(null);
                         setVerificationCode('');
                       }}
-                      className="flex-1 px-4 py-2 border border-slate-200 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors"
+                      className="flex-1 px-4 py-2 border border-surface-border rounded-xl text-text-secondary hover:bg-surface-sunken transition-colors"
                     >
                       Cancel
                     </button>

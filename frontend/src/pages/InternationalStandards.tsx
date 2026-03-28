@@ -82,7 +82,7 @@ const normalizeStandardKey = (value: string | undefined | null) =>
     .replace(/[^a-z0-9]+/g, ' ')
     .trim();
 
-const InternationalStandards: React.FC = () => {
+const InternationalStandards: React.FC<{ isEmbedded?: boolean }> = ({ isEmbedded = false }) => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<StandardCategory | 'All'>('All');
@@ -227,14 +227,17 @@ const InternationalStandards: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-base text-text-primary pb-24 selection:bg-accent/20">
+    <div className={isEmbedded ? 'text-text-primary pb-8 selection:bg-accent/20' : 'min-h-screen bg-surface-base text-text-primary pb-24 selection:bg-accent/20'}>
       {/* HD Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] right-[-10%] h-[50%] w-[50%] rounded-full bg-accent/10 blur-[150px]" />
-        <div className="absolute bottom-[-10%] left-[-10%] h-[50%] w-[50%] rounded-full bg-primary/10 blur-[150px]" />
-      </div>
+      {!isEmbedded && (
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-[-10%] right-[-10%] h-[50%] w-[50%] rounded-full bg-accent/10 blur-[150px]" />
+          <div className="absolute bottom-[-10%] left-[-10%] h-[50%] w-[50%] rounded-full bg-primary/10 blur-[150px]" />
+        </div>
+      )}
 
       {/* Header */}
+      {!isEmbedded && (
       <header className="sticky top-[var(--nav-height)] z-40 shrink-0 border-b border-surface-border bg-surface-raised/90 backdrop-blur-2xl">
         <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
@@ -274,6 +277,7 @@ const InternationalStandards: React.FC = () => {
           </div>
         </div>
       </header>
+      )}
 
       <main className="relative z-10 mx-auto max-w-[1440px] px-4 pt-8 sm:px-6 lg:px-8">
         {/* Global Compliance Map (Simulated HD Feature) */}

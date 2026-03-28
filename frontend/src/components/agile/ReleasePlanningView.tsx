@@ -30,7 +30,8 @@ export function ReleasePlanningView({
   epics = [] as Epic[],
   sprints = [] as Sprint[]
 }: ReleasePlanningViewProps) {
-  const { data: releases = [], loading, error, refetch } = useReleases();
+  const { data: releasesRaw, loading, error, refetch } = useReleases();
+  const releases = releasesRaw ?? [];
   const createRelease = useCreateRelease();
   const deleteRelease = useDeleteRelease();
   const updateStatus = useUpdateReleaseStatus();

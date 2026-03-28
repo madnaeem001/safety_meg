@@ -266,8 +266,8 @@ Please provide:
           <p className="text-xs text-red-600 text-center mt-2">{aiError}</p>
         )}
         {aiSuggestions.length > 0 && (
-          <div className="mt-3 p-3 bg-purple-50 border border-purple-200 rounded-xl space-y-2">
-            <p className="text-xs font-semibold text-purple-700">AI Suggestions — click to add as a cause:</p>
+          <div className="mt-3 p-3 bg-purple-600 border border-purple-600 rounded-xl space-y-2">
+            <p className="text-xs font-semibold text-white">AI Suggestions — click to add as a cause:</p>
             {aiSuggestions.map((s, i) => (
               <button
                 key={i}

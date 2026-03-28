@@ -115,7 +115,7 @@ const RegulationCard: React.FC<RegulationCardProps> = ({ regulation, onSelect })
       whileHover={{ y: -4, boxShadow: '0 12px 40px rgba(0,0,0,0.1)' }}
       whileTap={{ scale: 0.98 }}
       onClick={() => onSelect(regulation)}
-      className="bg-white rounded-2xl border border-surface-200/60 shadow-soft p-5 cursor-pointer transition-all duration-300 hover:border-brand-300"
+      className="bg-surface-raised rounded-2xl border border-surface-border shadow-soft p-5 cursor-pointer transition-all duration-300 hover:border-accent/40"
     >
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex-1 min-w-0">
@@ -127,10 +127,10 @@ const RegulationCard: React.FC<RegulationCardProps> = ({ regulation, onSelect })
               <span className="text-xs text-surface-500">{regulation.subpart}</span>
             )}
             {regulation.sourceUrl && (
-              <span className="text-xs text-brand-500">🔗</span>
+              <span className="text-xs text-accent">🔗</span>
             )}
           </div>
-          <h3 className="font-semibold text-surface-900 text-sm leading-tight line-clamp-2">
+          <h3 className="font-semibold text-text-primary text-sm leading-tight line-clamp-2">
             {regulation.code}
           </h3>
         </div>
@@ -139,20 +139,20 @@ const RegulationCard: React.FC<RegulationCardProps> = ({ regulation, onSelect })
         </span>
       </div>
       
-      <h4 className="text-surface-800 font-medium text-sm mb-2 line-clamp-2">
+      <h4 className="text-text-primary font-medium text-sm mb-2 line-clamp-2">
         {regulation.title}
       </h4>
       
-      <p className="text-surface-600 text-xs leading-relaxed line-clamp-3 mb-3">
+      <p className="text-text-secondary text-xs leading-relaxed line-clamp-3 mb-3">
         {regulation.description}
       </p>
       
       <div className="flex items-center justify-between">
-        <span className="inline-flex items-center px-2 py-1 rounded-lg bg-surface-100 text-xs text-surface-600">
+        <span className="inline-flex items-center px-2 py-1 rounded-lg bg-surface-overlay text-xs text-text-secondary">
           {regulation.category}
         </span>
         {regulation.cfr && (
-          <span className="text-xs text-surface-400">{regulation.cfr}</span>
+          <span className="text-xs text-text-muted">{regulation.cfr}</span>
         )}
       </div>
     </motion.div>
@@ -180,27 +180,27 @@ const RegulationDetail: React.FC<RegulationDetailProps> = ({ regulation, onClose
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[85vh] overflow-hidden"
+        className="bg-surface-raised rounded-3xl shadow-2xl max-w-2xl w-full max-h-[85vh] overflow-hidden border border-surface-border"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-gradient-to-br from-brand-600 to-brand-700 text-white p-6">
+        <div className="bg-surface-raised border-b border-surface-border p-6">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
-                <span className="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur">
+                <span className={`inline-flex px-3 py-1 rounded-full text-xs font-semibold border ${colors.bg} ${colors.text} ${colors.border}`}>
                   {regulation.regulatoryBody}
                 </span>
                 {regulation.year && (
-                  <span className="text-white/70 text-xs">{regulation.year}</span>
+                  <span className="text-text-muted text-xs">{regulation.year}</span>
                 )}
               </div>
-              <h2 className="text-xl font-bold mb-1">{regulation.code}</h2>
-              <h3 className="text-white/90 font-medium">{regulation.title}</h3>
+              <h2 className="text-xl font-bold text-text-primary mb-1">{regulation.code}</h2>
+              <h3 className="text-text-secondary font-medium">{regulation.title}</h3>
             </div>
             <button
               onClick={onClose}
-              className="p-2 rounded-full hover:bg-white/20 transition-colors"
+              className="p-2 rounded-full hover:bg-surface-overlay transition-colors text-text-muted hover:text-text-primary"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -214,24 +214,24 @@ const RegulationDetail: React.FC<RegulationDetailProps> = ({ regulation, onClose
           <div className="space-y-6">
             {/* Description */}
             <div>
-              <h4 className="text-sm font-semibold text-surface-900 mb-2 flex items-center gap-2">
-                <span className="w-1 h-4 bg-brand-500 rounded-full"></span>
+              <h4 className="text-sm font-semibold text-text-primary mb-2 flex items-center gap-2">
+                <span className="w-1 h-4 bg-accent rounded-full"></span>
                 Description
               </h4>
-              <p className="text-surface-700 text-sm leading-relaxed">{regulation.description}</p>
+              <p className="text-text-secondary text-sm leading-relaxed">{regulation.description}</p>
             </div>
             
             {/* Key Requirements */}
             {regulation.keyRequirements && regulation.keyRequirements.length > 0 && (
               <div>
-                <h4 className="text-sm font-semibold text-surface-900 mb-3 flex items-center gap-2">
-                  <span className="w-1 h-4 bg-brand-500 rounded-full"></span>
+                <h4 className="text-sm font-semibold text-text-primary mb-3 flex items-center gap-2">
+                  <span className="w-1 h-4 bg-accent rounded-full"></span>
                   Key Requirements
                 </h4>
                 <ul className="space-y-2">
                   {regulation.keyRequirements.map((req, index) => (
-                    <li key={index} className="flex items-start gap-3 text-sm text-surface-700">
-                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center text-xs font-medium mt-0.5">
+                    <li key={index} className="flex items-start gap-3 text-sm text-text-secondary">
+                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-accent/10 text-accent flex items-center justify-center text-xs font-medium mt-0.5">
                         {index + 1}
                       </span>
                       {req}
@@ -243,24 +243,24 @@ const RegulationDetail: React.FC<RegulationDetailProps> = ({ regulation, onClose
             
             {/* Metadata Grid */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-surface-50 rounded-xl p-4">
-                <span className="text-xs text-surface-500 uppercase tracking-wide">Category</span>
-                <p className="text-sm font-medium text-surface-900 mt-1">{regulation.category}</p>
+              <div className="bg-surface-overlay rounded-xl p-4 border border-surface-border">
+                <span className="text-xs text-text-muted uppercase tracking-wide">Category</span>
+                <p className="text-sm font-medium text-text-primary mt-1">{regulation.category}</p>
               </div>
-              <div className="bg-surface-50 rounded-xl p-4">
-                <span className="text-xs text-surface-500 uppercase tracking-wide">Jurisdiction</span>
-                <p className="text-sm font-medium text-surface-900 mt-1">{regulation.jurisdiction || 'Federal'}</p>
+              <div className="bg-surface-overlay rounded-xl p-4 border border-surface-border">
+                <span className="text-xs text-text-muted uppercase tracking-wide">Jurisdiction</span>
+                <p className="text-sm font-medium text-text-primary mt-1">{regulation.jurisdiction || 'Federal'}</p>
               </div>
               {regulation.cfr && (
-                <div className="bg-surface-50 rounded-xl p-4">
-                  <span className="text-xs text-surface-500 uppercase tracking-wide">CFR Reference</span>
-                  <p className="text-sm font-medium text-surface-900 mt-1">{regulation.cfr}</p>
+                <div className="bg-surface-overlay rounded-xl p-4 border border-surface-border">
+                  <span className="text-xs text-text-muted uppercase tracking-wide">CFR Reference</span>
+                  <p className="text-sm font-medium text-text-primary mt-1">{regulation.cfr}</p>
                 </div>
               )}
               {regulation.subpart && (
-                <div className="bg-surface-50 rounded-xl p-4">
-                  <span className="text-xs text-surface-500 uppercase tracking-wide">Subpart</span>
-                  <p className="text-sm font-medium text-surface-900 mt-1">{regulation.subpart}</p>
+                <div className="bg-surface-overlay rounded-xl p-4 border border-surface-border">
+                  <span className="text-xs text-text-muted uppercase tracking-wide">Subpart</span>
+                  <p className="text-sm font-medium text-text-primary mt-1">{regulation.subpart}</p>
                 </div>
               )}
             </div>
@@ -268,8 +268,8 @@ const RegulationDetail: React.FC<RegulationDetailProps> = ({ regulation, onClose
             {/* Applicable Industries */}
             {regulation.applicableIndustries && regulation.applicableIndustries.length > 0 && (
               <div>
-                <h4 className="text-sm font-semibold text-surface-900 mb-3 flex items-center gap-2">
-                  <span className="w-1 h-4 bg-brand-500 rounded-full"></span>
+                <h4 className="text-sm font-semibold text-text-primary mb-3 flex items-center gap-2">
+                  <span className="w-1 h-4 bg-accent rounded-full"></span>
                   Applicable Industries
                 </h4>
                 <div className="flex flex-wrap gap-2">
@@ -284,13 +284,13 @@ const RegulationDetail: React.FC<RegulationDetailProps> = ({ regulation, onClose
             
             {/* Management Tabs */}
             <div>
-              <h4 className="text-sm font-semibold text-surface-900 mb-3 flex items-center gap-2">
-                <span className="w-1 h-4 bg-brand-500 rounded-full"></span>
+              <h4 className="text-sm font-semibold text-text-primary mb-3 flex items-center gap-2">
+                <span className="w-1 h-4 bg-accent rounded-full"></span>
                 Applicable Management Areas
               </h4>
               <div className="flex flex-wrap gap-2">
                 {regulation.managementTabs.map((tab, index) => (
-                  <span key={index} className="inline-flex px-3 py-1.5 rounded-lg text-xs font-medium bg-surface-100 text-surface-700">
+                  <span key={index} className="inline-flex px-3 py-1.5 rounded-lg text-xs font-medium bg-surface-overlay border border-surface-border text-text-secondary">
                     {tabIcons[tab]} {tab}
                   </span>
                 ))}
@@ -299,12 +299,12 @@ const RegulationDetail: React.FC<RegulationDetailProps> = ({ regulation, onClose
             
             {/* View Document Button */}
             {regulation.sourceUrl && (
-              <div className="pt-4 border-t border-surface-200">
+              <div className="pt-4 border-t border-surface-border">
                 <a
                   href={regulation.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-600 text-white rounded-xl font-medium hover:bg-brand-700 transition-colors shadow-lg shadow-brand-500/25"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-accent text-text-onAccent rounded-xl font-medium hover:bg-accent/90 transition-colors shadow-lg shadow-accent/25"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -394,21 +394,21 @@ export const RegulationsLibrary: React.FC = () => {
   }, []);
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-surface-50 via-white to-surface-100/50">
+    <div className="min-h-screen bg-surface-base">
       {/* Header */}
-      <header className="sticky top-[72px] z-40 bg-white/80 backdrop-blur-xl border-b border-surface-200/60">
+      <header className="sticky top-[72px] z-40 bg-surface-base/90 backdrop-blur-xl border-b border-surface-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <button
               onClick={() => navigate('/')}
-              className="flex items-center gap-2 text-surface-600 hover:text-surface-900 transition-colors"
+              className="flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               <span className="text-sm font-medium">Back</span>
             </button>
-            <h1 className="text-lg font-bold text-surface-900">Regulations Library</h1>
+            <h1 className="text-lg font-bold text-text-primary">Regulations Library</h1>
             <div className="w-16"></div>
           </div>
         </div>
@@ -418,10 +418,10 @@ export const RegulationsLibrary: React.FC = () => {
         {/* Hero Section */}
         <FadeContent>
           <div className="mb-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-surface-900 mb-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-text-primary mb-2">
               Regulatory Compliance Library
             </h2>
-            <p className="text-surface-600">
+            <p className="text-text-secondary">
               Comprehensive database of OSHA, EPA, NFPA, NIOSH, ASTM, ISO, ANSI, IEC, EN, CSA, and AS/NZS regulations
             </p>
           </div>
@@ -437,8 +437,8 @@ export const RegulationsLibrary: React.FC = () => {
                   onClick={() => setSelectedTab(tab)}
                   className={`flex-shrink-0 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                     selectedTab === tab
-                      ? 'bg-brand-600 text-white shadow-lg shadow-brand-500/25'
-                      : 'bg-white text-surface-700 border border-surface-200 hover:border-brand-300 hover:bg-brand-50'
+                      ? 'bg-accent text-text-onAccent shadow-lg shadow-accent/25'
+                      : 'bg-surface-raised text-text-secondary border border-surface-border hover:border-accent/30 hover:bg-accent/5'
                   }`}
                 >
                   {tabIcons[tab]} {tab}
@@ -460,12 +460,12 @@ export const RegulationsLibrary: React.FC = () => {
                 placeholder="Search regulations by code, title, or keyword..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3.5 bg-white border border-surface-200 rounded-2xl text-surface-900 placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all"
+                className="w-full pl-12 pr-4 py-3.5 bg-surface-raised border border-surface-border rounded-2xl text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-surface-100"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-surface-overlay"
                 >
                   <svg className="w-4 h-4 text-surface-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -484,8 +484,8 @@ export const RegulationsLibrary: React.FC = () => {
                 onClick={() => setSelectedBody('All')}
                 className={`flex-shrink-0 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                   selectedBody === 'All'
-                    ? 'bg-surface-900 text-white'
-                    : 'bg-white text-surface-600 border border-surface-200 hover:border-surface-300'
+                    ? 'bg-accent text-text-onAccent'
+                    : 'bg-surface-raised text-text-secondary border border-surface-border hover:border-accent/30'
                 }`}
               >
                 All ({bodyCounts['All']})
@@ -499,7 +499,7 @@ export const RegulationsLibrary: React.FC = () => {
                     className={`flex-shrink-0 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200 border ${
                       selectedBody === body
                         ? `${colors.bg} ${colors.text} ${colors.border}`
-                        : 'bg-white text-surface-600 border-surface-200 hover:border-surface-300'
+                        : 'bg-surface-raised text-text-secondary border-surface-border hover:border-accent/30'
                     }`}
                   >
                     {body} ({bodyCounts[body] || 0})
@@ -513,8 +513,8 @@ export const RegulationsLibrary: React.FC = () => {
         {/* Results Count */}
         <FadeContent delay={0.25}>
           <div className="mb-4 flex items-center justify-between">
-            <p className="text-sm text-surface-600">
-              Showing <span className="font-semibold text-surface-900">{filteredRegulations.length}</span> regulations
+            <p className="text-sm text-text-secondary">
+              Showing <span className="font-semibold text-text-primary">{filteredRegulations.length}</span> regulations
             </p>
             {(searchQuery || selectedBody !== 'All' || selectedTab !== 'All Regulations') && (
               <button
@@ -523,7 +523,7 @@ export const RegulationsLibrary: React.FC = () => {
                   setSelectedBody('All');
                   setSelectedTab('All Regulations');
                 }}
-                className="text-sm text-brand-600 hover:text-brand-700 font-medium"
+                className="text-sm text-accent hover:text-accent/80 font-medium"
               >
                 Clear filters
               </button>
@@ -559,15 +559,15 @@ export const RegulationsLibrary: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-surface-900 mb-2">No regulations found</h3>
-            <p className="text-surface-600 mb-4">Try adjusting your search or filter criteria</p>
+            <h3 className="text-lg font-semibold text-text-primary mb-2">No regulations found</h3>
+            <p className="text-text-secondary mb-4">Try adjusting your search or filter criteria</p>
             <button
               onClick={() => {
                 setSearchQuery('');
                 setSelectedBody('All');
                 setSelectedTab('All Regulations');
               }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-brand-600 text-white rounded-xl font-medium hover:bg-brand-700 transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-text-onAccent rounded-xl font-medium hover:bg-accent/90 transition-colors"
             >
               Reset filters
             </button>

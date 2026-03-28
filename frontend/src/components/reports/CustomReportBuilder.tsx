@@ -399,7 +399,7 @@ interface NotificationSettings {
 
 // Category filter chips data
 const categoryFilters = [
-  { id: 'all', label: 'All Goals', icon: Target, color: 'bg-slate-600' },
+  { id: 'all', label: 'All Goals', icon: Target, color: 'bg-slate-500' },
   { id: 'incident', label: 'Incident Reduction', icon: AlertTriangle, color: 'bg-red-500' },
   { id: 'compliance', label: 'Compliance', icon: ClipboardCheck, color: 'bg-blue-500' },
   { id: 'training', label: 'Training', icon: GraduationCap, color: 'bg-purple-500' },
@@ -503,7 +503,7 @@ const getStatusColor = (status: SafetyGoal['status']) => {
     case 'in-progress': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
     case 'at-risk': return 'bg-amber-500/20 text-amber-400 border-amber-500/30';
     case 'overdue': return 'bg-red-500/20 text-red-400 border-red-500/30';
-    default: return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
+    default: return 'bg-surface-overlay text-text-muted border-surface-border';
   }
 };
 
@@ -513,7 +513,7 @@ const getPriorityColor = (priority: SafetyGoal['priority']) => {
     case 'critical': return 'bg-red-500/20 text-red-400';
     case 'high': return 'bg-orange-500/20 text-orange-400';
     case 'medium': return 'bg-amber-500/20 text-amber-400';
-    case 'low': return 'bg-slate-500/20 text-slate-400';
+    case 'low': return 'bg-surface-overlay text-text-muted';
   }
 };
 
@@ -548,24 +548,24 @@ const SectionEditor: React.FC<{
     <Reorder.Item
       value={section}
       id={section.id}
-      className="bg-slate-800/50 rounded-xl border border-slate-700/50 overflow-hidden"
+      className="bg-surface-raised rounded-xl border border-surface-border overflow-hidden"
     >
       <div className="flex items-center gap-3 p-4 cursor-move">
-        <GripVertical className="w-5 h-5 text-slate-500" />
+        <GripVertical className="w-5 h-5 text-text-muted" />
         <div className="flex-1 min-w-0">
           <input
             type="text"
             value={section.title}
             onChange={(e) => onUpdate({ ...section, title: e.target.value })}
-            className="bg-transparent text-white font-semibold w-full focus:outline-none focus:ring-1 focus:ring-brand-500/50 rounded px-2 py-1 -ml-2"
+            className="bg-transparent text-text-primary font-semibold w-full focus:outline-none focus:ring-1 focus:ring-brand-500/50 rounded px-2 py-1 -ml-2"
           />
-          <p className="text-xs text-slate-400 ml-0.5 mt-1 capitalize">{section.type} Section</p>
+          <p className="text-xs text-text-muted ml-0.5 mt-1 capitalize">{section.type} Section</p>
         </div>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="p-2 hover:bg-slate-700/50 rounded-lg transition-colors"
+          className="p-2 hover:bg-surface-overlay rounded-lg transition-colors"
         >
-          <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-4 h-4 text-text-muted transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
         </button>
         <button
           onClick={onDelete}
@@ -581,21 +581,21 @@ const SectionEditor: React.FC<{
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="border-t border-slate-700/50"
+            className="border-t border-surface-border"
           >
             <div className="p-4 space-y-4">
               {/* KPI Section Config */}
               {section.type === 'kpi' && (
                 <div className="space-y-3">
-                  <p className="text-sm font-medium text-slate-300">Select KPIs to display:</p>
+                  <p className="text-sm font-medium text-text-secondary">Select KPIs to display:</p>
                   <div className="grid grid-cols-2 gap-2">
                     {kpiOptions.map((kpi) => (
                       <label
                         key={kpi.id}
                         className={`flex items-center gap-2 p-3 rounded-lg cursor-pointer transition-colors ${
                           section.config.selectedKpis?.includes(kpi.id)
-                            ? 'bg-brand-500/20 border border-brand-500/50'
-                            : 'bg-slate-700/30 border border-slate-600/30 hover:bg-slate-700/50'
+                            ? 'bg-accent/20 border border-accent/50'
+                            : 'bg-surface-overlay border border-surface-border hover:bg-surface-raised'
                         }`}
                       >
                         <input
@@ -611,8 +611,8 @@ const SectionEditor: React.FC<{
                           }}
                           className="sr-only"
                         />
-                        <kpi.icon className="w-4 h-4 text-brand-400" />
-                        <span className="text-sm text-slate-200">{kpi.label}</span>
+                        <kpi.icon className="w-4 h-4 text-accent" />
+                        <span className="text-sm text-text-primary">{kpi.label}</span>
                       </label>
                     ))}
                   </div>
@@ -623,7 +623,7 @@ const SectionEditor: React.FC<{
               {section.type === 'chart' && (
                 <div className="space-y-4">
                   <div>
-                    <p className="text-sm font-medium text-slate-300 mb-3">Chart Type:</p>
+                    <p className="text-sm font-medium text-text-secondary mb-3">Chart Type:</p>
                     <div className="grid grid-cols-3 gap-2">
                       {chartTypes.map((chart) => (
                         <button
@@ -631,8 +631,8 @@ const SectionEditor: React.FC<{
                           onClick={() => updateConfig('chartType', chart.id)}
                           className={`flex flex-col items-center gap-2 p-3 rounded-lg transition-colors ${
                             section.config.chartType === chart.id
-                              ? 'bg-brand-500/20 border border-brand-500/50 text-brand-300'
-                              : 'bg-slate-700/30 border border-slate-600/30 text-slate-400 hover:bg-slate-700/50'
+                              ? 'bg-accent/20 border border-accent/50 text-accent'
+                              : 'bg-surface-overlay border border-surface-border text-text-muted hover:bg-surface-raised'
                           }`}
                         >
                           <chart.icon className="w-5 h-5" />
@@ -642,11 +642,11 @@ const SectionEditor: React.FC<{
                     </div>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-slate-300">Data Source:</label>
+                    <label className="text-sm font-medium text-text-secondary">Data Source:</label>
                     <select
                       value={section.config.dataSource || 'incidents'}
                       onChange={(e) => updateConfig('dataSource', e.target.value)}
-                      className="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                      className="mt-1 w-full bg-surface-overlay border border-surface-border rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/50"
                     >
                       <option value="incidents">Incidents by Month</option>
                       <option value="departments">Incidents by Department</option>
@@ -664,18 +664,18 @@ const SectionEditor: React.FC<{
                         type="checkbox"
                         checked={section.config.showLegend !== false}
                         onChange={(e) => updateConfig('showLegend', e.target.checked)}
-                        className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-brand-500"
+                        className="w-4 h-4 rounded border-surface-border bg-surface-overlay text-accent"
                       />
-                      <span className="text-sm text-slate-300">Show Legend</span>
+                      <span className="text-sm text-text-secondary">Show Legend</span>
                     </label>
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={section.config.showGrid !== false}
                         onChange={(e) => updateConfig('showGrid', e.target.checked)}
-                        className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-brand-500"
+                        className="w-4 h-4 rounded border-surface-border bg-surface-overlay text-accent"
                       />
-                      <span className="text-sm text-slate-300">Show Grid</span>
+                      <span className="text-sm text-text-secondary">Show Grid</span>
                     </label>
                   </div>
                 </div>
@@ -684,11 +684,11 @@ const SectionEditor: React.FC<{
               {/* Table Section Config */}
               {section.type === 'table' && (
                 <div className="space-y-3">
-                  <p className="text-sm font-medium text-slate-300">Table Data:</p>
+                  <p className="text-sm font-medium text-text-secondary">Table Data:</p>
                   <select
                     value={section.config.tableData || 'incidents'}
                     onChange={(e) => updateConfig('tableData', e.target.value)}
-                    className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                    className="w-full bg-surface-overlay border border-surface-border rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/50"
                   >
                     <option value="incidents">Recent Incidents</option>
                     <option value="actions">Open Actions</option>
@@ -697,14 +697,14 @@ const SectionEditor: React.FC<{
                     <option value="inspections">Inspections</option>
                   </select>
                   <div className="flex items-center gap-3">
-                    <label className="text-sm text-slate-400">Show rows:</label>
+                    <label className="text-sm text-text-muted">Show rows:</label>
                     <input
                       type="number"
                       min="5"
                       max="50"
                       value={section.config.rowLimit || 10}
                       onChange={(e) => updateConfig('rowLimit', parseInt(e.target.value))}
-                      className="w-20 bg-slate-700/50 border border-slate-600/50 rounded-lg px-3 py-1 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                      className="w-20 bg-surface-overlay border border-surface-border rounded-lg px-3 py-1 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/50"
                     />
                   </div>
                 </div>
@@ -713,13 +713,13 @@ const SectionEditor: React.FC<{
               {/* Text Section Config */}
               {section.type === 'text' && (
                 <div className="space-y-3">
-                  <label className="text-sm font-medium text-slate-300">Content:</label>
+                  <label className="text-sm font-medium text-text-secondary">Content:</label>
                   <textarea
                     value={section.config.content || ''}
                     onChange={(e) => updateConfig('content', e.target.value)}
                     placeholder="Enter your text content here..."
                     rows={4}
-                    className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50 resize-none"
+                    className="w-full bg-surface-overlay border border-surface-border rounded-lg px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50 resize-none"
                   />
                 </div>
               )}
@@ -727,11 +727,11 @@ const SectionEditor: React.FC<{
               {/* Checklist Section Config */}
               {section.type === 'checklist' && (
                 <div className="space-y-3">
-                  <p className="text-sm font-medium text-slate-300">Checklist Items:</p>
+                  <p className="text-sm font-medium text-text-secondary">Checklist Items:</p>
                   <select
                     value={section.config.checklistType || 'actions'}
                     onChange={(e) => updateConfig('checklistType', e.target.value)}
-                    className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                    className="w-full bg-surface-overlay border border-surface-border rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/50"
                   >
                     <option value="actions">Corrective Actions</option>
                     <option value="goals">Safety Goals</option>
@@ -744,7 +744,7 @@ const SectionEditor: React.FC<{
               {/* Summary Section Config */}
               {section.type === 'summary' && (
                 <div className="space-y-3">
-                  <p className="text-sm font-medium text-slate-300">Include in Summary:</p>
+                  <p className="text-sm font-medium text-text-secondary">Include in Summary:</p>
                   <div className="space-y-2">
                     {['highlights', 'risks', 'recommendations', 'nextSteps'].map((item) => (
                       <label key={item} className="flex items-center gap-3 cursor-pointer">
@@ -752,9 +752,9 @@ const SectionEditor: React.FC<{
                           type="checkbox"
                           checked={section.config[item] !== false}
                           onChange={(e) => updateConfig(item, e.target.checked)}
-                          className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-brand-500 focus:ring-brand-500/50"
+                          className="w-4 h-4 rounded border-surface-border bg-surface-overlay text-accent focus:ring-brand-500/50"
                         />
-                        <span className="text-sm text-slate-300 capitalize">{item.replace(/([A-Z])/g, ' $1')}</span>
+                        <span className="text-sm text-text-secondary capitalize">{item.replace(/([A-Z])/g, ' $1')}</span>
                       </label>
                     ))}
                   </div>
@@ -764,7 +764,7 @@ const SectionEditor: React.FC<{
               {/* Goals Section Config */}
               {section.type === 'goals' && (
                 <div className="space-y-3">
-                  <p className="text-sm font-medium text-slate-300">Goals Display Options:</p>
+                  <p className="text-sm font-medium text-text-secondary">Goals Display Options:</p>
                   <div className="space-y-2">
                     {['showMilestones', 'showProgress', 'showOwners', 'showDates'].map((item) => (
                       <label key={item} className="flex items-center gap-3 cursor-pointer">
@@ -772,18 +772,18 @@ const SectionEditor: React.FC<{
                           type="checkbox"
                           checked={section.config[item] !== false}
                           onChange={(e) => updateConfig(item, e.target.checked)}
-                          className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-brand-500 focus:ring-brand-500/50"
+                          className="w-4 h-4 rounded border-surface-border bg-surface-overlay text-accent focus:ring-brand-500/50"
                         />
-                        <span className="text-sm text-slate-300 capitalize">{item.replace(/([A-Z])/g, ' $1').replace('show ', '')}</span>
+                        <span className="text-sm text-text-secondary capitalize">{item.replace(/([A-Z])/g, ' $1').replace('show ', '')}</span>
                       </label>
                     ))}
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-slate-300">Filter by Category:</label>
+                    <label className="text-sm font-medium text-text-secondary">Filter by Category:</label>
                     <select
                       value={section.config.goalCategory || 'all'}
                       onChange={(e) => updateConfig('goalCategory', e.target.value)}
-                      className="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                      className="mt-1 w-full bg-surface-overlay border border-surface-border rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/50"
                     >
                       <option value="all">All Categories</option>
                       <option value="incident">Incident Reduction</option>
@@ -824,13 +824,13 @@ const ReportPreview: React.FC<{
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-slate-800 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl border border-slate-700"
+        className="bg-surface-raised rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl border border-surface-border"
       >
         {/* Header */}
-        <div className="p-6 border-b border-slate-700 flex items-center justify-between bg-slate-800/80">
+        <div className="p-6 border-b border-surface-border flex items-center justify-between bg-surface-raised">
           <div>
-            <h2 className="text-xl font-bold text-white">{report.name}</h2>
-            <p className="text-sm text-slate-400">{report.description}</p>
+            <h2 className="text-xl font-bold text-text-primary">{report.name}</h2>
+            <p className="text-sm text-text-muted">{report.description}</p>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -849,26 +849,26 @@ const ReportPreview: React.FC<{
             </button>
             <button
               onClick={() => window.print()}
-              className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+              className="p-2 hover:bg-surface-overlay rounded-lg transition-colors"
             >
-              <Printer className="w-5 h-5 text-slate-400" />
+              <Printer className="w-5 h-5 text-text-muted" />
             </button>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+              className="p-2 hover:bg-surface-overlay rounded-lg transition-colors"
             >
-              <X className="w-5 h-5 text-slate-400" />
+              <X className="w-5 h-5 text-text-muted" />
             </button>
           </div>
         </div>
 
         {/* Preview Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)] bg-slate-900/50">
+        <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)] bg-surface-sunken">
           <div className="space-y-6">
             {report.sections.map((section) => (
-              <div key={section.id} className="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                  <div className="w-1 h-6 bg-brand-500 rounded-full" />
+              <div key={section.id} className="bg-surface-raised rounded-xl p-6 border border-surface-border">
+                <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
+                  <div className="w-1 h-6 bg-accent rounded-full" />
                   {section.title}
                 </h3>
 
@@ -879,12 +879,12 @@ const ReportPreview: React.FC<{
                       const kpi = kpiOptions.find(k => k.id === kpiId);
                       if (!kpi) return null;
                       return (
-                        <div key={kpiId} className="bg-slate-700/50 rounded-xl p-4">
+                        <div key={kpiId} className="bg-surface-overlay rounded-xl p-4">
                           <div className="flex items-center gap-2 mb-2">
-                            <kpi.icon className="w-4 h-4 text-brand-400" />
-                            <span className="text-xs text-slate-400">{kpi.label}</span>
+                            <kpi.icon className="w-4 h-4 text-accent" />
+                            <span className="text-xs text-text-muted">{kpi.label}</span>
                           </div>
-                          <p className="text-2xl font-bold text-white">{kpi.value}</p>
+                          <p className="text-2xl font-bold text-text-primary">{kpi.value}</p>
                         </div>
                       );
                     })}
@@ -893,18 +893,18 @@ const ReportPreview: React.FC<{
 
                 {/* Enhanced Chart Preview */}
                 {section.type === 'chart' && (
-                  <div className="h-48 bg-slate-700/30 rounded-lg flex items-center justify-center">
+                  <div className="h-48 bg-surface-overlay rounded-lg flex items-center justify-center">
                     <div className="text-center">
-                      {section.config.chartType === 'bar' && <BarChart3 className="w-12 h-12 text-brand-400 mx-auto mb-2" />}
-                      {section.config.chartType === 'line' && <LineChart className="w-12 h-12 text-brand-400 mx-auto mb-2" />}
-                      {section.config.chartType === 'pie' && <PieChart className="w-12 h-12 text-brand-400 mx-auto mb-2" />}
-                      {section.config.chartType === 'area' && <AreaChart className="w-12 h-12 text-brand-400 mx-auto mb-2" />}
-                      {section.config.chartType === 'radar' && <Radar className="w-12 h-12 text-brand-400 mx-auto mb-2" />}
-                      {section.config.chartType === 'gauge' && <Gauge className="w-12 h-12 text-brand-400 mx-auto mb-2" />}
-                      {section.config.chartType === 'funnel' && <Filter className="w-12 h-12 text-brand-400 mx-auto mb-2" />}
-                      {section.config.chartType === 'stacked' && <Layers className="w-12 h-12 text-brand-400 mx-auto mb-2" />}
-                      {section.config.chartType === 'donut' && <Circle className="w-12 h-12 text-brand-400 mx-auto mb-2" />}
-                      <p className="text-sm text-slate-400">
+                      {section.config.chartType === 'bar' && <BarChart3 className="w-12 h-12 text-accent mx-auto mb-2" />}
+                      {section.config.chartType === 'line' && <LineChart className="w-12 h-12 text-accent mx-auto mb-2" />}
+                      {section.config.chartType === 'pie' && <PieChart className="w-12 h-12 text-accent mx-auto mb-2" />}
+                      {section.config.chartType === 'area' && <AreaChart className="w-12 h-12 text-accent mx-auto mb-2" />}
+                      {section.config.chartType === 'radar' && <Radar className="w-12 h-12 text-accent mx-auto mb-2" />}
+                      {section.config.chartType === 'gauge' && <Gauge className="w-12 h-12 text-accent mx-auto mb-2" />}
+                      {section.config.chartType === 'funnel' && <Filter className="w-12 h-12 text-accent mx-auto mb-2" />}
+                      {section.config.chartType === 'stacked' && <Layers className="w-12 h-12 text-accent mx-auto mb-2" />}
+                      {section.config.chartType === 'donut' && <Circle className="w-12 h-12 text-accent mx-auto mb-2" />}
+                      <p className="text-sm text-text-muted">
                         {chartTypes.find(c => c.id === section.config.chartType)?.label || 'Chart'} - {section.config.dataSource}
                       </p>
                     </div>
@@ -915,21 +915,21 @@ const ReportPreview: React.FC<{
                 {section.type === 'table' && (
                   <div className="overflow-x-auto">
                     <table className="w-full">
-                      <thead className="bg-slate-700/50">
+                      <thead className="bg-surface-overlay">
                         <tr>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-slate-300 uppercase">ID</th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-slate-300 uppercase">Description</th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-slate-300 uppercase">Status</th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-slate-300 uppercase">Date</th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-text-secondary uppercase">ID</th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-text-secondary uppercase">Description</th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-text-secondary uppercase">Status</th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-text-secondary uppercase">Date</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-700/50">
+                      <tbody className="divide-y divide-surface-border">
                         {[1, 2, 3].map((row) => (
-                          <tr key={row} className="hover:bg-slate-700/30">
-                            <td className="px-4 py-3 text-sm text-slate-300">INC-2026-{row.toString().padStart(3, '0')}</td>
-                            <td className="px-4 py-3 text-sm text-slate-300">Sample {section.config.tableData} record</td>
+                          <tr key={row} className="hover:bg-surface-overlay/30">
+                            <td className="px-4 py-3 text-sm text-text-secondary">INC-2026-{row.toString().padStart(3, '0')}</td>
+                            <td className="px-4 py-3 text-sm text-text-secondary">Sample {section.config.tableData} record</td>
                             <td className="px-4 py-3"><span className="px-2 py-1 text-xs bg-emerald-500/20 text-emerald-400 rounded-full">Active</span></td>
-                            <td className="px-4 py-3 text-sm text-slate-400">Jan {20 + row}, 2026</td>
+                            <td className="px-4 py-3 text-sm text-text-muted">Jan {20 + row}, 2026</td>
                           </tr>
                         ))}
                       </tbody>
@@ -939,7 +939,7 @@ const ReportPreview: React.FC<{
 
                 {/* Text Preview */}
                 {section.type === 'text' && (
-                  <p className="text-slate-300 whitespace-pre-wrap">
+                  <p className="text-text-secondary whitespace-pre-wrap">
                     {section.config.content || 'No content added yet.'}
                   </p>
                 )}
@@ -948,11 +948,11 @@ const ReportPreview: React.FC<{
                 {section.type === 'checklist' && (
                   <div className="space-y-2">
                     {['Complete safety audit', 'Review incident reports', 'Update training records'].map((item, i) => (
-                      <div key={i} className="flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg">
+                      <div key={i} className="flex items-center gap-3 p-3 bg-surface-overlay rounded-lg">
                         <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${i === 0 ? 'border-emerald-500 bg-emerald-500/20' : 'border-slate-500'}`}>
                           {i === 0 && <CheckSquare className="w-3 h-3 text-emerald-400" />}
                         </div>
-                        <span className="text-sm text-slate-300">{item}</span>
+                        <span className="text-sm text-text-secondary">{item}</span>
                       </div>
                     ))}
                   </div>
@@ -963,14 +963,14 @@ const ReportPreview: React.FC<{
                   <div className="space-y-4">
                     {section.config.highlights !== false && (
                       <div>
-                        <h4 className="text-sm font-medium text-brand-400 mb-2">Key Highlights</h4>
+                        <h4 className="text-sm font-medium text-accent mb-2">Key Highlights</h4>
                         <ul className="space-y-1">
-                          <li className="text-sm text-slate-300 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 bg-brand-400 rounded-full" />
+                          <li className="text-sm text-text-secondary flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 bg-accent rounded-full" />
                             Safety score improved by 5% this month
                           </li>
-                          <li className="text-sm text-slate-300 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 bg-brand-400 rounded-full" />
+                          <li className="text-sm text-text-secondary flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 bg-accent rounded-full" />
                             Zero lost-time incidents for 45 consecutive days
                           </li>
                         </ul>
@@ -980,7 +980,7 @@ const ReportPreview: React.FC<{
                       <div>
                         <h4 className="text-sm font-medium text-amber-400 mb-2">Recommendations</h4>
                         <ul className="space-y-1">
-                          <li className="text-sm text-slate-300 flex items-center gap-2">
+                          <li className="text-sm text-text-secondary flex items-center gap-2">
                             <span className="w-1.5 h-1.5 bg-amber-400 rounded-full" />
                             Continue focus on slip/trip/fall prevention
                           </li>
@@ -994,13 +994,13 @@ const ReportPreview: React.FC<{
                 {section.type === 'goals' && (
                   <div className="space-y-4">
                     {sampleSafetyGoals.slice(0, 2).map((goal) => (
-                      <div key={goal.id} className="bg-slate-700/30 rounded-xl p-4">
+                      <div key={goal.id} className="bg-surface-overlay rounded-xl p-4">
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex items-center gap-3">
                             <div className={`w-3 h-3 rounded-full ${getCategoryColor(goal.category)}`} />
                             <div>
-                              <h4 className="font-medium text-white">{goal.title}</h4>
-                              <p className="text-xs text-slate-400">{goal.owner}</p>
+                              <h4 className="font-medium text-text-primary">{goal.title}</h4>
+                              <p className="text-xs text-text-muted">{goal.owner}</p>
                             </div>
                           </div>
                           <span className={`px-2 py-1 text-xs rounded-full border ${getStatusColor(goal.status)}`}>
@@ -1008,13 +1008,13 @@ const ReportPreview: React.FC<{
                           </span>
                         </div>
                         <div className="mb-3">
-                          <div className="flex justify-between text-xs text-slate-400 mb-1">
+                          <div className="flex justify-between text-xs text-text-muted mb-1">
                             <span>Progress</span>
                             <span>{Math.round((goal.currentValue / goal.targetValue) * 100)}%</span>
                           </div>
-                          <div className="w-full bg-slate-600 rounded-full h-2">
+                          <div className="w-full bg-surface-overlay rounded-full h-2">
                             <div
-                              className="bg-brand-500 h-2 rounded-full transition-all"
+                              className="bg-accent h-2 rounded-full transition-all"
                               style={{ width: `${Math.min((goal.currentValue / goal.targetValue) * 100, 100)}%` }}
                             />
                           </div>
@@ -1023,10 +1023,10 @@ const ReportPreview: React.FC<{
                           <div className="flex items-center gap-2 text-xs">
                             {goal.milestones.map((m, i) => (
                               <div key={m.id} className="flex items-center gap-1">
-                                <div className={`w-4 h-4 rounded-full flex items-center justify-center ${m.completed ? 'bg-emerald-500' : 'bg-slate-600'}`}>
+                                <div className={`w-4 h-4 rounded-full flex items-center justify-center ${m.completed ? 'bg-emerald-500' : 'bg-surface-overlay'}`}>
                                   {m.completed && <CheckCircle2 className="w-3 h-3 text-white" />}
                                 </div>
-                                {i < goal.milestones.length - 1 && <div className="w-6 h-0.5 bg-slate-600" />}
+                                {i < goal.milestones.length - 1 && <div className="w-6 h-0.5 bg-surface-overlay" />}
                               </div>
                             ))}
                           </div>
@@ -1432,7 +1432,7 @@ ${index + 1}. ${goal.title}
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 p-4 md:p-6 lg:p-8">
+    <div className="min-h-screen bg-surface-base p-4 md:p-6 lg:p-8">
       {/* Header */}
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
@@ -1441,45 +1441,45 @@ ${index + 1}. ${goal.title}
               <Trophy className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-white">Safety Goals & Targets</h1>
-              <p className="text-slate-400">Track progress and measure milestone achievements</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-text-primary">Safety Goals & Targets</h1>
+              <p className="text-text-muted">Track progress and measure milestone achievements</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-2 flex-nowrap">
             <button
               onClick={exportGoalsToPDF}
-              className="flex items-center gap-2 px-3 py-2.5 bg-green-600/20 text-green-400 rounded-xl hover:bg-green-600/30 transition-colors"
+              className="flex items-center gap-2 px-3 py-2.5 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 transition-colors"
             >
               <FileText className="w-4 h-4" />
-              <span className="hidden sm:inline">Export PDF</span>
+              <span>Export PDF</span>
             </button>
             <button
               onClick={() => setShowNotificationSettings(true)}
-              className="flex items-center gap-2 px-3 py-2.5 bg-slate-800 text-slate-300 rounded-xl hover:bg-slate-700 transition-colors"
+              className="flex items-center gap-2 px-3 py-2.5 bg-surface-raised text-text-primary border border-border-muted rounded-xl hover:bg-surface-overlay transition-colors"
             >
               <Bell className="w-4 h-4" />
-              <span className="hidden sm:inline">Notifications</span>
+              <span>Notifications</span>
             </button>
             <button
               onClick={() => setShowTemplates(true)}
-              className="flex items-center gap-2 px-3 py-2.5 bg-purple-600/20 text-purple-400 rounded-xl hover:bg-purple-600/30 transition-colors"
+              className="flex items-center gap-2 px-3 py-2.5 bg-violet-500 text-white rounded-xl hover:bg-violet-600 transition-colors"
             >
               <Copy className="w-4 h-4" />
               Templates
             </button>
             <button
               onClick={() => setShowAddGoal(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-brand-600 text-white rounded-xl hover:bg-brand-500 transition-colors"
+              className="flex items-center gap-2 px-4 py-2.5 bg-accent text-text-onAccent rounded-xl hover:bg-accent/90 transition-colors"
             >
               <Plus className="w-4 h-4" />
               New Goal
             </button>
             <button
               onClick={() => setShowGoalDashboard(true)}
-              className="flex items-center gap-2 px-3 py-2.5 bg-indigo-600/20 text-indigo-400 rounded-xl hover:bg-indigo-600/30 transition-colors"
+              className="flex items-center gap-2 px-3 py-2.5 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition-colors"
             >
               <LayoutDashboard className="w-4 h-4" />
-              <span className="hidden sm:inline">Dashboard</span>
+              <span>Dashboard</span>
             </button>
           </div>
         </div>
@@ -1494,14 +1494,14 @@ ${index + 1}. ${goal.title}
                 className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
                   filterCategory === cat.id
                     ? `${cat.color} text-white shadow-lg`
-                    : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                    : 'bg-surface-raised text-text-muted hover:bg-surface-overlay'
                 }`}
               >
                 <cat.icon className="w-4 h-4" />
                 <span className="text-sm font-medium whitespace-nowrap">{cat.label}</span>
                 {cat.id !== 'all' && (
                   <span className={`px-1.5 py-0.5 text-xs rounded-full ${
-                    filterCategory === cat.id ? 'bg-white/20' : 'bg-slate-700'
+                    filterCategory === cat.id ? 'bg-white/20' : 'bg-surface-overlay'
                   }`}>
                     {goals.filter(g => g.category === cat.id).length}
                   </span>
@@ -1513,7 +1513,7 @@ ${index + 1}. ${goal.title}
 
         {/* Status Filter Row */}
         <div className="flex items-center gap-3 mb-6">
-          <span className="text-sm text-slate-400">Status:</span>
+          <span className="text-sm text-text-muted">Status:</span>
           <div className="flex items-center gap-2">
             {['all', 'not-started', 'in-progress', 'on-track', 'at-risk', 'completed'].map((status) => (
               <button
@@ -1521,8 +1521,8 @@ ${index + 1}. ${goal.title}
                 onClick={() => setFilterStatus(status)}
                 className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${
                   filterStatus === status
-                    ? 'bg-brand-600 text-white'
-                    : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                    ? 'bg-accent text-text-onAccent'
+                    : 'bg-surface-raised text-text-muted hover:bg-surface-overlay'
                 }`}
               >
                 {status === 'all' ? 'All' : status.replace('-', ' ')}
@@ -1533,47 +1533,47 @@ ${index + 1}. ${goal.title}
 
         {/* Stats Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700">
+          <div className="bg-surface-raised rounded-xl p-4 border border-surface-border">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-blue-500/20 rounded-lg">
                 <Target className="w-5 h-5 text-blue-400" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-white">{goals.length}</p>
-                <p className="text-sm text-slate-400">Total Goals</p>
+                <p className="text-2xl font-bold text-text-primary">{goals.length}</p>
+                <p className="text-sm text-text-muted">Total Goals</p>
               </div>
             </div>
           </div>
-          <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700">
+          <div className="bg-surface-raised rounded-xl p-4 border border-surface-border">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-green-500/20 rounded-lg">
                 <CheckCircle2 className="w-5 h-5 text-green-400" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-white">{goals.filter(g => g.status === 'on-track' || g.status === 'completed').length}</p>
-                <p className="text-sm text-slate-400">On Track</p>
+                <p className="text-2xl font-bold text-text-primary">{goals.filter(g => g.status === 'on-track' || g.status === 'completed').length}</p>
+                <p className="text-sm text-text-muted">On Track</p>
               </div>
             </div>
           </div>
-          <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700">
+          <div className="bg-surface-raised rounded-xl p-4 border border-surface-border">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-amber-500/20 rounded-lg">
                 <Clock className="w-5 h-5 text-amber-400" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-white">{goals.filter(g => g.status === 'at-risk').length}</p>
-                <p className="text-sm text-slate-400">At Risk</p>
+                <p className="text-2xl font-bold text-text-primary">{goals.filter(g => g.status === 'at-risk').length}</p>
+                <p className="text-sm text-text-muted">At Risk</p>
               </div>
             </div>
           </div>
-          <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700">
+          <div className="bg-surface-raised rounded-xl p-4 border border-surface-border">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-emerald-500/20 rounded-lg">
                 <Trophy className="w-5 h-5 text-emerald-400" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-white">{goals.filter(g => g.status === 'completed').length}</p>
-                <p className="text-sm text-slate-400">Completed</p>
+                <p className="text-2xl font-bold text-text-primary">{goals.filter(g => g.status === 'completed').length}</p>
+                <p className="text-sm text-text-muted">Completed</p>
               </div>
             </div>
           </div>
@@ -1582,17 +1582,17 @@ ${index + 1}. ${goal.title}
         {/* Goals List */}
         <div className="space-y-4">
           {filteredGoals.length === 0 ? (
-            <div className="text-center py-16 bg-slate-800/30 rounded-2xl border border-slate-700/50">
-              <Target className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-slate-400 mb-2">No goals found</h3>
-              <p className="text-sm text-slate-500 mb-4">
+            <div className="text-center py-16 bg-surface-raised/60 rounded-2xl border border-surface-border">
+              <Target className="w-12 h-12 text-text-muted mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-text-muted mb-2">No goals found</h3>
+              <p className="text-sm text-text-muted mb-4">
                 {filterCategory !== 'all' || filterStatus !== 'all' 
                   ? 'Try adjusting your filters or create a new goal'
                   : 'Get started by creating your first safety goal'}
               </p>
               <button
                 onClick={() => setShowTemplates(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-brand-600 text-white rounded-xl hover:bg-brand-500 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-text-onAccent rounded-xl hover:bg-accent/90 transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 Create from Template
@@ -1605,15 +1605,15 @@ ${index + 1}. ${goal.title}
                 layout
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-slate-800/50 rounded-2xl border border-slate-700 overflow-hidden"
+                className="bg-surface-raised rounded-2xl border border-surface-border overflow-hidden"
               >
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-start gap-4">
                       <div className={`w-4 h-4 rounded-full mt-1 ${getCategoryColor(goal.category)}`} />
                       <div>
-                        <h3 className="text-lg font-semibold text-white mb-1">{goal.title}</h3>
-                        <p className="text-sm text-slate-400 mb-2">{goal.description}</p>
+                        <h3 className="text-lg font-semibold text-text-primary mb-1">{goal.title}</h3>
+                        <p className="text-sm text-text-muted mb-2">{goal.description}</p>
                         <div className="flex items-center gap-3 flex-wrap">
                           <span className={`px-2 py-1 text-xs rounded-full border ${getStatusColor(goal.status)}`}>
                             {goal.status.replace('-', ' ')}
@@ -1621,31 +1621,31 @@ ${index + 1}. ${goal.title}
                           <span className={`px-2 py-1 text-xs rounded-full ${getPriorityColor(goal.priority)}`}>
                             {goal.priority} priority
                           </span>
-                          <span className="text-xs text-slate-500">Owner: {goal.owner}</span>
+                          <span className="text-xs text-text-muted">Owner: {goal.owner}</span>
                         </div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-3xl font-bold text-white">
-                        {goal.currentValue}<span className="text-lg text-slate-400">/{goal.targetValue}</span>
+                      <p className="text-3xl font-bold text-text-primary">
+                        {goal.currentValue}<span className="text-lg text-text-muted">/{goal.targetValue}</span>
                       </p>
-                      <p className="text-xs text-slate-400">{goal.unit}</p>
+                      <p className="text-xs text-text-muted">{goal.unit}</p>
                     </div>
                   </div>
 
                   {/* Progress Bar */}
                   <div className="mb-6">
-                    <div className="flex justify-between text-sm text-slate-400 mb-2">
+                    <div className="flex justify-between text-sm text-text-muted mb-2">
                       <span>Progress</span>
                       <span>{Math.round((goal.currentValue / goal.targetValue) * 100)}%</span>
                     </div>
-                    <div className="w-full bg-slate-700 rounded-full h-3">
+                    <div className="w-full bg-surface-overlay rounded-full h-3">
                       <div
                         className={`h-3 rounded-full transition-all ${
                           goal.status === 'completed' ? 'bg-emerald-500' :
                           goal.status === 'at-risk' ? 'bg-amber-500' :
                           goal.status === 'overdue' ? 'bg-red-500' :
-                          'bg-brand-500'
+                          'bg-accent'
                         }`}
                         style={{ width: `${Math.min((goal.currentValue / goal.targetValue) * 100, 100)}%` }}
                       />
@@ -1655,43 +1655,43 @@ ${index + 1}. ${goal.title}
                   {/* Milestones */}
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <h4 className="text-sm font-medium text-slate-300 flex items-center gap-2">
+                      <h4 className="text-sm font-medium text-text-secondary flex items-center gap-2">
                         <Flag className="w-4 h-4" />
                         Milestones
                       </h4>
-                      <span className="text-xs text-slate-500">
+                      <span className="text-xs text-text-muted">
                         {goal.milestones.filter(m => m.completed).length}/{goal.milestones.length} completed
                       </span>
                     </div>
                     <div className="relative">
                       {/* Timeline Line */}
-                      <div className="absolute left-4 top-6 bottom-6 w-0.5 bg-slate-700" />
+                      <div className="absolute left-4 top-6 bottom-6 w-0.5 bg-surface-border" />
                       
                       <div className="space-y-3">
                         {goal.milestones.map((milestone, index) => (
                           <div
                             key={milestone.id}
                             className={`flex items-start gap-4 p-3 rounded-xl transition-colors cursor-pointer ${
-                              milestone.completed ? 'bg-emerald-500/10' : 'bg-slate-700/30 hover:bg-slate-700/50'
+                              milestone.completed ? 'bg-emerald-500/10' : 'bg-surface-overlay hover:bg-surface-raised'
                             }`}
                             onClick={() => toggleMilestone(goal.id, milestone.id)}
                           >
                             <div className={`relative z-10 w-8 h-8 rounded-full flex items-center justify-center ${
-                              milestone.completed ? 'bg-emerald-500' : 'bg-slate-600 border-2 border-slate-500'
+                              milestone.completed ? 'bg-emerald-500' : 'bg-surface-overlay border-2 border-surface-border'
                             }`}>
                               {milestone.completed ? (
                                 <CheckCircle2 className="w-4 h-4 text-white" />
                               ) : (
-                                <span className="text-xs text-slate-300">{index + 1}</span>
+                                <span className="text-xs text-text-secondary">{index + 1}</span>
                               )}
                             </div>
                             <div className="flex-1">
-                              <p className={`font-medium ${milestone.completed ? 'text-emerald-400' : 'text-white'}`}>
+                              <p className={`font-medium ${milestone.completed ? 'text-emerald-400' : 'text-text-primary'}`}>
                                 {milestone.title}
                               </p>
                               <div className="flex items-center gap-2 mt-1">
-                                <Calendar className="w-3 h-3 text-slate-500" />
-                                <span className="text-xs text-slate-500">
+                                <Calendar className="w-3 h-3 text-text-muted" />
+                                <span className="text-xs text-text-muted">
                                   Target: {milestone.targetDate}
                                   {milestone.completed && milestone.completedDate && (
                                     <span className="text-emerald-400 ml-2">• Completed: {milestone.completedDate}</span>
@@ -1700,8 +1700,8 @@ ${index + 1}. ${goal.title}
                               </div>
                             </div>
                             {!milestone.completed && (
-                              <button className="p-2 hover:bg-slate-600/50 rounded-lg transition-colors">
-                                <PlayCircle className="w-5 h-5 text-slate-400" />
+                              <button className="p-2 hover:bg-surface-overlay/50 rounded-lg transition-colors">
+                                <PlayCircle className="w-5 h-5 text-text-muted" />
                               </button>
                             )}
                           </div>
@@ -1711,21 +1711,21 @@ ${index + 1}. ${goal.title}
                   </div>
 
                   {/* Timeline */}
-                  <div className="mt-4 pt-4 border-t border-slate-700/50 flex items-center justify-between text-xs text-slate-500">
+                  <div className="mt-4 pt-4 border-t border-surface-border flex items-center justify-between text-xs text-text-muted">
                     <span>Start: {goal.startDate}</span>
                     <ArrowRight className="w-4 h-4" />
                     <span>Target: {goal.targetDate}</span>
                   </div>
 
                   {/* Action Buttons for Goal */}
-                  <div className="mt-4 pt-4 border-t border-slate-700/50 flex items-center gap-2 flex-wrap">
+                  <div className="mt-4 pt-4 border-t border-surface-border flex items-center gap-2 flex-wrap">
                     <button
                       onClick={() => {
                         setSelectedGoalForAction(goal);
                         setNewProgressValue(goal.currentValue);
                         setShowProgressUpdate(true);
                       }}
-                      className="flex items-center gap-2 px-3 py-2 bg-brand-600/20 text-brand-400 rounded-lg hover:bg-brand-600/30 transition-colors text-sm"
+                      className="flex items-center gap-2 px-3 py-2 bg-accent/20 text-accent rounded-lg hover:bg-accent/30 transition-colors text-sm"
                     >
                       <TrendingUp className="w-4 h-4" />
                       Update Progress
@@ -1745,7 +1745,7 @@ ${index + 1}. ${goal.title}
                         setSelectedGoalForAction(goal);
                         setShowProgressHistory(true);
                       }}
-                      className="flex items-center gap-2 px-3 py-2 bg-slate-700/50 text-slate-300 rounded-lg hover:bg-slate-600/50 transition-colors text-sm"
+                      className="flex items-center gap-2 px-3 py-2 bg-surface-overlay text-text-secondary rounded-lg hover:bg-surface-raised transition-colors text-sm"
                     >
                       <Clock className="w-4 h-4" />
                       View History
@@ -1782,19 +1782,19 @@ ${index + 1}. ${goal.title}
                     </button>
                     {goal.assignedTeam && goal.assignedTeam.length > 0 && (
                       <div className="flex items-center gap-1 ml-auto">
-                        <span className="text-xs text-slate-500">Team:</span>
+                        <span className="text-xs text-text-muted">Team:</span>
                         <div className="flex -space-x-2">
                           {goal.assignedTeam.slice(0, 3).map((member) => (
                             <div
                               key={member.id}
-                              className="w-6 h-6 rounded-full bg-brand-600 flex items-center justify-center text-xs text-white border-2 border-slate-800"
+                              className="w-6 h-6 rounded-full bg-accent flex items-center justify-center text-xs text-text-onAccent border-2 border-surface-raised"
                               title={member.name}
                             >
                               {member.name.charAt(0)}
                             </div>
                           ))}
                           {goal.assignedTeam.length > 3 && (
-                            <div className="w-6 h-6 rounded-full bg-slate-600 flex items-center justify-center text-xs text-white border-2 border-slate-800">
+                            <div className="w-6 h-6 rounded-full bg-surface-overlay flex items-center justify-center text-xs text-text-primary border-2 border-surface-raised">
                               +{goal.assignedTeam.length - 3}
                             </div>
                           )}
@@ -1824,57 +1824,57 @@ ${index + 1}. ${goal.title}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-800 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl border border-slate-700"
+              className="bg-surface-raised rounded-2xl w-full max-w-md overflow-hidden shadow-2xl border border-surface-border"
             >
               <div className="p-6 border-b border-slate-700">
-                <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-brand-400" />
+                <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-accent" />
                   Update Progress
                 </h2>
-                <p className="text-sm text-slate-400">{selectedGoalForAction.title}</p>
+                <p className="text-sm text-text-muted">{selectedGoalForAction.title}</p>
               </div>
               <div className="p-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Current Progress</label>
+                  <label className="block text-sm font-medium text-text-secondary mb-2">Current Progress</label>
                   <div className="flex items-center gap-3">
                     <input
                       type="number"
                       value={newProgressValue}
                       onChange={(e) => setNewProgressValue(parseFloat(e.target.value) || 0)}
-                      className="flex-1 bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                      className="flex-1 bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/50"
                     />
-                    <span className="text-slate-400">/ {selectedGoalForAction.targetValue} {selectedGoalForAction.unit}</span>
+                    <span className="text-text-muted">/ {selectedGoalForAction.targetValue} {selectedGoalForAction.unit}</span>
                   </div>
-                  <div className="mt-2 w-full bg-slate-700 rounded-full h-2">
+                  <div className="mt-2 w-full bg-surface-overlay rounded-full h-2">
                     <div
-                      className="bg-brand-500 h-2 rounded-full transition-all"
+                      className="bg-accent h-2 rounded-full transition-all"
                       style={{ width: `${Math.min((newProgressValue / selectedGoalForAction.targetValue) * 100, 100)}%` }}
                     />
                   </div>
-                  <p className="text-xs text-slate-500 mt-1 text-right">
+                  <p className="text-xs text-text-muted mt-1 text-right">
                     {Math.round((newProgressValue / selectedGoalForAction.targetValue) * 100)}% complete
                   </p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Notes (optional)</label>
+                  <label className="block text-sm font-medium text-text-secondary mb-2">Notes (optional)</label>
                   <textarea
                     value={progressNote}
                     onChange={(e) => setProgressNote(e.target.value)}
                     placeholder="Add context about this update..."
                     rows={3}
-                    className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50 resize-none"
+                    className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50 resize-none"
                   />
                 </div>
                 <div className="flex gap-3">
                   <button
                     onClick={() => setShowProgressUpdate(false)}
-                    className="flex-1 py-3 bg-slate-700 text-slate-300 rounded-xl hover:bg-slate-600 transition-colors"
+                    className="flex-1 py-3 bg-surface-overlay text-text-secondary rounded-xl hover:bg-surface-overlay transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={updateGoalProgress}
-                    className="flex-1 py-3 bg-brand-600 text-white rounded-xl hover:bg-brand-500 transition-colors"
+                    className="flex-1 py-3 bg-accent text-text-onAccent rounded-xl hover:bg-accent/90 transition-colors"
                   >
                     Save Update
                   </button>
@@ -1900,14 +1900,14 @@ ${index + 1}. ${goal.title}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-800 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-hidden shadow-2xl border border-slate-700"
+              className="bg-surface-raised rounded-2xl w-full max-w-lg max-h-[90vh] overflow-hidden shadow-2xl border border-surface-border"
             >
               <div className="p-6 border-b border-slate-700">
-                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
                   <Users className="w-5 h-5 text-purple-400" />
                   Assign Team Members
                 </h2>
-                <p className="text-sm text-slate-400">{selectedGoalForAction.title}</p>
+                <p className="text-sm text-text-muted">{selectedGoalForAction.title}</p>
               </div>
               <div className="p-4 overflow-y-auto max-h-[60vh]">
                 <div className="space-y-2">
@@ -1917,7 +1917,7 @@ ${index + 1}. ${goal.title}
                       <label
                         key={member.id}
                         className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-colors ${
-                          isAssigned ? 'bg-purple-500/20 border border-purple-500/30' : 'bg-slate-700/30 hover:bg-slate-700/50 border border-transparent'
+                          isAssigned ? 'bg-purple-500/20 border border-purple-500/30' : 'bg-surface-overlay hover:bg-surface-raised border border-transparent'
                         }`}
                       >
                         <input
@@ -1936,14 +1936,14 @@ ${index + 1}. ${goal.title}
                               } : null);
                             }
                           }}
-                          className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-purple-500 focus:ring-purple-500/50"
+                          className="w-4 h-4 rounded border-surface-border bg-surface-overlay text-purple-500 focus:ring-purple-500/50"
                         />
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-medium">
                           {member.name.split(' ').map(n => n[0]).join('')}
                         </div>
                         <div className="flex-1">
-                          <p className="font-medium text-white">{member.name}</p>
-                          <p className="text-xs text-slate-400">{member.role}</p>
+                          <p className="font-medium text-text-primary">{member.name}</p>
+                          <p className="text-xs text-text-muted">{member.role}</p>
                         </div>
                       </label>
                     );
@@ -1953,7 +1953,7 @@ ${index + 1}. ${goal.title}
               <div className="p-4 border-t border-slate-700 flex gap-3">
                 <button
                   onClick={() => setShowTeamAssignment(false)}
-                  className="flex-1 py-3 bg-slate-700 text-slate-300 rounded-xl hover:bg-slate-600 transition-colors"
+                  className="flex-1 py-3 bg-surface-overlay text-text-secondary rounded-xl hover:bg-surface-overlay transition-colors"
                 >
                   Cancel
                 </button>
@@ -1984,35 +1984,35 @@ ${index + 1}. ${goal.title}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-800 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-hidden shadow-2xl border border-slate-700"
+              className="bg-surface-raised rounded-2xl w-full max-w-lg max-h-[90vh] overflow-hidden shadow-2xl border border-surface-border"
             >
               <div className="p-6 border-b border-slate-700">
-                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
                   <Clock className="w-5 h-5 text-blue-400" />
                   Progress History
                 </h2>
-                <p className="text-sm text-slate-400">{selectedGoalForAction.title}</p>
+                <p className="text-sm text-text-muted">{selectedGoalForAction.title}</p>
               </div>
               <div className="p-4 overflow-y-auto max-h-[60vh]">
                 {selectedGoalForAction.progressHistory && selectedGoalForAction.progressHistory.length > 0 ? (
                   <div className="space-y-3">
                     {selectedGoalForAction.progressHistory.slice().reverse().map((entry) => (
-                      <div key={entry.id} className="bg-slate-700/30 rounded-xl p-4">
+                      <div key={entry.id} className="bg-surface-overlay rounded-xl p-4">
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-slate-400" />
-                            <span className="text-sm text-slate-300">{entry.date}</span>
+                            <Calendar className="w-4 h-4 text-text-muted" />
+                            <span className="text-sm text-text-secondary">{entry.date}</span>
                           </div>
-                          <span className="text-xs text-slate-500">by {entry.updatedBy}</span>
+                          <span className="text-xs text-text-muted">by {entry.updatedBy}</span>
                         </div>
                         <div className="flex items-center gap-3 mb-2">
-                          <span className="text-lg text-slate-400">{entry.previousValue}</span>
-                          <ArrowRight className="w-4 h-4 text-brand-400" />
-                          <span className="text-lg font-bold text-brand-400">{entry.newValue}</span>
-                          <span className="text-xs text-slate-500">{selectedGoalForAction.unit}</span>
+                          <span className="text-lg text-text-muted">{entry.previousValue}</span>
+                          <ArrowRight className="w-4 h-4 text-accent" />
+                          <span className="text-lg font-bold text-accent">{entry.newValue}</span>
+                          <span className="text-xs text-text-muted">{selectedGoalForAction.unit}</span>
                         </div>
                         {entry.notes && (
-                          <p className="text-sm text-slate-400 bg-slate-700/50 rounded-lg p-2 mt-2">
+                          <p className="text-sm text-text-muted bg-surface-overlay rounded-lg p-2 mt-2">
                             {entry.notes}
                           </p>
                         )}
@@ -2021,16 +2021,16 @@ ${index + 1}. ${goal.title}
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <Clock className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-slate-400 mb-2">No history yet</h3>
-                    <p className="text-sm text-slate-500">Progress updates will appear here</p>
+                    <Clock className="w-12 h-12 text-text-muted mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-text-muted mb-2">No history yet</h3>
+                    <p className="text-sm text-text-muted">Progress updates will appear here</p>
                   </div>
                 )}
               </div>
               <div className="p-4 border-t border-slate-700">
                 <button
                   onClick={() => setShowProgressHistory(false)}
-                  className="w-full py-3 bg-slate-700 text-slate-300 rounded-xl hover:bg-slate-600 transition-colors"
+                  className="w-full py-3 bg-surface-overlay text-text-secondary rounded-xl hover:bg-surface-overlay transition-colors"
                 >
                   Close
                 </button>
@@ -2055,21 +2055,21 @@ ${index + 1}. ${goal.title}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-800 rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden shadow-2xl border border-slate-700"
+              className="bg-surface-raised rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden shadow-2xl border border-surface-border"
             >
               <div className="p-6 border-b border-slate-700 flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
                     <Copy className="w-5 h-5 text-purple-400" />
                     Goal Templates
                   </h2>
-                  <p className="text-sm text-slate-400">Quick-start your safety goals with pre-configured templates</p>
+                  <p className="text-sm text-text-muted">Quick-start your safety goals with pre-configured templates</p>
                 </div>
                 <button
                   onClick={() => setShowTemplates(false)}
-                  className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+                  className="p-2 hover:bg-surface-overlay rounded-lg transition-colors"
                 >
-                  <X className="w-5 h-5 text-slate-400" />
+                  <X className="w-5 h-5 text-text-muted" />
                 </button>
               </div>
               <div className="p-4 overflow-y-auto max-h-[calc(90vh-120px)]">
@@ -2078,34 +2078,34 @@ ${index + 1}. ${goal.title}
                     <button
                       key={template.id}
                       onClick={() => createGoalFromTemplate(template)}
-                      className="text-left bg-slate-700/30 hover:bg-slate-700/50 rounded-xl p-4 border border-slate-600/30 hover:border-brand-500/30 transition-all group"
+                      className="text-left bg-surface-overlay hover:bg-surface-raised rounded-xl p-4 border border-surface-border hover:border-accent/30 transition-all group"
                     >
                       <div className="flex items-start gap-3">
                         <div className={`p-2.5 rounded-xl bg-gradient-to-br ${template.color}`}>
                           <template.icon className="w-5 h-5 text-white" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-white group-hover:text-brand-400 transition-colors">{template.name}</h3>
-                          <p className="text-xs text-slate-400 mt-1">{template.description}</p>
+                          <h3 className="font-semibold text-text-primary group-hover:text-accent transition-colors">{template.name}</h3>
+                          <p className="text-xs text-text-muted mt-1">{template.description}</p>
                           <div className="flex items-center gap-2 mt-2">
-                            <span className="px-2 py-0.5 text-xs bg-slate-600/50 text-slate-300 rounded-full">
+                            <span className="px-2 py-0.5 text-xs bg-surface-overlay/50 text-text-secondary rounded-full">
                               Target: {template.defaultTarget} {template.unit}
                             </span>
-                            <span className="px-2 py-0.5 text-xs bg-slate-600/50 text-slate-300 rounded-full capitalize">
+                            <span className="px-2 py-0.5 text-xs bg-surface-overlay/50 text-text-secondary rounded-full capitalize">
                               {template.category}
                             </span>
                           </div>
                           <div className="mt-3 flex items-center gap-1">
-                            <span className="text-xs text-slate-500">Milestones:</span>
+                            <span className="text-xs text-text-muted">Milestones:</span>
                             {template.suggestedMilestones.slice(0, 3).map((m, i) => (
-                              <span key={i} className="w-2 h-2 rounded-full bg-slate-600" />
+                              <span key={i} className="w-2 h-2 rounded-full bg-surface-overlay" />
                             ))}
                             {template.suggestedMilestones.length > 3 && (
-                              <span className="text-xs text-slate-500">+{template.suggestedMilestones.length - 3}</span>
+                              <span className="text-xs text-text-muted">+{template.suggestedMilestones.length - 3}</span>
                             )}
                           </div>
                         </div>
-                        <Plus className="w-5 h-5 text-slate-500 group-hover:text-brand-400 transition-colors" />
+                        <Plus className="w-5 h-5 text-text-muted group-hover:text-accent transition-colors" />
                       </div>
                     </button>
                   ))}
@@ -2131,27 +2131,27 @@ ${index + 1}. ${goal.title}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-800 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl border border-slate-700"
+              className="bg-surface-raised rounded-2xl w-full max-w-md overflow-hidden shadow-2xl border border-surface-border"
             >
               <div className="p-6 border-b border-slate-700 flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
                     <Bell className="w-5 h-5 text-amber-400" />
                     Notification Settings
                   </h2>
-                  <p className="text-sm text-slate-400">Configure goal alerts and reminders</p>
+                  <p className="text-sm text-text-muted">Configure goal alerts and reminders</p>
                 </div>
                 <button
                   onClick={() => setShowNotificationSettings(false)}
-                  className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+                  className="p-2 hover:bg-surface-overlay rounded-lg transition-colors"
                 >
-                  <X className="w-5 h-5 text-slate-400" />
+                  <X className="w-5 h-5 text-text-muted" />
                 </button>
               </div>
               <div className="p-6 space-y-6">
                 {/* Notification Types */}
                 <div className="space-y-3">
-                  <h3 className="text-sm font-medium text-slate-300 mb-3">Alert Types</h3>
+                  <h3 className="text-sm font-medium text-text-secondary mb-3">Alert Types</h3>
                   {[
                     { key: 'milestoneReminders', label: 'Milestone Reminders', icon: Flag, desc: 'Get reminded before milestone due dates' },
                     { key: 'deadlineAlerts', label: 'Deadline Alerts', icon: Clock, desc: 'Alerts when goals are approaching deadline' },
@@ -2159,19 +2159,19 @@ ${index + 1}. ${goal.title}
                     { key: 'atRiskAlerts', label: 'At-Risk Alerts', icon: AlertOctagon, desc: 'Immediate alerts when goals become at-risk' },
                     { key: 'completionNotifications', label: 'Completion Notifications', icon: CheckCircle2, desc: 'Celebrate when goals are achieved' },
                   ].map((item) => (
-                    <label key={item.key} className="flex items-start gap-3 p-3 bg-slate-700/30 rounded-xl cursor-pointer hover:bg-slate-700/50 transition-colors">
+                    <label key={item.key} className="flex items-start gap-3 p-3 bg-surface-overlay rounded-xl cursor-pointer hover:bg-surface-raised transition-colors">
                       <input
                         type="checkbox"
                         checked={notifications[item.key as keyof NotificationSettings] as boolean}
                         onChange={(e) => setNotifications(prev => ({ ...prev, [item.key]: e.target.checked }))}
-                        className="mt-1 w-4 h-4 rounded border-slate-600 bg-slate-700 text-brand-500 focus:ring-brand-500/50"
+                        className="mt-1 w-4 h-4 rounded border-surface-border bg-surface-overlay text-accent focus:ring-brand-500/50"
                       />
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <item.icon className="w-4 h-4 text-slate-400" />
-                          <span className="text-sm font-medium text-white">{item.label}</span>
+                          <item.icon className="w-4 h-4 text-text-muted" />
+                          <span className="text-sm font-medium text-text-primary">{item.label}</span>
                         </div>
-                        <p className="text-xs text-slate-500 mt-0.5">{item.desc}</p>
+                        <p className="text-xs text-text-muted mt-0.5">{item.desc}</p>
                       </div>
                     </label>
                   ))}
@@ -2179,40 +2179,40 @@ ${index + 1}. ${goal.title}
 
                 {/* Delivery Methods */}
                 <div className="space-y-3">
-                  <h3 className="text-sm font-medium text-slate-300 mb-3">Delivery Methods</h3>
+                  <h3 className="text-sm font-medium text-text-secondary mb-3">Delivery Methods</h3>
                   <div className="flex items-center gap-3">
-                    <label className="flex-1 flex items-center gap-3 p-3 bg-slate-700/30 rounded-xl cursor-pointer hover:bg-slate-700/50 transition-colors">
+                    <label className="flex-1 flex items-center gap-3 p-3 bg-surface-overlay rounded-xl cursor-pointer hover:bg-surface-raised transition-colors">
                       <input
                         type="checkbox"
                         checked={notifications.emailNotifications}
                         onChange={(e) => setNotifications(prev => ({ ...prev, emailNotifications: e.target.checked }))}
-                        className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-brand-500 focus:ring-brand-500/50"
+                        className="w-4 h-4 rounded border-surface-border bg-surface-overlay text-accent focus:ring-brand-500/50"
                       />
-                      <Mail className="w-4 h-4 text-slate-400" />
-                      <span className="text-sm text-white">Email</span>
+                      <Mail className="w-4 h-4 text-text-muted" />
+                      <span className="text-sm text-text-primary">Email</span>
                     </label>
-                    <label className="flex-1 flex items-center gap-3 p-3 bg-slate-700/30 rounded-xl cursor-pointer hover:bg-slate-700/50 transition-colors">
+                    <label className="flex-1 flex items-center gap-3 p-3 bg-surface-overlay rounded-xl cursor-pointer hover:bg-surface-raised transition-colors">
                       <input
                         type="checkbox"
                         checked={notifications.pushNotifications}
                         onChange={(e) => setNotifications(prev => ({ ...prev, pushNotifications: e.target.checked }))}
-                        className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-brand-500 focus:ring-brand-500/50"
+                        className="w-4 h-4 rounded border-surface-border bg-surface-overlay text-accent focus:ring-brand-500/50"
                       />
-                      <MessageSquare className="w-4 h-4 text-slate-400" />
-                      <span className="text-sm text-white">Push</span>
+                      <MessageSquare className="w-4 h-4 text-text-muted" />
+                      <span className="text-sm text-text-primary">Push</span>
                     </label>
                   </div>
                 </div>
 
                 {/* Reminder Timing */}
                 <div>
-                  <h3 className="text-sm font-medium text-slate-300 mb-3">Reminder Timing</h3>
+                  <h3 className="text-sm font-medium text-text-secondary mb-3">Reminder Timing</h3>
                   <div className="flex items-center gap-3">
-                    <span className="text-sm text-slate-400">Remind me</span>
+                    <span className="text-sm text-text-muted">Remind me</span>
                     <select
                       value={notifications.reminderDays}
                       onChange={(e) => setNotifications(prev => ({ ...prev, reminderDays: parseInt(e.target.value) }))}
-                      className="bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                      className="bg-surface-overlay border border-surface-border rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/50"
                     >
                       <option value={1}>1 day</option>
                       <option value={3}>3 days</option>
@@ -2220,13 +2220,13 @@ ${index + 1}. ${goal.title}
                       <option value={7}>1 week</option>
                       <option value={14}>2 weeks</option>
                     </select>
-                    <span className="text-sm text-slate-400">before deadline</span>
+                    <span className="text-sm text-text-muted">before deadline</span>
                   </div>
                 </div>
 
                 <button
                   onClick={() => setShowNotificationSettings(false)}
-                  className="w-full py-3 bg-brand-600 text-white rounded-xl hover:bg-brand-500 transition-colors font-medium"
+                  className="w-full py-3 bg-accent text-text-onAccent rounded-xl hover:bg-accent/90 transition-colors font-medium"
                 >
                   Save Settings
                 </button>
@@ -2251,48 +2251,48 @@ ${index + 1}. ${goal.title}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-800 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-hidden shadow-2xl border border-slate-700"
+              className="bg-surface-raised rounded-2xl w-full max-w-lg max-h-[90vh] overflow-hidden shadow-2xl border border-surface-border"
             >
               <div className="p-6 border-b border-slate-700 flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-bold text-white">Create New Goal</h2>
-                  <p className="text-sm text-slate-400">Define a custom safety goal</p>
+                  <h2 className="text-xl font-bold text-text-primary">Create New Goal</h2>
+                  <p className="text-sm text-text-muted">Define a custom safety goal</p>
                 </div>
                 <button
                   onClick={() => setShowAddGoal(false)}
-                  className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+                  className="p-2 hover:bg-surface-overlay rounded-lg transition-colors"
                 >
-                  <X className="w-5 h-5 text-slate-400" />
+                  <X className="w-5 h-5 text-text-muted" />
                 </button>
               </div>
               <div className="p-6 space-y-4 overflow-y-auto max-h-[calc(90vh-180px)]">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Goal Title</label>
+                  <label className="block text-sm font-medium text-text-secondary mb-2">Goal Title</label>
                   <input
                     type="text"
                     value={newGoal.title}
                     onChange={(e) => setNewGoal(prev => ({ ...prev, title: e.target.value }))}
                     placeholder="e.g., Reduce TRIR to below 2.0"
-                    className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                    className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Description</label>
+                  <label className="block text-sm font-medium text-text-secondary mb-2">Description</label>
                   <textarea
                     value={newGoal.description}
                     onChange={(e) => setNewGoal(prev => ({ ...prev, description: e.target.value }))}
                     placeholder="Describe the goal objective..."
                     rows={2}
-                    className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50 resize-none"
+                    className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50 resize-none"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Category</label>
+                    <label className="block text-sm font-medium text-text-secondary mb-2">Category</label>
                     <select
                       value={newGoal.category}
                       onChange={(e) => setNewGoal(prev => ({ ...prev, category: e.target.value as SafetyGoal['category'] }))}
-                      className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                      className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
                     >
                       <option value="incident">Incident Reduction</option>
                       <option value="compliance">Compliance</option>
@@ -2303,11 +2303,11 @@ ${index + 1}. ${goal.title}
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Priority</label>
+                    <label className="block text-sm font-medium text-text-secondary mb-2">Priority</label>
                     <select
                       value={newGoal.priority}
                       onChange={(e) => setNewGoal(prev => ({ ...prev, priority: e.target.value as SafetyGoal['priority'] }))}
-                      className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                      className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
                     >
                       <option value="low">Low</option>
                       <option value="medium">Medium</option>
@@ -2318,76 +2318,76 @@ ${index + 1}. ${goal.title}
                 </div>
                 <div className="grid grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Target Value</label>
+                    <label className="block text-sm font-medium text-text-secondary mb-2">Target Value</label>
                     <input
                       type="number"
                       value={newGoal.targetValue}
                       onChange={(e) => setNewGoal(prev => ({ ...prev, targetValue: parseFloat(e.target.value) }))}
-                      className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                      className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Current Value</label>
+                    <label className="block text-sm font-medium text-text-secondary mb-2">Current Value</label>
                     <input
                       type="number"
                       value={newGoal.currentValue}
                       onChange={(e) => setNewGoal(prev => ({ ...prev, currentValue: parseFloat(e.target.value) }))}
-                      className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                      className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Unit</label>
+                    <label className="block text-sm font-medium text-text-secondary mb-2">Unit</label>
                     <input
                       type="text"
                       value={newGoal.unit}
                       onChange={(e) => setNewGoal(prev => ({ ...prev, unit: e.target.value }))}
                       placeholder="%"
-                      className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                      className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
                     />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Start Date</label>
+                    <label className="block text-sm font-medium text-text-secondary mb-2">Start Date</label>
                     <input
                       type="date"
                       value={newGoal.startDate}
                       onChange={(e) => setNewGoal(prev => ({ ...prev, startDate: e.target.value }))}
-                      className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                      className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Target Date</label>
+                    <label className="block text-sm font-medium text-text-secondary mb-2">Target Date</label>
                     <input
                       type="date"
                       value={newGoal.targetDate}
                       onChange={(e) => setNewGoal(prev => ({ ...prev, targetDate: e.target.value }))}
-                      className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                      className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Owner</label>
+                  <label className="block text-sm font-medium text-text-secondary mb-2">Owner</label>
                   <input
                     type="text"
                     value={newGoal.owner}
                     onChange={(e) => setNewGoal(prev => ({ ...prev, owner: e.target.value }))}
                     placeholder="e.g., Safety Director"
-                    className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                    className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
                   />
                 </div>
               </div>
               <div className="p-6 border-t border-slate-700 flex gap-3">
                 <button
                   onClick={() => setShowAddGoal(false)}
-                  className="flex-1 py-3 bg-slate-700 text-slate-300 rounded-xl hover:bg-slate-600 transition-colors"
+                  className="flex-1 py-3 bg-surface-overlay text-text-secondary rounded-xl hover:bg-surface-overlay transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={addCustomGoal}
                   disabled={!newGoal.title || !newGoal.targetDate}
-                  className="flex-1 py-3 bg-brand-600 text-white rounded-xl hover:bg-brand-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 py-3 bg-accent text-text-onAccent rounded-xl hover:bg-accent/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Create Goal
                 </button>
@@ -2412,20 +2412,20 @@ ${index + 1}. ${goal.title}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-800 rounded-2xl w-full max-w-xl max-h-[90vh] overflow-hidden shadow-2xl border border-slate-700"
+              className="bg-surface-raised rounded-2xl w-full max-w-xl max-h-[90vh] overflow-hidden shadow-2xl border border-surface-border"
             >
               <div className="p-6 border-b border-slate-700">
-                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
                   <MessageSquare className="w-5 h-5 text-cyan-400" />
                   Comments
                 </h2>
-                <p className="text-sm text-slate-400">{selectedGoalForAction.title}</p>
+                <p className="text-sm text-text-muted">{selectedGoalForAction.title}</p>
               </div>
               <div className="p-4 overflow-y-auto max-h-[50vh]">
                 {comments.filter(c => c.goalId === selectedGoalForAction.id).length > 0 ? (
                   <div className="space-y-4">
                     {comments.filter(c => c.goalId === selectedGoalForAction.id).map((comment) => (
-                      <div key={comment.id} className="bg-slate-700/30 rounded-xl p-4">
+                      <div key={comment.id} className="bg-surface-overlay rounded-xl p-4">
                         <div className="flex items-start gap-3">
                           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white font-medium shrink-0">
                             {comment.authorName.split(' ').map(n => n[0]).join('')}
@@ -2433,22 +2433,22 @@ ${index + 1}. ${goal.title}
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between mb-1">
                               <div>
-                                <span className="font-medium text-white">{comment.authorName}</span>
-                                <span className="text-xs text-slate-500 ml-2">{comment.authorRole}</span>
+                                <span className="font-medium text-text-primary">{comment.authorName}</span>
+                                <span className="text-xs text-text-muted ml-2">{comment.authorRole}</span>
                               </div>
-                              <span className="text-xs text-slate-500">
+                              <span className="text-xs text-text-muted">
                                 {new Date(comment.timestamp).toLocaleDateString()}
                                 {comment.isEdited && <span className="ml-1 italic">(edited)</span>}
                               </span>
                             </div>
-                            <p className="text-slate-300 text-sm mb-3">{comment.content}</p>
+                            <p className="text-text-secondary text-sm mb-3">{comment.content}</p>
                             <div className="flex items-center gap-3">
                               <button
                                 onClick={() => toggleLike(comment.id)}
                                 className={`flex items-center gap-1 text-xs transition-colors ${
                                   comment.likedBy.includes('current-user')
                                     ? 'text-cyan-400'
-                                    : 'text-slate-500 hover:text-slate-300'
+                                    : 'text-text-muted hover:text-text-secondary'
                                 }`}
                               >
                                 <ThumbsUp className="w-3.5 h-3.5" />
@@ -2456,7 +2456,7 @@ ${index + 1}. ${goal.title}
                               </button>
                               <button
                                 onClick={() => setReplyingTo(comment.id)}
-                                className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                                className="flex items-center gap-1 text-xs text-text-muted hover:text-text-secondary transition-colors"
                               >
                                 <Reply className="w-3.5 h-3.5" />
                                 Reply
@@ -2467,21 +2467,21 @@ ${index + 1}. ${goal.title}
                             {comment.replies.length > 0 && (
                               <div className="mt-3 pl-4 border-l-2 border-slate-600 space-y-3">
                                 {comment.replies.map((reply) => (
-                                  <div key={reply.id} className="bg-slate-700/50 rounded-lg p-3">
+                                  <div key={reply.id} className="bg-surface-overlay rounded-lg p-3">
                                     <div className="flex items-center gap-2 mb-1">
                                       <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-xs">
                                         {reply.authorName.split(' ').map(n => n[0]).join('')}
                                       </div>
-                                      <span className="text-sm font-medium text-white">{reply.authorName}</span>
-                                      <span className="text-xs text-slate-500">{new Date(reply.timestamp).toLocaleDateString()}</span>
+                                      <span className="text-sm font-medium text-text-primary">{reply.authorName}</span>
+                                      <span className="text-xs text-text-muted">{new Date(reply.timestamp).toLocaleDateString()}</span>
                                     </div>
-                                    <p className="text-slate-300 text-sm">{reply.content}</p>
+                                    <p className="text-text-secondary text-sm">{reply.content}</p>
                                     <button
                                       onClick={() => toggleLike(reply.id, true, comment.id)}
                                       className={`flex items-center gap-1 text-xs mt-2 transition-colors ${
                                         reply.likedBy.includes('current-user')
                                           ? 'text-cyan-400'
-                                          : 'text-slate-500 hover:text-slate-300'
+                                          : 'text-text-muted hover:text-text-secondary'
                                       }`}
                                     >
                                       <ThumbsUp className="w-3 h-3" />
@@ -2500,7 +2500,7 @@ ${index + 1}. ${goal.title}
                                   value={replyContent}
                                   onChange={(e) => setReplyContent(e.target.value)}
                                   placeholder="Write a reply..."
-                                  className="flex-1 bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+                                  className="flex-1 bg-surface-overlay border border-surface-border rounded-lg px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
                                   onKeyDown={(e) => {
                                     if (e.key === 'Enter' && !e.shiftKey) {
                                       e.preventDefault();
@@ -2520,7 +2520,7 @@ ${index + 1}. ${goal.title}
                                     setReplyingTo(null);
                                     setReplyContent('');
                                   }}
-                                  className="px-3 py-2 bg-slate-700 text-slate-300 rounded-lg hover:bg-slate-600 transition-colors"
+                                  className="px-3 py-2 bg-surface-overlay text-text-secondary rounded-lg hover:bg-surface-raised transition-colors"
                                 >
                                   <X className="w-4 h-4" />
                                 </button>
@@ -2533,9 +2533,9 @@ ${index + 1}. ${goal.title}
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <MessageSquare className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-slate-400 mb-2">No comments yet</h3>
-                    <p className="text-sm text-slate-500">Start the discussion!</p>
+                    <MessageSquare className="w-12 h-12 text-text-muted mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-text-muted mb-2">No comments yet</h3>
+                    <p className="text-sm text-text-muted">Start the discussion!</p>
                   </div>
                 )}
               </div>
@@ -2546,7 +2546,7 @@ ${index + 1}. ${goal.title}
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     placeholder="Add a comment..."
-                    className="flex-1 bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+                    className="flex-1 bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
@@ -2583,15 +2583,15 @@ ${index + 1}. ${goal.title}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-800 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-hidden shadow-2xl border border-slate-700"
+              className="bg-surface-raised rounded-2xl w-full max-w-lg max-h-[90vh] overflow-hidden shadow-2xl border border-surface-border"
             >
               <div className="p-6 border-b border-slate-700 flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
                     <AlarmClock className="w-5 h-5 text-amber-400" />
                     Goal Reminders
                   </h2>
-                  <p className="text-sm text-slate-400">{selectedGoalForAction.title}</p>
+                  <p className="text-sm text-text-muted">{selectedGoalForAction.title}</p>
                 </div>
                 <button
                   onClick={() => setShowAddReminder(true)}
@@ -2607,8 +2607,8 @@ ${index + 1}. ${goal.title}
                     {reminders.filter(r => r.goalId === selectedGoalForAction.id).map((reminder) => (
                       <div
                         key={reminder.id}
-                        className={`bg-slate-700/30 rounded-xl p-4 border ${
-                          reminder.isActive ? 'border-amber-500/30' : 'border-slate-600/30 opacity-60'
+                        className={`bg-surface-overlay rounded-xl p-4 border ${
+                          reminder.isActive ? 'border-amber-500/30' : 'border-surface-border/30 opacity-60'
                         }`}
                       >
                         <div className="flex items-start justify-between mb-2">
@@ -2625,8 +2625,8 @@ ${index + 1}. ${goal.title}
                               {reminder.type === 'custom' && <Bell className="w-4 h-4" />}
                             </div>
                             <div>
-                              <h3 className="font-medium text-white">{reminder.title}</h3>
-                              <p className="text-xs text-slate-400 capitalize">{reminder.type} reminder</p>
+                              <h3 className="font-medium text-text-primary">{reminder.title}</h3>
+                              <p className="text-xs text-text-muted capitalize">{reminder.type} reminder</p>
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
@@ -2635,7 +2635,7 @@ ${index + 1}. ${goal.title}
                               className={`p-1.5 rounded-lg transition-colors ${
                                 reminder.isActive
                                   ? 'bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30'
-                                  : 'bg-slate-600/50 text-slate-500 hover:bg-slate-600'
+                                  : 'bg-surface-overlay/50 text-text-muted hover:bg-surface-overlay'
                               }`}
                             >
                               {reminder.isActive ? <Bell className="w-4 h-4" /> : <BellOff className="w-4 h-4" />}
@@ -2648,7 +2648,7 @@ ${index + 1}. ${goal.title}
                             </button>
                           </div>
                         </div>
-                        <div className="flex items-center gap-4 text-sm text-slate-400">
+                        <div className="flex items-center gap-4 text-sm text-text-muted">
                           <div className="flex items-center gap-1">
                             <CalendarDays className="w-4 h-4" />
                             {reminder.date}
@@ -2668,7 +2668,7 @@ ${index + 1}. ${goal.title}
                           {reminder.notifyVia.map(method => (
                             <span
                               key={method}
-                              className="px-2 py-0.5 bg-slate-600/50 text-slate-300 text-xs rounded-full capitalize"
+                              className="px-2 py-0.5 bg-surface-overlay/50 text-text-secondary text-xs rounded-full capitalize"
                             >
                               {method}
                             </span>
@@ -2679,16 +2679,16 @@ ${index + 1}. ${goal.title}
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <AlarmClock className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-slate-400 mb-2">No reminders set</h3>
-                    <p className="text-sm text-slate-500">Add a reminder to stay on track</p>
+                    <AlarmClock className="w-12 h-12 text-text-muted mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-text-muted mb-2">No reminders set</h3>
+                    <p className="text-sm text-text-muted">Add a reminder to stay on track</p>
                   </div>
                 )}
               </div>
               <div className="p-4 border-t border-slate-700">
                 <button
                   onClick={() => setShowReminders(false)}
-                  className="w-full py-3 bg-slate-700 text-slate-300 rounded-xl hover:bg-slate-600 transition-colors"
+                  className="w-full py-3 bg-surface-overlay text-text-secondary rounded-xl hover:bg-surface-overlay transition-colors"
                 >
                   Close
                 </button>
@@ -2713,31 +2713,31 @@ ${index + 1}. ${goal.title}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-800 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl border border-slate-700"
+              className="bg-surface-raised rounded-2xl w-full max-w-md overflow-hidden shadow-2xl border border-surface-border"
             >
               <div className="p-6 border-b border-slate-700">
-                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
                   <AlarmClock className="w-5 h-5 text-amber-400" />
                   Add Reminder
                 </h2>
               </div>
               <div className="p-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Reminder Title</label>
+                  <label className="block text-sm font-medium text-text-secondary mb-2">Reminder Title</label>
                   <input
                     type="text"
                     value={newReminder.title}
                     onChange={(e) => setNewReminder(prev => ({ ...prev, title: e.target.value }))}
                     placeholder="e.g., Weekly progress check"
-                    className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+                    className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Reminder Type</label>
+                  <label className="block text-sm font-medium text-text-secondary mb-2">Reminder Type</label>
                   <select
                     value={newReminder.type}
                     onChange={(e) => setNewReminder(prev => ({ ...prev, type: e.target.value as GoalReminder['type'] }))}
-                    className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+                    className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
                   >
                     <option value="milestone">Milestone Reminder</option>
                     <option value="deadline">Deadline Alert</option>
@@ -2747,30 +2747,30 @@ ${index + 1}. ${goal.title}
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Date</label>
+                    <label className="block text-sm font-medium text-text-secondary mb-2">Date</label>
                     <input
                       type="date"
                       value={newReminder.date}
                       onChange={(e) => setNewReminder(prev => ({ ...prev, date: e.target.value }))}
-                      className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+                      className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Time</label>
+                    <label className="block text-sm font-medium text-text-secondary mb-2">Time</label>
                     <input
                       type="time"
                       value={newReminder.time}
                       onChange={(e) => setNewReminder(prev => ({ ...prev, time: e.target.value }))}
-                      className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+                      className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Repeat</label>
+                  <label className="block text-sm font-medium text-text-secondary mb-2">Repeat</label>
                   <select
                     value={newReminder.repeat}
                     onChange={(e) => setNewReminder(prev => ({ ...prev, repeat: e.target.value as GoalReminder['repeat'] }))}
-                    className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+                    className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
                   >
                     <option value="none">No Repeat</option>
                     <option value="daily">Daily</option>
@@ -2779,7 +2779,7 @@ ${index + 1}. ${goal.title}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Notify Via</label>
+                  <label className="block text-sm font-medium text-text-secondary mb-2">Notify Via</label>
                   <div className="flex items-center gap-3">
                     {['email', 'push', 'sms'].map((method) => (
                       <label key={method} className="flex items-center gap-2 cursor-pointer">
@@ -2794,9 +2794,9 @@ ${index + 1}. ${goal.title}
                               setNewReminder(prev => ({ ...prev, notifyVia: current.filter(m => m !== method) }));
                             }
                           }}
-                          className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-amber-500 focus:ring-amber-500/50"
+                          className="w-4 h-4 rounded border-surface-border bg-surface-overlay text-amber-500 focus:ring-amber-500/50"
                         />
-                        <span className="text-sm text-slate-300 capitalize">{method}</span>
+                        <span className="text-sm text-text-secondary capitalize">{method}</span>
                       </label>
                     ))}
                   </div>
@@ -2804,7 +2804,7 @@ ${index + 1}. ${goal.title}
                 <div className="flex gap-3">
                   <button
                     onClick={() => setShowAddReminder(false)}
-                    className="flex-1 py-3 bg-slate-700 text-slate-300 rounded-xl hover:bg-slate-600 transition-colors"
+                    className="flex-1 py-3 bg-surface-overlay text-text-secondary rounded-xl hover:bg-surface-overlay transition-colors"
                   >
                     Cancel
                   </button>
@@ -2837,7 +2837,7 @@ ${index + 1}. ${goal.title}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-800 rounded-2xl w-full max-w-5xl max-h-[95vh] overflow-hidden shadow-2xl border border-slate-700"
+              className="bg-surface-raised rounded-2xl w-full max-w-5xl max-h-[95vh] overflow-hidden shadow-2xl border border-surface-border"
             >
               <div className="p-6 border-b border-slate-700 flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -2845,15 +2845,15 @@ ${index + 1}. ${goal.title}
                     <LayoutDashboard className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-white">Goal Analytics Dashboard</h2>
-                    <p className="text-sm text-slate-400">Comprehensive view of safety goal performance</p>
+                    <h2 className="text-xl font-bold text-text-primary">Goal Analytics Dashboard</h2>
+                    <p className="text-sm text-text-muted">Comprehensive view of safety goal performance</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setShowGoalDashboard(false)}
-                  className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+                  className="p-2 hover:bg-surface-overlay rounded-lg transition-colors"
                 >
-                  <X className="w-5 h-5 text-slate-400" />
+                  <X className="w-5 h-5 text-text-muted" />
                 </button>
               </div>
               <div className="p-6 overflow-y-auto max-h-[calc(95vh-120px)]">
@@ -2864,7 +2864,7 @@ ${index + 1}. ${goal.title}
                       <Target className="w-5 h-5 text-blue-400" />
                       <span className="text-xs text-blue-300">Total</span>
                     </div>
-                    <p className="text-3xl font-bold text-white">{goals.length}</p>
+                    <p className="text-3xl font-bold text-text-primary">{goals.length}</p>
                     <p className="text-sm text-blue-300">Active Goals</p>
                   </div>
                   <div className="bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 rounded-xl p-4 border border-emerald-500/30">
@@ -2872,7 +2872,7 @@ ${index + 1}. ${goal.title}
                       <CheckCircle2 className="w-5 h-5 text-emerald-400" />
                       <span className="text-xs text-emerald-300">Completed</span>
                     </div>
-                    <p className="text-3xl font-bold text-white">{goals.filter(g => g.status === 'completed').length}</p>
+                    <p className="text-3xl font-bold text-text-primary">{goals.filter(g => g.status === 'completed').length}</p>
                     <p className="text-sm text-emerald-300">Goals Achieved</p>
                   </div>
                   <div className="bg-gradient-to-br from-amber-500/20 to-amber-600/10 rounded-xl p-4 border border-amber-500/30">
@@ -2880,7 +2880,7 @@ ${index + 1}. ${goal.title}
                       <Percent className="w-5 h-5 text-amber-400" />
                       <span className="text-xs text-amber-300">Average</span>
                     </div>
-                    <p className="text-3xl font-bold text-white">
+                    <p className="text-3xl font-bold text-text-primary">
                       {Math.round(goals.reduce((acc, g) => acc + (g.currentValue / g.targetValue) * 100, 0) / goals.length)}%
                     </p>
                     <p className="text-sm text-amber-300">Avg Progress</p>
@@ -2890,16 +2890,16 @@ ${index + 1}. ${goal.title}
                       <AlertTriangle className="w-5 h-5 text-red-400" />
                       <span className="text-xs text-red-300">At Risk</span>
                     </div>
-                    <p className="text-3xl font-bold text-white">{goals.filter(g => g.status === 'at-risk' || g.status === 'overdue').length}</p>
+                    <p className="text-3xl font-bold text-text-primary">{goals.filter(g => g.status === 'at-risk' || g.status === 'overdue').length}</p>
                     <p className="text-sm text-red-300">Need Attention</p>
                   </div>
                 </div>
 
                 {/* Progress by Category */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <div className="bg-slate-700/30 rounded-xl p-5 border border-slate-600/50">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                      <PieChart className="w-5 h-5 text-brand-400" />
+                  <div className="bg-surface-overlay rounded-xl p-5 border border-surface-border">
+                    <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
+                      <PieChart className="w-5 h-5 text-accent" />
                       Goals by Category
                     </h3>
                     <div className="space-y-3">
@@ -2909,9 +2909,9 @@ ${index + 1}. ${goal.title}
                         return (
                           <div key={cat.id} className="flex items-center gap-3">
                             <div className={`w-3 h-3 rounded-full ${cat.color}`} />
-                            <span className="text-sm text-slate-300 flex-1">{cat.label}</span>
-                            <span className="text-sm font-medium text-white">{count}</span>
-                            <div className="w-24 bg-slate-600 rounded-full h-2">
+                            <span className="text-sm text-text-secondary flex-1">{cat.label}</span>
+                            <span className="text-sm font-medium text-text-primary">{count}</span>
+                            <div className="w-24 bg-surface-overlay rounded-full h-2">
                               <div
                                 className={`h-2 rounded-full ${cat.color}`}
                                 style={{ width: `${percentage}%` }}
@@ -2923,9 +2923,9 @@ ${index + 1}. ${goal.title}
                     </div>
                   </div>
 
-                  <div className="bg-slate-700/30 rounded-xl p-5 border border-slate-600/50">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                      <Activity className="w-5 h-5 text-brand-400" />
+                  <div className="bg-surface-overlay rounded-xl p-5 border border-surface-border">
+                    <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
+                      <Activity className="w-5 h-5 text-accent" />
                       Status Distribution
                     </h3>
                     <div className="space-y-3">
@@ -2935,16 +2935,16 @@ ${index + 1}. ${goal.title}
                         { status: 'in-progress', label: 'In Progress', color: 'bg-blue-500' },
                         { status: 'at-risk', label: 'At Risk', color: 'bg-amber-500' },
                         { status: 'overdue', label: 'Overdue', color: 'bg-red-500' },
-                        { status: 'not-started', label: 'Not Started', color: 'bg-slate-500' },
+                        { status: 'not-started', label: 'Not Started', color: 'bg-surface-overlay' },
                       ].map((item) => {
                         const count = goals.filter(g => g.status === item.status).length;
                         const percentage = goals.length > 0 ? (count / goals.length) * 100 : 0;
                         return (
                           <div key={item.status} className="flex items-center gap-3">
                             <div className={`w-3 h-3 rounded-full ${item.color}`} />
-                            <span className="text-sm text-slate-300 flex-1">{item.label}</span>
-                            <span className="text-sm font-medium text-white">{count}</span>
-                            <div className="w-24 bg-slate-600 rounded-full h-2">
+                            <span className="text-sm text-text-secondary flex-1">{item.label}</span>
+                            <span className="text-sm font-medium text-text-primary">{count}</span>
+                            <div className="w-24 bg-surface-overlay rounded-full h-2">
                               <div
                                 className={`h-2 rounded-full ${item.color}`}
                                 style={{ width: `${percentage}%` }}
@@ -2958,9 +2958,9 @@ ${index + 1}. ${goal.title}
                 </div>
 
                 {/* Milestone Progress */}
-                <div className="bg-slate-700/30 rounded-xl p-5 border border-slate-600/50 mb-6">
-                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                    <Flag className="w-5 h-5 text-brand-400" />
+                <div className="bg-surface-overlay rounded-xl p-5 border border-surface-border mb-6">
+                  <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
+                    <Flag className="w-5 h-5 text-accent" />
                     Milestone Completion
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -2969,38 +2969,38 @@ ${index + 1}. ${goal.title}
                       const completedMilestones = goal.milestones.filter(m => m.completed).length;
                       const percentage = totalMilestones > 0 ? (completedMilestones / totalMilestones) * 100 : 0;
                       return (
-                        <div key={goal.id} className="bg-slate-800/50 rounded-lg p-4">
+                        <div key={goal.id} className="bg-surface-raised rounded-lg p-4">
                           <div className="flex items-start justify-between mb-2">
                             <div className="flex items-center gap-2">
                               <div className={`w-2.5 h-2.5 rounded-full ${getCategoryColor(goal.category)}`} />
-                              <h4 className="font-medium text-white text-sm truncate max-w-[180px]">{goal.title}</h4>
+                              <h4 className="font-medium text-text-primary text-sm truncate max-w-[180px]">{goal.title}</h4>
                             </div>
                             <span className={`px-1.5 py-0.5 text-xs rounded ${getStatusColor(goal.status)}`}>
                               {goal.status.replace('-', ' ')}
                             </span>
                           </div>
                           <div className="flex items-center gap-2 mb-2">
-                            <div className="flex-1 bg-slate-600 rounded-full h-2">
+                            <div className="flex-1 bg-surface-overlay rounded-full h-2">
                               <div
-                                className="bg-brand-500 h-2 rounded-full transition-all"
+                                className="bg-accent h-2 rounded-full transition-all"
                                 style={{ width: `${percentage}%` }}
                               />
                             </div>
-                            <span className="text-xs text-slate-400">{completedMilestones}/{totalMilestones}</span>
+                            <span className="text-xs text-text-muted">{completedMilestones}/{totalMilestones}</span>
                           </div>
                           <div className="flex items-center gap-1">
                             {goal.milestones.slice(0, 5).map((m) => (
                               <div
                                 key={m.id}
                                 className={`w-4 h-4 rounded-full flex items-center justify-center ${
-                                  m.completed ? 'bg-emerald-500' : 'bg-slate-600'
+                                  m.completed ? 'bg-emerald-500' : 'bg-surface-overlay'
                                 }`}
                               >
                                 {m.completed && <CheckCircle2 className="w-3 h-3 text-white" />}
                               </div>
                             ))}
                             {goal.milestones.length > 5 && (
-                              <span className="text-xs text-slate-500">+{goal.milestones.length - 5}</span>
+                              <span className="text-xs text-text-muted">+{goal.milestones.length - 5}</span>
                             )}
                           </div>
                         </div>
@@ -3011,8 +3011,8 @@ ${index + 1}. ${goal.title}
 
                 {/* Top Performers */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-slate-700/30 rounded-xl p-5 border border-slate-600/50">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <div className="bg-surface-overlay rounded-xl p-5 border border-surface-border">
+                    <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
                       <Award className="w-5 h-5 text-amber-400" />
                       Top Progress Goals
                     </h3>
@@ -3026,21 +3026,21 @@ ${index + 1}. ${goal.title}
                             <div key={goal.id} className="flex items-center gap-3">
                               <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                                 index === 0 ? 'bg-amber-500 text-amber-950' :
-                                index === 1 ? 'bg-slate-400 text-slate-950' :
+                                index === 1 ? 'bg-surface-overlay text-text-muted' :
                                 index === 2 ? 'bg-amber-700 text-amber-100' :
-                                'bg-slate-600 text-slate-300'
+                                'bg-surface-overlay text-text-secondary'
                               }`}>
                                 {index + 1}
                               </span>
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-white truncate">{goal.title}</p>
-                                <p className="text-xs text-slate-400">{goal.owner}</p>
+                                <p className="text-sm font-medium text-text-primary truncate">{goal.title}</p>
+                                <p className="text-xs text-text-muted">{goal.owner}</p>
                               </div>
                               <span className={`text-sm font-bold ${
                                 progress >= 100 ? 'text-emerald-400' :
                                 progress >= 75 ? 'text-green-400' :
                                 progress >= 50 ? 'text-amber-400' :
-                                'text-slate-400'
+                                'text-text-muted'
                               }`}>
                                 {progress}%
                               </span>
@@ -3050,8 +3050,8 @@ ${index + 1}. ${goal.title}
                     </div>
                   </div>
 
-                  <div className="bg-slate-700/30 rounded-xl p-5 border border-slate-600/50">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <div className="bg-surface-overlay rounded-xl p-5 border border-surface-border">
+                    <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
                       <TrendingDown className="w-5 h-5 text-red-400" />
                       Goals Needing Attention
                     </h3>
@@ -3065,12 +3065,12 @@ ${index + 1}. ${goal.title}
                             <div key={goal.id} className="flex items-center gap-3 bg-red-500/10 rounded-lg p-3">
                               <AlertTriangle className="w-5 h-5 text-red-400 shrink-0" />
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-white truncate">{goal.title}</p>
+                                <p className="text-sm font-medium text-text-primary truncate">{goal.title}</p>
                                 <div className="flex items-center gap-2 mt-1">
                                   <span className={`px-1.5 py-0.5 text-xs rounded ${getStatusColor(goal.status)}`}>
                                     {goal.status.replace('-', ' ')}
                                   </span>
-                                  <span className="text-xs text-slate-400">Due: {goal.targetDate}</span>
+                                  <span className="text-xs text-text-muted">Due: {goal.targetDate}</span>
                                 </div>
                               </div>
                               <span className="text-sm font-bold text-red-400">{progress}%</span>
@@ -3215,7 +3215,7 @@ Configuration: ${JSON.stringify(s.config, null, 2)}
   }, [report]);
 
   return (
-    <div className="min-h-screen bg-slate-900 p-4 md:p-6 lg:p-8">
+    <div className="min-h-screen bg-surface-base p-4 md:p-6 lg:p-8">
       {/* Header */}
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
@@ -3224,22 +3224,22 @@ Configuration: ${JSON.stringify(s.config, null, 2)}
               <Sparkles className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-white">Custom Report Builder</h1>
-              <p className="text-slate-400">Design your own safety reports with drag-and-drop sections</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-text-primary">Custom Report Builder</h1>
+              <p className="text-text-muted">Design your own safety reports with drag-and-drop sections</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <button
               onClick={() => setShowPreview(true)}
               disabled={report.sections.length === 0}
-              className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 text-slate-300 rounded-xl hover:bg-slate-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-4 py-2.5 bg-surface-raised text-text-secondary rounded-xl hover:bg-surface-overlay transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Eye className="w-4 h-4" />
               Preview
             </button>
             <button
               onClick={saveReport}
-              className="flex items-center gap-2 px-4 py-2.5 bg-brand-600 text-white rounded-xl hover:bg-brand-500 transition-colors"
+              className="flex items-center gap-2 px-4 py-2.5 bg-accent text-text-onAccent rounded-xl hover:bg-accent/90 transition-colors"
             >
               <Save className="w-4 h-4" />
               Save Report
@@ -3248,46 +3248,46 @@ Configuration: ${JSON.stringify(s.config, null, 2)}
         </div>
 
         {/* Report Settings */}
-        <div className="bg-slate-800/50 rounded-2xl p-6 mb-6 border border-slate-700/50">
+        <div className="bg-surface-raised rounded-2xl p-6 mb-6 border border-surface-border">
           <div className="flex items-center gap-3 mb-4">
-            <Settings className="w-5 h-5 text-slate-400" />
-            <h2 className="text-lg font-semibold text-white">Report Settings</h2>
+            <Settings className="w-5 h-5 text-text-muted" />
+            <h2 className="text-lg font-semibold text-text-primary">Report Settings</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Report Name</label>
+              <label className="block text-sm font-medium text-text-secondary mb-2">Report Name</label>
               <input
                 type="text"
                 value={report.name}
                 onChange={(e) => setReport(prev => ({ ...prev, name: e.target.value }))}
-                className="w-full bg-slate-700/50 border border-slate-600/50 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Description</label>
+              <label className="block text-sm font-medium text-text-secondary mb-2">Description</label>
               <input
                 type="text"
                 value={report.description}
                 onChange={(e) => setReport(prev => ({ ...prev, description: e.target.value }))}
-                className="w-full bg-slate-700/50 border border-slate-600/50 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50"
+                className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/50"
               />
             </div>
           </div>
         </div>
 
         {/* Sections Builder */}
-        <div className="bg-slate-800/30 rounded-2xl p-6 border border-slate-700/50">
+        <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <FileText className="w-5 h-5 text-slate-400" />
-              <h2 className="text-lg font-semibold text-white">Report Sections</h2>
-              <span className="px-2 py-0.5 bg-slate-700 rounded-full text-xs text-slate-400">
+              <FileText className="w-5 h-5 text-text-muted" />
+              <h2 className="text-lg font-semibold text-text-primary">Report Sections</h2>
+              <span className="px-2 py-0.5 bg-surface-overlay rounded-full text-xs text-text-muted">
                 {report.sections.length} sections
               </span>
             </div>
             <button
               onClick={() => setShowAddSection(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-brand-600/20 text-brand-400 rounded-xl hover:bg-brand-600/30 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-accent/20 text-accent rounded-xl hover:bg-accent/30 transition-colors"
             >
               <Plus className="w-4 h-4" />
               Add Section
@@ -3313,12 +3313,12 @@ Configuration: ${JSON.stringify(s.config, null, 2)}
             </Reorder.Group>
           ) : (
             <div className="text-center py-16 border-2 border-dashed border-slate-700 rounded-xl">
-              <FileText className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-slate-400 mb-2">No sections yet</h3>
-              <p className="text-sm text-slate-500 mb-4">Start building your report by adding sections</p>
+              <FileText className="w-12 h-12 text-text-muted mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-text-muted mb-2">No sections yet</h3>
+              <p className="text-sm text-text-muted mb-4">Start building your report by adding sections</p>
               <button
                 onClick={() => setShowAddSection(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-brand-600 text-white rounded-xl hover:bg-brand-500 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-text-onAccent rounded-xl hover:bg-accent/90 transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 Add Your First Section
@@ -3329,17 +3329,17 @@ Configuration: ${JSON.stringify(s.config, null, 2)}
 
         {/* Saved Reports */}
         {savedReports.length > 0 && (
-          <div className="mt-8 bg-slate-800/30 rounded-2xl p-6 border border-slate-700/50">
-            <h2 className="text-lg font-semibold text-white mb-4">Saved Reports</h2>
+          <div className="mt-8 bg-surface-raised rounded-2xl p-6 border border-surface-border">
+            <h2 className="text-lg font-semibold text-text-primary mb-4">Saved Reports</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {savedReports.map((saved) => (
-                <div key={saved.id} className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50">
-                  <h3 className="font-medium text-white mb-1">{saved.name}</h3>
-                  <p className="text-xs text-slate-400 mb-3">{saved.sections.length} sections</p>
+                <div key={saved.id} className="bg-surface-raised rounded-xl p-4 border border-surface-border/50">
+                  <h3 className="font-medium text-text-primary mb-1">{saved.name}</h3>
+                  <p className="text-xs text-text-muted mb-3">{saved.sections.length} sections</p>
                   <div className="flex gap-2">
                     <button
                       onClick={() => setReport(saved)}
-                      className="flex-1 py-2 text-xs bg-slate-700 text-slate-300 rounded-lg hover:bg-slate-600 transition-colors"
+                      className="flex-1 py-2 text-xs bg-surface-overlay text-text-secondary rounded-lg hover:bg-surface-raised transition-colors"
                     >
                       Edit
                     </button>
@@ -3348,7 +3348,7 @@ Configuration: ${JSON.stringify(s.config, null, 2)}
                         setReport(saved);
                         setShowPreview(true);
                       }}
-                      className="flex-1 py-2 text-xs bg-brand-600/20 text-brand-400 rounded-lg hover:bg-brand-600/30 transition-colors"
+                      className="flex-1 py-2 text-xs bg-accent/20 text-accent rounded-lg hover:bg-accent/30 transition-colors"
                     >
                       View
                     </button>
@@ -3375,25 +3375,25 @@ Configuration: ${JSON.stringify(s.config, null, 2)}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-800 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl border border-slate-700"
+              className="bg-surface-raised rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl border border-surface-border"
             >
               <div className="p-6 border-b border-slate-700">
-                <h2 className="text-xl font-bold text-white">Add Section</h2>
-                <p className="text-sm text-slate-400">Choose a section type to add to your report</p>
+                <h2 className="text-xl font-bold text-text-primary">Add Section</h2>
+                <p className="text-sm text-text-muted">Choose a section type to add to your report</p>
               </div>
               <div className="p-4 grid grid-cols-2 gap-3">
                 {sectionTemplates.map((template) => (
                   <button
                     key={template.type}
                     onClick={() => addSection(template.type)}
-                    className="flex flex-col items-center gap-3 p-4 bg-slate-700/30 hover:bg-slate-700/50 rounded-xl transition-colors text-left border border-slate-600/30 hover:border-brand-500/30"
+                    className="flex flex-col items-center gap-3 p-4 bg-surface-overlay hover:bg-surface-raised rounded-xl transition-colors text-left border border-surface-border hover:border-accent/30"
                   >
-                    <div className="w-12 h-12 bg-brand-500/20 rounded-xl flex items-center justify-center">
-                      <template.icon className="w-6 h-6 text-brand-400" />
+                    <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center">
+                      <template.icon className="w-6 h-6 text-accent" />
                     </div>
                     <div className="text-center">
-                      <h3 className="font-medium text-white text-sm">{template.label}</h3>
-                      <p className="text-xs text-slate-400 mt-1">{template.description}</p>
+                      <h3 className="font-medium text-text-primary text-sm">{template.label}</h3>
+                      <p className="text-xs text-text-muted mt-1">{template.description}</p>
                     </div>
                   </button>
                 ))}

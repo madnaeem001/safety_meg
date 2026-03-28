@@ -455,7 +455,7 @@ Fire extinguisher is partially blocked by storage crates.`,
                     <button
                       onClick={() => handleSend()}
                       disabled={!inputValue.trim() || isTyping}
-                      className="w-11 h-11 rounded-2xl bg-accent hover:brightness-110 disabled:bg-surface-raised disabled:text-text-muted text-white flex items-center justify-center transition-all shadow-lg shrink-0"
+                      className="w-11 h-11 rounded-2xl bg-accent hover:brightness-110 disabled:bg-surface-raised disabled:text-text-muted text-black flex items-center justify-center transition-all shadow-lg shrink-0"
                     >
                       <Send className="w-5 h-5" />
                     </button>

@@ -173,12 +173,12 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
+      case 'pending': return 'bg-surface-overlay text-text-muted border-surface-border';
       case 'in-progress': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
       case 'review': return 'bg-amber-500/20 text-amber-400 border-amber-500/30';
       case 'completed': return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
       case 'overdue': return 'bg-red-500/20 text-red-400 border-red-500/30';
-      default: return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
+      default: return 'bg-surface-overlay text-text-muted border-surface-border';
     }
   };
 
@@ -188,7 +188,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
       case 'medium': return 'bg-amber-500/20 text-amber-400';
       case 'high': return 'bg-orange-500/20 text-orange-400';
       case 'critical': return 'bg-red-500/20 text-red-400';
-      default: return 'bg-slate-500/20 text-slate-400';
+      default: return 'bg-surface-overlay text-text-muted';
     }
   };
 
@@ -199,75 +199,75 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
       case 'investigation':
         return (
           <div className="space-y-6">
-            <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
-              <h3 className="text-lg font-bold text-white mb-4">Investigation Details</h3>
+            <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border">
+              <h3 className="text-lg font-bold text-text-primary mb-4">Investigation Details</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-2">Investigation Lead</label>
+                  <label className="block text-sm font-medium text-text-muted mb-2">Investigation Lead</label>
                   <input
                     type="text"
                     defaultValue={selectedInvestigation.assignee}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white"
+                    className="w-full bg-surface-sunken border border-surface-border rounded-xl px-4 py-3 text-text-primary"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-2">Investigation Date</label>
+                  <label className="block text-sm font-medium text-text-muted mb-2">Investigation Date</label>
                   <input
                     type="date"
                     defaultValue={new Date().toISOString().split('T')[0]}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white"
+                    className="w-full bg-surface-sunken border border-surface-border rounded-xl px-4 py-3 text-text-primary"
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-slate-400 mb-2">Sequence of Events</label>
+                  <label className="block text-sm font-medium text-text-muted mb-2">Sequence of Events</label>
                   <textarea
                     rows={4}
                     placeholder="Describe the sequence of events leading to the incident..."
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white resize-none"
+                    className="w-full bg-surface-sunken border border-surface-border rounded-xl px-4 py-3 text-text-primary resize-none"
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-slate-400 mb-2">Evidence Collected</label>
+                  <label className="block text-sm font-medium text-text-muted mb-2">Evidence Collected</label>
                   <textarea
                     rows={3}
                     placeholder="Photos, witness statements, documents, etc..."
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white resize-none"
+                    className="w-full bg-surface-sunken border border-surface-border rounded-xl px-4 py-3 text-text-primary resize-none"
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-slate-400 mb-2">Contributing Factors</label>
+                  <label className="block text-sm font-medium text-text-muted mb-2">Contributing Factors</label>
                   <textarea
                     rows={3}
                     placeholder="Environmental conditions, equipment issues, human factors..."
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white resize-none"
+                    className="w-full bg-surface-sunken border border-surface-border rounded-xl px-4 py-3 text-text-primary resize-none"
                   />
                 </div>
               </div>
             </div>
 
             {/* Witness Statements */}
-            <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
+            <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-white">Witness Statements</h3>
+                <h3 className="text-lg font-bold text-text-primary">Witness Statements</h3>
                 <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />}>Add Witness</SMButton>
               </div>
               <div className="space-y-4">
                 {[1, 2].map((i) => (
-                  <div key={i} className="bg-slate-900/50 rounded-xl p-4 border border-slate-700">
+                  <div key={i} className="bg-surface-sunken rounded-xl p-4 border border-surface-border">
                     <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center">
-                        <Users className="w-5 h-5 text-slate-400" />
+                      <div className="w-10 h-10 bg-surface-overlay rounded-full flex items-center justify-center">
+                        <Users className="w-5 h-5 text-text-muted" />
                       </div>
                       <div className="flex-1">
                         <input
                           type="text"
                           placeholder="Witness name"
-                          className="w-full bg-transparent border-none text-white font-medium placeholder:text-slate-500 focus:outline-none mb-2"
+                          className="w-full bg-transparent border-none text-text-primary font-medium placeholder:text-text-muted focus:outline-none mb-2"
                         />
                         <textarea
                           placeholder="Enter witness statement..."
                           rows={2}
-                          className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-300 resize-none"
+                          className="w-full bg-surface-raised border border-surface-border rounded-lg px-3 py-2 text-sm text-text-secondary resize-none"
                         />
                       </div>
                     </div>
@@ -281,9 +281,9 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
       case 'root-cause':
         return (
           <div className="space-y-6">
-            <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
-              <h3 className="text-lg font-bold text-white mb-4">Root Cause Identification</h3>
-              <p className="text-sm text-slate-400 mb-6">
+            <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border">
+              <h3 className="text-lg font-bold text-text-primary mb-4">Root Cause Identification</h3>
+              <p className="text-sm text-text-muted mb-6">
                 Use the Fishbone Diagram and 5 Whys analysis tools below to systematically identify root causes.
               </p>
               
@@ -296,10 +296,10 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
                     <GitBranch className="w-6 h-6 text-amber-400" />
                   </div>
                   <div className="text-left">
-                    <h4 className="text-white font-semibold">Fishbone Diagram</h4>
-                    <p className="text-sm text-slate-400">Ishikawa cause-and-effect analysis</p>
+                    <h4 className="text-text-primary font-semibold">Fishbone Diagram</h4>
+                    <p className="text-sm text-text-muted">Ishikawa cause-and-effect analysis</p>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-slate-400 ml-auto" />
+                  <ChevronRight className="w-5 h-5 text-text-muted ml-auto" />
                 </button>
                 <button
                   onClick={() => setActivePhase('five-whys')}
@@ -309,19 +309,19 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
                     <HelpCircle className="w-6 h-6 text-pink-400" />
                   </div>
                   <div className="text-left">
-                    <h4 className="text-white font-semibold">5 Whys Analysis</h4>
-                    <p className="text-sm text-slate-400">Iterative interrogative technique</p>
+                    <h4 className="text-text-primary font-semibold">5 Whys Analysis</h4>
+                    <p className="text-sm text-text-muted">Iterative interrogative technique</p>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-slate-400 ml-auto" />
+                  <ChevronRight className="w-5 h-5 text-text-muted ml-auto" />
                 </button>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-2">Identified Root Cause(s)</label>
+                <label className="block text-sm font-medium text-text-muted mb-2">Identified Root Cause(s)</label>
                 <textarea
                   rows={4}
                   placeholder="Document the root cause(s) identified through your analysis..."
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white resize-none"
+                  className="w-full bg-surface-sunken border border-surface-border rounded-xl px-4 py-3 text-text-primary resize-none"
                 />
               </div>
             </div>
@@ -333,7 +333,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
           <div className="space-y-4">
             <button
               onClick={() => setActivePhase('root-cause')}
-              className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors"
+              className="flex items-center gap-2 text-sm text-text-muted hover:text-text-primary transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Root Cause
@@ -350,7 +350,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
           <div className="space-y-4">
             <button
               onClick={() => setActivePhase('root-cause')}
-              className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors"
+              className="flex items-center gap-2 text-sm text-text-muted hover:text-text-primary transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Root Cause
@@ -381,9 +381,9 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
             </div>
 
             {/* Actions List */}
-            <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
+            <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-white">Corrective Actions (CAPA)</h3>
+                <h3 className="text-lg font-bold text-text-primary">Corrective Actions (CAPA)</h3>
                 <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />} onClick={() => setShowAddAction(true)}>Add Action</SMButton>
               </div>
 
@@ -392,7 +392,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
                   <motion.div
                     key={action.id}
                     layout
-                    className="bg-slate-900/50 rounded-xl p-4 border border-slate-700"
+                    className="bg-surface-sunken rounded-xl p-4 border border-surface-border"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
@@ -408,8 +408,8 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
                             {action.status}
                           </span>
                         </div>
-                        <p className="text-white font-medium mb-2">{action.description}</p>
-                        <div className="flex items-center gap-4 text-sm text-slate-400">
+                        <p className="text-text-primary font-medium mb-2">{action.description}</p>
+                        <div className="flex items-center gap-4 text-sm text-text-muted">
                           <span className="flex items-center gap-1">
                             <Users className="w-4 h-4" />
                             {action.responsible}
@@ -462,13 +462,13 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
               setSelectedInvestigation(null);
               setActivePhase('overview');
             }}
-            className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors"
+            className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface-raised border border-surface-border hover:bg-surface-overlay transition-colors"
           >
-            <ArrowLeft className="w-5 h-5 text-slate-400" />
+            <ArrowLeft className="w-5 h-5 text-text-muted" />
           </button>
           <div className="flex-1">
             <div className="flex items-center gap-3">
-              <h1 className="text-xl font-bold text-white">{selectedInvestigation.id}</h1>
+              <h1 className="text-xl font-bold text-text-primary">{selectedInvestigation.id}</h1>
               <span className={`px-2 py-0.5 text-xs font-bold uppercase rounded border ${getStatusColor(selectedInvestigation.status)}`}>
                 {selectedInvestigation.status}
               </span>
@@ -476,7 +476,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
                 {selectedInvestigation.severity}
               </span>
             </div>
-            <p className="text-sm text-slate-400">{selectedInvestigation.title}</p>
+            <p className="text-sm text-text-muted">{selectedInvestigation.title}</p>
           </div>
           <SMButton variant="primary" leftIcon={<Save className="w-4 h-4" />}>Save Progress</SMButton>
         </div>
@@ -499,7 +499,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
                     ? `bg-gradient-to-r ${config.color} text-white`
                     : isCompleted
                     ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                    : 'bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-750'
+                    : 'bg-surface-raised text-text-muted border border-surface-border hover:bg-surface-overlay'
                 }`}
               >
                 {isCompleted ? (
@@ -537,24 +537,24 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-white">Incident Investigation</h2>
-          <p className="text-slate-400">Unified investigation workflow with root cause analysis</p>
+          <h2 className="text-2xl font-bold text-text-primary">Incident Investigation</h2>
+          <p className="text-text-muted">Unified investigation workflow with root cause analysis</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
             <input
               type="text"
               placeholder="Search investigations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-64 bg-slate-800 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-white text-sm placeholder:text-slate-500"
+              className="w-64 bg-surface-raised border border-surface-border rounded-xl pl-10 pr-4 py-2.5 text-text-primary text-sm placeholder:text-text-muted"
             />
           </div>
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-slate-300 text-sm"
+            className="bg-surface-raised border border-surface-border rounded-xl px-4 py-2.5 text-text-secondary text-sm"
           >
             <option value="all">All Status</option>
             <option value="pending">Pending</option>
@@ -592,11 +592,11 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
       </div>
 
       {/* Investigation List */}
-      <div className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden">
-        <div className="p-4 border-b border-slate-700">
-          <h3 className="text-lg font-bold text-white">Active Investigations</h3>
+      <div className="bg-surface-raised rounded-2xl border border-surface-border overflow-hidden">
+        <div className="p-4 border-b border-surface-border">
+          <h3 className="text-lg font-bold text-text-primary">Active Investigations</h3>
         </div>
-        <div className="divide-y divide-slate-700/50">
+        <div className="divide-y divide-surface-border/50">
           {filteredInvestigations.map((investigation) => {
             const phaseConfig_ = phaseConfig[investigation.phase];
             return (
@@ -617,11 +617,11 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-sm font-semibold text-white">{investigation.id}</span>
-                      <span className="text-xs text-slate-500">•</span>
-                      <span className="text-xs text-slate-500">{investigation.incidentId}</span>
+                      <span className="text-sm font-semibold text-text-primary">{investigation.id}</span>
+                      <span className="text-xs text-text-muted">•</span>
+                      <span className="text-xs text-text-muted">{investigation.incidentId}</span>
                     </div>
-                    <p className="text-sm text-slate-300 truncate">{investigation.title}</p>
+                    <p className="text-sm text-text-secondary truncate">{investigation.title}</p>
                     <div className="flex items-center gap-3 mt-2">
                       <span className={`px-2 py-0.5 text-xs font-bold uppercase rounded border ${getStatusColor(investigation.status)}`}>
                         {investigation.status}
@@ -629,22 +629,22 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
                       <span className={`px-2 py-0.5 text-xs font-bold uppercase rounded ${getSeverityColor(investigation.severity)}`}>
                         {investigation.severity}
                       </span>
-                      <span className="text-xs text-slate-500">
+                      <span className="text-xs text-text-muted">
                         Phase: {phaseConfig_.label}
                       </span>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="flex items-center gap-2 text-sm text-slate-400 mb-1">
+                    <div className="flex items-center gap-2 text-sm text-text-muted mb-1">
                       <Users className="w-4 h-4" />
                       {investigation.assignee}
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-slate-500">
+                    <div className="flex items-center gap-2 text-xs text-text-muted">
                       <Calendar className="w-3 h-3" />
                       Due: {investigation.dueDate}
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-slate-500" />
+                  <ChevronRight className="w-5 h-5 text-text-muted" />
                 </div>
               </motion.div>
             );

@@ -1493,7 +1493,7 @@ export const CombinedIncidentInjuryReport: React.FC<CombinedIncidentInjuryReport
           </button>
           <button
             onClick={() => setActiveView('new')}
-            className="px-4 py-2.5 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 transition-colors flex items-center gap-2"
+            className="px-4 py-2.5 bg-accent text-text-onAccent font-semibold rounded-xl hover:bg-accent/90 transition-colors flex items-center gap-2"
           >
             <Plus className="w-5 h-5" />
             New Report
@@ -1534,13 +1534,13 @@ export const CombinedIncidentInjuryReport: React.FC<CombinedIncidentInjuryReport
               onClick={() => setSelectedCategory(tab.id as 'all' | 'incident' | 'injury')}
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${
                 selectedCategory === tab.id
-                  ? 'bg-brand-500 text-white'
-                  : 'bg-surface-50 text-surface-600 hover:bg-surface-100'
+                  ? 'bg-accent text-text-onAccent'
+                  : 'bg-surface-overlay text-text-secondary hover:bg-surface-raised'
               }`}
             >
               {tab.label}
               <span className={`px-2 py-0.5 rounded-full text-xs ${
-                selectedCategory === tab.id ? 'bg-white/20' : 'bg-surface-200'
+                selectedCategory === tab.id ? 'bg-white/20' : 'bg-surface-border'
               }`}>
                 {tab.count}
               </span>

@@ -570,7 +570,7 @@ export const SafetyAudit: React.FC = () => {
                       type="button"
                       onClick={handleAISuggestRecommendation}
                       disabled={aidSuggestLoading}
-                      className="flex items-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-600 transition-colors hover:bg-blue-100 disabled:opacity-50"
+                      className="flex items-center gap-2 rounded-xl border border-blue-600 bg-blue-600 px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
                     >
                       {aidSuggestLoading ? (
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -580,8 +580,8 @@ export const SafetyAudit: React.FC = () => {
                       AI Suggest
                     </button>
                     {aidSuggestions.length > 0 && (
-                      <div className="space-y-2 rounded-xl border border-blue-100 bg-blue-50 p-3">
-                        <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-blue-500">
+                      <div className="space-y-2 rounded-xl border border-blue-600 bg-blue-600 p-3">
+                        <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-white">
                           <Sparkles className="h-3 w-3" />
                           AI Suggestions - click to apply
                         </div>
@@ -672,16 +672,16 @@ export const SafetyAudit: React.FC = () => {
                                 <button
                                   type="button"
                                   onClick={() => toggleFindingAI(finding)}
-                                  className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-500 transition-colors hover:text-blue-700"
+                                  className="mt-3 flex items-center gap-1.5 text-xs font-semibold bg-blue-600 text-white px-2.5 py-1 rounded-lg transition-colors hover:bg-blue-700"
                                 >
                                   <Sparkles className="h-3.5 w-3.5" />
                                   AI Root Cause &amp; Action Suggestion
                                   <ChevronRight className={`h-3 w-3 transition-transform ${findingAI[String(finding.id)]?.open ? 'rotate-90' : ''}`} />
                                 </button>
                                 {findingAI[String(finding.id)]?.open && (
-                                  <div className="mt-2 space-y-2 rounded-xl border border-blue-100 bg-blue-50 p-3">
+                                  <div className="mt-2 space-y-2 rounded-xl border border-blue-600 bg-blue-600 p-3">
                                     {findingAI[String(finding.id)]?.loading ? (
-                                      <div className="flex items-center gap-2 text-xs text-blue-500">
+                                      <div className="flex items-center gap-2 text-xs text-white">
                                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
                                         Analysing with AI...
                                       </div>
@@ -772,16 +772,16 @@ export const SafetyAudit: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => toggleFindingAI(finding)}
-                      className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-500 hover:text-blue-700 transition-colors"
+                      className="mt-3 flex items-center gap-1.5 text-xs font-semibold bg-blue-600 text-white px-2.5 py-1 rounded-lg transition-colors hover:bg-blue-700"
                     >
                       <Sparkles className="w-3.5 h-3.5" />
                       AI Root Cause &amp; Action Suggestion
                       <ChevronRight className={`w-3 h-3 transition-transform ${findingAI[String(finding.id)]?.open ? 'rotate-90' : ''}`} />
                     </button>
                     {findingAI[String(finding.id)]?.open && (
-                      <div className="mt-2 p-3 rounded-xl bg-blue-50 border border-blue-100 space-y-2">
+                      <div className="mt-2 p-3 rounded-xl bg-blue-600 border border-blue-600 space-y-2">
                         {findingAI[String(finding.id)]?.loading ? (
-                          <div className="flex items-center gap-2 text-xs text-blue-500">
+                          <div className="flex items-center gap-2 text-xs text-white">
                             <Loader2 className="w-3.5 h-3.5 animate-spin" />
                             Analysing with AI...
                           </div>
