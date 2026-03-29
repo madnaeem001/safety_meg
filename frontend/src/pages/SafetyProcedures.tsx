@@ -10,12 +10,12 @@ import { useSafetyProcedures } from '../api/hooks/useAPIHooks';
 const DEFAULT_COMPANY_NAME = 'Safety Procedures';
 
 const SectionEmptyState = ({ title, description }: { title: string; description: string }) => (
-  <div className="rounded-[2rem] border border-dashed border-surface-200 bg-white p-8 text-center shadow-soft">
-    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-100 text-surface-400">
+  <div className="rounded-[2rem] border border-dashed border-surface-border bg-surface-overlay p-8 text-center">
+    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-sunken text-text-muted">
       <Database className="h-5 w-5" />
     </div>
-    <h3 className="text-lg font-bold text-brand-900">{title}</h3>
-    <p className="mx-auto mt-2 max-w-lg text-sm text-surface-500">{description}</p>
+    <h3 className="text-lg font-bold text-text-primary">{title}</h3>
+    <p className="mx-auto mt-2 max-w-lg text-sm text-text-muted">{description}</p>
   </div>
 );
 
@@ -69,10 +69,15 @@ export const SafetyProcedures: React.FC = () => {
 
     return categoryConfig.map((config) => {
       const matching = procedures.filter((procedure: any) => config.match.includes(procedure.category));
+      const parseJsonField = (val: any): any[] => {
+        if (Array.isArray(val)) return val;
+        if (typeof val === 'string') { try { const p = JSON.parse(val); return Array.isArray(p) ? p : []; } catch { return []; } }
+        return [];
+      };
       const examples = matching.flatMap((procedure: any) => [
         procedure.title,
-        ...(procedure.steps ?? []).slice(0, 2).map((step: any) => step.title),
-        ...((procedure.ppe ?? []).slice(0, 1)),
+        ...parseJsonField(procedure.steps).slice(0, 2).map((step: any) => step.title ?? step),
+        ...parseJsonField(procedure.ppe).slice(0, 1),
       ]).filter(Boolean);
 
       return {
@@ -121,7 +126,7 @@ export const SafetyProcedures: React.FC = () => {
   const hasProcedureData = procedures.length > 0;
 
   return (
-    <div className="min-h-screen bg-surface-50 pb-32">
+    <div className="min-h-screen bg-surface-base pb-32">
 
       
       <main className="max-w-7xl mx-auto">
@@ -136,14 +141,14 @@ export const SafetyProcedures: React.FC = () => {
           )}
 
           {/* AI Safety Procedure Analysis */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl p-6 text-white">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-gradient-to-br from-accent to-ai rounded-3xl p-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-                <Brain className="w-5 h-5" />
+              <div className="w-10 h-10 rounded-xl bg-surface-overlay/20 flex items-center justify-center">
+                <Brain className="w-5 h-5 text-text-onAccent" />
               </div>
               <div>
-                <h3 className="font-bold text-lg">AI Procedure Analyzer</h3>
-                <p className="text-indigo-200 text-xs">Real-time compliance monitoring across all procedures</p>
+                <h3 className="font-bold text-lg text-text-onAccent">AI Procedure Analyzer</h3>
+                <p className="text-text-onAccent/70 text-xs">Real-time compliance monitoring across all procedures</p>
               </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -153,9 +158,9 @@ export const SafetyProcedures: React.FC = () => {
                 { label: 'Updates Needed', value: String(updatesNeeded), icon: AlertTriangle },
                 { label: 'Last Review Date', value: recentReviewLabel, icon: Activity },
               ].map((s, i) => (
-                <div key={i} className="bg-white/10 rounded-xl p-3 border border-white/10">
-                  <p className="text-xl font-black">{s.value}</p>
-                  <p className="text-[9px] text-indigo-200 uppercase tracking-wider">{s.label}</p>
+                <div key={i} className="bg-surface-overlay/20 rounded-xl p-3 border border-surface-border/20">
+                  <p className="text-xl font-black text-text-onAccent">{s.value}</p>
+                  <p className="text-[9px] text-text-onAccent/70 uppercase tracking-wider">{s.label}</p>
                 </div>
               ))}
             </div>

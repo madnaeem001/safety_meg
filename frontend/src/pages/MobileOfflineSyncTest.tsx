@@ -447,18 +447,18 @@ function MobileOfflineSyncTest() {
   const renderQueue = () => (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <p className="text-slate-400 text-sm">{syncQueue.length} total records — {pendingCount} pending</p>
+        <p className="text-text-muted text-sm">{syncQueue.length} total records — {pendingCount} pending</p>
         <div className="flex gap-2">
           <button
             onClick={handleResetQueue}
-            className="flex items-center gap-1 px-3 py-2 bg-slate-700/40 text-slate-300 rounded-lg text-xs hover:text-white transition"
+            className="flex items-center gap-1 px-3 py-2 bg-surface-overlay text-text-secondary rounded-lg text-xs hover:text-text-primary transition"
           >
             <RotateCcw className="w-3.5 h-3.5" /> Reset Queue
           </button>
           <button
             onClick={runSync}
             disabled={!isOnline || isSyncing || pendingCount === 0}
-            className="flex items-center gap-1 px-3 py-2 bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 rounded-lg text-xs font-medium hover:bg-cyan-500/30 transition disabled:opacity-50"
+            className="flex items-center gap-1 px-3 py-2 bg-accent/20 border border-accent/30 text-accent rounded-lg text-xs font-medium hover:bg-accent/30 transition disabled:opacity-50"
           >
             <Upload className="w-3.5 h-3.5" /> Sync All
           </button>
@@ -471,27 +471,27 @@ function MobileOfflineSyncTest() {
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: idx * 0.05 }}
-          className="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-4"
+          className="bg-surface-sunken backdrop-blur-sm border border-surface-border rounded-xl p-4"
         >
           <div className="flex items-start gap-3">
-            <div className={`p-2 rounded-lg ${record.synced ? 'bg-emerald-500/20' : record.conflicted ? 'bg-red-500/20' : 'bg-amber-500/20'}`}>
-              {record.synced ? <CheckCircle className="w-5 h-5 text-emerald-400" /> : record.conflicted ? <AlertTriangle className="w-5 h-5 text-red-400" /> : <Clock className="w-5 h-5 text-amber-400" />}
+            <div className={`p-2 rounded-lg ${record.synced ? 'bg-success/20' : record.conflicted ? 'bg-danger/20' : 'bg-warning/20'}`}>
+              {record.synced ? <CheckCircle className="w-5 h-5 text-success" /> : record.conflicted ? <AlertTriangle className="w-5 h-5 text-danger" /> : <Clock className="w-5 h-5 text-warning" />}
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <h4 className="text-white text-sm font-medium">{record.entity}</h4>
+                <h4 className="text-text-primary text-sm font-medium">{record.entity}</h4>
                 <span className={`text-[10px] px-2 py-0.5 rounded-full ${
-                  record.action === 'create' ? 'bg-emerald-500/10 text-emerald-400'
-                    : record.action === 'update' ? 'bg-blue-500/10 text-blue-400'
-                    : 'bg-red-500/10 text-red-400'
+                  record.action === 'create' ? 'bg-success/10 text-success'
+                    : record.action === 'update' ? 'bg-accent/10 text-accent'
+                    : 'bg-danger/10 text-danger'
                 }`}>
                   {record.action.toUpperCase()}
                 </span>
-                <span className="text-slate-500 text-[10px]">v{record.version}</span>
+                <span className="text-text-muted text-[10px]">v{record.version}</span>
               </div>
-              <p className="text-slate-400 text-xs mb-2">{record.timestamp}</p>
-              <div className="bg-slate-900/60 rounded-lg p-2.5 border border-slate-700/30">
-                <pre className="text-xs text-slate-300 whitespace-pre-wrap">{JSON.stringify(record.data, null, 2)}</pre>
+              <p className="text-text-muted text-xs mb-2">{record.timestamp}</p>
+              <div className="bg-surface-sunken rounded-lg p-2.5 border border-surface-border/30">
+                <pre className="text-xs text-text-secondary whitespace-pre-wrap">{JSON.stringify(record.data, null, 2)}</pre>
               </div>
             </div>
           </div>
@@ -504,7 +504,7 @@ function MobileOfflineSyncTest() {
   const renderConflicts = () => (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <p className="text-slate-400 text-sm">{conflictCount} unresolved conflicts</p>
+        <p className="text-text-muted text-sm">{conflictCount} unresolved conflicts</p>
       </div>
 
       {conflicts.map(conflict => (
@@ -512,15 +512,15 @@ function MobileOfflineSyncTest() {
           key={conflict.id}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`bg-slate-800/40 backdrop-blur-sm border rounded-xl p-5 ${conflict.resolved ? 'border-emerald-500/30' : 'border-amber-500/30'}`}
+          className={`bg-surface-sunken backdrop-blur-sm border rounded-xl p-5 ${conflict.resolved ? 'border-success/30' : 'border-warning/30'}`}
         >
           <div className="flex items-start justify-between mb-3">
             <div>
-              <h3 className="text-white font-semibold text-sm">{conflict.title}</h3>
-              <p className="text-slate-400 text-xs mt-0.5">{conflict.description}</p>
+              <h3 className="text-text-primary font-semibold text-sm">{conflict.title}</h3>
+              <p className="text-text-muted text-xs mt-0.5">{conflict.description}</p>
             </div>
             {conflict.resolved && (
-              <span className="text-emerald-400 text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-1">
+              <span className="text-success text-[10px] px-2 py-0.5 rounded-full bg-success/10 border border-success/30 flex items-center gap-1">
                 <Check className="w-3 h-3" /> Resolved ({conflict.resolution})
               </span>
             )}
@@ -533,16 +533,16 @@ function MobileOfflineSyncTest() {
                 <Smartphone className="w-3.5 h-3.5 text-blue-400" />
                 <span className="text-blue-300 text-xs font-semibold">Local (Mobile)</span>
               </div>
-              <pre className="text-xs text-slate-300 whitespace-pre-wrap">{JSON.stringify(conflict.localVersion, null, 2)}</pre>
+              <pre className="text-xs text-text-secondary whitespace-pre-wrap">{JSON.stringify(conflict.localVersion, null, 2)}</pre>
             </div>
 
             {/* Server Version */}
             <div className="bg-purple-500/5 border border-purple-500/20 rounded-lg p-3">
               <div className="flex items-center gap-1.5 mb-2">
-                <Cloud className="w-3.5 h-3.5 text-purple-400" />
-                <span className="text-purple-300 text-xs font-semibold">Server (Cloud)</span>
+                <Cloud className="w-3.5 h-3.5 text-ai" />
+                <span className="text-ai text-xs font-semibold">Server (Cloud)</span>
               </div>
-              <pre className="text-xs text-slate-300 whitespace-pre-wrap">{JSON.stringify(conflict.serverVersion, null, 2)}</pre>
+              <pre className="text-xs text-text-secondary whitespace-pre-wrap">{JSON.stringify(conflict.serverVersion, null, 2)}</pre>
             </div>
           </div>
 
@@ -551,10 +551,10 @@ function MobileOfflineSyncTest() {
               <button onClick={() => resolveConflict(conflict.id, 'local')} className="flex-1 px-3 py-2 bg-blue-500/10 border border-blue-500/30 text-blue-300 rounded-lg text-xs font-medium hover:bg-blue-500/20 transition">
                 <Smartphone className="w-3.5 h-3.5 inline mr-1" /> Keep Local
               </button>
-              <button onClick={() => resolveConflict(conflict.id, 'server')} className="flex-1 px-3 py-2 bg-purple-500/10 border border-purple-500/30 text-purple-300 rounded-lg text-xs font-medium hover:bg-purple-500/20 transition">
+              <button onClick={() => resolveConflict(conflict.id, 'server')} className="flex-1 px-3 py-2 bg-ai/10 border border-ai/30 text-ai rounded-lg text-xs font-medium hover:bg-ai/20 transition">
                 <Cloud className="w-3.5 h-3.5 inline mr-1" /> Keep Server
               </button>
-              <button onClick={() => resolveConflict(conflict.id, 'merged')} className="flex-1 px-3 py-2 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-lg text-xs font-medium hover:bg-emerald-500/20 transition">
+              <button onClick={() => resolveConflict(conflict.id, 'merged')} className="flex-1 px-3 py-2 bg-success/10 border border-success/30 text-success rounded-lg text-xs font-medium hover:bg-success/20 transition">
                 <ArrowUpDown className="w-3.5 h-3.5 inline mr-1" /> Merge
               </button>
             </div>
@@ -572,12 +572,12 @@ function MobileOfflineSyncTest() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <p className="text-slate-400 text-sm">{tests.length} tests — {passedTests} passed, {failedTests} failed</p>
+            <p className="text-text-muted text-sm">{tests.length} tests — {passedTests} passed, {failedTests} failed</p>
           </div>
           <button
             onClick={runTestSuite}
             disabled={isRunningTests}
-            className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg text-xs font-medium hover:shadow-lg hover:shadow-cyan-500/25 transition-all disabled:opacity-50"
+            className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-accent to-ai text-text-onAccent rounded-lg text-xs font-medium hover:shadow-lg hover:shadow-accent/25 transition-all disabled:opacity-50"
           >
             {isRunningTests ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
             {isRunningTests ? 'Running...' : 'Run All Tests'}
@@ -586,9 +586,9 @@ function MobileOfflineSyncTest() {
 
         {/* Test Progress Bar */}
         {isRunningTests && (
-          <div className="w-full bg-slate-800/60 rounded-full h-1.5 overflow-hidden">
+          <div className="w-full bg-surface-sunken rounded-full h-1.5 overflow-hidden">
             <motion.div
-              className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"
+              className="h-full bg-gradient-to-r from-accent to-ai rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${(tests.filter(t => t.status !== 'pending' && t.status !== 'running').length / tests.length) * 100}%` }}
             />
@@ -608,20 +608,20 @@ function MobileOfflineSyncTest() {
                   <div
                     key={test.id}
                     className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${
-                      test.status === 'passed' ? 'bg-emerald-500/5 border-emerald-500/20'
-                        : test.status === 'failed' ? 'bg-red-500/5 border-red-500/20'
-                        : test.status === 'running' ? 'bg-cyan-500/5 border-cyan-500/20'
-                        : 'bg-slate-800/40 border-slate-700/30'
+                      test.status === 'passed' ? 'bg-success/5 border-success/20'
+                        : test.status === 'failed' ? 'bg-danger/5 border-danger/20'
+                        : test.status === 'running' ? 'bg-accent/5 border-accent/20'
+                        : 'bg-surface-sunken border-surface-border/30'
                     }`}
                   >
                     {statusIcon(test.status)}
                     <div className="flex-1">
-                      <p className="text-white text-xs font-medium">{test.name}</p>
-                      <p className="text-slate-400 text-[10px]">{test.description}</p>
-                      {test.error && <p className="text-red-400 text-[10px] mt-0.5">{test.error}</p>}
+                      <p className="text-text-primary text-xs font-medium">{test.name}</p>
+                      <p className="text-text-muted text-[10px]">{test.description}</p>
+                      {test.error && <p className="text-danger text-[10px] mt-0.5">{test.error}</p>}
                     </div>
                     {test.duration && (
-                      <span className="text-slate-500 text-[10px]">{test.duration}ms</span>
+                      <span className="text-text-muted text-[10px]">{test.duration}ms</span>
                     )}
                   </div>
                 ))}
@@ -634,28 +634,28 @@ function MobileOfflineSyncTest() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white pb-24">
+    <div className="min-h-screen bg-surface-base pb-24">
 
 
       <div className="max-w-7xl mx-auto px-4 pt-6 pb-8">
         {/* Page Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
           <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-accent to-ai bg-clip-text text-transparent">
               Mobile Offline Sync Test
             </h1>
-            <p className="text-slate-400 text-sm mt-1">Test offline data synchronization, conflict resolution, and data integrity</p>
+            <p className="text-text-muted text-sm mt-1">Test offline data synchronization, conflict resolution, and data integrity</p>
           </div>
           <div className="flex items-center gap-2">
-            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium ${isOnline ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' : 'bg-red-500/10 text-red-400 border border-red-500/30'}`}>
-              <div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-emerald-400 animate-pulse' : 'bg-red-400'}`} />
+            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium ${isOnline ? 'bg-success/10 text-success border border-success/30' : 'bg-danger/10 text-danger border border-danger/30'}`}>
+              <div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-success animate-pulse' : 'bg-danger'}`} />
               {isOnline ? 'Online' : 'Offline'}
             </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-1 mb-6 overflow-x-auto">
+        <div className="flex gap-1 bg-surface-sunken backdrop-blur-sm border border-surface-border rounded-xl p-1 mb-6 overflow-x-auto">
           {tabs.map(tab => {
             const Icon = tab.icon;
             return (
@@ -664,8 +664,8 @@ function MobileOfflineSyncTest() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap ${
                   activeTab === tab.id
-                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-accent/20 text-accent border border-accent/30'
+                    : 'text-text-muted hover:text-text-primary'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
