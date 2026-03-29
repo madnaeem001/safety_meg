@@ -634,7 +634,7 @@ function MobileOfflineSyncTest() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-base pb-24">
+    <div className="page-wrapper">
 
 
       <div className="max-w-7xl mx-auto px-4 pt-6 pb-8">

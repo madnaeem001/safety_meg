@@ -53,12 +53,12 @@ export const PropertyIncidentReport = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-base pb-20">
+    <div className="page-wrapper">
       <header className="sticky top-[var(--nav-height)] z-40 border-b border-surface-border bg-surface-raised/80 px-6 py-4 backdrop-blur-xl">
         <div className="mx-auto flex max-w-[1440px] items-center gap-4">
           <SMButton variant="ghost" size="sm" leftIcon={<ArrowLeft className="w-5 h-5" />} onClick={() => navigate(-1)} aria-label="Back" />
           <div>
-            <h1 className="text-xl font-bold text-text-primary">Property Incident</h1>
+            <h1 className="page-title">Property Incident</h1>
             <p className="text-sm text-text-muted">Damage &amp; Loss Reporting</p>
           </div>
         </div>

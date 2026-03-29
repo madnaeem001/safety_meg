@@ -594,7 +594,7 @@ export const SafetyAudit: React.FC = () => {
                                 setFindingForm((current) => ({ ...current, recommendation: suggestion }));
                                 setAidSuggestions([]);
                               }}
-                              className="w-full rounded-lg border border-blue-100 bg-white px-3 py-2 text-left text-xs text-slate-700 transition-colors hover:border-blue-300 hover:bg-blue-50"
+                              className="w-full rounded-lg border border-blue-100 bg-white px-3 py-2 text-left text-xs text-text-primary transition-colors hover:border-blue-300 hover:bg-blue-50"
                             >
                               {suggestion}
                             </button>
@@ -688,7 +688,7 @@ export const SafetyAudit: React.FC = () => {
                                     ) : (
                                       <ul className="space-y-1.5">
                                         {(findingAI[String(finding.id)]?.suggestions ?? []).map((suggestion, index) => (
-                                          <li key={index} className="flex items-start gap-2 text-xs text-slate-700">
+                                          <li key={index} className="flex items-start gap-2 text-xs text-text-primary">
                                             <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-blue-200 font-bold text-blue-700">{index + 1}</span>
                                             {suggestion}
                                           </li>
@@ -788,7 +788,7 @@ export const SafetyAudit: React.FC = () => {
                         ) : (
                           <ul className="space-y-1.5">
                             {(findingAI[String(finding.id)]?.suggestions ?? []).map((s, i) => (
-                              <li key={i} className="flex items-start gap-2 text-xs text-slate-700">
+                              <li key={i} className="flex items-start gap-2 text-xs text-text-primary">
                                 <span className="mt-0.5 w-4 h-4 rounded-full bg-blue-200 text-blue-700 flex items-center justify-center font-bold flex-shrink-0">{i + 1}</span>
                                 {s}
                               </li>

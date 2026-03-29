@@ -115,7 +115,7 @@ export const ComplianceGapAnalysis: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-base pb-20">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="bg-gradient-to-br from-sage-600 via-sage-500 to-emerald-500 pt-12 pb-8 px-4 safe-top">
         <div className="flex items-center gap-3 mb-6">
@@ -128,7 +128,7 @@ export const ComplianceGapAnalysis: React.FC = () => {
             </svg>
           </button>
           <div className="flex-1">
-            <h1 className="text-2xl font-bold text-white">Gap Analysis</h1>
+            <h1 className="page-title">Gap Analysis</h1>
             <p className="text-sage-100 text-sm">Compliance gap assessment & tracking</p>
           </div>
           <button
@@ -144,7 +144,7 @@ export const ComplianceGapAnalysis: React.FC = () => {
         {/* Metrics Cards */}
         <div className="grid grid-cols-3 gap-3">
           <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 text-center">
-            <p className="text-2xl font-bold text-white">{metrics.total}</p>
+            <p className="text-2xl font-bold text-text-primary">{metrics.total}</p>
             <p className="text-xs text-sage-100">Total Gaps</p>
           </div>
           <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 text-center">

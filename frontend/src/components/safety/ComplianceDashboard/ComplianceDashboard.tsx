@@ -175,7 +175,7 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
       case 'pending': return 'bg-warning/10 text-warning border-warning/20';
       case 'overdue': return 'bg-danger/10 text-danger border-danger/20';
       case 'review': return 'bg-accent/10 text-accent border-accent/20';
-      default: return 'bg-surface-100 text-text-muted border-surface-border';
+      default: return 'bg-surface-sunken text-text-muted border-surface-border';
     }
   };
 
@@ -246,7 +246,7 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
       case 'high': return 'bg-danger/10 text-danger';
       case 'medium': return 'bg-warning/10 text-warning';
       case 'low': return 'bg-success/10 text-success';
-      default: return 'bg-surface-100 text-text-muted';
+      default: return 'bg-surface-sunken text-text-muted';
     }
   };
 
@@ -283,28 +283,28 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
               Refresh
             </button>
             <div className="relative group">
-              <button className="flex items-center gap-2 px-4 py-2 bg-primary text-text-inverted rounded-xl shadow-sm hover:shadow-md transition-all text-sm">
+              <button className="flex items-center gap-2 px-4 py-2 bg-accent text-text-onAccent rounded-xl shadow-sm hover:brightness-110 transition-all text-sm">
                 <Download className="w-4 h-4" />
                 Export Report
               </button>
               <div className="absolute right-0 top-full mt-2 bg-surface-raised rounded-xl shadow-lg border border-surface-border py-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
                 <button
                   onClick={() => handleExport('pdf')}
-                  className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-surface-100 flex items-center gap-2"
+                  className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-surface-sunken flex items-center gap-2"
                 >
                   <FileDown className="w-4 h-4" />
                   Export as PDF
                 </button>
                 <button
                   onClick={() => handleExport('csv')}
-                  className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-surface-100 flex items-center gap-2"
+                  className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-surface-sunken flex items-center gap-2"
                 >
                   <FileText className="w-4 h-4" />
                   Export as CSV
                 </button>
                 <button
                   onClick={() => handleExport('json')}
-                  className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-surface-100 flex items-center gap-2"
+                  className="w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-surface-sunken flex items-center gap-2"
                 >
                   <FileText className="w-4 h-4" />
                   Export as JSON
@@ -327,7 +327,7 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 activeView === tab.id
                   ? 'bg-surface-raised shadow-sm text-accent'
-                  : 'text-text-muted hover:bg-surface-100/50'
+                  : 'text-text-muted hover:bg-surface-sunken'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -340,12 +340,12 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-primary rounded-2xl p-6 text-text-inverted shadow-xl"
+          className="bg-primary rounded-2xl p-6 text-white shadow-xl"
         >
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {/* Overall Score */}
             <div className="md:col-span-1">
-              <p className="text-text-inverted/70 text-sm mb-2">Overall Compliance Score</p>
+              <p className="text-white/70 text-sm mb-2">Overall Compliance Score</p>
               <div className="flex items-end gap-3">
                 <span className="text-5xl font-bold">{mockComplianceData.overallScore}%</span>
                 <div className={`flex items-center gap-1 px-2 py-1 rounded-lg text-sm ${
@@ -361,7 +361,7 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
               </div>
               <div className="mt-4 bg-white/10 rounded-full h-2 overflow-hidden">
                 <div 
-                  className="h-full bg-gradient-to-r from-green-400 to-emerald-400 rounded-full"
+                  className="h-full bg-success rounded-full"
                   style={{ width: `${mockComplianceData.overallScore}%` }}
                 />
               </div>
@@ -471,7 +471,7 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
                   {mockComplianceData.regulatoryFrameworks.map((framework) => (
                     <div
                       key={framework.id}
-                      className="flex items-center justify-between p-3 bg-surface-100/50 rounded-xl hover:bg-surface-100 transition-colors"
+                      className="flex items-center justify-between p-3 bg-surface-sunken/50 rounded-xl hover:bg-surface-sunken transition-colors"
                     >
                       <div className="flex items-center gap-3">
                         <div className={`w-2 h-2 rounded-full ${
@@ -510,7 +510,7 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
                   {mockComplianceData.upcomingDeadlines.map((deadline) => (
                     <div
                       key={deadline.id}
-                      className="flex items-center justify-between p-3 bg-surface-100/50 rounded-xl hover:bg-surface-100 transition-colors"
+                      className="flex items-center justify-between p-3 bg-surface-sunken/50 rounded-xl hover:bg-surface-sunken transition-colors"
                     >
                       <div className="flex items-center gap-3">
                         <div className={`p-2 rounded-lg ${
@@ -554,7 +554,7 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
                 {mockComplianceData.recentActivities.map((activity) => (
                   <div
                     key={activity.id}
-                    className="flex items-center justify-between p-3 bg-surface-100/50 rounded-xl hover:bg-surface-100 transition-colors"
+                    className="flex items-center justify-between p-3 bg-surface-sunken/50 rounded-xl hover:bg-surface-sunken transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       {getStatusIcon(activity.status)}
@@ -585,14 +585,14 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
                   placeholder="Search compliance items..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent focus:border-accent bg-surface-100 text-text-primary"
+                  className="w-full pl-10 pr-4 py-2 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/30 focus:border-accent bg-surface-sunken text-text-primary outline-none"
                 />
               </div>
               <div className="flex items-center gap-2 flex-wrap">
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-3 py-2 border border-surface-border rounded-xl text-sm focus:ring-2 focus:ring-accent bg-surface-100 text-text-primary"
+                  className="px-3 py-2 border border-surface-border rounded-xl text-sm focus:ring-2 focus:ring-accent/30 bg-surface-sunken text-text-primary outline-none"
                 >
                   <option value="all">All Categories</option>
                   {COMPLIANCE_CATEGORIES.map(cat => (
@@ -602,7 +602,7 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
                 <select
                   value={selectedStatus}
                   onChange={(e) => setSelectedStatus(e.target.value)}
-                  className="px-3 py-2 border border-surface-border rounded-xl text-sm focus:ring-2 focus:ring-accent bg-surface-100 text-text-primary"
+                  className="px-3 py-2 border border-surface-border rounded-xl text-sm focus:ring-2 focus:ring-accent/30 bg-surface-sunken text-text-primary outline-none"
                 >
                   <option value="all">All Status</option>
                   <option value="compliant">Compliant</option>
@@ -616,7 +616,7 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
             <div className="bg-surface-raised rounded-2xl shadow-soft border border-surface-border overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-surface-100 border-b border-surface-border">
+                  <thead className="bg-surface-sunken border-b border-surface-border">
                     <tr>
                       <th className="text-left px-4 py-3 text-sm font-semibold text-text-muted">ID</th>
                       <th className="text-left px-4 py-3 text-sm font-semibold text-text-muted">Title</th>
@@ -629,7 +629,7 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
                   </thead>
                   <tbody className="divide-y divide-surface-border">
                     {filteredItems.map((item) => (
-                      <tr key={item.id} className="hover:bg-surface-100 transition-colors">
+                      <tr key={item.id} className="hover:bg-surface-sunken transition-colors">
                         <td className="px-4 py-3 text-sm font-medium text-text-primary">{item.id}</td>
                         <td className="px-4 py-3">
                           <p className="text-sm font-medium text-text-primary">{item.title}</p>
@@ -645,7 +645,7 @@ export const ComplianceDashboard: React.FC<ComplianceDashboardProps> = ({ onBack
                         <td className="px-4 py-3 text-sm text-text-muted">{item.dueDate}</td>
                         <td className="px-4 py-3 text-sm text-text-muted">{item.responsible}</td>
                         <td className="px-4 py-3">
-                          <button className="p-2 hover:bg-surface-100 rounded-lg transition-colors">
+                          <button className="p-2 hover:bg-surface-sunken rounded-lg transition-colors">
                             <Eye className="w-4 h-4 text-text-muted" />
                           </button>
                         </td>

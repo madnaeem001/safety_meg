@@ -154,12 +154,12 @@ export const AIRiskAnalysis: React.FC = () => {
             <div className="p-2 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600">
               <Brain className="w-5 h-5 text-white" />
             </div>
-            <h2 className="text-2xl font-bold text-brand-900">AI Risk Analysis</h2>
+            <h2 className="text-2xl font-bold text-text-primary">AI Risk Analysis</h2>
             <span className="px-2 py-0.5 bg-purple-600 text-white text-[10px] font-bold rounded-full uppercase">
               Beta
             </span>
           </div>
-          <p className="text-surface-500">AI-powered insights to identify trends and predict potential risks before incidents occur</p>
+          <p className="text-text-muted">AI-powered insights to identify trends and predict potential risks before incidents occur</p>
         </div>
         <motion.button
           whileTap={{ scale: 0.97 }}
@@ -184,15 +184,15 @@ export const AIRiskAnalysis: React.FC = () => {
             key={stat.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white p-4 rounded-2xl shadow-soft border border-surface-100"
+            className="bg-surface-raised p-4 rounded-2xl shadow-soft border-surface-border"
           >
             <div className="flex items-center gap-3">
               <div className={`p-2 rounded-xl bg-${stat.color}-50`}>
                 <stat.icon className={`w-5 h-5 text-${stat.color}-500`} />
               </div>
               <div>
-                <div className="text-2xl font-bold text-brand-900">{stat.value}</div>
-                <div className="text-[10px] font-medium text-surface-500 uppercase tracking-wider">{stat.label}</div>
+                <div className="text-2xl font-bold text-text-primary">{stat.value}</div>
+                <div className="text-[10px] font-medium text-text-muted uppercase tracking-wider">{stat.label}</div>
               </div>
             </div>
           </motion.div>
@@ -200,7 +200,7 @@ export const AIRiskAnalysis: React.FC = () => {
       </div>
 
       {/* View Mode Tabs */}
-      <div className="flex gap-2 bg-surface-100/50 p-1 rounded-2xl w-fit">
+      <div className="flex gap-2 bg-surface-sunken p-1 rounded-2xl w-fit">
         {[
           { id: 'predictions', label: 'Risk Predictions', icon: Target },
           { id: 'trends', label: 'Trend Analysis', icon: TrendingUp },
@@ -211,8 +211,8 @@ export const AIRiskAnalysis: React.FC = () => {
             onClick={() => setViewMode(tab.id as any)}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
               viewMode === tab.id
-                ? 'bg-white shadow-soft text-brand-700'
-                : 'text-surface-500 hover:text-brand-600'
+                ? 'bg-surface-raised text-accent'
+                : 'text-text-muted hover:text-accent'
             }`}
           >
             <tab.icon className="w-4 h-4" />
@@ -230,7 +230,7 @@ export const AIRiskAnalysis: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               onClick={() => setSelectedPrediction(prediction)}
-              className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100 cursor-pointer hover:shadow-md transition-all"
+              className="bg-surface-raised p-5 rounded-2xl shadow-soft border-surface-border cursor-pointer hover:shadow-md transition-all"
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-2">
@@ -247,19 +247,19 @@ export const AIRiskAnalysis: React.FC = () => {
                 ) : prediction.trend === 'decreasing' ? (
                   <TrendingDown className="w-5 h-5 text-green-500" />
                 ) : (
-                  <ArrowRight className="w-5 h-5 text-surface-400" />
+                  <ArrowRight className="w-5 h-5 text-text-muted" />
                 )}
               </div>
               
-              <h3 className="font-semibold text-brand-900 mb-1">{prediction.category}</h3>
-              <p className="text-sm text-surface-600 mb-3">{prediction.prediction}</p>
+              <h3 className="font-semibold text-text-primary mb-1">{prediction.category}</h3>
+              <p className="text-sm text-text-secondary mb-3">{prediction.prediction}</p>
               
-              <div className="flex items-center justify-between text-xs text-surface-500">
+              <div className="flex items-center justify-between text-xs text-text-muted">
                 <span className="flex items-center gap-1">
                   <Clock className="w-3 h-3" />
                   {prediction.timeline}
                 </span>
-                <button className="text-brand-600 font-medium flex items-center gap-1 hover:text-brand-700">
+                <button className="text-accent font-medium flex items-center gap-1 hover:text-accent">
                   View Details <ChevronRight className="w-3 h-3" />
                 </button>
               </div>
@@ -271,8 +271,8 @@ export const AIRiskAnalysis: React.FC = () => {
       {/* Trends View */}
       {viewMode === 'trends' && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100">
-            <h3 className="font-semibold text-brand-900 mb-4">Incident Trends with AI Predictions</h3>
+          <div className="bg-surface-raised p-6 rounded-2xl shadow-soft border-surface-border">
+            <h3 className="font-semibold text-text-primary mb-4">Incident Trends with AI Predictions</h3>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={TREND_DATA}>
@@ -289,8 +289,8 @@ export const AIRiskAnalysis: React.FC = () => {
             </div>
           </div>
           
-          <div className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100">
-            <h3 className="font-semibold text-brand-900 mb-4">Risk Categories Distribution</h3>
+          <div className="bg-surface-raised p-6 rounded-2xl shadow-soft border-surface-border">
+            <h3 className="font-semibold text-text-primary mb-4">Risk Categories Distribution</h3>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -319,14 +319,14 @@ export const AIRiskAnalysis: React.FC = () => {
       {/* Insights View */}
       {viewMode === 'insights' && (
         <div className="space-y-4">
-          <div className="bg-gradient-to-br from-purple-50 to-indigo-50 p-6 rounded-2xl border border-purple-100">
+          <div className="bg-surface-raised p-6 rounded-2xl border-surface-border">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2 rounded-xl bg-purple-500">
                 <Brain className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold text-brand-900">AI Analysis Summary</h3>
-                <p className="text-sm text-surface-600">Based on 6 months of data across 1,247 records</p>
+                <h3 className="font-semibold text-text-primary">AI Analysis Summary</h3>
+                <p className="text-sm text-text-secondary">Based on 6 months of data across 1,247 records</p>
               </div>
             </div>
             
@@ -351,21 +351,21 @@ export const AIRiskAnalysis: React.FC = () => {
                   color: 'red',
                 },
               ].map((insight, idx) => (
-                <div key={idx} className="bg-white p-4 rounded-xl">
+                <div key={idx} className="bg-surface-sunken p-4 rounded-xl">
                   <div className="flex items-center gap-2 mb-2">
                     <div className={`p-1.5 rounded-lg bg-${insight.color}-100`}>
                       <insight.icon className={`w-4 h-4 text-${insight.color}-600`} />
                     </div>
-                    <span className="font-medium text-brand-900">{insight.title}</span>
+                    <span className="font-medium text-text-primary">{insight.title}</span>
                   </div>
-                  <p className="text-sm text-surface-600">{insight.content}</p>
+                  <p className="text-sm text-text-secondary">{insight.content}</p>
                 </div>
               ))}
             </div>
           </div>
           
-          <div className="bg-white p-6 rounded-2xl shadow-soft border border-surface-100">
-            <h3 className="font-semibold text-brand-900 mb-4">Recommended Actions</h3>
+          <div className="bg-surface-raised p-6 rounded-2xl shadow-soft border-surface-border">
+            <h3 className="font-semibold text-text-primary mb-4">Recommended Actions</h3>
             <div className="space-y-3">
               {[
                 { action: 'Schedule hydraulic inspection for Forklift FL-103', priority: 'critical', deadline: 'Within 7 days' },
@@ -373,12 +373,12 @@ export const AIRiskAnalysis: React.FC = () => {
                 { action: 'Book refresher training for 12 employees with expiring certifications', priority: 'medium', deadline: 'Within 30 days' },
                 { action: 'Review and update night shift inspection schedule', priority: 'medium', deadline: 'Within 14 days' },
               ].map((item, idx) => (
-                <div key={idx} className="flex items-center justify-between p-4 bg-surface-50 rounded-xl">
+                <div key={idx} className="flex items-center justify-between p-4 bg-surface-sunken rounded-xl">
                   <div className="flex items-center gap-3">
                     <div className={`w-3 h-3 rounded-full ${IMPACT_CONFIG[item.priority as keyof typeof IMPACT_CONFIG].badge}`} />
-                    <span className="text-brand-900">{item.action}</span>
+                    <span className="text-text-primary">{item.action}</span>
                   </div>
-                  <span className="text-xs text-surface-500 bg-white px-3 py-1 rounded-lg">{item.deadline}</span>
+                  <span className="text-xs text-text-muted bg-surface-raised px-3 py-1 rounded-lg">{item.deadline}</span>
                 </div>
               ))}
             </div>
@@ -401,7 +401,7 @@ export const AIRiskAnalysis: React.FC = () => {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-3xl shadow-xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto"
+              className="bg-surface-overlay rounded-3xl shadow-xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
@@ -414,21 +414,21 @@ export const AIRiskAnalysis: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setSelectedPrediction(null)}
-                  className="p-2 rounded-xl hover:bg-surface-50 transition-colors"
+                  className="p-2 rounded-xl hover:bg-surface-sunken transition-colors"
                 >
-                  <XCircle className="w-5 h-5 text-surface-400" />
+                  <XCircle className="w-5 h-5 text-text-muted" />
                 </button>
               </div>
               
-              <h2 className="text-xl font-bold text-brand-900 mb-2">{selectedPrediction.category}</h2>
-              <p className="text-surface-600 mb-4">{selectedPrediction.prediction}</p>
+              <h2 className="text-xl font-bold text-text-primary mb-2">{selectedPrediction.category}</h2>
+              <p className="text-text-secondary mb-4">{selectedPrediction.prediction}</p>
               
               <div className="flex items-center gap-4 mb-6 text-sm">
-                <span className="flex items-center gap-1 text-surface-500">
+                <span className="flex items-center gap-1 text-text-muted">
                   <Clock className="w-4 h-4" />
                   {selectedPrediction.timeline}
                 </span>
-                <span className="flex items-center gap-1 text-surface-500">
+                <span className="flex items-center gap-1 text-text-muted">
                   {selectedPrediction.trend === 'increasing' ? (
                     <><TrendingUp className="w-4 h-4 text-red-500" /> Risk Increasing</>
                   ) : selectedPrediction.trend === 'decreasing' ? (
@@ -441,7 +441,7 @@ export const AIRiskAnalysis: React.FC = () => {
               
               <div className="space-y-4">
                 <div>
-                  <h3 className="font-semibold text-brand-900 mb-2">Contributing Factors</h3>
+                  <h3 className="font-semibold text-text-primary mb-2">Contributing Factors</h3>
                   <div className="space-y-2">
                     {selectedPrediction.factors.map((factor, idx) => (
                       <div key={idx} className="flex items-start gap-2 p-3 bg-red-50 rounded-xl text-sm">
@@ -453,7 +453,7 @@ export const AIRiskAnalysis: React.FC = () => {
                 </div>
                 
                 <div>
-                  <h3 className="font-semibold text-brand-900 mb-2">AI Recommendations</h3>
+                  <h3 className="font-semibold text-text-primary mb-2">AI Recommendations</h3>
                   <div className="space-y-2">
                     {selectedPrediction.recommendations.map((rec, idx) => (
                       <div key={idx} className="flex items-start gap-2 p-3 bg-emerald-50 rounded-xl text-sm">
@@ -468,7 +468,7 @@ export const AIRiskAnalysis: React.FC = () => {
               <div className="mt-6 flex gap-3">
                 <button
                   onClick={() => setSelectedPrediction(null)}
-                  className="flex-1 py-3 border border-surface-200 text-surface-600 font-medium rounded-xl hover:bg-surface-50 transition-all"
+                  className="flex-1 py-3 border-surface-border text-text-secondary font-medium rounded-xl hover:bg-surface-sunken transition-all"
                 >
                   Dismiss
                 </button>

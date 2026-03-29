@@ -112,23 +112,23 @@ export function ExecutiveReportDashboard() {
           { label: 'Compliance', value: liveKPIs ? `${liveKPIs.compliancePct}%` : '96%', sub: liveKPIs ? liveKPIs.standardName : 'ISO 45001 aligned', color: 'from-cyan-500 to-blue-500' },
         ].map((k, i) => (
           <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
-            className="relative overflow-hidden rounded-xl border border-white/10 bg-gray-900/60 backdrop-blur-sm p-5">
+            className="relative overflow-hidden rounded-xl border border-surface-border bg-surface-raised p-5">
             <div className={`absolute inset-0 opacity-10 bg-gradient-to-br ${k.color}`} />
-            <p className="text-xs text-gray-400 uppercase tracking-wider">{k.label}</p>
-            <p className="text-3xl font-bold text-white mt-1">{k.value}</p>
-            <p className="text-xs text-gray-500 mt-1">{k.sub}</p>
+            <p className="text-xs text-text-muted uppercase tracking-wider">{k.label}</p>
+            <p className="text-3xl font-bold text-text-primary mt-1">{k.value}</p>
+            <p className="text-xs text-text-muted mt-1">{k.sub}</p>
           </motion.div>
         ))}
       </div>
 
       {/* Trend chart (simple bar visualisation) */}
-      <div className="rounded-xl border border-white/10 bg-gray-900/60 backdrop-blur-sm p-6">
+      <div className="rounded-xl border border-surface-border bg-surface-raised p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">6-Month Performance Trend</h3>
+          <h3 className="text-lg font-semibold text-text-primary">6-Month Performance Trend</h3>
           <div className="flex gap-2">
             {['month', 'quarter', 'year'].map(p => (
               <button key={p} onClick={() => setSelectedPeriod(p)}
-                className={`px-3 py-1 rounded-lg text-xs font-medium transition ${selectedPeriod === p ? 'bg-indigo-500/30 text-indigo-300 border border-indigo-500/40' : 'text-gray-400 hover:text-white'}`}>
+                className={`px-3 py-1 rounded-lg text-xs font-medium transition ${selectedPeriod === p ? 'bg-accent/20 text-accent border border-accent/30' : 'text-text-muted hover:text-text-primary'}`}>
                 {p.charAt(0).toUpperCase() + p.slice(1)}
               </button>
             ))}
@@ -144,42 +144,42 @@ export function ExecutiveReportDashboard() {
                   <div className="flex-1 bg-cyan-500/60 rounded-t" style={{ height: `${(m.observations / maxVal) * 100}%` }} title={`Observations: ${m.observations}`} />
                   <div className="flex-1 bg-red-500/60 rounded-t" style={{ height: `${(m.incidents / maxVal) * 100}%` }} title={`Incidents: ${m.incidents}`} />
                 </div>
-                <span className="text-xs text-gray-500">{m.month}</span>
+                <span className="text-xs text-text-muted">{m.month}</span>
               </div>
             );
           })}
         </div>
         <div className="flex gap-4 mt-3 justify-center">
           {[{ l: 'Inspections', c: 'bg-indigo-500/60' }, { l: 'Observations', c: 'bg-cyan-500/60' }, { l: 'Incidents', c: 'bg-red-500/60' }].map(x => (
-            <div key={x.l} className="flex items-center gap-2 text-xs text-gray-400"><span className={`w-3 h-3 rounded ${x.c}`} />{x.l}</div>
+            <div key={x.l} className="flex items-center gap-2 text-xs text-text-muted"><span className={`w-3 h-3 rounded ${x.c}`} />{x.l}</div>
           ))}
         </div>
       </div>
 
       {/* Leading vs Lagging summary */}
       <div className="grid md:grid-cols-2 gap-6">
-        <div className="rounded-xl border border-white/10 bg-gray-900/60 backdrop-blur-sm p-6">
-          <h3 className="text-lg font-semibold text-emerald-400 mb-4">Leading Indicators Summary</h3>
+        <div className="rounded-xl border border-surface-border bg-surface-raised p-6">
+          <h3 className="text-lg font-semibold text-success mb-4">Leading Indicators Summary</h3>
           <div className="space-y-3">
             {leadingData.slice(0, 4).map((ind, i) => (
               <div key={i}>
-                <div className="flex justify-between text-sm"><span className="text-gray-300">{ind.label}</span><span className="text-white font-medium">{ind.value}{ind.unit ? ` ${ind.unit}` : ''}</span></div>
-                <div className="w-full bg-gray-800 rounded-full h-2 mt-1">
+                <div className="flex justify-between text-sm"><span className="text-text-secondary">{ind.label}</span><span className="text-text-primary font-medium">{ind.value}{ind.unit ? ` ${ind.unit}` : ''}</span></div>
+                <div className="w-full bg-surface-sunken rounded-full h-2 mt-1">
                   <div className="bg-gradient-to-r from-emerald-500 to-teal-400 h-2 rounded-full transition-all" style={{ width: `${pct(ind.value, ind.target)}%` }} />
                 </div>
               </div>
             ))}
           </div>
         </div>
-        <div className="rounded-xl border border-white/10 bg-gray-900/60 backdrop-blur-sm p-6">
-          <h3 className="text-lg font-semibold text-indigo-400 mb-4">Lagging Indicators Summary</h3>
+        <div className="rounded-xl border border-surface-border bg-surface-raised p-6">
+          <h3 className="text-lg font-semibold text-accent mb-4">Lagging Indicators Summary</h3>
           <div className="space-y-3">
             {laggingData.slice(0, 4).map((ind, i) => (
               <div key={i} className="flex items-center justify-between">
-                <span className="text-sm text-gray-300">{ind.label}</span>
+                <span className="text-sm text-text-secondary">{ind.label}</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500 line-through">{ind.prev}</span>
-                  <span className="text-white font-semibold">{ind.value}</span>
+                  <span className="text-sm text-text-muted line-through">{ind.prev}</span>
+                  <span className="text-text-primary font-semibold">{ind.value}</span>
                   <span className="text-xs text-emerald-400">▼</span>
                 </div>
               </div>
@@ -194,28 +194,28 @@ export function ExecutiveReportDashboard() {
   const renderScheduled = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-white">Automated Report Distribution</h3>
-        <button className="px-4 py-2 rounded-lg bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 text-sm hover:bg-indigo-500/30 transition">+ New Schedule</button>
+        <h3 className="text-lg font-semibold text-text-primary">Automated Report Distribution</h3>
+        <button className="px-4 py-2 rounded-lg bg-accent/10 border border-accent/30 text-accent text-sm hover:bg-accent/20 transition">+ New Schedule</button>
       </div>
       <div className="space-y-3">
         {scheduledData.map((rpt, i) => (
           <motion.div key={rpt.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.08 }}
-            className="rounded-xl border border-white/10 bg-gray-900/60 backdrop-blur-sm p-5">
+            className="rounded-xl border border-surface-border bg-surface-raised p-5">
             <div className="flex items-start justify-between">
               <div>
                 <div className="flex items-center gap-2">
-                  <h4 className="text-white font-medium">{rpt.name}</h4>
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${rpt.status === 'active' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-gray-700 text-gray-400'}`}>
+                  <h4 className="text-text-primary font-medium">{rpt.name}</h4>
+                  <span className={`text-xs px-2 py-0.5 rounded-full ${rpt.status === 'active' ? 'bg-success/10 text-success' : 'bg-surface-sunken text-text-muted'}`}>
                     {rpt.status}
                   </span>
                 </div>
-                <p className="text-sm text-gray-400 mt-1">🕐 {rpt.frequency}</p>
-                <p className="text-sm text-gray-500 mt-0.5">📩 {rpt.recipients.join(', ')}</p>
+                <p className="text-sm text-text-muted mt-1">🕐 {rpt.frequency}</p>
+                <p className="text-sm text-text-muted mt-0.5">📩 {rpt.recipients.join(', ')}</p>
               </div>
               <div className="text-right">
-                <span className="text-xs text-gray-500">Format</span>
-                <p className="text-sm text-indigo-300">{rpt.format}</p>
-                <p className="text-xs text-gray-500 mt-1">Last sent: {rpt.lastSent}</p>
+                <span className="text-xs text-text-muted">Format</span>
+                <p className="text-sm text-accent">{rpt.format}</p>
+                <p className="text-xs text-text-muted mt-1">Last sent: {rpt.lastSent}</p>
               </div>
             </div>
             {rpt.openItems > 0 && (
@@ -228,25 +228,25 @@ export function ExecutiveReportDashboard() {
       </div>
 
       {/* Monday Morning Preview */}
-      <div className="rounded-xl border border-indigo-500/30 bg-indigo-500/5 backdrop-blur-sm p-6">
-        <h3 className="text-lg font-semibold text-indigo-400 mb-3">📋 Monday Morning Preview</h3>
-        <p className="text-sm text-gray-400 mb-4">Preview of the automated report package that will be distributed next Monday at 7:00 AM.</p>
+      <div className="rounded-xl border border-accent/30 bg-accent/5 p-6">
+        <h3 className="text-lg font-semibold text-accent mb-3">📋 Monday Morning Preview</h3>
+        <p className="text-sm text-text-muted mb-4">Preview of the automated report package that will be distributed next Monday at 7:00 AM.</p>
         <div className="grid md:grid-cols-3 gap-4">
           {[
             { title: 'Open Corrective Actions', count: 14, urgent: 3, color: 'border-amber-500/30' },
             { title: 'Overdue Training', count: 8, urgent: 2, color: 'border-red-500/30' },
             { title: 'Compliance Gaps', count: 3, urgent: 1, color: 'border-orange-500/30' },
           ].map((item, i) => (
-            <div key={i} className={`rounded-lg border ${item.color} bg-gray-900/40 p-4`}>
-              <p className="text-sm text-gray-300 font-medium">{item.title}</p>
-              <p className="text-2xl font-bold text-white mt-1">{item.count}</p>
+            <div key={i} className={`rounded-lg border ${item.color} bg-surface-sunken p-4`}>
+              <p className="text-sm text-text-secondary font-medium">{item.title}</p>
+              <p className="text-2xl font-bold text-text-primary mt-1">{item.count}</p>
               <p className="text-xs text-red-400 mt-1">{item.urgent} urgent</p>
             </div>
           ))}
         </div>
         <div className="flex gap-3 mt-4">
-          <button className="px-4 py-2 rounded-lg bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 text-sm hover:bg-indigo-500/30 transition">Preview PDF</button>
-          <button className="px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-gray-300 text-sm hover:bg-gray-700 transition">Send Test Email</button>
+          <button className="px-4 py-2 rounded-lg bg-accent/10 border border-accent/30 text-accent text-sm hover:bg-accent/20 transition">Preview PDF</button>
+          <button className="px-4 py-2 rounded-lg bg-surface-overlay border border-surface-border text-text-secondary text-sm hover:bg-surface-sunken transition">Send Test Email</button>
         </div>
       </div>
     </div>
@@ -255,35 +255,35 @@ export function ExecutiveReportDashboard() {
   /* ── Leading Indicators ────────────────────────────────────────── */
   const renderLeading = () => (
     <div className="space-y-6">
-      <h3 className="text-lg font-semibold text-white">Leading vs Lagging Indicators</h3>
+      <h3 className="text-lg font-semibold text-text-primary">Leading vs Lagging Indicators</h3>
 
       {/* Leading */}
-      <div className="rounded-xl border border-emerald-500/20 bg-gray-900/60 backdrop-blur-sm p-6">
+      <div className="rounded-xl border border-surface-border bg-surface-raised p-6">
         <div className="flex items-center gap-2 mb-4">
           <span className="text-2xl">🟢</span>
-          <h4 className="text-lg font-semibold text-emerald-400">Leading Indicators</h4>
-          <span className="text-xs text-gray-500 ml-auto">Proactive safety measures</span>
+          <h4 className="text-lg font-semibold text-success">Leading Indicators</h4>
+          <span className="text-xs text-text-muted ml-auto">Proactive safety measures</span>
         </div>
         <div className="grid md:grid-cols-2 gap-4">
           {leadingData.map((ind, i) => {
             const p = pct(ind.value, ind.target);
             return (
               <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-                className="rounded-lg border border-white/5 bg-gray-800/50 p-4">
+                className="rounded-lg border border-surface-border bg-surface-overlay p-4">
                 <div className="flex justify-between items-start">
-                  <span className="text-sm text-gray-300">{ind.label}</span>
+                  <span className="text-sm text-text-secondary">{ind.label}</span>
                   <span className={`text-xs px-2 py-0.5 rounded-full ${ind.trend === 'up' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}`}>
                     {ind.delta}
                   </span>
                 </div>
                 <div className="flex items-end gap-1 mt-2">
-                  <span className="text-2xl font-bold text-white">{ind.value}</span>
-                  <span className="text-sm text-gray-500">/ {ind.target} {ind.unit}</span>
+                  <span className="text-2xl font-bold text-text-primary">{ind.value}</span>
+                  <span className="text-sm text-text-muted">/ {ind.target} {ind.unit}</span>
                 </div>
-                <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
+                <div className="w-full bg-surface-sunken rounded-full h-2 mt-2">
                   <div className={`h-2 rounded-full transition-all ${p >= 90 ? 'bg-emerald-500' : p >= 70 ? 'bg-amber-500' : 'bg-red-500'}`} style={{ width: `${p}%` }} />
                 </div>
-                <span className="text-xs text-gray-500 mt-1">{p}% of target</span>
+                <span className="text-xs text-text-muted mt-1">{p}% of target</span>
               </motion.div>
             );
           })}
@@ -291,23 +291,23 @@ export function ExecutiveReportDashboard() {
       </div>
 
       {/* Lagging */}
-      <div className="rounded-xl border border-indigo-500/20 bg-gray-900/60 backdrop-blur-sm p-6">
+      <div className="rounded-xl border border-surface-border bg-surface-raised p-6">
         <div className="flex items-center gap-2 mb-4">
           <span className="text-2xl">🔴</span>
-          <h4 className="text-lg font-semibold text-indigo-400">Lagging Indicators</h4>
-          <span className="text-xs text-gray-500 ml-auto">Reactive safety metrics</span>
+          <h4 className="text-lg font-semibold text-accent">Lagging Indicators</h4>
+          <span className="text-xs text-text-muted ml-auto">Reactive safety metrics</span>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {laggingData.map((ind, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-              className="rounded-lg border border-white/5 bg-gray-800/50 p-4">
-              <p className="text-sm text-gray-300">{ind.label}</p>
+              className="rounded-lg border border-surface-border bg-surface-overlay p-4">
+              <p className="text-sm text-text-secondary">{ind.label}</p>
               <div className="flex items-end gap-2 mt-2">
-                <span className="text-2xl font-bold text-white">{ind.value}</span>
-                {ind.unit && <span className="text-sm text-gray-500">{ind.unit}</span>}
+                <span className="text-2xl font-bold text-text-primary">{ind.value}</span>
+                {ind.unit && <span className="text-sm text-text-muted">{ind.unit}</span>}
               </div>
               <div className="flex items-center gap-2 mt-1">
-                <span className="text-sm text-gray-500">Previous: {ind.prev}</span>
+                <span className="text-sm text-text-muted">Previous: {ind.prev}</span>
                 <span className={`text-xs ${ind.good ? 'text-emerald-400' : 'text-red-400'}`}>{ind.good ? '▼ Improved' : '▲ Worsened'}</span>
               </div>
             </motion.div>
@@ -320,7 +320,7 @@ export function ExecutiveReportDashboard() {
   /* ── Site Scorecard ────────────────────────────────────────────── */
   const renderSites = () => (
     <div className="space-y-6">
-      <h3 className="text-lg font-semibold text-white">Site Safety Scorecard</h3>
+      <h3 className="text-lg font-semibold text-text-primary">Site Safety Scorecard</h3>
       <div className="space-y-3">
         {siteData.sort((a, b) => b.overall - a.overall).map((s, i) => (
           <motion.div key={s.site} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.08 }}
@@ -329,32 +329,32 @@ export function ExecutiveReportDashboard() {
               <div className="flex items-center gap-3">
                 <span className="text-2xl">{s.risk === 'low' ? '🟢' : s.risk === 'medium' ? '🟡' : '🔴'}</span>
                 <div>
-                  <h4 className="text-white font-medium">{s.site}</h4>
+                  <h4 className="text-text-primary font-medium">{s.site}</h4>
                   <span className={`text-xs ${riskColor(s.risk)} uppercase font-medium`}>{s.risk} risk</span>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-3xl font-bold text-white">{s.overall}</p>
-                <p className="text-xs text-gray-400">Overall Score</p>
+                <p className="text-3xl font-bold text-text-primary">{s.overall}</p>
+                <p className="text-xs text-text-muted">Overall Score</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4 mt-4">
               <div>
-                <p className="text-xs text-gray-400">Leading Score</p>
+                <p className="text-xs text-text-muted">Leading Score</p>
                 <div className="flex items-center gap-2 mt-1">
-                  <div className="flex-1 bg-gray-700 rounded-full h-2">
-                    <div className="bg-emerald-500 h-2 rounded-full" style={{ width: `${s.leading}%` }} />
+                  <div className="flex-1 bg-surface-sunken rounded-full h-2">
+                    <div className="bg-success h-2 rounded-full" style={{ width: `${s.leading}%` }} />
                   </div>
-                  <span className="text-sm text-white font-medium">{s.leading}</span>
+                  <span className="text-sm text-text-primary font-medium">{s.leading}</span>
                 </div>
               </div>
               <div>
-                <p className="text-xs text-gray-400">Lagging Score</p>
+                <p className="text-xs text-text-muted">Lagging Score</p>
                 <div className="flex items-center gap-2 mt-1">
-                  <div className="flex-1 bg-gray-700 rounded-full h-2">
-                    <div className="bg-indigo-500 h-2 rounded-full" style={{ width: `${s.lagging}%` }} />
+                  <div className="flex-1 bg-surface-sunken rounded-full h-2">
+                    <div className="bg-accent h-2 rounded-full" style={{ width: `${s.lagging}%` }} />
                   </div>
-                  <span className="text-sm text-white font-medium">{s.lagging}</span>
+                  <span className="text-sm text-text-primary font-medium">{s.lagging}</span>
                 </div>
               </div>
             </div>
@@ -366,7 +366,7 @@ export function ExecutiveReportDashboard() {
 
   /* ── page shell ─────────────────────────────────────────────────── */
   return (
-    <div className="min-h-screen bg-[#0a0a1a]">
+    <div className="page-wrapper">
 
       <main className="pt-20 pb-24 px-4 md:px-8 max-w-7xl mx-auto">
         {/* header */}
@@ -374,8 +374,8 @@ export function ExecutiveReportDashboard() {
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-xl">📊</div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-white">Executive Report Dashboard</h1>
-              <p className="text-gray-400 text-sm">Automated reporting &amp; KPI visibility for leadership</p>
+              <h1 className="page-title">Executive Report Dashboard</h1>
+              <p className="text-text-muted text-sm">Automated reporting &amp; KPI visibility for leadership</p>
             </div>
           </div>
         </motion.div>
@@ -384,7 +384,7 @@ export function ExecutiveReportDashboard() {
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
           {tabs.map(t => (
             <button key={t.id} onClick={() => setActiveTab(t.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition ${activeTab === t.id ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40' : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'}`}>
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition ${activeTab === t.id ? 'bg-accent/10 text-accent border border-accent/30' : 'text-text-muted hover:text-text-primary hover:bg-surface-sunken border border-transparent'}`}>
               <span>{t.icon}</span>{t.label}
             </button>
           ))}

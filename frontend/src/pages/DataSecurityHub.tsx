@@ -88,7 +88,7 @@ export const DataSecurityHub: React.FC = () => {
     : auditLogs;
 
   return (
-    <div className="min-h-screen pb-24 bg-surface-base">
+    <div className="page-wrapper">
 
       <div className="px-4 pt-20 pb-24 max-w-7xl mx-auto">
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
@@ -97,7 +97,7 @@ export const DataSecurityHub: React.FC = () => {
               <Shield className="w-6 h-6 text-accent" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-text-primary">Data Security Hub</h1>
+              <h1 className="page-title">Data Security Hub</h1>
               <p className="text-sm text-text-muted">SSO, Access Control & Audit Trails</p>
             </div>
           </div>

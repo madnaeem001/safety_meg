@@ -913,6 +913,27 @@
     @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6;
   }
 
+  /* ── Page Layout Globals ──────────────────────────────────────────────── */
+  /* Every page wrapper, title, and subtitle MUST use these classes so the  */
+  /* entire app feels visually unified. Colour and typography come from the */
+  /* CSS-var-backed design tokens defined in @layer base above.            */
+
+  .page-wrapper {
+    @apply min-h-screen bg-surface-base pb-24;
+  }
+
+  .page-title {
+    @apply text-2xl font-bold text-text-primary leading-tight tracking-tight;
+  }
+
+  .page-subtitle {
+    @apply text-sm text-text-secondary leading-relaxed;
+  }
+
+  .section-heading {
+    @apply text-lg font-semibold text-text-primary tracking-tight;
+  }
+
   /* Professional card hover effects */
   .card-interactive {
     @apply relative overflow-hidden transition-all duration-300 ease-out;

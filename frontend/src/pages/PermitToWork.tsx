@@ -260,13 +260,13 @@ export const PermitToWork = () => {
   const actionBusy = creatingPermit || updatingPermit || approvingPermit || rejectingPermit || deletingPermit;
 
   return (
-    <div className="min-h-screen bg-surface-base pb-20">
+    <div className="page-wrapper">
       <header className="sticky top-[var(--nav-height)] z-40 border-b border-surface-border bg-surface-overlay/85 px-6 py-4 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <SMButton variant="ghost" size="sm" leftIcon={<ArrowLeft className="h-5 w-5" />} onClick={() => navigate('/')} aria-label="Back to home" />
             <div>
-              <h1 className="text-xl font-bold text-text-primary">Permit to Work</h1>
+              <h1 className="page-title">Permit to Work</h1>
               <p className="text-sm text-text-muted">Live backend workflow for permit creation, approval, activation, and closure.</p>
             </div>
           </div>

@@ -302,7 +302,7 @@ export function V2Roadmap() {
 
   /* ── page shell ─────────────────────────────────────────────────── */
   return (
-    <div className="min-h-screen bg-surface-base">
+    <div className="page-wrapper">
 
       <main className="pt-20 pb-24 px-4 md:px-8 max-w-7xl mx-auto">
         {/* header */}
@@ -310,7 +310,7 @@ export function V2Roadmap() {
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center text-xl">🗺️</div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-text-primary">Version 2.0 Roadmap</h1>
+              <h1 className="page-title">Version 2.0 Roadmap</h1>
               <p className="text-text-muted text-sm">API integrations, offline sync &amp; feature planning</p>
             </div>
           </div>

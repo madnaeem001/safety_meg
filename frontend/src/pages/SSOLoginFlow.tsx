@@ -96,7 +96,7 @@ export const SSOLoginFlow: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-surface-base pb-32">
+    <div className="page-wrapper">
 
       <main className="max-w-7xl mx-auto px-4 md:px-6 pt-20 md:pt-24 space-y-6">
         {/* Header */}
@@ -108,7 +108,7 @@ export const SSOLoginFlow: React.FC = () => {
             <div className="flex items-center gap-2 text-accent font-bold text-[10px] uppercase tracking-[0.3em]">
               <KeyRound className="w-4 h-4" /> Single Sign-On
             </div>
-            <h1 className="text-2xl md:text-3xl font-bold text-text-primary tracking-tight">SSO & Authentication</h1>
+            <h1 className="page-title">SSO & Authentication</h1>
           </div>
         </div>
 

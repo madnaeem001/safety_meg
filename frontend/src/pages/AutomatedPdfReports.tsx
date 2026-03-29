@@ -607,13 +607,13 @@ function AutomatedPdfReports() {
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
           <input
             type="text"
             placeholder="Search templates..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-800/60 border border-slate-700/50 rounded-xl text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-cyan-500/50"
+            className="w-full pl-10 pr-4 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-text-primary text-sm placeholder:text-text-muted focus:outline-none focus:border-cyan-500/50"
           />
         </div>
         <div className="flex gap-2 flex-wrap">
@@ -624,7 +624,7 @@ function AutomatedPdfReports() {
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 selectedCategory === cat
                   ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
-                  : 'bg-slate-800/40 text-slate-400 border border-slate-700/30 hover:text-white'
+                  : 'bg-surface-sunken text-text-muted border border-surface-border hover:text-text-primary'
               }`}
             >
               {cat === 'all' ? 'All' : cat.charAt(0).toUpperCase() + cat.slice(1)}
@@ -642,7 +642,7 @@ function AutomatedPdfReports() {
               key={template.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-5 hover:border-cyan-500/30 transition-all group"
+              className="bg-surface-raised border border-surface-border rounded-xl p-5 hover:border-cyan-500/30 transition-all group"
             >
               <div className="flex items-start justify-between mb-3">
                 <div className={`p-2 rounded-lg bg-gradient-to-br ${categoryColors[template.category]} bg-opacity-20`}>
@@ -651,21 +651,21 @@ function AutomatedPdfReports() {
                 <span className={`text-[10px] px-2 py-0.5 rounded-full border ${
                   template.status === 'active' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30'
                     : template.status === 'paused' ? 'text-amber-400 bg-amber-500/10 border-amber-500/30'
-                    : 'text-slate-400 bg-slate-500/10 border-slate-500/30'
+                    : 'text-text-muted bg-surface-sunken border-surface-border'
                 }`}>
                   {template.status}
                 </span>
               </div>
-              <h3 className="text-white font-semibold text-sm mb-1">{template.name}</h3>
-              <p className="text-slate-400 text-xs mb-3 line-clamp-2">{template.description}</p>
+              <h3 className="text-text-primary font-semibold text-sm mb-1">{template.name}</h3>
+              <p className="text-text-muted text-xs mb-3 line-clamp-2">{template.description}</p>
 
               <div className="flex flex-wrap gap-1.5 mb-3">
                 {template.sections.map(s => (
-                  <span key={s} className="text-[10px] px-2 py-0.5 bg-slate-700/40 text-slate-300 rounded-full">{s}</span>
+                  <span key={s} className="text-[10px] px-2 py-0.5 bg-surface-sunken text-text-secondary rounded-full">{s}</span>
                 ))}
               </div>
 
-              <div className="flex items-center justify-between text-xs text-slate-500 mb-3">
+              <div className="flex items-center justify-between text-xs text-text-muted mb-3">
                 <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {template.frequency}</span>
                 <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {template.recipients.length} recipients</span>
               </div>
@@ -684,7 +684,7 @@ function AutomatedPdfReports() {
                 </button>
                 <button
                   onClick={() => { setPreviewTemplate(template.id); setActiveTab('preview'); }}
-                  className="px-3 py-2 bg-slate-700/40 border border-slate-600/30 text-slate-300 rounded-lg text-xs hover:text-white transition-all"
+                  className="px-3 py-2 bg-surface-sunken border border-surface-border text-text-secondary rounded-lg text-xs hover:text-text-primary transition-all"
                 >
                   <Eye className="w-3.5 h-3.5" />
                 </button>
@@ -700,7 +700,7 @@ function AutomatedPdfReports() {
   const renderScheduled = () => (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <p className="text-slate-400 text-sm">{scheduledList.length} scheduled reports configured</p>
+        <p className="text-text-muted text-sm">{scheduledList.length} scheduled reports configured</p>
         <button className="flex items-center gap-1.5 px-3 py-2 bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 rounded-lg text-xs font-medium hover:bg-cyan-500/30 transition-all">
           <Plus className="w-3.5 h-3.5" /> New Schedule
         </button>
@@ -711,11 +711,11 @@ function AutomatedPdfReports() {
           key={sched.id}
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
-          className="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-4 flex flex-col md:flex-row md:items-center gap-4"
+          className="bg-surface-raised border border-surface-border rounded-xl p-4 flex flex-col md:flex-row md:items-center gap-4"
         >
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="text-white font-semibold text-sm">{sched.name}</h3>
+              <h3 className="text-text-primary font-semibold text-sm">{sched.name}</h3>
               <span className={`text-[10px] px-2 py-0.5 rounded-full border ${
                 sched.status === 'active' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30'
                   : 'text-amber-400 bg-amber-500/10 border-amber-500/30'
@@ -723,7 +723,7 @@ function AutomatedPdfReports() {
                 {sched.status}
               </span>
             </div>
-            <div className="flex flex-wrap gap-3 text-xs text-slate-400">
+            <div className="flex flex-wrap gap-3 text-xs text-text-muted">
               <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {sched.frequency}{sched.dayOfWeek ? ` — ${sched.dayOfWeek}` : ''}{sched.dayOfMonth ? ` — Day ${sched.dayOfMonth}` : ''}</span>
               <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {sched.time}</span>
               <span className="flex items-center gap-1"><Mail className="w-3 h-3" /> {sched.deliveryMethod}</span>
@@ -732,11 +732,11 @@ function AutomatedPdfReports() {
           </div>
           <div className="flex items-center gap-4 text-xs">
             <div>
-              <p className="text-slate-500">Last Sent</p>
-              <p className="text-white">{sched.lastSent}</p>
+              <p className="text-text-muted">Last Sent</p>
+              <p className="text-text-primary">{sched.lastSent}</p>
             </div>
             <div>
-              <p className="text-slate-500">Next Run</p>
+              <p className="text-text-muted">Next Run</p>
               <p className="text-cyan-300">{sched.nextRun}</p>
             </div>
           <div className="flex gap-1.5">
@@ -748,10 +748,10 @@ function AutomatedPdfReports() {
                     toggleScheduleMutation.mutate({ id: numId, status: newStatus });
                   }
                 }}
-                className="p-2 bg-slate-700/40 rounded-lg text-slate-300 hover:text-white transition">
+                className="p-2 bg-surface-sunken rounded-lg text-text-secondary hover:text-text-primary transition">
                 {sched.status === 'active' ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
               </button>
-              <button className="p-2 bg-slate-700/40 rounded-lg text-slate-300 hover:text-white transition">
+              <button className="p-2 bg-surface-sunken rounded-lg text-text-secondary hover:text-text-primary transition">
                 <Settings className="w-3.5 h-3.5" />
               </button>
               <button
@@ -770,21 +770,21 @@ function AutomatedPdfReports() {
   /* ── Render History Tab ── */
   const renderHistory = () => (
     <div className="space-y-3">
-      <p className="text-slate-400 text-sm">{generatedList.length} reports generated</p>
+      <p className="text-text-muted text-sm">{generatedList.length} reports generated</p>
       {generatedList.map((report, idx) => (
         <motion.div
           key={report.id}
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: idx * 0.05 }}
-          className="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-4 flex items-center gap-4"
+          className="bg-surface-raised border border-surface-border rounded-xl p-4 flex items-center gap-4"
         >
           <div className={`p-2.5 rounded-lg ${report.status === 'complete' ? 'bg-emerald-500/20' : report.status === 'generating' ? 'bg-cyan-500/20' : 'bg-red-500/20'}`}>
             {report.status === 'complete' ? <CheckCircle className="w-5 h-5 text-emerald-400" /> : report.status === 'generating' ? <RefreshCw className="w-5 h-5 text-cyan-400 animate-spin" /> : <AlertTriangle className="w-5 h-5 text-red-400" />}
           </div>
           <div className="flex-1">
-            <h4 className="text-white text-sm font-medium">{report.name}</h4>
-            <p className="text-slate-400 text-xs">{report.generatedAt} • {report.pages} pages • {report.size}</p>
+            <h4 className="text-text-primary text-sm font-medium">{report.name}</h4>
+            <p className="text-text-muted text-xs">{report.generatedAt} • {report.pages} pages • {report.size}</p>
           </div>
           <div className="flex gap-2">
             <button
@@ -794,7 +794,7 @@ function AutomatedPdfReports() {
             >
               <Download className="w-4 h-4" />
             </button>
-            <button className="p-2 bg-slate-700/40 rounded-lg text-slate-300 hover:text-white transition" title="Print">
+            <button className="p-2 bg-surface-sunken rounded-lg text-text-secondary hover:text-text-primary transition" title="Print">
               <Printer className="w-4 h-4" />
             </button>
           </div>
@@ -814,7 +814,7 @@ function AutomatedPdfReports() {
           <select
             value={previewTemplate}
             onChange={e => setPreviewTemplate(e.target.value)}
-            className="bg-slate-800/60 border border-slate-700/50 rounded-lg text-white text-sm px-3 py-2 focus:outline-none focus:border-cyan-500/50"
+            className="bg-surface-sunken border border-surface-border rounded-lg text-text-primary text-sm px-3 py-2 focus:outline-none focus:border-cyan-500/50"
           >
             {REPORT_TEMPLATES.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
           </select>
@@ -829,16 +829,16 @@ function AutomatedPdfReports() {
         </div>
 
         {/* PDF Preview — dark themed mockup */}
-        <div className="bg-slate-900/80 border border-slate-700/50 rounded-xl p-6 space-y-6">
+        <div className="bg-surface-sunken border border-surface-border rounded-xl p-6 space-y-6">
           {/* Header mockup */}
-          <div className="bg-slate-950 rounded-lg p-5 border border-cyan-500/20">
+          <div className="bg-surface-overlay rounded-lg p-5 border border-cyan-500/20">
             <div className="flex justify-between items-start">
               <div>
-                <h2 className="text-xl font-bold text-white">SafetyMEG</h2>
+                <h2 className="text-xl font-bold text-text-primary">SafetyMEG</h2>
                 <p className="text-cyan-400 text-xs tracking-widest mt-1">AUTOMATED EHS REPORT</p>
-                <p className="text-white text-lg font-semibold mt-2">{template.name}</p>
+                <p className="text-text-primary text-lg font-semibold mt-2">{template.name}</p>
               </div>
-              <div className="text-right text-xs text-slate-400">
+              <div className="text-right text-xs text-text-muted">
                 <p>Generated: {new Date().toLocaleDateString()}</p>
                 <p>Report ID: RPT-2026-02-0042</p>
                 <p className="text-amber-400 mt-1">CONFIDENTIAL</p>
@@ -854,16 +854,16 @@ function AutomatedPdfReports() {
                 const improved = kpi.value <= kpi.prev;
                 const delta = ((kpi.value - kpi.prev) / kpi.prev * 100).toFixed(1);
                 return (
-                  <div key={kpi.label} className="bg-slate-800/60 rounded-lg p-3 border border-slate-700/30">
-                    <p className="text-slate-400 text-[10px]">{kpi.label}</p>
+                  <div key={kpi.label} className="bg-surface-raised rounded-lg p-3 border border-surface-border">
+                    <p className="text-text-muted text-[10px]">{kpi.label}</p>
                     <div className="flex items-end gap-2 mt-1">
-                      <span className="text-white text-lg font-bold">{kpi.value}</span>
+                      <span className="text-text-primary text-lg font-bold">{kpi.value}</span>
                       <span className={`text-xs flex items-center gap-0.5 ${improved ? 'text-emerald-400' : 'text-red-400'}`}>
                         {improved ? <ArrowDownRight className="w-3 h-3" /> : <ArrowUpRight className="w-3 h-3" />}
                         {Math.abs(Number(delta))}%
                       </span>
                     </div>
-                    <p className="text-slate-500 text-[10px] mt-1">Target: {kpi.target}</p>
+                    <p className="text-text-muted text-[10px] mt-1">Target: {kpi.target}</p>
                   </div>
                 );
               })}
@@ -876,7 +876,7 @@ function AutomatedPdfReports() {
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
-                  <tr className="border-b border-slate-700/50">
+                  <tr className="border-b border-surface-border">
                     {['Month', 'Total', 'Recordable', 'Near Miss', 'Lost Time'].map(h => (
                       <th key={h} className="text-left py-2 px-3 text-cyan-400 font-semibold">{h}</th>
                     ))}
@@ -884,12 +884,12 @@ function AutomatedPdfReports() {
                 </thead>
                 <tbody>
                   {INCIDENT_TREND.map((row, idx) => (
-                    <tr key={row.month} className={idx % 2 === 0 ? 'bg-slate-800/30' : ''}>
-                      <td className="py-1.5 px-3 text-white">{row.month}</td>
-                      <td className="py-1.5 px-3 text-slate-300">{row.total}</td>
-                      <td className="py-1.5 px-3 text-slate-300">{row.recordable}</td>
-                      <td className="py-1.5 px-3 text-slate-300">{row.nearMiss}</td>
-                      <td className="py-1.5 px-3 text-slate-300">{row.lostTime}</td>
+                    <tr key={row.month} className={idx % 2 === 0 ? 'bg-surface-sunken' : ''}>
+                      <td className="py-1.5 px-3 text-text-primary">{row.month}</td>
+                      <td className="py-1.5 px-3 text-text-secondary">{row.total}</td>
+                      <td className="py-1.5 px-3 text-text-secondary">{row.recordable}</td>
+                      <td className="py-1.5 px-3 text-text-secondary">{row.nearMiss}</td>
+                      <td className="py-1.5 px-3 text-text-secondary">{row.lostTime}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -902,7 +902,7 @@ function AutomatedPdfReports() {
             <h3 className="text-cyan-400 font-bold text-sm mb-3">Report Sections</h3>
             <div className="flex flex-wrap gap-2">
               {template.sections.map(s => (
-                <span key={s} className="px-3 py-1.5 bg-slate-800/60 border border-slate-700/30 rounded-lg text-xs text-slate-300 flex items-center gap-1.5">
+                <span key={s} className="px-3 py-1.5 bg-surface-sunken border border-surface-border rounded-lg text-xs text-text-secondary flex items-center gap-1.5">
                   <ChevronRight className="w-3 h-3 text-cyan-400" /> {s}
                 </span>
               ))}
@@ -914,7 +914,7 @@ function AutomatedPdfReports() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white pb-24">
+    <div className="page-wrapper">
 
 
       <div className="max-w-7xl mx-auto px-4 pt-6 pb-8">
@@ -924,7 +924,7 @@ function AutomatedPdfReports() {
             <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
               Automated PDF Reports
             </h1>
-            <p className="text-slate-400 text-sm mt-1">Generate, schedule, and distribute professional EHS reports with real-time data</p>
+            <p className="text-text-muted text-sm mt-1">Generate, schedule, and distribute professional EHS reports with real-time data</p>
           </div>
           <div className="flex gap-2">
             <button
@@ -946,18 +946,18 @@ function AutomatedPdfReports() {
             { label: 'Generated (MTD)', value: generatedList.length, icon: CheckCircle, color: 'purple' },
             { label: 'Recipients', value: 12, icon: Users, color: 'amber' },
           ].map(stat => (
-            <div key={stat.label} className="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-4">
+            <div key={stat.label} className="bg-surface-raised border border-surface-border rounded-xl p-4">
               <div className="flex items-center justify-between mb-2">
                 <stat.icon className={`w-5 h-5 text-${stat.color}-400`} />
-                <span className="text-2xl font-bold text-white">{stat.value}</span>
+                <span className="text-2xl font-bold text-text-primary">{stat.value}</span>
               </div>
-              <p className="text-slate-400 text-xs">{stat.label}</p>
+              <p className="text-text-muted text-xs">{stat.label}</p>
             </div>
           ))}
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-1 mb-6 overflow-x-auto">
+        <div className="flex gap-1 bg-surface-raised border border-surface-border rounded-xl p-1 mb-6 overflow-x-auto">
           {tabs.map(tab => {
             const Icon = tab.icon;
             return (
@@ -967,7 +967,7 @@ function AutomatedPdfReports() {
                 className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-text-muted hover:text-text-primary'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />

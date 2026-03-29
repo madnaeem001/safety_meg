@@ -164,7 +164,7 @@ export const EmailNotificationSystem: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen pb-28 bg-surface-base">
+    <div className="page-wrapper">
 
       <main className="relative z-10 max-w-7xl mx-auto pt-8 md:pt-12 px-5 md:px-8 lg:px-12">
         {/* Header */}
@@ -173,7 +173,7 @@ export const EmailNotificationSystem: React.FC = () => {
             <div className="h-px w-8 bg-accent" />
             <span className="text-[13px] font-bold text-accent uppercase tracking-[0.3em] font-display">Communications</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-text-primary font-display">Email Notification System</h1>
+          <h1 className="page-title">Email Notification System</h1>
           <p className="text-text-muted text-sm mt-2">Automated email campaigns, alerts, and transactional messaging</p>
         </motion.div>
 

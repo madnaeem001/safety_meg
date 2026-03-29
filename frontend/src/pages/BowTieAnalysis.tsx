@@ -190,7 +190,7 @@ export const BowTieAnalysis: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-primary pb-32">
+    <div className="page-wrapper">
 
       <main className="max-w-7xl mx-auto px-4 md:px-6 pt-20 md:pt-24 space-y-6">
         {/* Header */}
@@ -205,7 +205,7 @@ export const BowTieAnalysis: React.FC = () => {
             <div className="flex items-center gap-2 text-cyan-400 font-bold text-[10px] uppercase tracking-[0.3em]">
               <Layers className="w-4 h-4" /> Bow Tie Analysis
             </div>
-            <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight">Risk Scenario Analysis</h1>
+            <h1 className="page-title">Risk Scenario Analysis</h1>
           </div>
           <button className="ml-auto flex items-center gap-2 px-4 py-2.5 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-sm font-medium hover:bg-cyan-500/30 transition-colors">
             <Plus className="w-4 h-4" /> New Scenario
@@ -234,7 +234,7 @@ export const BowTieAnalysis: React.FC = () => {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
             <input type="text" placeholder="Search scenarios..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40" />
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-cyan-500/40" />
           </div>
           <div className="flex gap-2 overflow-x-auto">
             {tabs.map(tab => (

@@ -394,7 +394,7 @@ export const RegulationsLibrary: React.FC = () => {
   }, []);
   
   return (
-    <div className="min-h-screen bg-surface-base">
+    <div className="page-wrapper">
       {/* Header */}
       <header className="sticky top-[72px] z-40 bg-surface-base/90 backdrop-blur-xl border-b border-surface-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -408,7 +408,7 @@ export const RegulationsLibrary: React.FC = () => {
               </svg>
               <span className="text-sm font-medium">Back</span>
             </button>
-            <h1 className="text-lg font-bold text-text-primary">Regulations Library</h1>
+            <h1 className="page-title">Regulations Library</h1>
             <div className="w-16"></div>
           </div>
         </div>

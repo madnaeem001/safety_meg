@@ -200,7 +200,7 @@ export const WorkerDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 pb-24">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="bg-primary text-text-inverted sticky top-[var(--nav-height)] z-50 safe-top">
         <div className="px-4 py-4">

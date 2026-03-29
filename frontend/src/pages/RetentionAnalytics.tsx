@@ -56,7 +56,7 @@ export const RetentionAnalytics: React.FC = () => {
   const [activeTab, setActiveTab] = useState('Overview');
 
   const getCellColor = (val: number | null) => {
-    if (val === null) return 'bg-slate-800/30 text-slate-600';
+    if (val === null) return 'bg-surface-sunken text-text-muted';
     if (val >= 90) return 'bg-emerald-500/20 text-emerald-400';
     if (val >= 70) return 'bg-cyan-500/20 text-cyan-400';
     if (val >= 50) return 'bg-amber-500/20 text-amber-400';
@@ -64,17 +64,17 @@ export const RetentionAnalytics: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen pb-28 transition-colors duration-500" style={{ background: 'linear-gradient(165deg, #020617 0%, #0f172a 35%, #0c1222 70%, #020617 100%)' }}>
+    <div className="page-wrapper transition-colors duration-300">
 
       <main className="relative z-10 max-w-7xl mx-auto pt-8 md:pt-12 px-5 md:px-8 lg:px-12">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <div className="h-px w-8 bg-cyan-500" />
-            <span className="text-[13px] font-bold text-cyan-400 uppercase tracking-[0.3em] font-display">User Intelligence</span>
+            <div className="h-px w-8 bg-accent" />
+            <span className="text-[13px] font-bold text-accent uppercase tracking-[0.3em] font-display">User Intelligence</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-white font-display">Retention Analytics</h1>
-          <p className="text-slate-400 text-sm mt-2">Understand user behavior, reduce churn, and grow lifetime value</p>
+          <h1 className="page-title">Retention Analytics</h1>
+          <p className="text-text-muted text-sm mt-2">Understand user behavior, reduce churn, and grow lifetime value</p>
         </motion.div>
 
         {/* Tabs */}
@@ -85,8 +85,8 @@ export const RetentionAnalytics: React.FC = () => {
               onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 activeTab === tab
-                  ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
-                  : 'bg-slate-800/40 text-slate-400 border border-slate-700/30 hover:border-cyan-500/20 hover:text-slate-300'
+                  ? 'bg-accent/10 text-accent border border-accent/30'
+                  : 'bg-surface-sunken text-text-muted border border-surface-border hover:border-accent/20 hover:text-text-secondary'
               }`}
             >
               {tab}
@@ -117,12 +117,12 @@ export const RetentionAnalytics: React.FC = () => {
                 };
                 return (
                   <motion.div key={kpi.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-                    className={`p-4 rounded-2xl bg-slate-900/80 backdrop-blur-xl border ${colorStyles[kpi.color]} hover:scale-[1.02] transition-all`}>
+                    className={`p-4 rounded-2xl bg-surface-raised border ${colorStyles[kpi.color]} hover:scale-[1.02] transition-all`}>
                     <div className={`p-2 rounded-lg w-fit mb-3 ${iconBg[kpi.color]}`}>
                       <kpi.icon className="w-4 h-4" />
                     </div>
-                    <p className="text-xl font-black text-white">{kpi.value}</p>
-                    <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold mt-0.5">{kpi.label}</p>
+                    <p className="text-xl font-black text-text-primary">{kpi.value}</p>
+                    <p className="text-[10px] text-text-muted uppercase tracking-wider font-bold mt-0.5">{kpi.label}</p>
                     <span className={`text-[10px] font-bold mt-1 inline-flex items-center gap-1 ${
                       kpi.trend === 'up' && kpi.label !== 'Churn Rate' ? 'text-emerald-400' : kpi.trend === 'down' && kpi.label === 'Churn Rate' ? 'text-emerald-400' : 'text-red-400'
                     }`}>
@@ -134,9 +134,9 @@ export const RetentionAnalytics: React.FC = () => {
             </div>
 
             {/* Retention Curve */}
-            <div className="bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-cyan-500/15 p-6">
-              <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
-                <Activity className="w-4 h-4 text-cyan-400" /> 30-Day Retention Curve
+            <div className="bg-surface-raised rounded-2xl border border-surface-border p-6">
+              <h3 className="text-sm font-bold text-text-primary mb-4 flex items-center gap-2">
+                <Activity className="w-4 h-4 text-accent" /> 30-Day Retention Curve
               </h3>
               <div className="flex items-end gap-1 h-48">
                 {[100, 95, 91, 87, 84, 82, 80, 79, 78, 78, 77, 77, 76, 76, 76, 75, 75, 75, 74, 74, 74, 74, 73, 73, 73, 73, 73, 73, 73, 73].map((val, i) => (
@@ -147,7 +147,7 @@ export const RetentionAnalytics: React.FC = () => {
                       transition={{ duration: 0.6, delay: i * 0.02 }}
                       className={`w-full rounded-t-sm ${val >= 80 ? 'bg-gradient-to-t from-cyan-600 to-cyan-400' : val >= 75 ? 'bg-gradient-to-t from-blue-600 to-blue-400' : 'bg-gradient-to-t from-amber-600 to-amber-400'}`}
                     />
-                    {i % 7 === 0 && <span className="text-[8px] text-slate-600 font-mono">D{i}</span>}
+                    {i % 7 === 0 && <span className="text-[8px] text-text-muted font-mono">D{i}</span>}
                   </div>
                 ))}
               </div>
@@ -157,32 +157,32 @@ export const RetentionAnalytics: React.FC = () => {
 
         {/* Cohort Analysis */}
         {activeTab === 'Cohort Analysis' && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-cyan-500/15 overflow-hidden">
-            <div className="p-5 border-b border-cyan-500/10">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-cyan-400" /> Cohort Retention Analysis
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-surface-raised rounded-2xl border border-surface-border overflow-hidden">
+            <div className="p-5 border-b border-surface-border">
+              <h3 className="text-sm font-bold text-text-primary flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-accent" /> Cohort Retention Analysis
               </h3>
-              <p className="text-[11px] text-slate-500 mt-1">Retention % by signup cohort over time</p>
+              <p className="text-[11px] text-text-muted mt-1">Retention % by signup cohort over time</p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
-                  <tr className="border-b border-slate-800">
-                    <th className="px-4 py-3 text-left text-slate-400 font-bold">Cohort</th>
-                    <th className="px-3 py-3 text-center text-slate-400 font-bold">Users</th>
-                    <th className="px-3 py-3 text-center text-slate-400 font-bold">Week 1</th>
-                    <th className="px-3 py-3 text-center text-slate-400 font-bold">Week 2</th>
-                    <th className="px-3 py-3 text-center text-slate-400 font-bold">Week 3</th>
-                    <th className="px-3 py-3 text-center text-slate-400 font-bold">Week 4</th>
-                    <th className="px-3 py-3 text-center text-slate-400 font-bold">Week 8</th>
-                    <th className="px-3 py-3 text-center text-slate-400 font-bold">Week 12</th>
+                  <tr className="border-b border-surface-border">
+                    <th className="px-4 py-3 text-left text-text-muted font-bold">Cohort</th>
+                    <th className="px-3 py-3 text-center text-text-muted font-bold">Users</th>
+                    <th className="px-3 py-3 text-center text-text-muted font-bold">Week 1</th>
+                    <th className="px-3 py-3 text-center text-text-muted font-bold">Week 2</th>
+                    <th className="px-3 py-3 text-center text-text-muted font-bold">Week 3</th>
+                    <th className="px-3 py-3 text-center text-text-muted font-bold">Week 4</th>
+                    <th className="px-3 py-3 text-center text-text-muted font-bold">Week 8</th>
+                    <th className="px-3 py-3 text-center text-text-muted font-bold">Week 12</th>
                   </tr>
                 </thead>
                 <tbody>
                   {COHORT_DATA.map((row, i) => (
-                    <tr key={row.month} className="border-b border-slate-800/50 hover:bg-slate-800/30">
-                      <td className="px-4 py-3 text-white font-medium">{row.month}</td>
-                      <td className="px-3 py-3 text-center text-slate-300">{row.users.toLocaleString()}</td>
+                    <tr key={row.month} className="border-b border-surface-border hover:bg-surface-sunken transition-colors">
+                      <td className="px-4 py-3 text-text-primary font-medium">{row.month}</td>
+                      <td className="px-3 py-3 text-center text-text-secondary">{row.users.toLocaleString()}</td>
                       {[row.w1, row.w2, row.w3, row.w4, row.w8, row.w12].map((val, j) => (
                         <td key={j} className="px-3 py-2 text-center">
                           <span className={`inline-block px-2 py-1 rounded-lg text-[11px] font-bold ${getCellColor(val)}`}>
@@ -201,18 +201,18 @@ export const RetentionAnalytics: React.FC = () => {
         {/* Churn Intelligence */}
         {activeTab === 'Churn Intelligence' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-            <div className="bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-red-500/15 p-6">
-              <h3 className="text-sm font-bold text-white mb-6 flex items-center gap-2">
-                <UserMinus className="w-4 h-4 text-red-400" /> Why Users Churn
+            <div className="bg-surface-raised rounded-2xl border border-surface-border p-6">
+              <h3 className="text-sm font-bold text-text-primary mb-6 flex items-center gap-2">
+                <UserMinus className="w-4 h-4 text-danger" /> Why Users Churn
               </h3>
               <div className="space-y-4">
                 {CHURN_REASONS.map((item, i) => (
                   <motion.div key={item.reason} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.08 }} className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs text-slate-300 font-medium">{item.reason}</span>
-                      <span className="text-xs font-bold text-white">{item.pct}%</span>
+                      <span className="text-xs text-text-secondary font-medium">{item.reason}</span>
+                      <span className="text-xs font-bold text-text-primary">{item.pct}%</span>
                     </div>
-                    <div className="w-full h-2.5 rounded-full bg-slate-800/60 overflow-hidden">
+                    <div className="w-full h-2.5 rounded-full bg-surface-sunken overflow-hidden">
                       <motion.div initial={{ width: 0 }} animate={{ width: `${item.pct}%` }} transition={{ duration: 0.8, delay: 0.3 + i * 0.1 }}
                         className={`h-full rounded-full ${item.color}`} />
                     </div>
@@ -222,9 +222,9 @@ export const RetentionAnalytics: React.FC = () => {
             </div>
 
             {/* Churn Prediction Alert */}
-            <div className="bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-amber-500/15 p-6">
-              <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-amber-400" /> AI Churn Prediction
+            <div className="bg-surface-raised rounded-2xl border border-surface-border p-6">
+              <h3 className="text-sm font-bold text-text-primary mb-4 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-warning" /> AI Churn Prediction
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {[
@@ -235,8 +235,8 @@ export const RetentionAnalytics: React.FC = () => {
                   <motion.div key={item.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
                     className={`p-4 rounded-xl bg-${item.color}-500/5 border border-${item.color}-500/20`}>
                     <p className={`text-2xl font-black text-${item.color}-400`}>{item.count}</p>
-                    <p className="text-xs font-bold text-white mt-1">{item.label}</p>
-                    <p className="text-[10px] text-slate-500 mt-0.5">{item.desc}</p>
+                    <p className="text-xs font-bold text-text-primary mt-1">{item.label}</p>
+                    <p className="text-[10px] text-text-muted mt-0.5">{item.desc}</p>
                   </motion.div>
                 ))}
               </div>
@@ -258,20 +258,20 @@ export const RetentionAnalytics: React.FC = () => {
                 const c = segColors[seg.color];
                 return (
                   <motion.div key={seg.segment} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
-                    className={`p-5 rounded-2xl bg-slate-900/80 backdrop-blur-xl border ${c.border} hover:scale-[1.01] transition-all`}>
+                    className={`p-5 rounded-2xl bg-surface-raised border ${c.border} hover:scale-[1.01] transition-all`}>
                     <div className="flex items-start justify-between mb-3">
                       <div className={`p-2.5 rounded-xl ${c.bg}`}>
                         <seg.icon className={`w-5 h-5 ${c.text}`} />
                       </div>
                       <span className={`text-xs font-bold ${c.text} ${c.bg} px-2 py-1 rounded-lg`}>{seg.pct}%</span>
                     </div>
-                    <p className="text-lg font-bold text-white">{seg.segment}</p>
-                    <p className="text-[11px] text-slate-500 mt-0.5">{seg.description}</p>
+                    <p className="text-lg font-bold text-text-primary">{seg.segment}</p>
+                    <p className="text-[11px] text-text-muted mt-0.5">{seg.description}</p>
                     <div className="flex items-center gap-2 mt-3">
                       <span className={`text-xl font-black ${c.text}`}>{seg.count.toLocaleString()}</span>
-                      <span className="text-[10px] text-slate-500 uppercase tracking-wider">users</span>
+                      <span className="text-[10px] text-text-muted uppercase tracking-wider">users</span>
                     </div>
-                    <div className="mt-3 h-1.5 rounded-full bg-slate-800/60 overflow-hidden">
+                    <div className="mt-3 h-1.5 rounded-full bg-surface-sunken overflow-hidden">
                       <motion.div initial={{ width: 0 }} animate={{ width: `${seg.pct}%` }} transition={{ duration: 1, delay: 0.3 }}
                         className={`h-full rounded-full ${c.bg.replace('/10', '')}`} />
                     </div>
@@ -285,23 +285,23 @@ export const RetentionAnalytics: React.FC = () => {
         {/* Retention Actions */}
         {activeTab === 'Retention Actions' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            className="bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-emerald-500/15 overflow-hidden">
-            <div className="p-5 border-b border-emerald-500/10">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <Target className="w-4 h-4 text-emerald-400" /> Active Retention Strategies
+            className="bg-surface-raised rounded-2xl border border-surface-border overflow-hidden">
+            <div className="p-5 border-b border-surface-border">
+              <h3 className="text-sm font-bold text-text-primary flex items-center gap-2">
+                <Target className="w-4 h-4 text-success" /> Active Retention Strategies
               </h3>
             </div>
-            <div className="divide-y divide-slate-800/50">
+            <div className="divide-y divide-surface-border">
               {RETENTION_ACTIONS.map((item, i) => (
                 <motion.div key={item.action} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.08 }}
-                  className="flex items-center justify-between p-5 hover:bg-slate-800/30 transition-colors group">
+                  className="flex items-center justify-between p-5 hover:bg-surface-sunken transition-colors group">
                   <div className="flex items-center gap-4">
-                    <div className="p-2.5 rounded-xl bg-emerald-500/10">
-                      <item.icon className="w-4 h-4 text-emerald-400" />
+                    <div className="p-2.5 rounded-xl bg-success/10">
+                      <item.icon className="w-4 h-4 text-success" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white">{item.action}</p>
-                      <p className="text-xs text-emerald-400 font-bold mt-0.5">{item.impact}</p>
+                      <p className="text-sm font-medium text-text-primary">{item.action}</p>
+                      <p className="text-xs text-success font-bold mt-0.5">{item.impact}</p>
                     </div>
                   </div>
                   <span className={`text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-lg ${

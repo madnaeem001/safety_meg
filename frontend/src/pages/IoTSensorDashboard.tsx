@@ -150,7 +150,7 @@ export const IoTSensorDashboard: React.FC = () => {
   }, [sensors]);
 
   return (
-    <div className="min-h-screen bg-surface-950 text-white pb-20 selection:bg-brand-500/30">
+    <div className="page-wrapper selection:bg-accent/20">
       {/* HD Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-brand-500/5 blur-[150px] rounded-full" />
@@ -173,8 +173,8 @@ export const IoTSensorDashboard: React.FC = () => {
                   <Radio className="w-7 h-7 text-white animate-pulse" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-black text-white tracking-tight">IoT Sensor Network</h1>
-                  <p className="text-[11px] text-surface-400 uppercase tracking-widest font-bold">Real-time Environmental Intelligence</p>
+                  <h1 className="page-title">IoT Sensor Network</h1>
+                  <p className="page-subtitle uppercase tracking-widest">Real-time Environmental Intelligence</p>
                 </div>
               </div>
             </div>

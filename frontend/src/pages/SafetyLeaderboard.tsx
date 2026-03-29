@@ -285,7 +285,7 @@ export const SafetyLeaderboard: React.FC = () => {
   const sortedLeaderboard = [...mockLeaderboard].sort((a, b) => getPointsByFilter(b) - getPointsByFilter(a));
 
   return (
-    <div className="min-h-screen bg-surface-50 pb-24">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white sticky top-[72px] z-50 safe-top">
         <div className="px-4 py-4">
@@ -295,7 +295,7 @@ export const SafetyLeaderboard: React.FC = () => {
             </button>
             <div className="flex items-center gap-2">
               <Trophy className="w-6 h-6" />
-              <h1 className="text-xl font-bold">Safety Leaderboard</h1>
+              <h1 className="page-title">Safety Leaderboard</h1>
             </div>
             <button className="p-2 hover:bg-white/10 rounded-full transition-colors">
               <Share2 className="w-5 h-5" />

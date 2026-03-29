@@ -168,7 +168,7 @@ export const AIVisualAuditHistory: React.FC = () => {
   };
 
   return (
-    <div className="ai-purple-theme min-h-screen bg-surface-950 text-white pb-20 selection:bg-brand-500/30">
+    <div className="ai-purple-theme page-wrapper selection:bg-accent/20">
       {/* HD Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-500/5 blur-[120px] rounded-full" />
@@ -191,8 +191,8 @@ export const AIVisualAuditHistory: React.FC = () => {
                   <History className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-black text-white tracking-tight">Audit History</h1>
-                  <p className="text-[11px] text-surface-400 uppercase tracking-widest font-bold">Vision Intelligence Archive</p>
+                  <h1 className="page-title">Audit History</h1>
+                  <p className="page-subtitle uppercase tracking-widest">Vision Intelligence Archive</p>
                 </div>
               </div>
             </div>

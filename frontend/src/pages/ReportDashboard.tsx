@@ -53,7 +53,7 @@ const REPORT_TYPE_CONFIG: Record<ReportType, { label: string; color: string }> =
   'training-status': { label: 'Training Status', color: 'bg-indigo-100 text-indigo-700' },
   'inspection-summary': { label: 'Inspection Summary', color: 'bg-cyan-100 text-cyan-700' },
   'risk-assessment': { label: 'Risk Assessment', color: 'bg-yellow-100 text-yellow-700' },
-  'audit-summary': { label: 'Audit Summary', color: 'bg-slate-100 text-slate-700' },
+  'audit-summary': { label: 'Audit Summary', color: 'bg-surface-sunken text-text-primary' },
   'kpi-dashboard': { label: 'KPI Dashboard', color: 'bg-emerald-100 text-emerald-700' },
   'environmental-metrics': { label: 'Environmental Metrics', color: 'bg-teal-100 text-teal-700' },
 };
@@ -133,7 +133,7 @@ export const ReportDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-surface-50 via-white to-surface-100 pb-24">
+    <div className="page-wrapper">
       {/* Header */}
       <header className="sticky top-[72px] z-50 bg-white/80 backdrop-blur-xl border-b border-surface-200/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -148,10 +148,10 @@ export const ReportDashboard: React.FC = () => {
               <div className="flex items-center gap-3">
                 <img src="/logo.png" alt="SafetyMEG" className="w-8 h-8 object-contain" />
                 <div>
-                  <h1 className="text-xl font-semibold text-surface-900 flex items-center gap-2">
+                  <h1 className="page-title flex items-center gap-2">
                     Report Automation Dashboard
                   </h1>
-                  <p className="text-sm text-surface-500">Manage scheduled reports and automation rules</p>
+                  <p className="page-subtitle">Manage scheduled reports and automation rules</p>
                 </div>
               </div>
             </div>

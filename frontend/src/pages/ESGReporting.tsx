@@ -271,7 +271,7 @@ export const ESGReporting: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-surface-base pb-20 text-text-primary selection:bg-accent/20">
+    <div className="page-wrapper selection:bg-accent/20">
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute right-[-10%] top-[-10%] h-[50%] w-[50%] rounded-full bg-accent/6 blur-[150px]" />
         <div className="absolute bottom-[-10%] left-[-10%] h-[50%] w-[50%] rounded-full bg-cyan-500/5 blur-[150px]" />
@@ -295,7 +295,7 @@ export const ESGReporting: React.FC = () => {
                 Sustainability & Governance
               </span>
             </div>
-            <h1 className="mb-4 text-4xl font-black tracking-tight text-text-primary md:text-6xl">
+            <h1 className="page-title mb-4">
               ESG <span className="bg-gradient-to-r from-accent to-cyan-500 bg-clip-text text-transparent">Performance</span>
             </h1>
             <p className="text-lg leading-relaxed text-text-secondary">

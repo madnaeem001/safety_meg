@@ -8,11 +8,11 @@ import { useIncidentStats } from '../api/hooks/useAPIHooks';
 export const InjuryReport: React.FC = () => {
   const { data: incidentStats } = useIncidentStats();
   return (
-    <div className="ai-purple-theme min-h-screen bg-surface-base pb-20">
+    <div className="ai-purple-theme page-wrapper">
 
       <div className="pt-20 px-4 md:px-6 max-w-[1920px] mx-auto">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-text-primary">SafetyMEG Unified Reporting</h1>
+          <h1 className="page-title">SafetyMEG Unified Reporting</h1>
           <p className="text-text-muted">Report incidents, injuries, and near misses in one place with AI assistance.</p>
         </div>
 

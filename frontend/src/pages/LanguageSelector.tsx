@@ -26,24 +26,24 @@ const LanguageSelector: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-b from-surface-50 to-white dark:from-slate-900 dark:to-slate-800">
+    <div className="page-wrapper">
       {/* Header */}
-      <header className="sticky top-[72px] z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-surface-100 dark:border-slate-800 safe-area-top">
+      <header className="sticky top-[72px] z-40 bg-surface-raised/80 backdrop-blur-xl border-b border-surface-100 dark:border-surface-border safe-area-top">
         <div className="px-responsive py-4">
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate(-1)}
-              className="p-2 rounded-xl hover:bg-surface-100 dark:hover:bg-slate-800 transition-colors"
+              className="p-2 rounded-xl hover:bg-surface-100 transition-colors"
             >
-              <svg className="w-5 h-5 text-slate-600 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5 text-text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
             <div>
-              <h1 className="text-xl font-bold text-slate-900 dark:text-white">
+              <h1 className="page-title">
                 {t('settings.language')}
               </h1>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+              <p className="page-subtitle">
                 {t('settings.selectLanguage')}
               </p>
             </div>
@@ -54,10 +54,10 @@ const LanguageSelector: React.FC = () => {
       <main className="px-responsive py-6 space-y-4">
         {/* Current Language */}
         <div className="glass-card p-4 rounded-2xl">
-          <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">{t('settings.selectLanguage')}</p>
+          <p className="text-sm text-text-muted mb-2">{t('settings.selectLanguage')}</p>
           <div className="flex items-center gap-3">
             <span className="text-2xl">{currentLang.flag}</span>
-            <span className="font-semibold text-slate-900 dark:text-white">{currentLang.name}</span>
+            <span className="font-semibold text-text-primary">{currentLang.name}</span>
           </div>
         </div>
         
@@ -71,13 +71,13 @@ const LanguageSelector: React.FC = () => {
               className={`w-full p-4 rounded-2xl flex items-center gap-4 transition-all ${
                 i18n.language === lang.code
                   ? 'bg-brand-50 dark:bg-brand-900/20 border-2 border-brand-500'
-                  : 'bg-white dark:bg-slate-800 border border-surface-200 dark:border-slate-700'
+                  : 'bg-surface-raised border border-surface-200 dark:border-surface-border'
               }`}
             >
               <span className="text-3xl">{lang.flag}</span>
               <div className="flex-1 text-left">
-                <p className="font-semibold text-slate-900 dark:text-white">{lang.name}</p>
-                <p className="text-sm text-slate-500 dark:text-slate-400">{lang.code.toUpperCase()}</p>
+                <p className="font-semibold text-text-primary">{lang.name}</p>
+                <p className="text-sm text-text-muted">{lang.code.toUpperCase()}</p>
               </div>
               {i18n.language === lang.code && (
                 <svg className="w-6 h-6 text-brand-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -89,8 +89,8 @@ const LanguageSelector: React.FC = () => {
         </div>
         
         {/* Info */}
-        <div className="p-4 bg-surface-100 dark:bg-slate-800 rounded-2xl">
-          <p className="text-sm text-slate-600 dark:text-slate-400 text-center">
+        <div className="p-4 bg-surface-100 rounded-2xl">
+          <p className="text-sm text-text-secondary text-center">
             🌍 safetyMEG is available in {supportedLanguages.length} languages to serve global teams.
           </p>
         </div>

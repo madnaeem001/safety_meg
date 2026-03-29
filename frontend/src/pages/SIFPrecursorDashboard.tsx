@@ -113,7 +113,7 @@ export const SIFPrecursorDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-base pb-20">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="bg-gradient-to-br from-red-600 via-red-500 to-orange-500 pt-12 pb-8 px-4 safe-top">
         <div className="flex items-center gap-3 mb-6">
@@ -129,7 +129,7 @@ export const SIFPrecursorDashboard: React.FC = () => {
             className="bg-white/20 text-white hover:bg-white/30"
           />
           <div className="flex-1">
-            <h1 className="text-2xl font-bold text-white">SIF Precursor Detection</h1>
+            <h1 className="page-title">SIF Precursor Detection</h1>
             <p className="text-red-100 text-sm">AI-powered serious injury prevention</p>
           </div>
           <button
@@ -146,7 +146,7 @@ export const SIFPrecursorDashboard: React.FC = () => {
         {/* Alert Metrics */}
         <div className="grid grid-cols-4 gap-2">
           <div className="bg-white/15 backdrop-blur-sm rounded-xl p-2.5 text-center">
-            <p className="text-xl font-bold text-white">{metrics.total}</p>
+            <p className="text-xl font-bold text-text-primary">{metrics.total}</p>
             <p className="text-xs text-red-100">Total SIF</p>
           </div>
           <div className="bg-white/15 backdrop-blur-sm rounded-xl p-2.5 text-center">
@@ -158,7 +158,7 @@ export const SIFPrecursorDashboard: React.FC = () => {
             <p className="text-xs text-red-100">Unacked</p>
           </div>
           <div className="bg-white/15 backdrop-blur-sm rounded-xl p-2.5 text-center">
-            <p className="text-xl font-bold text-white">{metrics.avgRiskScore}</p>
+            <p className="text-xl font-bold text-text-primary">{metrics.avgRiskScore}</p>
             <p className="text-xs text-red-100">Avg Score</p>
           </div>
         </div>

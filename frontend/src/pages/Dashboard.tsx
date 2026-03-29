@@ -613,7 +613,7 @@ export const Dashboard: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen pb-28">
+      <div className="page-wrapper">
 
         <div className="pt-8 max-w-5xl mx-auto px-4 md:px-6">
           <DashboardSkeleton />
@@ -623,7 +623,7 @@ export const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen pb-28 transition-colors duration-500">
+    <div className="page-wrapper transition-colors duration-500">
       {/* Futuristic ambient background effects */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <motion.div 

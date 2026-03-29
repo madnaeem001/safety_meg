@@ -187,7 +187,7 @@ export const EmissionReports: React.FC = () => {
   const hasEmissionData = detailedEmissions.length > 0 || (backendEmissions?.logs?.length ?? 0) > 0 || (backendEmissions?.facilityBreakdown?.length ?? 0) > 0;
 
   return (
-    <div className="min-h-screen bg-surface-base pb-32 text-left">
+    <div className="page-wrapper text-left">
 
       
       <main className="max-w-7xl mx-auto px-6 py-12 space-y-12">
@@ -208,7 +208,7 @@ export const EmissionReports: React.FC = () => {
               <Wind className="w-4 h-4" />
               Environmental Compliance
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-text-primary tracking-tighter leading-none text-left">Emission Reports</h1>
+            <h1 className="page-title text-left">Emission Reports</h1>
             <p className="text-text-secondary mt-4 max-w-xl text-lg text-left">
               Detailed analysis of atmospheric pollutants and greenhouse gas emissions across all facilities.
             </p>

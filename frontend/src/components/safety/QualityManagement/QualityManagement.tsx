@@ -171,7 +171,7 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
       case 'under-review': return 'bg-amber-100 text-amber-700';
       case 'needs-improvement': return 'bg-red-100 text-red-700';
       case 'new': return 'bg-blue-100 text-blue-700';
-      default: return 'bg-surface-100 text-surface-600';
+      default: return 'bg-surface-sunken text-text-secondary';
     }
   };
 
@@ -181,7 +181,7 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
       case 'high': return 'bg-orange-100 text-orange-700';
       case 'medium': return 'bg-amber-100 text-amber-700';
       case 'low': return 'bg-green-100 text-green-700';
-      default: return 'bg-surface-100 text-surface-600';
+      default: return 'bg-surface-sunken text-text-secondary';
     }
   };
 
@@ -203,9 +203,9 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
   const renderOverview = () => (
     <div className="space-y-6">
       {/* PDCA Cycle Visualization */}
-      <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
-        <h3 className="font-bold text-brand-900 mb-4 flex items-center gap-2">
-          <RefreshCw className="w-5 h-5 text-brand-500" />
+      <div className="bg-surface-raised rounded-2xl p-6 border-surface-border shadow-soft">
+        <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
+          <RefreshCw className="w-5 h-5 text-accent" />
           PDCA Cycle Overview
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -217,15 +217,15 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
                 whileHover={{ scale: 1.02 }}
                 onClick={() => setSelectedPhase(selectedPhase === phase.id ? null : phase.id)}
                 className={`p-4 rounded-xl cursor-pointer transition-all ${
-                  selectedPhase === phase.id ? `${phase.lightColor} ring-2 ring-offset-2` : 'bg-surface-50 hover:bg-surface-100'
+                  selectedPhase === phase.id ? `${phase.lightColor} ring-2 ring-offset-2` : 'bg-surface-sunken hover:bg-surface-raised'
                 }`}
               >
                 <div className={`w-10 h-10 ${phase.color} rounded-full flex items-center justify-center text-white font-bold mb-3`}>
                   {index + 1}
                 </div>
-                <h4 className="font-bold text-surface-800">{phase.label}</h4>
-                <p className="text-xs text-surface-500 mb-2">{phase.description}</p>
-                <p className="text-lg font-bold text-surface-800">{processCount} processes</p>
+                <h4 className="font-bold text-text-primary">{phase.label}</h4>
+                <p className="text-xs text-text-muted mb-2">{phase.description}</p>
+                <p className="text-lg font-bold text-text-primary">{processCount} processes</p>
               </motion.div>
             );
           })}
@@ -234,66 +234,66 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
 
       {/* Key Metrics */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
+        <div className="bg-surface-raised rounded-xl p-4 border-surface-border shadow-soft">
           <div className="flex items-center gap-2 mb-2">
-            <ClipboardCheck className="w-5 h-5 text-brand-500" />
-            <span className="text-xs font-bold text-surface-400 uppercase">Processes</span>
+            <ClipboardCheck className="w-5 h-5 text-accent" />
+            <span className="text-xs font-bold text-text-muted uppercase">Processes</span>
           </div>
-          <p className="text-2xl font-bold text-surface-800">{stats.totalProcesses}</p>
+          <p className="text-2xl font-bold text-text-primary">{stats.totalProcesses}</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
+        <div className="bg-surface-raised rounded-xl p-4 border-surface-border shadow-soft">
           <div className="flex items-center gap-2 mb-2">
             <CheckCircle2 className="w-5 h-5 text-green-500" />
-            <span className="text-xs font-bold text-surface-400 uppercase">Active</span>
+            <span className="text-xs font-bold text-text-muted uppercase">Active</span>
           </div>
           <p className="text-2xl font-bold text-green-600">{stats.activeProcesses}</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
+        <div className="bg-surface-raised rounded-xl p-4 border-surface-border shadow-soft">
           <div className="flex items-center gap-2 mb-2">
             <Award className="w-5 h-5 text-purple-500" />
-            <span className="text-xs font-bold text-surface-400 uppercase">Effectiveness</span>
+            <span className="text-xs font-bold text-text-muted uppercase">Effectiveness</span>
           </div>
           <p className="text-2xl font-bold text-purple-600">{stats.avgEffectiveness}%</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
+        <div className="bg-surface-raised rounded-xl p-4 border-surface-border shadow-soft">
           <div className="flex items-center gap-2 mb-2">
             <AlertTriangle className="w-5 h-5 text-amber-500" />
-            <span className="text-xs font-bold text-surface-400 uppercase">Open CAPAs</span>
+            <span className="text-xs font-bold text-text-muted uppercase">Open CAPAs</span>
           </div>
           <p className="text-2xl font-bold text-amber-600">{stats.openCAPAs}</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
+        <div className="bg-surface-raised rounded-xl p-4 border-surface-border shadow-soft">
           <div className="flex items-center gap-2 mb-2">
             <Calendar className="w-5 h-5 text-blue-500" />
-            <span className="text-xs font-bold text-surface-400 uppercase">Audits</span>
+            <span className="text-xs font-bold text-text-muted uppercase">Audits</span>
           </div>
           <p className="text-2xl font-bold text-blue-600">{stats.upcomingAudits}</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
+        <div className="bg-surface-raised rounded-xl p-4 border-surface-border shadow-soft">
           <div className="flex items-center gap-2 mb-2">
             <Target className="w-5 h-5 text-red-500" />
-            <span className="text-xs font-bold text-surface-400 uppercase">NCRs</span>
+            <span className="text-xs font-bold text-text-muted uppercase">NCRs</span>
           </div>
           <p className="text-2xl font-bold text-red-600">{stats.totalNonConformances}</p>
         </div>
       </div>
 
       {/* Quality Standards */}
-      <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
-        <h3 className="font-bold text-brand-900 mb-4 flex items-center gap-2">
-          <Shield className="w-5 h-5 text-brand-500" />
+      <div className="bg-surface-raised rounded-2xl p-6 border-surface-border shadow-soft">
+        <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
+          <Shield className="w-5 h-5 text-accent" />
           Quality Standards & Certifications
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {QUALITY_STANDARDS.map(standard => (
-            <div key={standard.id} className="p-4 bg-surface-50 rounded-xl border border-surface-100">
+            <div key={standard.id} className="p-4 bg-surface-sunken rounded-xl border-surface-border">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-brand-100 rounded-lg flex items-center justify-center">
-                  <Award className="w-5 h-5 text-brand-600" />
+                <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+                  <Award className="w-5 h-5 text-accent" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-surface-800">{standard.label}</h4>
-                  <p className="text-xs text-surface-500">{standard.description}</p>
+                  <h4 className="font-bold text-text-primary">{standard.label}</h4>
+                  <p className="text-xs text-text-muted">{standard.description}</p>
                 </div>
               </div>
             </div>
@@ -302,22 +302,22 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
       </div>
 
       {/* Upcoming Audits Preview */}
-      <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
+      <div className="bg-surface-raised rounded-2xl p-6 border-surface-border shadow-soft">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-bold text-brand-900 flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-brand-500" />
+          <h3 className="font-bold text-text-primary flex items-center gap-2">
+            <Calendar className="w-5 h-5 text-accent" />
             Upcoming Audits
           </h3>
           <button
             onClick={() => setActiveTab('audits')}
-            className="text-sm text-brand-600 font-medium hover:underline"
+            className="text-sm text-accent font-medium hover:underline"
           >
             View All
           </button>
         </div>
         <div className="space-y-3">
           {mockAudits.slice(0, 3).map(audit => (
-            <div key={audit.id} className="flex items-center justify-between p-3 bg-surface-50 rounded-xl">
+            <div key={audit.id} className="flex items-center justify-between p-3 bg-surface-sunken rounded-xl">
               <div className="flex items-center gap-3">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                   audit.type === 'External' ? 'bg-purple-100' : audit.type === 'Internal' ? 'bg-blue-100' : 'bg-amber-100'
@@ -327,13 +327,13 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
                   }`} />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-surface-800">{audit.type} Audit</h4>
-                  <p className="text-xs text-surface-500">{audit.area}</p>
+                  <h4 className="font-semibold text-text-primary">{audit.type} Audit</h4>
+                  <p className="text-xs text-text-muted">{audit.area}</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-sm font-medium text-surface-800">{audit.date}</p>
-                <p className="text-xs text-surface-500">{audit.auditor}</p>
+                <p className="text-sm font-medium text-text-primary">{audit.date}</p>
+                <p className="text-xs text-text-muted">{audit.auditor}</p>
               </div>
             </div>
           ))}
@@ -348,13 +348,13 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
       {/* Search */}
       <div className="flex items-center gap-3">
         <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
           <input
             type="text"
             placeholder="Search processes..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-surface-50 border border-surface-100 rounded-xl text-sm"
+            className="w-full pl-10 pr-4 py-2.5 bg-surface-sunken border-surface-border rounded-xl text-sm"
           />
         </div>
         <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-5 h-5" />}>New Process</SMButton>
@@ -365,7 +365,7 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
         <button
           onClick={() => setSelectedPhase(null)}
           className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-            !selectedPhase ? 'bg-brand-500 text-white' : 'bg-surface-50 text-surface-600 hover:bg-surface-100'
+            !selectedPhase ? 'bg-accent text-text-onAccent' : 'bg-surface-sunken text-text-secondary hover:bg-surface-raised'
           }`}
         >
           All Phases
@@ -375,7 +375,7 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
             key={phase.id}
             onClick={() => setSelectedPhase(selectedPhase === phase.id ? null : phase.id)}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-              selectedPhase === phase.id ? phase.lightColor : 'bg-surface-50 text-surface-600 hover:bg-surface-100'
+              selectedPhase === phase.id ? phase.lightColor : 'bg-surface-sunken text-text-secondary hover:bg-surface-raised'
             }`}
           >
             {phase.label}
@@ -393,19 +393,19 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="bg-white rounded-xl border border-surface-100 shadow-soft overflow-hidden"
+              className="bg-surface-raised rounded-xl border-surface-border shadow-soft overflow-hidden"
             >
               <div
-                className="p-4 cursor-pointer hover:bg-surface-50 transition-colors"
+                className="p-4 cursor-pointer hover:bg-surface-sunken transition-colors"
                 onClick={() => setExpandedProcess(expandedProcess === process.id ? null : process.id)}
               >
                 <div className="flex items-start gap-4">
-                  <div className={`w-10 h-10 ${phase?.color || 'bg-surface-200'} rounded-xl flex items-center justify-center text-white`}>
+                  <div className={`w-10 h-10 ${phase?.color || 'bg-surface-raised'} rounded-xl flex items-center justify-center text-white`}>
                     <ClipboardCheck className="w-5 h-5" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs font-bold text-surface-400">{process.id}</span>
+                      <span className="text-xs font-bold text-text-muted">{process.id}</span>
                       <span className={`px-2 py-0.5 text-[10px] font-bold uppercase rounded-full ${getStatusColor(process.status)}`}>
                         {process.status.replace('-', ' ')}
                       </span>
@@ -413,8 +413,8 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
                         {phase?.label}
                       </span>
                     </div>
-                    <h4 className="font-semibold text-surface-800">{process.title}</h4>
-                    <div className="flex items-center gap-4 mt-2 text-xs text-surface-500">
+                    <h4 className="font-semibold text-text-primary">{process.title}</h4>
+                    <div className="flex items-center gap-4 mt-2 text-xs text-text-muted">
                       <span className="flex items-center gap-1">
                         <Shield className="w-3.5 h-3.5" />
                         {process.standard}
@@ -436,9 +436,9 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
                       </span>
                     )}
                     {expandedProcess === process.id ? (
-                      <ChevronUp className="w-5 h-5 text-surface-400" />
+                      <ChevronUp className="w-5 h-5 text-text-muted" />
                     ) : (
-                      <ChevronDown className="w-5 h-5 text-surface-400" />
+                      <ChevronDown className="w-5 h-5 text-text-muted" />
                     )}
                   </div>
                 </div>
@@ -450,25 +450,25 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    className="border-t border-surface-100 p-4 bg-surface-50"
+                    className="border-t border-surface-border p-4 bg-surface-sunken"
                   >
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                       <div>
-                        <span className="text-xs text-surface-400">Owner</span>
-                        <p className="font-medium text-surface-800">{process.owner}</p>
+                        <span className="text-xs text-text-muted">Owner</span>
+                        <p className="font-medium text-text-primary">{process.owner}</p>
                       </div>
                       <div>
-                        <span className="text-xs text-surface-400">Last Review</span>
-                        <p className="font-medium text-surface-800">{process.lastReview}</p>
+                        <span className="text-xs text-text-muted">Last Review</span>
+                        <p className="font-medium text-text-primary">{process.lastReview}</p>
                       </div>
                       <div>
-                        <span className="text-xs text-surface-400">Next Review</span>
-                        <p className="font-medium text-surface-800">{process.nextReview}</p>
+                        <span className="text-xs text-text-muted">Next Review</span>
+                        <p className="font-medium text-text-primary">{process.nextReview}</p>
                       </div>
                       <div>
-                        <span className="text-xs text-surface-400">Effectiveness</span>
+                        <span className="text-xs text-text-muted">Effectiveness</span>
                         <div className="flex items-center gap-2">
-                          <div className="flex-1 h-2 bg-surface-200 rounded-full overflow-hidden">
+                          <div className="flex-1 h-2 bg-surface-sunken rounded-full overflow-hidden">
                             <div
                               className={`h-full rounded-full ${
                                 process.effectiveness >= 80 ? 'bg-green-500' :
@@ -482,11 +482,11 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <button className="px-3 py-1.5 bg-brand-100 text-brand-700 font-medium rounded-lg text-sm flex items-center gap-1">
+                      <button className="px-3 py-1.5 bg-accent/10 text-accent font-medium rounded-lg text-sm flex items-center gap-1">
                         <Eye className="w-4 h-4" />
                         View Details
                       </button>
-                      <button className="px-3 py-1.5 bg-surface-100 text-surface-700 font-medium rounded-lg text-sm flex items-center gap-1">
+                      <button className="px-3 py-1.5 bg-surface-sunken text-text-secondary font-medium rounded-lg text-sm flex items-center gap-1">
                         <Edit2 className="w-4 h-4" />
                         Edit
                       </button>
@@ -509,7 +509,7 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
   const renderCAPA = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="font-bold text-brand-900">Corrective & Preventive Actions</h3>
+        <h3 className="font-bold text-text-primary">Corrective & Preventive Actions</h3>
         <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-5 h-5" />}>New CAPA</SMButton>
       </div>
 
@@ -544,7 +544,7 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
-            className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft"
+            className="bg-surface-raised rounded-xl p-4 border-surface-border shadow-soft"
           >
             <div className="flex items-start gap-4">
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
@@ -556,7 +556,7 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-bold text-surface-400">{capa.id}</span>
+                  <span className="text-xs font-bold text-text-muted">{capa.id}</span>
                   <span className={`px-2 py-0.5 text-[10px] font-bold uppercase rounded-full ${getPriorityColor(capa.priority)}`}>
                     {capa.priority}
                   </span>
@@ -566,9 +566,9 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
                     {capa.type}
                   </span>
                 </div>
-                <h4 className="font-semibold text-surface-800">{capa.title}</h4>
-                <p className="text-sm text-surface-500 mt-1">Root Cause: {capa.rootCause}</p>
-                <div className="flex items-center gap-4 mt-2 text-xs text-surface-500">
+                <h4 className="font-semibold text-text-primary">{capa.title}</h4>
+                <p className="text-sm text-text-muted mt-1">Root Cause: {capa.rootCause}</p>
+                <div className="flex items-center gap-4 mt-2 text-xs text-text-muted">
                   <span className="flex items-center gap-1">
                     <Calendar className="w-3.5 h-3.5" />
                     Due: {capa.dueDate}
@@ -579,7 +579,7 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
                   </span>
                 </div>
               </div>
-              <ChevronRight className="w-5 h-5 text-surface-300" />
+              <ChevronRight className="w-5 h-5 text-text-muted" />
             </div>
           </motion.div>
         ))}
@@ -591,7 +591,7 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
   const renderAudits = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="font-bold text-brand-900">Audit Schedule</h3>
+        <h3 className="font-bold text-text-primary">Audit Schedule</h3>
         <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-5 h-5" />}>Schedule Audit</SMButton>
       </div>
 
@@ -602,7 +602,7 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
-            className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft"
+            className="bg-surface-raised rounded-xl p-4 border-surface-border shadow-soft"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -615,15 +615,15 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
                 </div>
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-bold text-surface-400">{audit.id}</span>
+                    <span className="text-xs font-bold text-text-muted">{audit.id}</span>
                     <span className={`px-2 py-0.5 text-[10px] font-bold uppercase rounded-full ${
                       audit.status === 'scheduled' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
                     }`}>
                       {audit.status}
                     </span>
                   </div>
-                  <h4 className="font-semibold text-surface-800">{audit.type} Audit - {audit.area}</h4>
-                  <div className="flex items-center gap-4 mt-1 text-xs text-surface-500">
+                  <h4 className="font-semibold text-text-primary">{audit.type} Audit - {audit.area}</h4>
+                  <div className="flex items-center gap-4 mt-1 text-xs text-text-muted">
                     <span className="flex items-center gap-1">
                       <Calendar className="w-3.5 h-3.5" />
                       {audit.date}
@@ -635,7 +635,7 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
                   </div>
                 </div>
               </div>
-              <ChevronRight className="w-5 h-5 text-surface-300" />
+              <ChevronRight className="w-5 h-5 text-text-muted" />
             </div>
           </motion.div>
         ))}
@@ -646,26 +646,26 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
   // Metrics Tab
   const renderMetrics = () => (
     <div className="space-y-6">
-      <h3 className="font-bold text-brand-900">Quality Metrics & KPIs</h3>
+      <h3 className="font-bold text-text-primary">Quality Metrics & KPIs</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Effectiveness Trend */}
-        <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
-          <h4 className="font-bold text-surface-800 mb-4 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-brand-500" />
+        <div className="bg-surface-raised rounded-2xl p-6 border-surface-border shadow-soft">
+          <h4 className="font-bold text-text-primary mb-4 flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-accent" />
             Process Effectiveness Trend
           </h4>
           <div className="space-y-3">
             {mockQualityProcesses.map(process => (
               <div key={process.id} className="space-y-1">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-surface-600 truncate max-w-[200px]">{process.title}</span>
+                  <span className="text-text-secondary truncate max-w-[200px]">{process.title}</span>
                   <span className={`font-bold ${
                     process.effectiveness >= 80 ? 'text-green-600' :
                     process.effectiveness >= 60 ? 'text-amber-600' : 'text-red-600'
                   }`}>{process.effectiveness}%</span>
                 </div>
-                <div className="h-2 bg-surface-100 rounded-full overflow-hidden">
+                <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
                   <div
                     className={`h-full rounded-full transition-all ${
                       process.effectiveness >= 80 ? 'bg-green-500' :
@@ -680,9 +680,9 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
         </div>
 
         {/* NCR by Department */}
-        <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
-          <h4 className="font-bold text-surface-800 mb-4 flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-brand-500" />
+        <div className="bg-surface-raised rounded-2xl p-6 border-surface-border shadow-soft">
+          <h4 className="font-bold text-text-primary mb-4 flex items-center gap-2">
+            <BarChart3 className="w-5 h-5 text-accent" />
             Non-Conformances by Department
           </h4>
           <div className="space-y-3">
@@ -694,10 +694,10 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
               return (
                 <div key={dept} className="space-y-1">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-surface-600">{dept}</span>
-                    <span className="font-bold text-surface-800">{count} NCRs</span>
+                    <span className="text-text-secondary">{dept}</span>
+                    <span className="font-bold text-text-primary">{count} NCRs</span>
                   </div>
-                  <div className="h-2 bg-surface-100 rounded-full overflow-hidden">
+                  <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
                     <div
                       className="h-full bg-red-500 rounded-full transition-all"
                       style={{ width: `${(count / maxCount) * 100}%` }}
@@ -724,14 +724,14 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
           {onBack && (
             <button
               onClick={onBack}
-              className="p-2 hover:bg-surface-100 rounded-full transition-colors"
+              className="p-2 hover:bg-surface-raised rounded-full transition-colors"
             >
-              <ArrowLeft className="w-5 h-5 text-surface-600" />
+              <ArrowLeft className="w-5 h-5 text-text-secondary" />
             </button>
           )}
           <div>
-            <h2 className="text-xl font-bold text-brand-900">Quality Management System</h2>
-            <p className="text-sm text-surface-500">PDCA-based quality management and continuous improvement</p>
+            <h2 className="text-xl font-bold text-text-primary">Quality Management System</h2>
+            <p className="text-sm text-text-muted">PDCA-based quality management and continuous improvement</p>
           </div>
         </div>
       </div>
@@ -750,8 +750,8 @@ export const QualityManagement: React.FC<QualityManagementProps> = ({ onNavigate
             onClick={() => setActiveTab(tab.id as typeof activeTab)}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${
               activeTab === tab.id
-                ? 'bg-brand-100 text-brand-700 border border-brand-200'
-                : 'bg-white text-surface-500 border border-surface-100 hover:bg-surface-50'
+                ? 'bg-accent/10 text-accent border border-accent/20'
+                : 'bg-surface-raised text-text-muted border-surface-border hover:bg-surface-overlay'
             }`}
           >
             <tab.icon className="w-4 h-4" />

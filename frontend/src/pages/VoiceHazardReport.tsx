@@ -136,7 +136,7 @@ export const VoiceHazardReport: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-base pb-20">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="bg-gradient-to-br from-amber-600 via-orange-500 to-red-500 pt-12 pb-6 px-4 safe-top">
         <div className="flex items-center gap-3 mb-4">
@@ -149,7 +149,7 @@ export const VoiceHazardReport: React.FC = () => {
             </svg>
           </button>
           <div className="flex-1">
-            <h1 className="text-2xl font-bold text-white">Report Hazard</h1>
+            <h1 className="page-title">Report Hazard</h1>
             <p className="text-amber-100 text-sm">Voice-enabled reporting</p>
           </div>
           {isSupported && (
@@ -233,7 +233,7 @@ export const VoiceHazardReport: React.FC = () => {
                 exit={{ opacity: 0, x: -20 }}
                 className="space-y-4"
               >
-                <h2 className="text-lg font-bold text-surface-900 dark:text-surface-100">
+                <h2 className="section-heading">
                   What type of hazard?
                 </h2>
                 <p className="text-sm text-surface-500">Select the category that best describes the hazard</p>
@@ -253,7 +253,7 @@ export const VoiceHazardReport: React.FC = () => {
                       }`}
                     >
                       <span className="text-2xl mb-2 block">{type.icon}</span>
-                      <span className="font-medium text-surface-900 dark:text-surface-100">{type.label}</span>
+                      <span className="font-medium text-text-primary">{type.label}</span>
                     </button>
                   ))}
                 </div>
@@ -269,7 +269,7 @@ export const VoiceHazardReport: React.FC = () => {
                 exit={{ opacity: 0, x: -20 }}
                 className="space-y-4"
               >
-                <h2 className="text-lg font-bold text-surface-900 dark:text-surface-100">
+                <h2 className="text-lg font-bold text-text-primary">
                   Where is the hazard?
                 </h2>
                 <p className="text-sm text-surface-500">Describe the location or use voice input</p>
@@ -328,7 +328,7 @@ export const VoiceHazardReport: React.FC = () => {
                 exit={{ opacity: 0, x: -20 }}
                 className="space-y-4"
               >
-                <h2 className="text-lg font-bold text-surface-900 dark:text-surface-100">
+                <h2 className="text-lg font-bold text-text-primary">
                   Describe the hazard
                 </h2>
                 <p className="text-sm text-surface-500">Provide details about what you observed</p>
@@ -387,7 +387,7 @@ export const VoiceHazardReport: React.FC = () => {
                 exit={{ opacity: 0, x: -20 }}
                 className="space-y-4"
               >
-                <h2 className="text-lg font-bold text-surface-900 dark:text-surface-100">
+                <h2 className="text-lg font-bold text-text-primary">
                   How severe is the hazard?
                 </h2>
                 <p className="text-sm text-surface-500">Assess the potential for injury</p>
@@ -445,7 +445,7 @@ export const VoiceHazardReport: React.FC = () => {
                 exit={{ opacity: 0, x: -20 }}
                 className="space-y-4"
               >
-                <h2 className="text-lg font-bold text-surface-900 dark:text-surface-100">
+                <h2 className="text-lg font-bold text-text-primary">
                   Review your report
                 </h2>
 
@@ -528,7 +528,7 @@ export const VoiceHazardReport: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-surface-900 dark:text-surface-100 mb-2">
+              <h3 className="section-heading text-xl mb-2">
                 Report Submitted!
               </h3>
               <p className="text-surface-500">

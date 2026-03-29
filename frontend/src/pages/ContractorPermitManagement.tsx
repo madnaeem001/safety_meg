@@ -154,7 +154,7 @@ export const ContractorPermitManagement: React.FC = () => {
               <Users className="w-5 h-5 text-blue-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-surface-900 dark:text-white">{stats.totalContractors}</p>
+              <p className="text-2xl font-bold text-text-primary">{stats.totalContractors}</p>
               <p className="text-xs text-surface-500">Total Contractors</p>
             </div>
           </div>
@@ -171,7 +171,7 @@ export const ContractorPermitManagement: React.FC = () => {
               <UserCheck className="w-5 h-5 text-green-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-surface-900 dark:text-white">{stats.activeContractors}</p>
+              <p className="text-2xl font-bold text-text-primary">{stats.activeContractors}</p>
               <p className="text-xs text-surface-500">Active</p>
             </div>
           </div>
@@ -188,7 +188,7 @@ export const ContractorPermitManagement: React.FC = () => {
               <Clock className="w-5 h-5 text-amber-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-surface-900 dark:text-white">{stats.pendingApprovals}</p>
+              <p className="text-2xl font-bold text-text-primary">{stats.pendingApprovals}</p>
               <p className="text-xs text-surface-500">Pending Review</p>
             </div>
           </div>
@@ -205,7 +205,7 @@ export const ContractorPermitManagement: React.FC = () => {
               <FileCheck className="w-5 h-5 text-emerald-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-surface-900 dark:text-white">{stats.activePermits}</p>
+              <p className="text-2xl font-bold text-text-primary">{stats.activePermits}</p>
               <p className="text-xs text-surface-500">Active Permits</p>
             </div>
           </div>
@@ -222,7 +222,7 @@ export const ContractorPermitManagement: React.FC = () => {
               <AlertCircle className="w-5 h-5 text-orange-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-surface-900 dark:text-white">{stats.expiringSoon}</p>
+              <p className="text-2xl font-bold text-text-primary">{stats.expiringSoon}</p>
               <p className="text-xs text-surface-500">Expiring Soon</p>
             </div>
           </div>
@@ -239,7 +239,7 @@ export const ContractorPermitManagement: React.FC = () => {
               <XCircle className="w-5 h-5 text-red-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-surface-900 dark:text-white">{stats.rejectedToday}</p>
+              <p className="text-2xl font-bold text-text-primary">{stats.rejectedToday}</p>
               <p className="text-xs text-surface-500">Rejected</p>
             </div>
           </div>
@@ -274,7 +274,7 @@ export const ContractorPermitManagement: React.FC = () => {
             <Building2 className="w-6 h-6 text-blue-600" />
           </div>
           <div className="text-left">
-            <p className="font-semibold text-surface-900 dark:text-white">Manage Contractors</p>
+            <p className="font-semibold text-text-primary">Manage Contractors</p>
             <p className="text-sm text-surface-500">View and manage contractor profiles</p>
           </div>
           <ChevronRight className="w-5 h-5 ml-auto text-surface-400" />
@@ -290,7 +290,7 @@ export const ContractorPermitManagement: React.FC = () => {
             <ClipboardList className="w-6 h-6 text-emerald-600" />
           </div>
           <div className="text-left">
-            <p className="font-semibold text-surface-900 dark:text-white">All Permits</p>
+            <p className="font-semibold text-text-primary">All Permits</p>
             <p className="text-sm text-surface-500">View permit applications & status</p>
           </div>
           <ChevronRight className="w-5 h-5 ml-auto text-surface-400" />
@@ -301,7 +301,7 @@ export const ContractorPermitManagement: React.FC = () => {
       <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700">
         <div className="p-4 border-b border-surface-200 dark:border-surface-700">
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-surface-900 dark:text-white flex items-center gap-2">
+            <h3 className="font-semibold text-text-primary flex items-center gap-2">
               <Clock className="w-5 h-5 text-amber-500" />
               Pending Approvals
             </h3>
@@ -331,7 +331,7 @@ export const ContractorPermitManagement: React.FC = () => {
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-lg">{typeConf.icon}</span>
-                        <span className="font-medium text-surface-900 dark:text-white">{permit.permitNumber}</span>
+                        <span className="font-medium text-text-primary">{permit.permitNumber}</span>
                         <span className={`px-2 py-0.5 text-xs rounded-full border ${typeConf.color}`}>
                           {typeConf.label}
                         </span>
@@ -404,7 +404,7 @@ export const ContractorPermitManagement: React.FC = () => {
       {/* Active Permits */}
       <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700">
         <div className="p-4 border-b border-surface-200 dark:border-surface-700">
-          <h3 className="font-semibold text-surface-900 dark:text-white flex items-center gap-2">
+          <h3 className="font-semibold text-text-primary flex items-center gap-2">
             <Activity className="w-5 h-5 text-emerald-500" />
             Active Work Permits
           </h3>
@@ -429,7 +429,7 @@ export const ContractorPermitManagement: React.FC = () => {
                       <div className="text-2xl">{typeConf.icon}</div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-medium text-surface-900 dark:text-white">{permit.permitNumber}</span>
+                          <span className="font-medium text-text-primary">{permit.permitNumber}</span>
                           <span className={`px-2 py-0.5 text-xs rounded-full ${statusConfig[permit.status].color}`}>
                             {statusConfig[permit.status].label}
                           </span>
@@ -483,7 +483,7 @@ export const ContractorPermitManagement: React.FC = () => {
             <div className="flex items-start justify-between mb-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <h4 className="font-semibold text-surface-900 dark:text-white">{contractor.companyName}</h4>
+                  <h4 className="font-semibold text-text-primary">{contractor.companyName}</h4>
                   <span className={`px-2 py-0.5 text-xs rounded-full ${
                     contractor.status === 'active' ? 'bg-green-100 text-green-700' :
                     contractor.status === 'pending_approval' ? 'bg-amber-100 text-amber-700' :
@@ -608,7 +608,7 @@ export const ContractorPermitManagement: React.FC = () => {
                     <div className="text-3xl">{typeConf.icon}</div>
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-medium text-surface-900 dark:text-white">{permit.permitNumber}</span>
+                        <span className="font-medium text-text-primary">{permit.permitNumber}</span>
                         <span className={`px-2 py-0.5 text-xs rounded-full flex items-center gap-1 ${statConf.color}`}>
                           <StatusIcon className="w-3 h-3" />
                           {statConf.label}
@@ -665,7 +665,7 @@ export const ContractorPermitManagement: React.FC = () => {
               <div className="text-4xl">{typeConf.icon}</div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <h2 className="text-xl font-bold text-surface-900 dark:text-white">{selectedPermit.permitNumber}</h2>
+                  <h2 className="page-title">{selectedPermit.permitNumber}</h2>
                   <span className={`px-3 py-1 text-sm rounded-full flex items-center gap-1 ${statConf.color}`}>
                     <StatusIcon className="w-4 h-4" />
                     {statConf.label}
@@ -689,15 +689,15 @@ export const ContractorPermitManagement: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
               <p className="text-xs text-surface-500 mb-1">Contractor</p>
-              <p className="font-medium text-surface-900 dark:text-white">{selectedPermit.contractorName}</p>
+              <p className="font-medium text-text-primary">{selectedPermit.contractorName}</p>
             </div>
             <div>
               <p className="text-xs text-surface-500 mb-1">Location</p>
-              <p className="font-medium text-surface-900 dark:text-white">{selectedPermit.location}</p>
+              <p className="font-medium text-text-primary">{selectedPermit.location}</p>
             </div>
             <div>
               <p className="text-xs text-surface-500 mb-1">Duration</p>
-              <p className="font-medium text-surface-900 dark:text-white">{selectedPermit.startDate} to {selectedPermit.endDate}</p>
+              <p className="font-medium text-text-primary">{selectedPermit.startDate} to {selectedPermit.endDate}</p>
             </div>
             <div>
               <p className="text-xs text-surface-500 mb-1">Risk Level</p>
@@ -708,7 +708,7 @@ export const ContractorPermitManagement: React.FC = () => {
 
         {/* Approval Chain */}
         <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-6">
-          <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Approval Workflow</h3>
+          <h3 className="font-semibold text-text-primary mb-4">Approval Workflow</h3>
           <div className="flex items-center gap-2 flex-wrap">
             {selectedPermit.approvalChain.map((step, idx) => (
               <React.Fragment key={step.id}>
@@ -726,7 +726,7 @@ export const ContractorPermitManagement: React.FC = () => {
                     {step.status === 'rejected' && <XCircle className="w-5 h-5" />}
                     {step.status === 'pending' && <Clock className="w-5 h-5" />}
                   </div>
-                  <p className="text-xs font-medium text-surface-900 dark:text-white text-center">{step.role}</p>
+                  <p className="text-xs font-medium text-text-primary text-center">{step.role}</p>
                   <p className="text-xs text-surface-500 text-center">{step.approverName}</p>
                   {step.timestamp && (
                     <p className="text-xs text-surface-400 mt-1">{new Date(step.timestamp).toLocaleDateString()}</p>
@@ -742,7 +742,7 @@ export const ContractorPermitManagement: React.FC = () => {
 
         {/* Safety Checklist */}
         <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-6">
-          <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Safety Checklist</h3>
+          <h3 className="font-semibold text-text-primary mb-4">Safety Checklist</h3>
           <div className="space-y-3">
             {selectedPermit.safetyChecklist.map((item) => (
               <div key={item.id} className="flex items-center justify-between p-3 bg-surface-50 dark:bg-surface-700 rounded-lg">
@@ -784,7 +784,7 @@ export const ContractorPermitManagement: React.FC = () => {
 
         {/* Workers Assigned */}
         <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-6">
-          <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Assigned Workers ({selectedPermit.workersAssigned.length})</h3>
+          <h3 className="font-semibold text-text-primary mb-4">Assigned Workers ({selectedPermit.workersAssigned.length})</h3>
           <div className="flex flex-wrap gap-2">
             {selectedPermit.workersAssigned.map((worker, idx) => (
               <div key={idx} className="flex items-center gap-2 px-3 py-2 bg-surface-100 dark:bg-surface-700 rounded-lg">
@@ -811,7 +811,7 @@ export const ContractorPermitManagement: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen pb-24 bg-surface-50 dark:bg-surface-900">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="sticky top-[72px] z-50 bg-white/80 dark:bg-surface-800/80 backdrop-blur-xl border-b border-surface-200 dark:border-surface-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -833,7 +833,7 @@ export const ContractorPermitManagement: React.FC = () => {
                 <ArrowLeft className="w-5 h-5 text-surface-600 dark:text-surface-400" />
               </button>
               <div>
-                <h1 className="text-xl font-bold text-surface-900 dark:text-white">{getViewTitle()}</h1>
+                <h1 className="text-xl font-bold text-text-primary">{getViewTitle()}</h1>
                 {viewMode === 'dashboard' && (
                   <p className="text-sm text-surface-500">ePermit Workflow System</p>
                 )}
@@ -868,7 +868,7 @@ export const ContractorPermitManagement: React.FC = () => {
             {viewMode === 'new_permit' && (
               <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-8 text-center">
                 <FileCheck className="w-16 h-16 text-brand-500 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-surface-900 dark:text-white mb-2">New Permit Application</h3>
+                <h3 className="text-xl font-semibold text-text-primary mb-2">New Permit Application</h3>
                 <p className="text-surface-500 mb-6">Complete the form to submit a new work permit request</p>
                 <p className="text-sm text-surface-400">(Full form implementation available - showing workflow preview)</p>
               </div>

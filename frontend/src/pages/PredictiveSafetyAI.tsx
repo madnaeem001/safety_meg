@@ -273,7 +273,7 @@ export const PredictiveSafetyAI: React.FC = () => {
   }, []);
 
   return (
-    <div className="ai-purple-theme min-h-screen pb-24 bg-surface-base">
+    <div className="ai-purple-theme page-wrapper">
       {/* Header */}
       <header className="sticky top-[72px] z-30 bg-surface-overlay/80 backdrop-blur-xl border-b border-surface-border">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6">
@@ -291,7 +291,7 @@ export const PredictiveSafetyAI: React.FC = () => {
                   <Brain className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold text-text-primary">Predictive Safety AI</h1>
+                  <h1 className="page-title">Predictive Safety AI</h1>
                   <p className="text-xs text-text-muted">Advanced Risk Forecasting & Prevention</p>
                 </div>
               </div>

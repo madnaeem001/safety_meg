@@ -459,7 +459,7 @@ export default function IncidentHeatmap() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-base">
+    <div className="page-wrapper">
 
       
       {/* Header */}
@@ -475,7 +475,7 @@ export default function IncidentHeatmap() {
               />
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-xl font-bold text-text-primary">Incident Heatmap</h1>
+                  <h1 className="page-title">Incident Heatmap</h1>
                   {/* Live Indicator */}
                   {isLiveEnabled && (
                     <motion.div

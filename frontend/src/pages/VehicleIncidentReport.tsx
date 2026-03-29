@@ -106,7 +106,7 @@ export const VehicleIncidentReport: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-surface-base flex items-center justify-center">
+      <div className="page-wrapper flex items-center justify-center">
         <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
           className="bg-surface-raised p-8 rounded-3xl text-center space-y-4 max-w-xs">
           <div className="w-20 h-20 bg-success/10 rounded-full flex items-center justify-center mx-auto">
@@ -120,13 +120,13 @@ export const VehicleIncidentReport: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-surface-base pb-32">
+    <div className="page-wrapper">
 
       
       <header className="sticky top-[var(--nav-height)] z-40 border-b border-surface-border bg-surface-raised/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-3 px-4 sm:px-6 lg:px-8">
           <SMButton variant="ghost" size="sm" leftIcon={<ArrowLeft className="w-5 h-5" />} onClick={() => navigate(-1)} aria-label="Back" />
-          <h1 className="flex items-center gap-2 text-xl font-bold text-text-primary">
+          <h1 className="page-title flex items-center gap-2">
             <Car className="w-6 h-6 text-blue-500" />
             Vehicle Incident Report
           </h1>

@@ -154,7 +154,7 @@ export const InspectionScheduling: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-base pb-32">
+    <div className="page-wrapper">
 
 
       <main className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8 space-y-8">
@@ -163,7 +163,7 @@ export const InspectionScheduling: React.FC = () => {
             <ClipboardCheck className="w-4 h-4" />
             Inspection Operations
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-text-primary tracking-tight">Inspection Scheduling</h1>
+          <h1 className="page-title">Inspection Scheduling</h1>
           <p className="text-text-muted max-w-3xl">
             Live inspection schedule and sensor status powered by backend inspection and monitoring routes.
           </p>

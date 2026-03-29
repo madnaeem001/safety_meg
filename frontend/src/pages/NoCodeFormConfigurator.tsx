@@ -366,7 +366,7 @@ export const NoCodeFormConfigurator: React.FC = () => {
 
   return (
     <FadeContent blur duration={400} delay={0}>
-      <div className="min-h-screen bg-surface-50 dark:bg-surface-900">
+      <div className="page-wrapper">
         {/* Header */}
         <header className="sticky top-[72px] z-40 bg-white dark:bg-surface-800 border-b border-surface-200 dark:border-surface-700 shadow-sm">
           <div className="px-4 py-3">
@@ -381,7 +381,7 @@ export const NoCodeFormConfigurator: React.FC = () => {
                   </svg>
                 </button>
                 <div>
-                  <h1 className="text-lg font-semibold text-surface-900 dark:text-white">Form Builder</h1>
+                  <h1 className="page-title">Form Builder</h1>
                   <p className="text-xs text-surface-500">No-Code Configuration</p>
                 </div>
               </div>
@@ -453,7 +453,7 @@ export const NoCodeFormConfigurator: React.FC = () => {
                       whileTap={{ scale: 0.98 }}
                     >
                       <span className="text-3xl">{template.icon}</span>
-                      <h3 className="mt-2 font-semibold text-surface-900 dark:text-white group-hover:text-brand-600">
+                      <h3 className="mt-2 font-semibold text-text-primary group-hover:text-brand-600">
                         {template.name}
                       </h3>
                       <p className="text-sm text-surface-500 mt-1">{template.description}</p>
@@ -476,7 +476,7 @@ export const NoCodeFormConfigurator: React.FC = () => {
                 {/* Field Palette */}
                 <motion.div variants={itemVariants} className="lg:col-span-3">
                   <div className="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-4 sticky top-32">
-                    <h3 className="font-semibold text-surface-900 dark:text-white mb-3">Field Types</h3>
+                    <h3 className="font-semibold text-text-primary mb-3">Field Types</h3>
                     <div className="grid grid-cols-2 gap-2">
                       {fieldTypes.map(field => (
                         <button
@@ -510,7 +510,7 @@ export const NoCodeFormConfigurator: React.FC = () => {
                         type="text"
                         value={formConfig.name}
                         onChange={(e) => setFormConfig(prev => ({ ...prev, name: e.target.value }))}
-                        className="text-xl font-semibold bg-transparent border-none focus:outline-none w-full text-surface-900 dark:text-white"
+                        className="text-xl font-semibold bg-transparent border-none focus:outline-none w-full text-text-primary"
                         placeholder="Form Name"
                       />
                       <input
@@ -557,7 +557,7 @@ export const NoCodeFormConfigurator: React.FC = () => {
                                   <span className="text-lg">
                                     {fieldTypes.find(f => f.type === field.type)?.icon}
                                   </span>
-                                  <span className="font-medium text-surface-900 dark:text-white">
+                                  <span className="font-medium text-text-primary">
                                     {field.label}
                                   </span>
                                   {field.required && (
@@ -596,7 +596,7 @@ export const NoCodeFormConfigurator: React.FC = () => {
                 {/* Field Properties */}
                 <motion.div variants={itemVariants} className="lg:col-span-3">
                   <div className="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-4 sticky top-32">
-                    <h3 className="font-semibold text-surface-900 dark:text-white mb-3">
+                    <h3 className="font-semibold text-text-primary mb-3">
                       {selectedField ? 'Field Properties' : 'Select a Field'}
                     </h3>
                     
@@ -760,7 +760,7 @@ export const NoCodeFormConfigurator: React.FC = () => {
                 className="max-w-2xl mx-auto space-y-4"
               >
                 <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-4">
-                  <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Form Settings</h3>
+                  <h3 className="font-semibold text-text-primary mb-4">Form Settings</h3>
                   
                   <div className="space-y-4">
                     <div>
@@ -805,7 +805,7 @@ export const NoCodeFormConfigurator: React.FC = () => {
                 </motion.div>
 
                 <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-4">
-                  <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Form Information</h3>
+                  <h3 className="font-semibold text-text-primary mb-4">Form Information</h3>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-surface-500">Form ID</span>
@@ -863,7 +863,7 @@ export const NoCodeFormConfigurator: React.FC = () => {
               >
                 <div className="text-center">
                   <span className="text-4xl">✅</span>
-                  <h3 className="text-lg font-semibold text-surface-900 dark:text-white mt-3">Form Saved!</h3>
+                  <h3 className="text-lg font-semibold text-text-primary mt-3">Form Saved!</h3>
                   <p className="text-surface-600 dark:text-surface-400 mt-2">
                     Your form "{formConfig.name}" has been saved successfully.
                   </p>

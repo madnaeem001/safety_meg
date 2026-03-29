@@ -227,7 +227,7 @@ export const InvestigationReports: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-base pb-32">
+    <div className="page-wrapper">
 
 
       <main className="mx-auto max-w-[1440px] space-y-8 px-5 py-8">
@@ -240,7 +240,7 @@ export const InvestigationReports: React.FC = () => {
             <FileSearch className="w-4 h-4" />
             Incident Investigation
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-text-primary tracking-tight">Investigation Reports</h1>
+          <h1 className="page-title">Investigation Reports</h1>
           <p className="max-w-2xl text-text-muted">
             Backend-backed investigation list with RCCA details, exports, and direct drill-down into analysis.
           </p>

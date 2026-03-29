@@ -57,7 +57,7 @@ export const HazardAssessment: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-base pb-32">
+    <div className="page-wrapper">
 
       
       <main className="mx-auto max-w-[1440px] space-y-8 px-4 py-8 md:px-6 lg:px-8">
@@ -71,7 +71,7 @@ export const HazardAssessment: React.FC = () => {
               leftIcon={<ArrowLeft className="w-5 h-5" />}
             />
             <div>
-              <h1 className="text-2xl font-bold text-text-primary">Job Safety Analysis (JSA)</h1>
+              <h1 className="page-title">Job Safety Analysis (JSA)</h1>
               <p className="text-text-muted">Create and manage safety assessments with AI assistance</p>
             </div>
           </div>
@@ -184,11 +184,11 @@ export const HazardAssessment: React.FC = () => {
             <div className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary to-accent p-6 text-text-onAccent xl:col-span-2">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-white" />
+                  <Zap className="w-5 h-5 text-text-onAccent" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg text-white">AI Predictive Hazard Insights</h3>
-                  <p className="text-xs text-white/70">Machine learning analysis of historical incident patterns</p>
+                  <h3 className="font-bold text-lg text-text-onAccent">AI Predictive Hazard Insights</h3>
+                  <p className="text-xs text-text-onAccent/70">Machine learning analysis of historical incident patterns</p>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -198,11 +198,11 @@ export const HazardAssessment: React.FC = () => {
                   { title: 'Equipment Fatigue Warning', desc: 'Vibration sensors on Conveyor Line 4 show degradation patterns matching pre-failure signatures. Estimated 14 days before mechanical integrity is compromised.', action: 'Schedule preventive maintenance', confidence: 94 },
                 ].map((insight, i) => (
                   <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.15 }} className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-sm">
-                    <h4 className="font-bold text-sm mb-2 text-white">{insight.title}</h4>
-                    <p className="mb-3 text-xs text-white/80">{insight.desc}</p>
+                    <h4 className="font-bold text-sm mb-2 text-text-onAccent">{insight.title}</h4>
+                    <p className="mb-3 text-xs text-text-onAccent/80">{insight.desc}</p>
                     <div className="flex justify-between items-center">
-                      <span className="font-mono text-[10px] text-white/75">Confidence: {insight.confidence}%</span>
-                      <button className="rounded-lg bg-white/20 px-3 py-1 text-[10px] font-bold text-white transition hover:bg-white/30">{insight.action}</button>
+                      <span className="font-mono text-[10px] text-text-onAccent/75">Confidence: {insight.confidence}%</span>
+                      <button className="rounded-lg bg-white/20 px-3 py-1 text-[10px] font-bold text-text-onAccent transition hover:bg-white/30">{insight.action}</button>
                     </div>
                   </motion.div>
                 ))}
@@ -217,7 +217,7 @@ export const HazardAssessment: React.FC = () => {
                   <MotionSMCard key={jsa.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }} className="p-5 hover:shadow-md transition-all">
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-surface-100 rounded-xl flex items-center justify-center">
+                        <div className="w-10 h-10 bg-surface-sunken rounded-xl flex items-center justify-center">
                           <FileText className="w-5 h-5 text-text-muted" />
                         </div>
                         <div>
@@ -227,7 +227,7 @@ export const HazardAssessment: React.FC = () => {
                       </div>
                       <span className={`px-3 py-1 rounded-full text-[10px] font-bold ${
                         jsa.status === 'approved' ? 'bg-success/10 text-success' :
-                        jsa.status === 'draft' ? 'bg-surface-100 text-text-muted' :
+                        jsa.status === 'draft' ? 'bg-surface-sunken text-text-muted' :
                         'bg-warning/10 text-warning'
                       }`}>
                         {jsa.status.charAt(0).toUpperCase() + jsa.status.slice(1)}

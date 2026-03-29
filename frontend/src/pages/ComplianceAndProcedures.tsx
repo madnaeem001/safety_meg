@@ -254,7 +254,7 @@ export const ComplianceAndProcedures: React.FC = () => {
   const industries: Industry[] = ['Oil & Gas', 'Construction', 'Machine Shops', 'Manufacturing', 'Healthcare', 'Transportation', 'Warehouse'];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-surface-50 to-surface-100 pb-32">
+    <div className="page-wrapper">
 
       
       <main className="max-w-4xl mx-auto px-5 py-8 space-y-8">
@@ -268,10 +268,10 @@ export const ComplianceAndProcedures: React.FC = () => {
             <ClipboardList className="w-4 h-4" />
             Compliance Module
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-brand-900 tracking-tight">
+          <h1 className="page-title">
             Compliance & Procedures
           </h1>
-          <p className="text-surface-500 max-w-2xl">
+          <p className="page-subtitle max-w-2xl">
             AI-driven risk monitoring with industry-specific safety procedures aligned to ISO 9001, OSHA, and regulatory standards.
           </p>
         </motion.div>

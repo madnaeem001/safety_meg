@@ -169,16 +169,16 @@ const ChecklistBuilder: React.FC = () => {
   
   // Render
   return (
-    <div className="min-h-screen bg-gradient-to-b from-surface-50 to-white dark:from-slate-900 dark:to-slate-800">
+    <div className="page-wrapper">
       {/* Header */}
-      <header className="sticky top-[72px] z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-surface-100 dark:border-slate-800 safe-area-top">
+      <header className="sticky top-[72px] z-40 bg-surface-raised/80 backdrop-blur-xl border-b border-surface-100 dark:border-surface-border safe-area-top">
         <div className="px-responsive py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-bold text-slate-900 dark:text-white">
+              <h1 className="page-title">
                 {t('checklistBuilder.title')}
               </h1>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+              <p className="page-subtitle">
                 {t('checklistBuilder.subtitle')}
               </p>
             </div>
@@ -209,14 +209,14 @@ const ChecklistBuilder: React.FC = () => {
             >
               {/* Form Header */}
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                <h2 className="text-lg font-semibold text-text-primary">
                   {editingChecklist ? t('checklistBuilder.editChecklist') : t('checklistBuilder.newChecklist')}
                 </h2>
                 <button
                   onClick={resetForm}
-                  className="p-2 rounded-xl hover:bg-surface-100 dark:hover:bg-slate-800 transition-colors"
+                  className="p-2 rounded-xl hover:bg-surface-100 transition-colors"
                 >
-                  <svg className="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
@@ -225,7 +225,7 @@ const ChecklistBuilder: React.FC = () => {
               {/* Basic Info */}
               <div className="glass-card p-6 rounded-2xl space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-text-primary mb-2">
                     {t('checklistBuilder.checklistName')} *
                   </label>
                   <input
@@ -233,12 +233,12 @@ const ChecklistBuilder: React.FC = () => {
                     value={formName}
                     onChange={(e) => setFormName(e.target.value)}
                     placeholder={t('checklistBuilder.checklistNamePlaceholder')}
-                    className="w-full px-4 py-3 rounded-xl border border-surface-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                    className="w-full px-4 py-3 rounded-xl border border-surface-200 dark:border-surface-border bg-surface-raised text-text-primary focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-text-primary mb-2">
                     {t('checklistBuilder.description')}
                   </label>
                   <textarea
@@ -246,18 +246,18 @@ const ChecklistBuilder: React.FC = () => {
                     onChange={(e) => setFormDescription(e.target.value)}
                     placeholder={t('checklistBuilder.descriptionPlaceholder')}
                     rows={3}
-                    className="w-full px-4 py-3 rounded-xl border border-surface-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-transparent resize-none"
+                    className="w-full px-4 py-3 rounded-xl border border-surface-200 dark:border-surface-border bg-surface-raised text-text-primary focus:ring-2 focus:ring-brand-500 focus:border-transparent resize-none"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-text-primary mb-2">
                     {t('checklistBuilder.selectIndustry')}
                   </label>
                   <select
                     value={formIndustry}
                     onChange={(e) => setFormIndustry(e.target.value as CustomChecklistIndustry)}
-                    className="w-full px-4 py-3 rounded-xl border border-surface-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                    className="w-full px-4 py-3 rounded-xl border border-surface-200 dark:border-surface-border bg-surface-raised text-text-primary focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   >
                     {INDUSTRY_OPTIONS.map(opt => (
                       <option key={opt.value} value={opt.value}>{t(opt.labelKey)}</option>
@@ -274,7 +274,7 @@ const ChecklistBuilder: React.FC = () => {
                     value={newCategoryName}
                     onChange={(e) => setNewCategoryName(e.target.value)}
                     placeholder={t('checklistBuilder.categoryName')}
-                    className="flex-1 px-4 py-3 rounded-xl border border-surface-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                    className="flex-1 px-4 py-3 rounded-xl border border-surface-200 dark:border-surface-border bg-surface-raised text-text-primary focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                     onKeyDown={(e) => e.key === 'Enter' && addCategory()}
                   />
                   <button
@@ -292,11 +292,11 @@ const ChecklistBuilder: React.FC = () => {
                     className="glass-card p-4 rounded-2xl"
                   >
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-semibold text-slate-900 dark:text-white">{catGroup.category}</h3>
+                      <h3 className="font-semibold text-text-primary">{catGroup.category}</h3>
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => addItemToCategory(catIndex)}
-                          className="px-3 py-1.5 text-sm bg-surface-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg mobile-active"
+                          className="px-3 py-1.5 text-sm bg-surface-100 text-text-primary rounded-lg mobile-active"
                         >
                           + {t('checklistBuilder.addItem')}
                         </button>
@@ -325,10 +325,10 @@ const ChecklistBuilder: React.FC = () => {
                         <Reorder.Item
                           key={item.id}
                           value={item}
-                          className="bg-surface-50 dark:bg-slate-700/50 p-4 rounded-xl cursor-grab active:cursor-grabbing"
+                          className="bg-surface-50/50 p-4 rounded-xl cursor-grab active:cursor-grabbing"
                         >
                           <div className="flex items-start gap-3">
-                            <div className="mt-3 text-slate-400">
+                            <div className="mt-3 text-text-muted">
                               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
                               </svg>
@@ -339,10 +339,10 @@ const ChecklistBuilder: React.FC = () => {
                                 value={item.question}
                                 onChange={(e) => updateItem(catIndex, itemIndex, { question: e.target.value })}
                                 placeholder={t('checklistBuilder.itemQuestion')}
-                                className="w-full px-3 py-2 rounded-lg border border-surface-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm"
+                                className="w-full px-3 py-2 rounded-lg border border-surface-200 dark:border-surface-border bg-surface-raised text-text-primary text-sm"
                               />
                               <div className="flex flex-wrap gap-3 items-center">
-                                <label className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                                <label className="flex items-center gap-2 text-sm text-text-secondary">
                                   <input
                                     type="checkbox"
                                     checked={item.required}
@@ -356,7 +356,7 @@ const ChecklistBuilder: React.FC = () => {
                                   value={item.regulatoryRef || ''}
                                   onChange={(e) => updateItem(catIndex, itemIndex, { regulatoryRef: e.target.value })}
                                   placeholder={t('checklistBuilder.regulatoryRef')}
-                                  className="flex-1 min-w-[150px] px-3 py-1.5 rounded-lg border border-surface-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm"
+                                  className="flex-1 min-w-[150px] px-3 py-1.5 rounded-lg border border-surface-200 dark:border-surface-border bg-surface-raised text-text-primary text-sm"
                                 />
                               </div>
                             </div>
@@ -374,7 +374,7 @@ const ChecklistBuilder: React.FC = () => {
                     </Reorder.Group>
                     
                     {catGroup.items.length === 0 && (
-                      <p className="text-sm text-slate-400 dark:text-slate-500 text-center py-4">
+                      <p className="text-sm text-text-muted text-center py-4">
                         {t('riskChecklists.noItems')}
                       </p>
                     )}
@@ -402,19 +402,19 @@ const ChecklistBuilder: React.FC = () => {
               exit={{ opacity: 0, y: -20 }}
               className="space-y-4"
             >
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-text-primary">
                 {t('checklistBuilder.myChecklists')}
               </h2>
               
               {customChecklists.length === 0 ? (
                 <div className="text-center py-16">
-                  <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-surface-100 dark:bg-slate-800 flex items-center justify-center">
-                    <svg className="w-10 h-10 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-surface-100 flex items-center justify-center">
+                    <svg className="w-10 h-10 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                     </svg>
                   </div>
-                  <p className="text-slate-500 dark:text-slate-400 mb-2">{t('checklistBuilder.noCustomChecklists')}</p>
-                  <p className="text-sm text-slate-400 dark:text-slate-500">{t('checklistBuilder.createFirst')}</p>
+                  <p className="text-text-muted mb-2">{t('checklistBuilder.noCustomChecklists')}</p>
+                  <p className="text-sm text-text-muted">{t('checklistBuilder.createFirst')}</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -426,16 +426,16 @@ const ChecklistBuilder: React.FC = () => {
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <h3 className="font-semibold text-slate-900 dark:text-white">{checklist.name}</h3>
-                          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{checklist.description}</p>
+                          <h3 className="font-semibold text-text-primary">{checklist.name}</h3>
+                          <p className="text-sm text-text-muted mt-1">{checklist.description}</p>
                           <div className="flex flex-wrap gap-2 mt-3">
                             <span className="px-2.5 py-1 text-xs font-medium bg-brand-50 dark:bg-brand-900/20 text-brand-700 dark:text-brand-300 rounded-lg">
                               {checklist.industry}
                             </span>
-                            <span className="px-2.5 py-1 text-xs font-medium bg-surface-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-lg">
+                            <span className="px-2.5 py-1 text-xs font-medium bg-surface-100 text-text-secondary rounded-lg">
                               {checklist.items.length} {t('riskChecklists.items')}
                             </span>
-                            <span className="px-2.5 py-1 text-xs font-medium bg-surface-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-lg">
+                            <span className="px-2.5 py-1 text-xs font-medium bg-surface-100 text-text-secondary rounded-lg">
                               {checklist.categories.length} categories
                             </span>
                           </div>
@@ -443,7 +443,7 @@ const ChecklistBuilder: React.FC = () => {
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => startEditing(checklist)}
-                            className="p-2 text-slate-500 hover:bg-surface-100 dark:hover:bg-slate-700 rounded-lg mobile-active"
+                            className="p-2 text-text-muted hover:bg-surface-100 rounded-lg mobile-active"
                           >
                             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />

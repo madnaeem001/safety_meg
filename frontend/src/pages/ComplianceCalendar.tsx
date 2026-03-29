@@ -100,7 +100,7 @@ export const ComplianceCalendar: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen pb-28 bg-surface-base">
+    <div className="page-wrapper">
 
 
 
@@ -115,7 +115,7 @@ export const ComplianceCalendar: React.FC = () => {
               <div className="flex items-center gap-2 text-accent font-bold text-[10px] uppercase tracking-[0.3em]">
                 <Shield className="w-3 h-3" /> Compliance Management
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-text-primary font-display">Compliance Calendar</h1>
+              <h1 className="page-title">Compliance Calendar</h1>
             </div>
           </div>
           <p className="text-sm text-text-muted max-w-2xl">

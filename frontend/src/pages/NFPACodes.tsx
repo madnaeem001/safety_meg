@@ -57,7 +57,7 @@ export const NFPACodes: React.FC = () => {
       case 'Life Safety': return <ShieldAlert className="w-4 h-4 text-red-600" />;
       case 'Systems': return <Settings className="w-4 h-4 text-blue-600" />;
       case 'Hazardous Materials': return <AlertTriangle className="w-4 h-4 text-orange-600" />;
-      case 'Industrial': return <Factory className="w-4 h-4 text-slate-600" />;
+      case 'Industrial': return <Factory className="w-4 h-4 text-text-secondary" />;
       case 'Healthcare': return <Heart className="w-4 h-4 text-pink-600" />;
       default: return <Flame className="w-4 h-4 text-orange-600" />;
     }
@@ -69,7 +69,7 @@ export const NFPACodes: React.FC = () => {
       case 'Life Safety': return 'bg-red-50 border-red-200 text-red-700';
       case 'Systems': return 'bg-blue-50 border-blue-200 text-blue-700';
       case 'Hazardous Materials': return 'bg-orange-50 border-orange-200 text-orange-700';
-      case 'Industrial': return 'bg-slate-50 border-slate-200 text-slate-700';
+      case 'Industrial': return 'bg-surface-sunken border-surface-border text-text-primary';
       case 'Healthcare': return 'bg-pink-50 border-pink-200 text-pink-700';
       default: return 'bg-surface-50 border-surface-200 text-surface-700';
     }
@@ -85,7 +85,7 @@ export const NFPACodes: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-surface-50 to-surface-100 pb-24">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-md shadow-sm sticky top-[72px] z-50 px-4 safe-top border-b border-surface-200">
         <div className="max-w-4xl mx-auto">
@@ -94,11 +94,11 @@ export const NFPACodes: React.FC = () => {
               <ArrowLeft className="w-6 h-6 text-surface-600" />
             </button>
             <div className="flex-1">
-              <h1 className="text-xl font-bold text-brand-900 flex items-center gap-2 tracking-tight">
+              <h1 className="page-title flex items-center gap-2">
                 <Book className="w-6 h-6 text-brand-600" />
                 NFPA Fire Codes Library
               </h1>
-              <p className="text-xs text-surface-500">{stats.total} codes across {categories.length} categories</p>
+              <p className="page-subtitle">{stats.total} codes across {categories.length} categories</p>
             </div>
           </div>
         </div>

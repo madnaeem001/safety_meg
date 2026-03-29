@@ -391,7 +391,7 @@ export const ToolboxTalks: React.FC = () => {
                   <BookOpen className="h-6 w-6" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-text-primary">AI Toolbox Talks</h1>
+                  <h1 className="page-title">AI Toolbox Talks</h1>
                   <p className="text-sm text-text-muted">Daily Safety Meetings with Sign-Off</p>
                 </div>
               </div>

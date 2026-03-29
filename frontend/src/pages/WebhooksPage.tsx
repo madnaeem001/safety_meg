@@ -146,7 +146,7 @@ export const WebhooksPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-surface-50 via-white to-surface-100 pb-24">
+    <div className="page-wrapper">
 
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
@@ -156,8 +156,8 @@ export const WebhooksPage: React.FC = () => {
               <Webhook className="w-4 h-4" />
               External Integrations
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-brand-900 tracking-tight">Webhook Integrations</h1>
-            <p className="text-surface-500 mt-3 max-w-2xl">
+            <h1 className="page-title">Webhook Integrations</h1>
+            <p className="page-subtitle mt-3 max-w-2xl">
               Live webhook endpoints stored and managed through backend webhook configuration routes.
             </p>
           </div>

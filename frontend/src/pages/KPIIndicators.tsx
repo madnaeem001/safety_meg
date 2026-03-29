@@ -508,7 +508,7 @@ export const KPIIndicators: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen pb-24 bg-surface-base">
+    <div className="page-wrapper">
 
       
       {/* Header */}
@@ -522,7 +522,7 @@ export const KPIIndicators: React.FC = () => {
                   <Activity className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-text-primary">KPI Dashboard</h1>
+                  <h1 className="page-title">KPI Dashboard</h1>
                   <p className="text-sm text-surface-500 dark:text-surface-400">Leading & Lagging Indicators</p>
                 </div>
               </div>
@@ -1073,7 +1073,7 @@ export const KPIIndicators: React.FC = () => {
                       'bg-emerald-50 border-emerald-200 dark:bg-emerald-900/20 dark:border-emerald-800'
                     }`}>
                       <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-bold text-surface-900 dark:text-white">{region.region}</h4>
+                        <h4 className="font-bold text-text-primary">{region.region}</h4>
                         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
                           region.riskLevel === 'Critical' ? 'bg-danger/15 text-danger' :
                           region.riskLevel === 'High' ? 'bg-orange-100 text-orange-700' :
@@ -1084,11 +1084,11 @@ export const KPIIndicators: React.FC = () => {
                       <div className="flex justify-between items-end">
                         <div>
                           <div className="text-xs text-surface-500">Risk Score</div>
-                          <div className="text-2xl font-black text-surface-900 dark:text-white">{region.riskScore}</div>
+                          <div className="text-2xl font-black text-text-primary">{region.riskScore}</div>
                         </div>
                         <div className="text-right">
                           <div className="text-xs text-surface-500">Compliance</div>
-                          <div className="text-lg font-bold text-surface-900 dark:text-white">{region.compliance}%</div>
+                          <div className="text-lg font-bold text-text-primary">{region.compliance}%</div>
                         </div>
                       </div>
                     </div>

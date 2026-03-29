@@ -171,7 +171,7 @@ export const AutomationRuleBuilder: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-surface-50 via-white to-surface-100 pb-24">
+    <div className="page-wrapper">
 
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -181,8 +181,8 @@ export const AutomationRuleBuilder: React.FC = () => {
               <Zap className="w-4 h-4" />
               Workflow Automation
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-brand-900 tracking-tight">Automation Rule Builder</h1>
-            <p className="text-surface-500 mt-3 max-w-2xl">
+            <h1 className="page-title">Automation Rule Builder</h1>
+            <p className="page-subtitle mt-3 max-w-2xl">
               Live automation rules powered by backend rule storage and trigger endpoints.
             </p>
           </div>

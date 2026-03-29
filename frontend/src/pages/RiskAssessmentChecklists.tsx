@@ -529,7 +529,7 @@ export const RiskAssessmentChecklists: React.FC = () => {
             )}
           />
           <div className="flex-1">
-            <h1 className="text-responsive-lg font-bold text-text-primary">Risk Assessment</h1>
+            <h1 className="page-title">Risk Assessment</h1>
             <p className="text-sm text-text-muted">Industry Checklists</p>
           </div>
           <button

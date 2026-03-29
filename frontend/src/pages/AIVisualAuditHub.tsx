@@ -225,7 +225,7 @@ const AIVisualAuditHubContent: React.FC = () => {
   const auditCount = stats?.total ?? 0;
 
   return (
-    <div className="ai-purple-theme min-h-screen bg-surface-950 text-white pb-20 selection:bg-brand-500/30">
+    <div className="ai-purple-theme page-wrapper selection:bg-accent/20">
       {/* HD Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-500/10 blur-[120px] rounded-full animate-pulse" />
@@ -256,10 +256,10 @@ const AIVisualAuditHubContent: React.FC = () => {
                   Vision Intelligence v2.0
                 </span>
               </div>
-              <h1 className="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight">
+              <h1 className="page-title">
                 AI Visual <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-violet-400">Audit Hub</span>
               </h1>
-              <p className="text-lg text-surface-400 leading-relaxed mb-6">
+              <p className="page-subtitle mb-6">
                 Harness the power of computer vision to automate safety inspections, monitor PPE compliance, and detect environmental hazards in real-time, aligned with global OSHA and ISO standards.
               </p>
 

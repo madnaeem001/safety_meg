@@ -135,7 +135,7 @@ export const CrossReferenceMatrix: React.FC = () => {
   }, [standardsInMatrix, stdRelationships]);
 
   return (
-    <div className="min-h-screen bg-surface-50 dark:bg-surface-900 pb-20">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="bg-gradient-to-br from-cyan-600 via-cyan-500 to-teal-500 pt-12 pb-8 px-4 safe-top">
         <div className="flex items-center gap-3 mb-6">
@@ -148,8 +148,8 @@ export const CrossReferenceMatrix: React.FC = () => {
             </svg>
           </button>
           <div className="flex-1">
-            <h1 className="text-2xl font-bold text-white">Cross-Reference Matrix</h1>
-            <p className="text-cyan-100 text-sm">Standards integration mapping</p>
+            <h1 className="page-title">Cross-Reference Matrix</h1>
+            <p className="page-subtitle">Standards integration mapping</p>
           </div>
           <div className="flex gap-1 bg-white/20 rounded-lg p-1">
             <button
@@ -259,7 +259,7 @@ export const CrossReferenceMatrix: React.FC = () => {
                           <div className="w-12 h-12 mx-auto mb-1 rounded-xl bg-cyan-50 flex items-center justify-center">
                             <span className="text-xl">📋</span>
                           </div>
-                          <p className="font-bold text-surface-900 dark:text-surface-100 text-sm">
+                          <p className="font-bold text-text-primary text-sm">
                             {sourceStd?.code || rel.sourceStandardId}
                           </p>
                           <p className="text-xs text-surface-500 line-clamp-1">
@@ -283,7 +283,7 @@ export const CrossReferenceMatrix: React.FC = () => {
                           <div className="w-12 h-12 mx-auto mb-1 rounded-xl bg-teal-50 flex items-center justify-center">
                             <span className="text-xl">📋</span>
                           </div>
-                          <p className="font-bold text-surface-900 dark:text-surface-100 text-sm">
+                          <p className="font-bold text-text-primary text-sm">
                             {targetStd?.code || rel.targetStandardId}
                           </p>
                           <p className="text-xs text-surface-500 line-clamp-1">

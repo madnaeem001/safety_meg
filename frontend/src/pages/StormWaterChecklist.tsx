@@ -228,7 +228,7 @@ export const StormWaterChecklist: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-surface-50 pb-20">
+    <div className="page-wrapper">
       {/* Header */}
       <header className="sticky top-[72px] z-40 bg-white/80 backdrop-blur-xl border-b border-surface-200/60 px-6 py-4">
         <div className="flex items-center justify-between max-w-5xl mx-auto">
@@ -237,11 +237,11 @@ export const StormWaterChecklist: React.FC = () => {
               <ArrowLeft className="w-6 h-6 text-surface-600" />
             </button>
             <div>
-              <h1 className="text-xl font-bold text-surface-900 flex items-center gap-2">
+              <h1 className="page-title flex items-center gap-2">
                 <Droplets className="w-6 h-6 text-sky-600" />
                 Storm Water Checklist
               </h1>
-              <p className="text-sm text-surface-500">Facility Inspection & Monitoring</p>
+              <p className="page-subtitle">Facility Inspection & Monitoring</p>
             </div>
           </div>
           <div className="flex flex-col items-end gap-1">

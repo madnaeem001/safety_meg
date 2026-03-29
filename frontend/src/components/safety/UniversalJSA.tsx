@@ -14,10 +14,10 @@ import { JSABuilder } from './JSABuilder';
 
 // Risk levels for JSA
 const RISK_LEVELS = [
-  { id: 'low', label: 'Low', color: 'bg-green-100 text-green-700 border-green-200' },
-  { id: 'medium', label: 'Medium', color: 'bg-amber-100 text-amber-700 border-amber-200' },
-  { id: 'high', label: 'High', color: 'bg-orange-100 text-orange-700 border-orange-200' },
-  { id: 'critical', label: 'Critical', color: 'bg-red-100 text-red-700 border-red-200' },
+  { id: 'low', label: 'Low', color: 'bg-success/10 text-success border-success/20' },
+  { id: 'medium', label: 'Medium', color: 'bg-warning/10 text-warning border-warning/20' },
+  { id: 'high', label: 'High', color: 'bg-warning/10 text-warning border-warning/20' },
+  { id: 'critical', label: 'Critical', color: 'bg-danger/10 text-danger border-danger/20' },
 ];
 
 // Common hazard categories
@@ -252,10 +252,10 @@ export const UniversalJSA: React.FC<UniversalJSAProps> = ({ onNavigate }) => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'approved': return 'bg-green-100 text-green-700';
-      case 'pending-review': return 'bg-amber-100 text-amber-700';
-      case 'draft': return 'bg-surface-100 text-surface-600';
-      default: return 'bg-surface-100 text-surface-600';
+      case 'approved': return 'bg-success/10 text-success';
+      case 'pending-review': return 'bg-warning/10 text-warning';
+      case 'draft': return 'bg-surface-overlay text-text-muted';
+      default: return 'bg-surface-overlay text-text-muted';
     }
   };
 
@@ -304,12 +304,12 @@ export const UniversalJSA: React.FC<UniversalJSAProps> = ({ onNavigate }) => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-brand-900">Job Safety Analysis (JSA)</h2>
-          <p className="text-sm text-surface-500">Universal JSA templates for safe task execution</p>
+          <h2 className="text-xl font-bold text-text-primary">Job Safety Analysis (JSA)</h2>
+          <p className="text-sm text-text-muted">Universal JSA templates for safe task execution</p>
         </div>
         <button
           onClick={() => setActiveView('new')}
-          className="px-4 py-2.5 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 transition-colors flex items-center gap-2"
+          className="px-4 py-2.5 bg-accent text-text-onAccent font-semibold rounded-xl hover:brightness-110 transition-all flex items-center gap-2"
         >
           <Plus className="w-5 h-5" />
           Create JSA
@@ -357,47 +357,47 @@ export const UniversalJSA: React.FC<UniversalJSAProps> = ({ onNavigate }) => {
 
       {/* Summary Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
+        <div className="bg-surface-raised rounded-xl p-4 border border-surface-border shadow-soft">
           <div className="flex items-center gap-2 mb-2">
-            <ClipboardList className="w-5 h-5 text-brand-500" />
-            <span className="text-xs font-bold text-surface-400 uppercase">Total JSAs</span>
+            <ClipboardList className="w-5 h-5 text-accent" />
+            <span className="text-xs font-bold text-text-muted uppercase">Total JSAs</span>
           </div>
-          <p className="text-2xl font-bold text-surface-800">{mockJSAs.length}</p>
+          <p className="text-2xl font-bold text-text-primary">{mockJSAs.length}</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
+        <div className="bg-surface-raised rounded-xl p-4 border border-surface-border shadow-soft">
           <div className="flex items-center gap-2 mb-2">
-            <CheckCircle2 className="w-5 h-5 text-green-500" />
-            <span className="text-xs font-bold text-surface-400 uppercase">Approved</span>
+            <CheckCircle2 className="w-5 h-5 text-success" />
+            <span className="text-xs font-bold text-text-muted uppercase">Approved</span>
           </div>
-          <p className="text-2xl font-bold text-surface-800">{mockJSAs.filter(j => j.status === 'approved').length}</p>
+          <p className="text-2xl font-bold text-text-primary">{mockJSAs.filter(j => j.status === 'approved').length}</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
+        <div className="bg-surface-raised rounded-xl p-4 border border-surface-border shadow-soft">
           <div className="flex items-center gap-2 mb-2">
-            <Clock className="w-5 h-5 text-amber-500" />
-            <span className="text-xs font-bold text-surface-400 uppercase">Pending Review</span>
+            <Clock className="w-5 h-5 text-warning" />
+            <span className="text-xs font-bold text-text-muted uppercase">Pending Review</span>
           </div>
-          <p className="text-2xl font-bold text-surface-800">{mockJSAs.filter(j => j.status === 'pending-review').length}</p>
+          <p className="text-2xl font-bold text-text-primary">{mockJSAs.filter(j => j.status === 'pending-review').length}</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
+        <div className="bg-surface-raised rounded-xl p-4 border border-surface-border shadow-soft">
           <div className="flex items-center gap-2 mb-2">
-            <AlertTriangle className="w-5 h-5 text-red-500" />
-            <span className="text-xs font-bold text-surface-400 uppercase">High Risk</span>
+            <AlertTriangle className="w-5 h-5 text-danger" />
+            <span className="text-xs font-bold text-text-muted uppercase">High Risk</span>
           </div>
-          <p className="text-2xl font-bold text-surface-800">{mockJSAs.filter(j => j.overallRisk === 'high' || j.overallRisk === 'critical').length}</p>
+          <p className="text-2xl font-bold text-text-primary">{mockJSAs.filter(j => j.overallRisk === 'high' || j.overallRisk === 'critical').length}</p>
         </div>
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white rounded-2xl p-4 border border-surface-100 shadow-soft space-y-4">
+      <div className="bg-surface-raised rounded-2xl p-4 border border-surface-border shadow-soft space-y-4">
         <div className="flex items-center gap-3">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
             <input
               type="text"
               placeholder="Search JSAs..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-surface-50 border border-surface-100 rounded-xl text-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary placeholder:text-text-muted outline-none focus:ring-2 focus:ring-accent/20 transition-all"
             />
           </div>
         </div>
@@ -414,7 +414,7 @@ export const UniversalJSA: React.FC<UniversalJSAProps> = ({ onNavigate }) => {
               key={tab.id}
               onClick={() => setStatusFilter(tab.id)}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                statusFilter === tab.id ? 'bg-brand-500 text-white' : 'bg-surface-50 text-surface-600 hover:bg-surface-100'
+                statusFilter === tab.id ? 'bg-accent text-text-onAccent' : 'bg-surface-sunken text-text-secondary hover:bg-surface-overlay'
               }`}
             >
               {tab.label}
@@ -431,16 +431,16 @@ export const UniversalJSA: React.FC<UniversalJSAProps> = ({ onNavigate }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
-            className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft hover:shadow-card cursor-pointer transition-all group"
+            className="bg-surface-raised rounded-xl p-4 border border-surface-border shadow-soft hover:shadow-card cursor-pointer transition-all group"
           >
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-brand-100 text-brand-600">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-accent/10 text-accent">
                 <ClipboardList className="w-5 h-5" />
               </div>
               
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-bold text-surface-400">{jsa.id}</span>
+                  <span className="text-xs font-bold text-text-muted">{jsa.id}</span>
                   <span className={`px-2 py-0.5 text-[10px] font-bold uppercase rounded-full ${getStatusColor(jsa.status)}`}>
                     {jsa.status.replace('-', ' ')}
                   </span>
@@ -448,8 +448,8 @@ export const UniversalJSA: React.FC<UniversalJSAProps> = ({ onNavigate }) => {
                     {jsa.overallRisk} risk
                   </span>
                 </div>
-                <h4 className="font-semibold text-surface-800 truncate">{jsa.title}</h4>
-                <div className="flex items-center gap-4 mt-2 text-xs text-surface-500">
+                <h4 className="font-semibold text-text-primary truncate">{jsa.title}</h4>
+                <div className="flex items-center gap-4 mt-2 text-xs text-text-muted">
                   <span className="flex items-center gap-1">
                     <Calendar className="w-3.5 h-3.5" />
                     {jsa.createdDate}
@@ -469,15 +469,15 @@ export const UniversalJSA: React.FC<UniversalJSAProps> = ({ onNavigate }) => {
                 </div>
               </div>
               
-              <ChevronRight className="w-5 h-5 text-surface-300 group-hover:text-brand-500 transition-colors" />
+              <ChevronRight className="w-5 h-5 text-text-muted group-hover:text-accent transition-colors" />
             </div>
           </motion.div>
         ))}
 
         {filteredJSAs.length === 0 && (
-          <div className="text-center py-12 bg-surface-50 rounded-2xl">
-            <ClipboardList className="w-12 h-12 text-surface-300 mx-auto mb-4" />
-            <p className="text-surface-500">No JSAs found</p>
+          <div className="text-center py-12 bg-surface-sunken rounded-2xl border border-surface-border">
+            <ClipboardList className="w-12 h-12 text-text-muted mx-auto mb-4" />
+            <p className="text-text-muted">No JSAs found</p>
           </div>
         )}
       </div>

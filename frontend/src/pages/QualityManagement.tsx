@@ -115,7 +115,7 @@ export const QualityManagement: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 pb-32">
+    <div className="page-wrapper">
 
       <main className="max-w-7xl mx-auto px-4 md:px-6 pt-20 md:pt-24 space-y-6">
         {/* Header */}
@@ -127,7 +127,7 @@ export const QualityManagement: React.FC = () => {
             <div className="flex items-center gap-2 text-cyan-400 font-bold text-[10px] uppercase tracking-[0.3em]">
               <ClipboardCheck className="w-4 h-4" /> Quality Management System
             </div>
-            <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight">QMS Dashboard</h1>
+            <h1 className="page-title">QMS Dashboard</h1>
           </div>
           <button className="ml-auto flex items-center gap-2 px-4 py-2.5 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-sm font-medium hover:bg-cyan-500/30 transition-colors">
             <Plus className="w-4 h-4" /> New Record
@@ -300,7 +300,7 @@ export const QualityManagement: React.FC = () => {
                         <h3 className="text-sm font-bold text-white">{std.name}</h3>
                         <p className="text-xs text-text-muted">{std.desc}</p>
                       </div>
-                      <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${std.status === 'Certified' ? 'bg-emerald-500/10 text-emerald-400' : std.status === 'In Progress' ? 'bg-blue-500/10 text-blue-400' : 'bg-slate-500/10 text-text-muted'}`}>
+                      <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${std.status === 'Certified' ? 'bg-emerald-500/10 text-emerald-400' : std.status === 'In Progress' ? 'bg-blue-500/10 text-blue-400' : 'bg-surface-sunken0/10 text-text-muted'}`}>
                         {std.status}
                       </span>
                     </div>
@@ -309,7 +309,7 @@ export const QualityManagement: React.FC = () => {
                         <span>Coverage</span><span className="font-bold text-white">{std.coverage}%</span>
                       </div>
                       <div className="w-full bg-white/10 rounded-full h-2">
-                        <div className={`h-2 rounded-full transition-all ${std.coverage >= 85 ? 'bg-emerald-400' : std.coverage >= 50 ? 'bg-amber-400' : 'bg-slate-400'}`}
+                        <div className={`h-2 rounded-full transition-all ${std.coverage >= 85 ? 'bg-emerald-400' : std.coverage >= 50 ? 'bg-amber-400' : 'bg-surface-border'}`}
                           style={{ width: `${std.coverage}%` }} />
                       </div>
                     </div>

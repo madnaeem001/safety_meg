@@ -255,7 +255,7 @@ export default function IncidentTrendAnalytics() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-base">
+    <div className="page-wrapper">
 
       
       {/* Header */}
@@ -270,7 +270,7 @@ export default function IncidentTrendAnalytics() {
                 leftIcon={<ArrowLeft className="w-5 h-5" />}
               />
               <div>
-                <h1 className="text-xl font-bold text-text-primary">Incident Trend Analytics</h1>
+                <h1 className="page-title">Incident Trend Analytics</h1>
                 <p className="text-sm text-text-muted">Analyze patterns and identify improvement areas</p>
               </div>
             </div>

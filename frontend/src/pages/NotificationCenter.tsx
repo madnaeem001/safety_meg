@@ -75,7 +75,7 @@ export const NotificationCenter: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen text-text-primary pb-24 transition-colors duration-300">
+    <div className="page-wrapper transition-colors duration-300">
       {/* Header */}
       <div className="bg-surface-raised border-b border-surface-border sticky top-[72px] z-50 safe-top transition-colors duration-300">
         <div className="px-4 py-4">
@@ -83,7 +83,7 @@ export const NotificationCenter: React.FC = () => {
             <button onClick={() => navigate(-1)} className="p-2 -ml-2 hover:bg-surface-overlay rounded-full transition-colors">
               <ArrowLeft className="w-6 h-6 text-text-secondary" />
             </button>
-            <h1 className="text-xl font-bold text-text-primary flex items-center gap-2">
+            <h1 className="page-title flex items-center gap-2">
               <Bell className="w-6 h-6 text-brand-600" />
               Notifications
               {unreadCount > 0 && (

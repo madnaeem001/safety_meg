@@ -278,25 +278,25 @@ const mockInjuryCases: InjuryCase[] = [
 
 // Severity config
 const severityConfig = {
-  minor:    { color: 'bg-green-100 text-green-700 border-green-200',  label: 'Minor',    badgeVariant: 'success' as const },
-  moderate: { color: 'bg-amber-100 text-amber-700 border-amber-200', label: 'Moderate', badgeVariant: 'warning' as const },
-  severe:   { color: 'bg-orange-100 text-orange-700 border-orange-200', label: 'Severe', badgeVariant: 'warning' as const },
-  critical: { color: 'bg-red-100 text-red-700 border-red-200',       label: 'Critical', badgeVariant: 'danger'  as const }
+  minor:    { color: 'bg-success/10 text-success border-success/20',  label: 'Minor',    badgeVariant: 'success' as const },
+  moderate: { color: 'bg-warning/10 text-warning border-warning/20', label: 'Moderate', badgeVariant: 'warning' as const },
+  severe:   { color: 'bg-warning/10 text-warning border-warning/20', label: 'Severe', badgeVariant: 'warning' as const },
+  critical: { color: 'bg-danger/10 text-danger border-danger/20',       label: 'Critical', badgeVariant: 'danger'  as const }
 };
 
 const statusConfig = {
-  reported:      { color: 'bg-blue-100 text-blue-700',   label: 'Reported',     icon: FileText,   badgeVariant: 'teal'    as const },
-  under_review:  { color: 'bg-purple-100 text-purple-700', label: 'Under Review', icon: Eye,        badgeVariant: 'neutral' as const },
-  investigating: { color: 'bg-amber-100 text-amber-700', label: 'Investigating', icon: FileSearch, badgeVariant: 'warning' as const },
-  capa_pending:  { color: 'bg-orange-100 text-orange-700', label: 'CAPA Pending', icon: Target,    badgeVariant: 'warning' as const },
-  closed:        { color: 'bg-green-100 text-green-700', label: 'Closed',        icon: CheckCircle2, badgeVariant: 'success' as const }
+  reported:      { color: 'bg-accent/10 text-accent',   label: 'Reported',     icon: FileText,   badgeVariant: 'teal'    as const },
+  under_review:  { color: 'bg-ai/10 text-ai', label: 'Under Review', icon: Eye,        badgeVariant: 'neutral' as const },
+  investigating: { color: 'bg-warning/10 text-warning', label: 'Investigating', icon: FileSearch, badgeVariant: 'warning' as const },
+  capa_pending:  { color: 'bg-warning/10 text-warning', label: 'CAPA Pending', icon: Target,    badgeVariant: 'warning' as const },
+  closed:        { color: 'bg-success/10 text-success', label: 'Closed',        icon: CheckCircle2, badgeVariant: 'success' as const }
 };
 
 const treatmentConfig = {
-  none: { label: 'No Treatment Required', icon: CheckCircle2, color: 'text-green-600' },
-  first_aid: { label: 'First Aid Only', icon: Clipboard, color: 'text-blue-600' },
+  none: { label: 'No Treatment Required', icon: CheckCircle2, color: 'text-success' },
+  first_aid: { label: 'First Aid Only', icon: Clipboard, color: 'text-accent' },
   medical_treatment: { label: 'Medical Treatment', icon: Stethoscope, color: 'text-amber-600' },
-  hospitalization: { label: 'Hospitalization', icon: Ambulance, color: 'text-red-600' }
+  hospitalization: { label: 'Hospitalization', icon: Ambulance, color: 'text-danger' }
 };
 
 type ViewMode = 'list' | 'detail' | 'new';
@@ -368,7 +368,7 @@ export const EnhancedInjuryReport: React.FC = () => {
     <div className="space-y-6 max-w-3xl mx-auto">
       <SMCard className="p-6">
         <h2 className="text-lg font-bold text-text-primary mb-5 flex items-center gap-2">
-          <Heart className="w-5 h-5 text-red-500" /> New Injury Case
+          <Heart className="w-5 h-5 text-danger" /> New Injury Case
         </h2>
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -448,22 +448,22 @@ export const EnhancedInjuryReport: React.FC = () => {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         {[
-          { label: 'Total Cases', value: stats.total, icon: Heart, color: 'bg-red-500' },
-          { label: 'Open Cases', value: stats.open, icon: AlertTriangle, color: 'bg-amber-500' },
-          { label: 'OSHA Recordable', value: stats.oshaRecordable, icon: ClipboardList, color: 'bg-purple-500' },
-          { label: 'Days Lost (YTD)', value: stats.daysLost, icon: Calendar, color: 'bg-blue-500' },
-          { label: 'Avg Recovery', value: `${stats.avgRecovery}d`, icon: Activity, color: 'bg-green-500' }
+          { label: 'Total Cases', value: stats.total, icon: Heart, color: 'bg-danger' },
+          { label: 'Open Cases', value: stats.open, icon: AlertTriangle, color: 'bg-warning' },
+          { label: 'OSHA Recordable', value: stats.oshaRecordable, icon: ClipboardList, color: 'bg-ai' },
+          { label: 'Days Lost (YTD)', value: stats.daysLost, icon: Calendar, color: 'bg-accent' },
+          { label: 'Avg Recovery', value: `${stats.avgRecovery}d`, icon: Activity, color: 'bg-success' }
         ].map((stat) => {
           const Icon = stat.icon;
           return (
             <SMCard key={stat.label} className="p-4">
               <div className="flex items-center gap-3">
                 <div className={`p-2 rounded-lg ${stat.color}`}>
-                  <Icon className="w-5 h-5 text-white" />
+                  <Icon className="w-5 h-5 text-text-onAccent" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-surface-900 dark:text-white">{stat.value}</p>
-                  <p className="text-xs text-surface-500">{stat.label}</p>
+                  <p className="text-2xl font-bold text-text-primary">{stat.value}</p>
+                  <p className="text-xs text-text-muted">{stat.label}</p>
                 </div>
               </div>
             </SMCard>
@@ -526,19 +526,19 @@ export const EnhancedInjuryReport: React.FC = () => {
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-red-100 dark:bg-red-900/20 rounded-xl">
-                    <Heart className="w-6 h-6 text-red-500" />
+                  <div className="p-2 bg-danger/10 rounded-xl">
+                    <Heart className="w-6 h-6 text-danger" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-surface-900 dark:text-white">{injuryCase.id}</h3>
+                      <h3 className="font-semibold text-text-primary">{injuryCase.id}</h3>
                       <SMBadge size="sm" variant={sevConf.badgeVariant}>{sevConf.label}</SMBadge>
                       <SMBadge size="sm" variant={statConf.badgeVariant} icon={<StatusIcon className="w-3 h-3" />}>{statConf.label}</SMBadge>
                       {injuryCase.oshaRecordable && (
                         <SMBadge size="sm" variant="neutral">OSHA</SMBadge>
                       )}
                     </div>
-                    <p className="text-sm text-surface-600 dark:text-surface-400 mt-1">
+                    <p className="text-sm text-text-secondary mt-1">
                       {injuryCase.injuryType.name} - {injuryCase.bodyParts.map(bp => bp.name).join(', ')}
                     </p>
                   </div>
@@ -557,15 +557,15 @@ export const EnhancedInjuryReport: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                <div className="flex items-center gap-2 text-surface-600 dark:text-surface-400">
+                <div className="flex items-center gap-2 text-text-secondary">
                   <User className="w-4 h-4" />
                   <span>{injuryCase.employeeName}</span>
                 </div>
-                <div className="flex items-center gap-2 text-surface-600 dark:text-surface-400">
+                <div className="flex items-center gap-2 text-text-secondary">
                   <MapPin className="w-4 h-4" />
                   <span className="truncate">{injuryCase.location}</span>
                 </div>
-                <div className="flex items-center gap-2 text-surface-600 dark:text-surface-400">
+                <div className="flex items-center gap-2 text-text-secondary">
                   <Calendar className="w-4 h-4" />
                   <span>{injuryCase.injuryDate}</span>
                 </div>
@@ -576,12 +576,12 @@ export const EnhancedInjuryReport: React.FC = () => {
               </div>
 
               {injuryCase.correctiveActions.length > 0 && (
-                <div className="mt-3 pt-3 border-t border-surface-100 dark:border-surface-700">
+                <div className="mt-3 pt-3 border-t border-surface-border dark:border-surface-700">
                   <div className="flex items-center gap-4 text-xs">
-                    <span className="text-surface-500">Corrective Actions:</span>
-                    <span className="text-green-600">{injuryCase.correctiveActions.filter(ca => ca.status === 'completed').length} Completed</span>
+                    <span className="text-text-muted">Corrective Actions:</span>
+                    <span className="text-success">{injuryCase.correctiveActions.filter(ca => ca.status === 'completed').length} Completed</span>
                     <span className="text-amber-600">{injuryCase.correctiveActions.filter(ca => ca.status === 'in_progress').length} In Progress</span>
-                    <span className="text-surface-500">{injuryCase.correctiveActions.filter(ca => ca.status === 'pending').length} Pending</span>
+                    <span className="text-text-muted">{injuryCase.correctiveActions.filter(ca => ca.status === 'pending').length} Pending</span>
                   </div>
                 </div>
               )}
@@ -605,19 +605,19 @@ export const EnhancedInjuryReport: React.FC = () => {
         <SMCard className="p-6">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-red-100 dark:bg-red-900/20 rounded-xl">
-                <Heart className="w-8 h-8 text-red-500" />
+              <div className="p-3 bg-danger/10 rounded-xl">
+                <Heart className="w-8 h-8 text-danger" />
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <h2 className="text-xl font-bold text-surface-900 dark:text-white">{selectedCase.id}</h2>
+                  <h2 className="text-xl font-bold text-text-primary">{selectedCase.id}</h2>
                   <SMBadge size="sm" variant={sevConf.badgeVariant}>{sevConf.label}</SMBadge>
                   <SMBadge size="sm" variant={statConf.badgeVariant}>{statConf.label}</SMBadge>
                   {selectedCase.oshaRecordable && (
                     <SMBadge size="sm" variant="neutral" icon={<BadgeAlert className="w-3 h-3" />}>OSHA Recordable</SMBadge>
                   )}
                 </div>
-                <p className="text-surface-600 dark:text-surface-400">
+                <p className="text-text-secondary">
                   {selectedCase.injuryType.name} - {selectedCase.bodyParts.map(bp => `${bp.name}${bp.side && bp.side !== 'n/a' ? ` (${bp.side})` : ''}`).join(', ')}
                 </p>
               </div>
@@ -641,30 +641,30 @@ export const EnhancedInjuryReport: React.FC = () => {
           </div>
 
           {/* Quick Info */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-surface-50 dark:bg-surface-700 rounded-xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-surface-sunken rounded-xl">
             <div>
-              <p className="text-xs text-surface-500 mb-1">Employee</p>
-              <p className="font-medium text-surface-900 dark:text-white">{selectedCase.employeeName}</p>
-              <p className="text-xs text-surface-500">{selectedCase.employeeJobTitle}</p>
+              <p className="text-xs text-text-muted mb-1">Employee</p>
+              <p className="font-medium text-text-primary">{selectedCase.employeeName}</p>
+              <p className="text-xs text-text-muted">{selectedCase.employeeJobTitle}</p>
             </div>
             <div>
-              <p className="text-xs text-surface-500 mb-1">Location</p>
-              <p className="font-medium text-surface-900 dark:text-white">{selectedCase.location}</p>
-              <p className="text-xs text-surface-500">{selectedCase.employeeDepartment}</p>
+              <p className="text-xs text-text-muted mb-1">Location</p>
+              <p className="font-medium text-text-primary">{selectedCase.location}</p>
+              <p className="text-xs text-text-muted">{selectedCase.employeeDepartment}</p>
             </div>
             <div>
-              <p className="text-xs text-surface-500 mb-1">Date & Time</p>
-              <p className="font-medium text-surface-900 dark:text-white">{selectedCase.injuryDate}</p>
-              <p className="text-xs text-surface-500">{selectedCase.injuryTime}</p>
+              <p className="text-xs text-text-muted mb-1">Date & Time</p>
+              <p className="font-medium text-text-primary">{selectedCase.injuryDate}</p>
+              <p className="text-xs text-text-muted">{selectedCase.injuryTime}</p>
             </div>
             <div>
-              <p className="text-xs text-surface-500 mb-1">Treatment</p>
+              <p className="text-xs text-text-muted mb-1">Treatment</p>
               <div className={`flex items-center gap-1 ${treatConf.color}`}>
                 {React.createElement(treatConf.icon, { className: 'w-4 h-4' })}
                 <span className="font-medium">{treatConf.label}</span>
               </div>
               {selectedCase.daysLost > 0 && (
-                <p className="text-xs text-red-500">{selectedCase.daysLost} days lost</p>
+                <p className="text-xs text-danger">{selectedCase.daysLost} days lost</p>
               )}
             </div>
           </div>
@@ -704,7 +704,7 @@ export const EnhancedInjuryReport: React.FC = () => {
               className="space-y-4"
             >
               <SMCard className="p-5">
-                <h3 className="font-semibold text-surface-900 dark:text-white mb-3">Injury Description</h3>
+                <h3 className="font-semibold text-text-primary mb-3">Injury Description</h3>
                 {isEditing ? (
                   <textarea
                     className="w-full bg-surface-sunken border border-surface-border rounded-lg px-3 py-2 text-text-primary text-sm resize-none focus:outline-none focus:ring-2 focus:ring-accent/50"
@@ -712,12 +712,12 @@ export const EnhancedInjuryReport: React.FC = () => {
                     defaultValue={selectedCase.description}
                   />
                 ) : (
-                  <p className="text-surface-600 dark:text-surface-400">{selectedCase.description}</p>
+                  <p className="text-text-secondary">{selectedCase.description}</p>
                 )}
               </SMCard>
 
               <SMCard className="p-5">
-                <h3 className="font-semibold text-surface-900 dark:text-white mb-3">Immediate Actions Taken</h3>
+                <h3 className="font-semibold text-text-primary mb-3">Immediate Actions Taken</h3>
                 {isEditing ? (
                   <textarea
                     className="w-full bg-surface-sunken border border-surface-border rounded-lg px-3 py-2 text-text-primary text-sm resize-none focus:outline-none focus:ring-2 focus:ring-accent/50"
@@ -725,12 +725,12 @@ export const EnhancedInjuryReport: React.FC = () => {
                     defaultValue={selectedCase.immediateActions}
                   />
                 ) : (
-                  <p className="text-surface-600 dark:text-surface-400">{selectedCase.immediateActions}</p>
+                  <p className="text-text-secondary">{selectedCase.immediateActions}</p>
                 )}
               </SMCard>
 
               <SMCard className="p-5">
-                <h3 className="font-semibold text-surface-900 dark:text-white mb-3">Root Cause</h3>
+                <h3 className="font-semibold text-text-primary mb-3">Root Cause</h3>
                 {isEditing ? (
                   <textarea
                     className="w-full bg-surface-sunken border border-surface-border rounded-lg px-3 py-2 text-text-primary text-sm resize-none focus:outline-none focus:ring-2 focus:ring-accent/50"
@@ -738,23 +738,23 @@ export const EnhancedInjuryReport: React.FC = () => {
                     defaultValue={selectedCase.rootCause}
                   />
                 ) : (
-                  <p className="text-surface-600 dark:text-surface-400">{selectedCase.rootCause}</p>
+                  <p className="text-text-secondary">{selectedCase.rootCause}</p>
                 )}
               </SMCard>
 
               {selectedCase.witnesses.length > 0 && (
                 <SMCard className="p-5">
-                  <h3 className="font-semibold text-surface-900 dark:text-white mb-3">Witnesses</h3>
+                  <h3 className="font-semibold text-text-primary mb-3">Witnesses</h3>
                   <div className="space-y-3">
                     {selectedCase.witnesses.map((witness) => (
-                      <div key={witness.id} className="p-3 bg-surface-50 dark:bg-surface-700 rounded-lg">
+                      <div key={witness.id} className="p-3 bg-surface-sunken rounded-lg">
                         <div className="flex items-center gap-2 mb-2">
-                          <User className="w-4 h-4 text-surface-400" />
-                          <span className="font-medium text-surface-900 dark:text-white">{witness.name}</span>
-                          <span className="text-xs text-surface-500">{witness.contact}</span>
+                          <User className="w-4 h-4 text-text-muted" />
+                          <span className="font-medium text-text-primary">{witness.name}</span>
+                          <span className="text-xs text-text-muted">{witness.contact}</span>
                         </div>
                         {witness.statement && (
-                          <p className="text-sm text-surface-600 dark:text-surface-400 italic">"{witness.statement}"</p>
+                          <p className="text-sm text-text-secondary italic">"{witness.statement}"</p>
                         )}
                       </div>
                     ))}
@@ -777,10 +777,10 @@ export const EnhancedInjuryReport: React.FC = () => {
                   <div key={event.id} className="flex gap-4 pb-6 last:pb-0">
                     <div className="relative">
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                        event.type === 'created' ? 'bg-blue-100 text-blue-600' :
-                        event.type === 'action' ? 'bg-green-100 text-green-600' :
-                        event.type === 'status_change' ? 'bg-purple-100 text-purple-600' :
-                        'bg-surface-100 text-surface-600'
+                        event.type === 'created' ? 'bg-accent/10 text-accent' :
+                        event.type === 'action' ? 'bg-success/10 text-success' :
+                        event.type === 'status_change' ? 'bg-ai/10 text-ai' :
+                        'bg-surface-sunken text-text-secondary'
                       }`}>
                         {event.type === 'created' && <Plus className="w-5 h-5" />}
                         {event.type === 'action' && <CheckCircle2 className="w-5 h-5" />}
@@ -789,16 +789,16 @@ export const EnhancedInjuryReport: React.FC = () => {
                         {event.type === 'comment' && <MessageSquare className="w-5 h-5" />}
                       </div>
                       {index < selectedCase.timeline.length - 1 && (
-                        <div className="absolute left-5 top-10 bottom-0 w-px bg-surface-200 dark:bg-surface-700" />
+                        <div className="absolute left-5 top-10 bottom-0 w-px bg-surface-overlay" />
                       )}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
-                        <h4 className="font-medium text-surface-900 dark:text-white">{event.title}</h4>
-                        <span className="text-xs text-surface-500">{new Date(event.date).toLocaleString()}</span>
+                        <h4 className="font-medium text-text-primary">{event.title}</h4>
+                        <span className="text-xs text-text-muted">{new Date(event.date).toLocaleString()}</span>
                       </div>
-                      <p className="text-sm text-surface-600 dark:text-surface-400 mt-1">{event.description}</p>
-                      <p className="text-xs text-surface-400 mt-1">By: {event.user}</p>
+                      <p className="text-sm text-text-secondary mt-1">{event.description}</p>
+                      <p className="text-xs text-text-muted mt-1">By: {event.user}</p>
                     </div>
                   </div>
                 ))}
@@ -827,13 +827,13 @@ export const EnhancedInjuryReport: React.FC = () => {
                         {action.status.replace('_', ' ')}
                       </SMBadge>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-surface-500">
+                    <div className="flex items-center gap-2 text-xs text-text-muted">
                       <Calendar className="w-3 h-3" />
                       Due: {action.dueDate}
                     </div>
                   </div>
-                  <p className="text-surface-900 dark:text-white mb-2">{action.description}</p>
-                  <div className="flex items-center gap-2 text-sm text-surface-500">
+                  <p className="text-text-primary mb-2">{action.description}</p>
+                  <div className="flex items-center gap-2 text-sm text-text-muted">
                     <User className="w-4 h-4" />
                     Assigned to: {action.assignee}
                   </div>
@@ -894,7 +894,7 @@ export const EnhancedInjuryReport: React.FC = () => {
               className="space-y-4"
             >
               {/* Risk Score */}
-              <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl p-5 text-white">
+              <div className="bg-gradient-to-r from-primary to-ai rounded-xl p-5 text-text-onAccent">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <Brain className="w-6 h-6" />
@@ -907,14 +907,14 @@ export const EnhancedInjuryReport: React.FC = () => {
 
               {/* Patterns */}
               <SMCard className="p-5">
-                <h3 className="font-semibold text-surface-900 dark:text-white mb-3 flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-amber-500" />
+                <h3 className="font-semibold text-text-primary mb-3 flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-warning" />
                   Identified Patterns
                 </h3>
                 <ul className="space-y-2">
                   {selectedCase.aiAnalysis.patterns.map((pattern, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-surface-600 dark:text-surface-400">
-                      <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                    <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
+                      <AlertTriangle className="w-4 h-4 text-warning mt-0.5 flex-shrink-0" />
                       {pattern}
                     </li>
                   ))}
@@ -923,14 +923,14 @@ export const EnhancedInjuryReport: React.FC = () => {
 
               {/* Recommendations */}
               <SMCard className="p-5">
-                <h3 className="font-semibold text-surface-900 dark:text-white mb-3 flex items-center gap-2">
-                  <Lightbulb className="w-5 h-5 text-blue-500" />
+                <h3 className="font-semibold text-text-primary mb-3 flex items-center gap-2">
+                  <Lightbulb className="w-5 h-5 text-accent" />
                   AI Recommendations
                 </h3>
                 <ul className="space-y-2">
                   {selectedCase.aiAnalysis.recommendations.map((rec, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-surface-600 dark:text-surface-400">
-                      <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                    <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
+                      <CheckCircle2 className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
                       {rec}
                     </li>
                   ))}
@@ -939,16 +939,16 @@ export const EnhancedInjuryReport: React.FC = () => {
 
               {/* Similar Cases */}
               <SMCard className="p-5">
-                <h3 className="font-semibold text-surface-900 dark:text-white mb-3 flex items-center gap-2">
-                  <FileSearch className="w-5 h-5 text-purple-500" />
+                <h3 className="font-semibold text-text-primary mb-3 flex items-center gap-2">
+                  <FileSearch className="w-5 h-5 text-ai" />
                   Similar Cases
                 </h3>
                 <div className="space-y-2">
                   {selectedCase.aiAnalysis.similarCases.map((similar) => (
-                    <div key={similar.id} className="flex items-center justify-between p-3 bg-surface-50 dark:bg-surface-700 rounded-lg">
+                    <div key={similar.id} className="flex items-center justify-between p-3 bg-surface-sunken rounded-lg">
                       <div>
-                        <p className="font-medium text-surface-900 dark:text-white">{similar.id}</p>
-                        <p className="text-xs text-surface-500">{similar.summary}</p>
+                        <p className="font-medium text-text-primary">{similar.id}</p>
+                        <p className="text-xs text-text-muted">{similar.summary}</p>
                       </div>
                       <SMBadge size="sm" variant="neutral">{similar.similarity}% match</SMBadge>
                     </div>
@@ -963,9 +963,9 @@ export const EnhancedInjuryReport: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 dark:bg-surface-900">
+    <div className="min-h-screen bg-surface-sunken">
       {/* Header */}
-      <div className="sticky top-0 z-50 bg-white/80 dark:bg-surface-800/80 backdrop-blur-xl border-b border-surface-200 dark:border-surface-700">
+      <div className="sticky top-0 z-50 bg-surface-overlay/80 backdrop-blur-xl border-b border-surface-border dark:border-surface-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
@@ -985,11 +985,11 @@ export const EnhancedInjuryReport: React.FC = () => {
                 <ArrowLeft className="w-5 h-5" />
               </SMButton>
               <div>
-                <h1 className="text-xl font-bold text-surface-900 dark:text-white flex items-center gap-2">
-                  <Heart className="w-6 h-6 text-red-500" />
+                <h1 className="text-xl font-bold text-text-primary flex items-center gap-2">
+                  <Heart className="w-6 h-6 text-danger" />
                   Enhanced Injury Reporting
                 </h1>
-                <p className="text-sm text-surface-500">AI-powered injury tracking and analysis</p>
+                <p className="text-sm text-text-muted">AI-powered injury tracking and analysis</p>
               </div>
             </div>
           </div>

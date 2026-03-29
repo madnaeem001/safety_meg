@@ -699,7 +699,7 @@ export const ProjectManagement: React.FC = () => {
   const overdueTasks = tasks.filter(t => new Date(t.dueDate) < new Date() && t.status !== 'completed').length;
 
   return (
-    <div className="min-h-screen bg-surface-base pb-32">
+    <div className="page-wrapper">
 
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-6">
@@ -713,7 +713,7 @@ export const ProjectManagement: React.FC = () => {
               <ListTodo className="w-4 h-4" />
               Project Workflow
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-text-primary tracking-tighter leading-none">Project Management</h1>
+            <h1 className="page-title">Project Management</h1>
             <p className="text-surface-500 mt-3 max-w-xl text-base">
               Task management, schedule tracking, and RFI register for enterprise projects.
             </p>

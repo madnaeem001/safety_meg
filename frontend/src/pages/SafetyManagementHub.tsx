@@ -445,7 +445,7 @@ export const SafetyManagementHub = () => {
         <div className="flex items-center gap-4">
           <img src="/logo.png" alt="SafetyMEG Logo" className="w-12 h-12 object-contain" />
           <div>
-            <h1 className="text-3xl lg:text-4xl font-bold text-text-primary">Safety Hub</h1>
+            <h1 className="page-title">Safety Hub</h1>
             <p className="text-text-muted mt-1">Intelligent Safety Management & Compliance</p>
           </div>
         </div>
@@ -865,7 +865,7 @@ export const SafetyManagementHub = () => {
                     <module.icon className="w-6 h-6 lg:w-7 lg:h-7 text-text-onAccent" />
                   </div>
                   <div className="text-right">
-                    <span className="text-2xl lg:text-3xl font-bold text-text-primary">{liveStats.value}</span>
+                    <span className="page-title">{liveStats.value}</span>
                     <p className="text-xs text-text-muted">{liveStats.label}</p>
                   </div>
                 </div>
@@ -1076,7 +1076,7 @@ export const SafetyManagementHub = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-base text-text-primary transition-colors duration-300">
+    <div className="page-wrapper transition-colors duration-300">
       {/* Main Container */}
       <main className="max-w-[1920px] mx-auto px-4 lg:px-8 py-6 lg:py-10 pb-32">
         <AnimatePresence mode="wait">

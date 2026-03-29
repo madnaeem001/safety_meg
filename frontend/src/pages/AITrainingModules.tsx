@@ -219,7 +219,7 @@ export const AITrainingModules: React.FC = () => {
   const avgScore = Math.round(displayModules.reduce((s, m) => s + m.score, 0) / displayModules.length);
 
   return (
-    <div className="ai-purple-theme min-h-screen pb-28 bg-surface-base">
+    <div className="ai-purple-theme page-wrapper">
 
 
 
@@ -235,7 +235,7 @@ export const AITrainingModules: React.FC = () => {
               <div className="flex items-center gap-2 text-text-primary font-bold text-[10px] uppercase tracking-[0.3em]">
                 <Sparkles className="w-3 h-3" /> AI-Powered Training
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-text-primary font-display">AI Training Modules</h1>
+              <h1 className="page-title">AI Training Modules</h1>
             </div>
           </div>
           <p className="text-sm text-text-muted max-w-2xl">

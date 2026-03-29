@@ -10,31 +10,31 @@ import {
 
 // Incident types for filtering - comprehensive list covering OSHA, ISO, and industry-specific categories
 const INCIDENT_TYPES = [
-  { id: 'all', label: 'All Types', icon: FileText, color: 'bg-surface-100 text-surface-600' },
-  { id: 'incident', label: 'General', icon: AlertTriangle, color: 'bg-red-100 text-red-600' },
-  { id: 'vehicle', label: 'Vehicle', icon: Car, color: 'bg-blue-100 text-blue-600' },
-  { id: 'property', label: 'Property', icon: Building2, color: 'bg-orange-100 text-orange-600' },
-  { id: 'injury', label: 'Injury', icon: Heart, color: 'bg-pink-100 text-pink-600' },
-  { id: 'environmental', label: 'Environmental', icon: Leaf, color: 'bg-emerald-100 text-emerald-600' },
-  { id: 'fire', label: 'Fire/Emergency', icon: Flame, color: 'bg-red-100 text-red-600' },
+  { id: 'all', label: 'All Types', icon: FileText, color: 'bg-surface-sunken text-text-secondary' },
+  { id: 'incident', label: 'General', icon: AlertTriangle, color: 'bg-danger/10 text-danger' },
+  { id: 'vehicle', label: 'Vehicle', icon: Car, color: 'bg-accent/10 text-accent' },
+  { id: 'property', label: 'Property', icon: Building2, color: 'bg-warning/10 text-warning' },
+  { id: 'injury', label: 'Injury', icon: Heart, color: 'bg-danger/10 text-danger' },
+  { id: 'environmental', label: 'Environmental', icon: Leaf, color: 'bg-success/10 text-success' },
+  { id: 'fire', label: 'Fire/Emergency', icon: Flame, color: 'bg-danger/10 text-danger' },
   { id: 'security', label: 'Security', icon: Shield, color: 'bg-slate-100 text-slate-600' },
-  { id: 'ergonomic', label: 'Ergonomic', icon: Users, color: 'bg-purple-100 text-purple-600' },
-  { id: 'chemical', label: 'Chemical', icon: Factory, color: 'bg-amber-100 text-amber-600' },
-  { id: 'electrical', label: 'Electrical', icon: Zap, color: 'bg-yellow-100 text-yellow-600' },
-  { id: 'process-safety', label: 'Process Safety', icon: Gauge, color: 'bg-indigo-100 text-indigo-600' },
+  { id: 'ergonomic', label: 'Ergonomic', icon: Users, color: 'bg-ai/10 text-ai' },
+  { id: 'chemical', label: 'Chemical', icon: Factory, color: 'bg-warning/10 text-warning' },
+  { id: 'electrical', label: 'Electrical', icon: Zap, color: 'bg-warning/10 text-warning' },
+  { id: 'process-safety', label: 'Process Safety', icon: Gauge, color: 'bg-accent/10 text-accent' },
   { id: 'contractor', label: 'Contractor', icon: Users, color: 'bg-cyan-100 text-cyan-600' },
-  { id: 'near-miss', label: 'Near Miss', icon: AlertTriangle, color: 'bg-yellow-100 text-yellow-700' },
+  { id: 'near-miss', label: 'Near Miss', icon: AlertTriangle, color: 'bg-warning/10 text-warning' },
   { id: 'slip-trip-fall', label: 'Slip/Trip/Fall', icon: AlertTriangle, color: 'bg-rose-100 text-rose-600' },
-  { id: 'struck-by', label: 'Struck By', icon: AlertTriangle, color: 'bg-red-100 text-red-700' },
-  { id: 'caught-between', label: 'Caught In/Between', icon: AlertTriangle, color: 'bg-orange-100 text-orange-700' },
-  { id: 'confined-space', label: 'Confined Space', icon: Shield, color: 'bg-gray-100 text-gray-700' },
-  { id: 'hot-work', label: 'Hot Work', icon: Flame, color: 'bg-orange-100 text-orange-600' },
+  { id: 'struck-by', label: 'Struck By', icon: AlertTriangle, color: 'bg-danger/10 text-danger' },
+  { id: 'caught-between', label: 'Caught In/Between', icon: AlertTriangle, color: 'bg-warning/10 text-warning' },
+  { id: 'confined-space', label: 'Confined Space', icon: Shield, color: 'bg-surface-sunken text-text-muted' },
+  { id: 'hot-work', label: 'Hot Work', icon: Flame, color: 'bg-warning/10 text-warning' },
   { id: 'working-at-height', label: 'Working at Height', icon: AlertTriangle, color: 'bg-sky-100 text-sky-600' },
   { id: 'biological', label: 'Biological', icon: Leaf, color: 'bg-lime-100 text-lime-600' },
   { id: 'radiation', label: 'Radiation', icon: Zap, color: 'bg-violet-100 text-violet-600' },
   { id: 'noise-exposure', label: 'Noise Exposure', icon: Activity, color: 'bg-teal-100 text-teal-600' },
-  { id: 'heat-stress', label: 'Heat Stress', icon: Flame, color: 'bg-red-100 text-red-500' },
-  { id: 'cold-stress', label: 'Cold Stress', icon: Factory, color: 'bg-blue-100 text-blue-700' },
+  { id: 'heat-stress', label: 'Heat Stress', icon: Flame, color: 'bg-danger/10 text-danger' },
+  { id: 'cold-stress', label: 'Cold Stress', icon: Factory, color: 'bg-accent/10 text-accent' },
 ];
 
 // Photo/Attachment interface
@@ -413,10 +413,10 @@ const departmentStats = [
 ];
 
 const severityDistribution = [
-  { level: 'Critical', count: 3, color: 'bg-red-500' },
-  { level: 'High', count: 12, color: 'bg-orange-500' },
-  { level: 'Medium', count: 24, color: 'bg-amber-500' },
-  { level: 'Low', count: 17, color: 'bg-green-500' },
+  { level: 'Critical', count: 3, color: 'bg-danger' },
+  { level: 'High', count: 12, color: 'bg-warning' },
+  { level: 'Medium', count: 24, color: 'bg-warning/60' },
+  { level: 'Low', count: 17, color: 'bg-success' },
 ];
 
 interface IncidentAnalyticsProps {
@@ -713,26 +713,26 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
 
   const getTypeColor = (type: string) => {
     const typeConfig = INCIDENT_TYPES.find(t => t.id === type);
-    return typeConfig?.color || 'bg-surface-100 text-surface-600';
+    return typeConfig?.color || 'bg-surface-sunken text-text-secondary';
   };
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical': return 'bg-red-100 text-red-700';
-      case 'high': return 'bg-orange-100 text-orange-700';
-      case 'medium': return 'bg-amber-100 text-amber-700';
-      case 'low': return 'bg-green-100 text-green-700';
-      default: return 'bg-surface-100 text-surface-600';
+      case 'critical': return 'bg-danger/10 text-danger';
+      case 'high': return 'bg-warning/10 text-warning';
+      case 'medium': return 'bg-warning/5 text-warning';
+      case 'low': return 'bg-success/10 text-success';
+      default: return 'bg-surface-sunken text-text-secondary';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'open': return 'bg-blue-100 text-blue-700';
-      case 'investigating': return 'bg-purple-100 text-purple-700';
-      case 'resolved': case 'closed': return 'bg-green-100 text-green-700';
-      case 'capa-pending': return 'bg-amber-100 text-amber-700';
-      default: return 'bg-surface-100 text-surface-600';
+      case 'open': return 'bg-accent/10 text-accent';
+      case 'investigating': return 'bg-ai/10 text-ai';
+      case 'resolved': case 'closed': return 'bg-success/10 text-success';
+      case 'capa-pending': return 'bg-warning/5 text-warning';
+      default: return 'bg-surface-sunken text-text-secondary';
     }
   };
 
@@ -741,16 +741,16 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
       {/* Header with Controls */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-brand-900 flex items-center gap-2">
-            <BarChart3 className="w-6 h-6 text-brand-500" />
+          <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
+            <BarChart3 className="w-6 h-6 text-accent" />
             Incident Analytics
           </h2>
-          <p className="text-sm text-surface-500">Comprehensive incident analysis and reporting</p>
+          <p className="text-sm text-text-muted">Comprehensive incident analysis and reporting</p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="px-4 py-2 bg-surface-100 text-surface-600 rounded-xl hover:bg-surface-200 transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-surface-sunken text-text-secondary rounded-xl hover:bg-surface-overlay transition-colors flex items-center gap-2"
           >
             <Filter className="w-4 h-4" />
             Filters
@@ -773,26 +773,26 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-surface-100 overflow-hidden z-50"
+                  className="absolute right-0 mt-2 w-48 bg-surface-overlay rounded-xl shadow-lg border border-surface-border overflow-hidden z-50"
                 >
                   <button
                     onClick={() => handleExport('csv')}
-                    className="w-full px-4 py-3 text-left hover:bg-surface-50 flex items-center gap-3 transition-colors"
+                    className="w-full px-4 py-3 text-left hover:bg-surface-sunken flex items-center gap-3 transition-colors"
                   >
-                    <FileSpreadsheet className="w-5 h-5 text-green-600" />
+                    <FileSpreadsheet className="w-5 h-5 text-success" />
                     <div>
-                      <p className="font-medium text-surface-800">Export CSV</p>
-                      <p className="text-xs text-surface-500">Spreadsheet format</p>
+                      <p className="font-medium text-text-primary">Export CSV</p>
+                      <p className="text-xs text-text-muted">Spreadsheet format</p>
                     </div>
                   </button>
                   <button
                     onClick={() => handleExport('pdf')}
-                    className="w-full px-4 py-3 text-left hover:bg-surface-50 flex items-center gap-3 transition-colors border-t border-surface-100"
+                    className="w-full px-4 py-3 text-left hover:bg-surface-sunken flex items-center gap-3 transition-colors border-t border-surface-border"
                   >
-                    <Printer className="w-5 h-5 text-red-600" />
+                    <Printer className="w-5 h-5 text-danger" />
                     <div>
-                      <p className="font-medium text-surface-800">Export PDF</p>
-                      <p className="text-xs text-surface-500">Print-ready report</p>
+                      <p className="font-medium text-text-primary">Export PDF</p>
+                      <p className="text-xs text-text-muted">Print-ready report</p>
                     </div>
                   </button>
                 </motion.div>
@@ -803,7 +803,7 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
       </div>
 
       {/* Type Filter Tabs */}
-      <div className="bg-white rounded-2xl p-4 border border-surface-100 shadow-soft overflow-x-auto">
+      <div className="bg-surface-overlay rounded-2xl p-4 border border-surface-border shadow-soft overflow-x-auto">
         <div className="flex gap-2 min-w-max">
           {INCIDENT_TYPES.slice(0, 12).map(type => {
             const Icon = type.icon;
@@ -813,7 +813,7 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
                 key={type.id}
                 onClick={() => setSelectedType(type.id)}
                 className={`px-3 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${
-                  isSelected ? 'bg-accent text-text-onAccent' : 'bg-surface-50 text-surface-600 hover:bg-surface-100'
+                  isSelected ? 'bg-accent text-text-onAccent' : 'bg-surface-sunken text-text-secondary hover:bg-surface-sunken'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -831,15 +831,15 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="bg-white rounded-2xl p-4 border border-surface-100 shadow-soft overflow-hidden"
+            className="bg-surface-overlay rounded-2xl p-4 border border-surface-border shadow-soft overflow-hidden"
           >
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="space-y-2">
-                <label className="text-xs font-bold text-surface-400 uppercase">Date Range</label>
+                <label className="text-xs font-bold text-text-muted uppercase">Date Range</label>
                 <select
                   value={dateRange}
                   onChange={(e) => setDateRange(e.target.value)}
-                  className="w-full px-3 py-2 bg-surface-50 border border-surface-100 rounded-xl text-sm"
+                  className="w-full px-3 py-2 bg-surface-sunken border border-surface-border rounded-xl text-sm"
                 >
                   <option value="7">Last 7 days</option>
                   <option value="30">Last 30 days</option>
@@ -849,11 +849,11 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-bold text-surface-400 uppercase">Status</label>
+                <label className="text-xs font-bold text-text-muted uppercase">Status</label>
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="w-full px-3 py-2 bg-surface-50 border border-surface-100 rounded-xl text-sm"
+                  className="w-full px-3 py-2 bg-surface-sunken border border-surface-border rounded-xl text-sm"
                 >
                   <option value="all">All Statuses</option>
                   <option value="open">Open</option>
@@ -864,11 +864,11 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-bold text-surface-400 uppercase">Severity</label>
+                <label className="text-xs font-bold text-text-muted uppercase">Severity</label>
                 <select
                   value={severityFilter}
                   onChange={(e) => setSeverityFilter(e.target.value)}
-                  className="w-full px-3 py-2 bg-surface-50 border border-surface-100 rounded-xl text-sm"
+                  className="w-full px-3 py-2 bg-surface-sunken border border-surface-border rounded-xl text-sm"
                 >
                   <option value="all">All Severities</option>
                   <option value="critical">Critical</option>
@@ -884,60 +884,60 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
-          <p className="text-xs font-bold text-surface-400 uppercase mb-1">Total Incidents</p>
-          <p className="text-2xl font-bold text-surface-800">{stats.total}</p>
+        <div className="bg-surface-overlay rounded-xl p-4 border border-surface-border shadow-soft">
+          <p className="text-xs font-bold text-text-muted uppercase mb-1">Total Incidents</p>
+          <p className="text-2xl font-bold text-text-primary">{stats.total}</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
-          <p className="text-xs font-bold text-surface-400 uppercase mb-1">Open</p>
-          <p className="text-2xl font-bold text-blue-600">{stats.open}</p>
+        <div className="bg-surface-overlay rounded-xl p-4 border border-surface-border shadow-soft">
+          <p className="text-xs font-bold text-text-muted uppercase mb-1">Open</p>
+          <p className="text-2xl font-bold text-accent">{stats.open}</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
-          <p className="text-xs font-bold text-surface-400 uppercase mb-1">Critical</p>
-          <p className="text-2xl font-bold text-red-600">{stats.critical}</p>
+        <div className="bg-surface-overlay rounded-xl p-4 border border-surface-border shadow-soft">
+          <p className="text-xs font-bold text-text-muted uppercase mb-1">Critical</p>
+          <p className="text-2xl font-bold text-danger">{stats.critical}</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
-          <p className="text-xs font-bold text-surface-400 uppercase mb-1">With Injuries</p>
-          <p className="text-2xl font-bold text-orange-600">{stats.withInjury}</p>
+        <div className="bg-surface-overlay rounded-xl p-4 border border-surface-border shadow-soft">
+          <p className="text-xs font-bold text-text-muted uppercase mb-1">With Injuries</p>
+          <p className="text-2xl font-bold text-warning">{stats.withInjury}</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
-          <p className="text-xs font-bold text-surface-400 uppercase mb-1">Lost Days</p>
-          <p className="text-2xl font-bold text-purple-600">{stats.totalLostDays}</p>
+        <div className="bg-surface-overlay rounded-xl p-4 border border-surface-border shadow-soft">
+          <p className="text-xs font-bold text-text-muted uppercase mb-1">Lost Days</p>
+          <p className="text-2xl font-bold text-ai">{stats.totalLostDays}</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-surface-100 shadow-soft">
-          <p className="text-xs font-bold text-surface-400 uppercase mb-1">Restricted Days</p>
-          <p className="text-2xl font-bold text-amber-600">{stats.totalRestrictedDays}</p>
+        <div className="bg-surface-overlay rounded-xl p-4 border border-surface-border shadow-soft">
+          <p className="text-xs font-bold text-text-muted uppercase mb-1">Restricted Days</p>
+          <p className="text-2xl font-bold text-warning">{stats.totalRestrictedDays}</p>
         </div>
       </div>
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Monthly Trend Chart */}
-        <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
-          <h3 className="font-bold text-brand-900 mb-4 flex items-center gap-2">
-            <Activity className="w-5 h-5 text-brand-500" />
+        <div className="bg-surface-overlay rounded-2xl p-6 border border-surface-border shadow-soft">
+          <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
+            <Activity className="w-5 h-5 text-accent" />
             Monthly Trends
           </h3>
           <div className="space-y-4">
             {monthlyTrends.map((month, index) => (
               <div key={month.month} className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="font-medium text-surface-600">{month.month}</span>
-                  <span className="text-surface-500">{month.incidents} incidents</span>
+                  <span className="font-medium text-text-secondary">{month.month}</span>
+                  <span className="text-text-muted">{month.incidents} incidents</span>
                 </div>
                 <div className="flex gap-1 h-6">
                   <div
-                    className="bg-red-400 rounded-l"
+                    className="bg-danger rounded-l"
                     style={{ width: `${(month.incidents / 20) * 100}%` }}
                     title={`Incidents: ${month.incidents}`}
                   />
                   <div
-                    className="bg-orange-400"
+                    className="bg-warning"
                     style={{ width: `${(month.injuries / 20) * 100}%` }}
                     title={`Injuries: ${month.injuries}`}
                   />
                   <div
-                    className="bg-blue-400 rounded-r"
+                    className="bg-accent rounded-r"
                     style={{ width: `${(month.nearMiss / 100) * 100}%` }}
                     title={`Near Misses: ${month.nearMiss}`}
                   />
@@ -945,17 +945,17 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
               </div>
             ))}
             <div className="flex gap-4 text-xs mt-4">
-              <span className="flex items-center gap-1"><span className="w-3 h-3 bg-red-400 rounded" /> Incidents</span>
-              <span className="flex items-center gap-1"><span className="w-3 h-3 bg-orange-400 rounded" /> Injuries</span>
-              <span className="flex items-center gap-1"><span className="w-3 h-3 bg-blue-400 rounded" /> Near Misses</span>
+              <span className="flex items-center gap-1"><span className="w-3 h-3 bg-danger rounded" /> Incidents</span>
+              <span className="flex items-center gap-1"><span className="w-3 h-3 bg-warning rounded" /> Injuries</span>
+              <span className="flex items-center gap-1"><span className="w-3 h-3 bg-accent rounded" /> Near Misses</span>
             </div>
           </div>
         </div>
 
         {/* Type Distribution */}
-        <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
-          <h3 className="font-bold text-brand-900 mb-4 flex items-center gap-2">
-            <PieChart className="w-5 h-5 text-brand-500" />
+        <div className="bg-surface-overlay rounded-2xl p-6 border border-surface-border shadow-soft">
+          <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
+            <PieChart className="w-5 h-5 text-accent" />
             Incident Type Distribution
           </h3>
           <div className="space-y-3">
@@ -969,11 +969,11 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
                   <div className="flex-1">
                     <div className="flex justify-between text-sm mb-1">
                       <span className="font-medium capitalize">{item.type.replace('-', ' ')}</span>
-                      <span className="text-surface-500">{item.count} ({item.percentage}%)</span>
+                      <span className="text-text-muted">{item.count} ({item.percentage}%)</span>
                     </div>
-                    <div className="h-2 bg-surface-100 rounded-full overflow-hidden">
+                    <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-brand-500 rounded-full"
+                        className="h-full bg-accent rounded-full"
                         style={{ width: `${item.percentage}%` }}
                       />
                     </div>
@@ -986,26 +986,26 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
       </div>
 
       {/* Filtered Incidents Table */}
-      <div className="bg-white rounded-2xl border border-surface-100 shadow-soft overflow-hidden">
-        <div className="p-4 border-b border-surface-100">
-          <h3 className="font-bold text-brand-900">Incident Details</h3>
-          <p className="text-sm text-surface-500">{filteredIncidents.length} incidents found - click row to view full details</p>
+      <div className="bg-surface-overlay rounded-2xl border border-surface-border shadow-soft overflow-hidden">
+        <div className="p-4 border-b border-surface-border">
+          <h3 className="font-bold text-text-primary">Incident Details</h3>
+          <p className="text-sm text-text-muted">{filteredIncidents.length} incidents found - click row to view full details</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-surface-50">
+            <thead className="bg-surface-sunken">
               <tr>
-                <th className="text-left p-3 font-bold text-surface-600">ID</th>
-                <th className="text-left p-3 font-bold text-surface-600">Type</th>
-                <th className="text-left p-3 font-bold text-surface-600">Title</th>
-                <th className="text-left p-3 font-bold text-surface-600">Employee</th>
-                <th className="text-left p-3 font-bold text-surface-600">DOB</th>
-                <th className="text-left p-3 font-bold text-surface-600">Severity</th>
-                <th className="text-left p-3 font-bold text-surface-600">Medical</th>
-                <th className="text-left p-3 font-bold text-surface-600">Clinic</th>
-                <th className="text-left p-3 font-bold text-surface-600">Doctor</th>
-                <th className="text-left p-3 font-bold text-surface-600">Days Lost</th>
-                <th className="text-left p-3 font-bold text-surface-600">Actions</th>
+                <th className="text-left p-3 font-bold text-text-secondary">ID</th>
+                <th className="text-left p-3 font-bold text-text-secondary">Type</th>
+                <th className="text-left p-3 font-bold text-text-secondary">Title</th>
+                <th className="text-left p-3 font-bold text-text-secondary">Employee</th>
+                <th className="text-left p-3 font-bold text-text-secondary">DOB</th>
+                <th className="text-left p-3 font-bold text-text-secondary">Severity</th>
+                <th className="text-left p-3 font-bold text-text-secondary">Medical</th>
+                <th className="text-left p-3 font-bold text-text-secondary">Clinic</th>
+                <th className="text-left p-3 font-bold text-text-secondary">Doctor</th>
+                <th className="text-left p-3 font-bold text-text-secondary">Days Lost</th>
+                <th className="text-left p-3 font-bold text-text-secondary">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -1014,37 +1014,37 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
                 return (
                   <tr 
                     key={incident.id} 
-                    className={`${index % 2 === 0 ? 'bg-white' : 'bg-surface-50'} hover:bg-brand-50 cursor-pointer transition-colors`}
+                    className={`${index % 2 === 0 ? 'bg-surface-overlay' : 'bg-surface-sunken'} hover:bg-accent/5 cursor-pointer transition-colors`}
                     onClick={() => setSelectedIncident(incident)}
                   >
-                    <td className="p-3 font-mono text-xs text-surface-500">{incident.id}</td>
+                    <td className="p-3 font-mono text-xs text-text-muted">{incident.id}</td>
                     <td className="p-3">
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${getTypeColor(incident.type)}`}>
                         <Icon className="w-4 h-4" />
                       </div>
                     </td>
-                    <td className="p-3 font-medium text-surface-800 max-w-[200px] truncate">{incident.title}</td>
-                    <td className="p-3 text-surface-600">{incident.employeeName}</td>
-                    <td className="p-3 text-surface-500 text-xs">{incident.employeeDOB}</td>
+                    <td className="p-3 font-medium text-text-primary max-w-[200px] truncate">{incident.title}</td>
+                    <td className="p-3 text-text-secondary">{incident.employeeName}</td>
+                    <td className="p-3 text-text-muted text-xs">{incident.employeeDOB}</td>
                     <td className="p-3">
                       <span className={`px-2 py-1 rounded-full text-xs font-bold uppercase ${getSeverityColor(incident.severity)}`}>
                         {incident.severity}
                       </span>
                     </td>
-                    <td className="p-3 text-surface-600 text-xs">{incident.medicalTreatment}</td>
-                    <td className="p-3 text-surface-600 text-xs max-w-[150px] truncate">{incident.medicalClinicName}</td>
-                    <td className="p-3 text-surface-600 text-xs max-w-[150px] truncate">{incident.treatingPhysician}</td>
+                    <td className="p-3 text-text-secondary text-xs">{incident.medicalTreatment}</td>
+                    <td className="p-3 text-text-secondary text-xs max-w-[150px] truncate">{incident.medicalClinicName}</td>
+                    <td className="p-3 text-text-secondary text-xs max-w-[150px] truncate">{incident.treatingPhysician}</td>
                     <td className="p-3">
-                      <span className={incident.lostDays > 0 ? 'text-red-600 font-bold' : 'text-surface-400'}>
+                      <span className={incident.lostDays > 0 ? 'text-danger font-bold' : 'text-text-muted'}>
                         {incident.lostDays}
                       </span>
                     </td>
                     <td className="p-3">
                       <button 
                         onClick={(e) => { e.stopPropagation(); setSelectedIncident(incident); }}
-                        className="p-2 hover:bg-brand-100 rounded-lg transition-colors"
+                        className="p-2 hover:bg-accent/10 rounded-lg transition-colors"
                       >
-                        <Eye className="w-4 h-4 text-brand-600" />
+                        <Eye className="w-4 h-4 text-accent" />
                       </button>
                     </td>
                   </tr>
@@ -1069,18 +1069,18 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+              className="bg-surface-overlay rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Modal Header */}
-              <div className="sticky top-0 bg-white border-b border-surface-100 p-4 flex items-center justify-between rounded-t-2xl">
+              <div className="sticky top-0 bg-surface-overlay border-b border-surface-border p-4 flex items-center justify-between rounded-t-2xl">
                 <div>
-                  <h2 className="text-xl font-bold text-brand-900">{selectedIncident.id}</h2>
-                  <p className="text-sm text-surface-500">{selectedIncident.title}</p>
+                  <h2 className="text-xl font-bold text-text-primary">{selectedIncident.id}</h2>
+                  <p className="text-sm text-text-muted">{selectedIncident.title}</p>
                 </div>
                 <button
                   onClick={() => setSelectedIncident(null)}
-                  className="p-2 hover:bg-surface-100 rounded-xl transition-colors"
+                  className="p-2 hover:bg-surface-sunken rounded-xl transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -1096,7 +1096,7 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
                     {selectedIncident.status.replace('-', ' ')}
                   </span>
                   {selectedIncident.oshaRecordable && (
-                    <span className="px-3 py-1 rounded-full text-sm font-bold bg-red-100 text-red-700">
+                    <span className="px-3 py-1 rounded-full text-sm font-bold bg-danger/10 text-danger">
                       OSHA Recordable
                     </span>
                   )}
@@ -1104,114 +1104,114 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
 
                 {/* Basic Info */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="bg-surface-50 rounded-xl p-3">
-                    <p className="text-xs font-bold text-surface-400 uppercase mb-1">Date</p>
+                  <div className="bg-surface-sunken rounded-xl p-3">
+                    <p className="text-xs font-bold text-text-muted uppercase mb-1">Date</p>
                     <p className="font-medium">{selectedIncident.date}</p>
                   </div>
-                  <div className="bg-surface-50 rounded-xl p-3">
-                    <p className="text-xs font-bold text-surface-400 uppercase mb-1">Time</p>
+                  <div className="bg-surface-sunken rounded-xl p-3">
+                    <p className="text-xs font-bold text-text-muted uppercase mb-1">Time</p>
                     <p className="font-medium">{selectedIncident.time}</p>
                   </div>
-                  <div className="bg-surface-50 rounded-xl p-3">
-                    <p className="text-xs font-bold text-surface-400 uppercase mb-1">Department</p>
+                  <div className="bg-surface-sunken rounded-xl p-3">
+                    <p className="text-xs font-bold text-text-muted uppercase mb-1">Department</p>
                     <p className="font-medium">{selectedIncident.department}</p>
                   </div>
-                  <div className="bg-surface-50 rounded-xl p-3">
-                    <p className="text-xs font-bold text-surface-400 uppercase mb-1">Location</p>
+                  <div className="bg-surface-sunken rounded-xl p-3">
+                    <p className="text-xs font-bold text-text-muted uppercase mb-1">Location</p>
                     <p className="font-medium">{selectedIncident.location}</p>
                   </div>
                 </div>
 
                 {/* Employee Information Section */}
                 {selectedIncident.employeeName !== 'N/A' && (
-                  <div className="bg-blue-50 rounded-xl p-4 border border-blue-100">
-                    <h3 className="font-bold text-blue-900 mb-4 flex items-center gap-2">
+                  <div className="bg-accent/5 rounded-xl p-4 border border-accent/20">
+                    <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
                       <User className="w-5 h-5" />
                       Employee Information
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                       <div>
-                        <p className="text-xs font-bold text-blue-400 uppercase mb-1">Full Name</p>
-                        <p className="font-medium text-blue-900">{selectedIncident.employeeName}</p>
+                        <p className="text-xs font-bold text-text-muted uppercase mb-1">Full Name</p>
+                        <p className="font-medium text-text-primary">{selectedIncident.employeeName}</p>
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-blue-400 uppercase mb-1">Employee ID</p>
-                        <p className="font-medium text-blue-900">{selectedIncident.employeeId}</p>
+                        <p className="text-xs font-bold text-text-muted uppercase mb-1">Employee ID</p>
+                        <p className="font-medium text-text-primary">{selectedIncident.employeeId}</p>
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-blue-400 uppercase mb-1">Date of Birth</p>
-                        <p className="font-medium text-blue-900">{selectedIncident.employeeDOB}</p>
+                        <p className="text-xs font-bold text-text-muted uppercase mb-1">Date of Birth</p>
+                        <p className="font-medium text-text-primary">{selectedIncident.employeeDOB}</p>
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-blue-400 uppercase mb-1">Phone</p>
-                        <p className="font-medium text-blue-900">{selectedIncident.employeePhone}</p>
+                        <p className="text-xs font-bold text-text-muted uppercase mb-1">Phone</p>
+                        <p className="font-medium text-text-primary">{selectedIncident.employeePhone}</p>
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-blue-400 uppercase mb-1">Job Title</p>
-                        <p className="font-medium text-blue-900">{selectedIncident.employeeJobTitle}</p>
+                        <p className="text-xs font-bold text-text-muted uppercase mb-1">Job Title</p>
+                        <p className="font-medium text-text-primary">{selectedIncident.employeeJobTitle}</p>
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-blue-400 uppercase mb-1">Hire Date</p>
-                        <p className="font-medium text-blue-900">{selectedIncident.employeeHireDate}</p>
+                        <p className="text-xs font-bold text-text-muted uppercase mb-1">Hire Date</p>
+                        <p className="font-medium text-text-primary">{selectedIncident.employeeHireDate}</p>
                       </div>
                     </div>
                   </div>
                 )}
 
                 {/* Medical Information Section */}
-                <div className="bg-red-50 rounded-xl p-4 border border-red-100">
-                  <h3 className="font-bold text-red-900 mb-4 flex items-center gap-2">
+                <div className="bg-danger/5 rounded-xl p-4 border border-danger/20">
+                  <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
                     <Stethoscope className="w-5 h-5" />
                     Medical Information
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                     <div>
-                      <p className="text-xs font-bold text-red-400 uppercase mb-1">Treatment Level</p>
-                      <p className="font-medium text-red-900">{selectedIncident.medicalTreatment}</p>
+                      <p className="text-xs font-bold text-text-muted uppercase mb-1">Treatment Level</p>
+                      <p className="font-medium text-text-primary">{selectedIncident.medicalTreatment}</p>
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-red-400 uppercase mb-1">Body Part</p>
-                      <p className="font-medium text-red-900">{selectedIncident.bodyPart}</p>
+                      <p className="text-xs font-bold text-text-muted uppercase mb-1">Body Part</p>
+                      <p className="font-medium text-text-primary">{selectedIncident.bodyPart}</p>
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-red-400 uppercase mb-1">Injury Type</p>
-                      <p className="font-medium text-red-900">{selectedIncident.injuryType}</p>
+                      <p className="text-xs font-bold text-text-muted uppercase mb-1">Injury Type</p>
+                      <p className="font-medium text-text-primary">{selectedIncident.injuryType}</p>
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-red-400 uppercase mb-1">Lost Days</p>
-                      <p className="font-medium text-red-900">{selectedIncident.lostDays}</p>
+                      <p className="text-xs font-bold text-text-muted uppercase mb-1">Lost Days</p>
+                      <p className="font-medium text-text-primary">{selectedIncident.lostDays}</p>
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-red-400 uppercase mb-1">Restricted Days</p>
-                      <p className="font-medium text-red-900">{selectedIncident.restrictedDays}</p>
+                      <p className="text-xs font-bold text-text-muted uppercase mb-1">Restricted Days</p>
+                      <p className="font-medium text-text-primary">{selectedIncident.restrictedDays}</p>
                     </div>
                     {selectedIncident.oshaRecordable && (
                       <div>
-                        <p className="text-xs font-bold text-red-400 uppercase mb-1">OSHA Form #</p>
-                        <p className="font-medium text-red-900">{selectedIncident.oshaFormNumber}</p>
+                        <p className="text-xs font-bold text-text-muted uppercase mb-1">OSHA Form #</p>
+                        <p className="font-medium text-text-primary">{selectedIncident.oshaFormNumber}</p>
                       </div>
                     )}
                   </div>
 
                   {/* Medical Provider Details */}
                   {selectedIncident.medicalClinicName !== 'N/A' && (
-                    <div className="border-t border-red-200 pt-4 mt-4">
-                      <h4 className="font-bold text-red-800 mb-3 flex items-center gap-2">
+                    <div className="border-t border-danger/20 pt-4 mt-4">
+                      <h4 className="font-bold text-text-primary mb-3 flex items-center gap-2">
                         <MapPin className="w-4 h-4" />
                         Medical Provider Details
                       </h4>
-                      <div className="bg-white rounded-lg p-4 space-y-3">
+                      <div className="bg-surface-overlay rounded-lg p-4 space-y-3">
                         <div>
-                          <p className="text-xs font-bold text-surface-400 uppercase mb-1">Clinic / Hospital Name</p>
-                          <p className="font-medium text-surface-800">{selectedIncident.medicalClinicName}</p>
+                          <p className="text-xs font-bold text-text-muted uppercase mb-1">Clinic / Hospital Name</p>
+                          <p className="font-medium text-text-primary">{selectedIncident.medicalClinicName}</p>
                         </div>
                         <div>
-                          <p className="text-xs font-bold text-surface-400 uppercase mb-1">Address</p>
-                          <p className="text-surface-700">{selectedIncident.medicalClinicAddress}</p>
+                          <p className="text-xs font-bold text-text-muted uppercase mb-1">Address</p>
+                          <p className="text-text-secondary">{selectedIncident.medicalClinicAddress}</p>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Phone className="w-4 h-4 text-surface-400" />
-                          <p className="text-surface-700">{selectedIncident.medicalClinicPhone}</p>
+                          <Phone className="w-4 h-4 text-text-muted" />
+                          <p className="text-text-secondary">{selectedIncident.medicalClinicPhone}</p>
                         </div>
                       </div>
                     </div>
@@ -1219,28 +1219,28 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
 
                   {/* Treating Physician */}
                   {selectedIncident.treatingPhysician !== 'N/A' && (
-                    <div className="border-t border-red-200 pt-4 mt-4">
-                      <h4 className="font-bold text-red-800 mb-3 flex items-center gap-2">
+                    <div className="border-t border-danger/20 pt-4 mt-4">
+                      <h4 className="font-bold text-text-primary mb-3 flex items-center gap-2">
                         <User className="w-4 h-4" />
                         Treating Physician
                       </h4>
-                      <div className="bg-white rounded-lg p-4">
+                      <div className="bg-surface-overlay rounded-lg p-4">
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <p className="text-xs font-bold text-surface-400 uppercase mb-1">Doctor Name</p>
-                            <p className="font-medium text-surface-800">{selectedIncident.treatingPhysician}</p>
+                            <p className="text-xs font-bold text-text-muted uppercase mb-1">Doctor Name</p>
+                            <p className="font-medium text-text-primary">{selectedIncident.treatingPhysician}</p>
                           </div>
                           <div>
-                            <p className="text-xs font-bold text-surface-400 uppercase mb-1">License Number</p>
-                            <p className="text-surface-700">{selectedIncident.physicianLicense}</p>
+                            <p className="text-xs font-bold text-text-muted uppercase mb-1">License Number</p>
+                            <p className="text-text-secondary">{selectedIncident.physicianLicense}</p>
                           </div>
                           <div>
-                            <p className="text-xs font-bold text-surface-400 uppercase mb-1">Treatment Date</p>
-                            <p className="text-surface-700">{selectedIncident.treatmentDate || 'N/A'}</p>
+                            <p className="text-xs font-bold text-text-muted uppercase mb-1">Treatment Date</p>
+                            <p className="text-text-secondary">{selectedIncident.treatmentDate || 'N/A'}</p>
                           </div>
                           <div>
-                            <p className="text-xs font-bold text-surface-400 uppercase mb-1">Follow-up Date</p>
-                            <p className="text-surface-700">{selectedIncident.followUpDate || 'N/A'}</p>
+                            <p className="text-xs font-bold text-text-muted uppercase mb-1">Follow-up Date</p>
+                            <p className="text-text-secondary">{selectedIncident.followUpDate || 'N/A'}</p>
                           </div>
                         </div>
                       </div>
@@ -1249,37 +1249,37 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
 
                   {/* Medical Notes */}
                   {selectedIncident.medicalNotes && (
-                    <div className="border-t border-red-200 pt-4 mt-4">
-                      <h4 className="font-bold text-red-800 mb-2">Medical Notes</h4>
-                      <p className="text-surface-700 bg-white rounded-lg p-3 italic">{selectedIncident.medicalNotes}</p>
+                    <div className="border-t border-danger/20 pt-4 mt-4">
+                      <h4 className="font-bold text-text-primary mb-2">Medical Notes</h4>
+                      <p className="text-text-secondary bg-surface-overlay rounded-lg p-3 italic">{selectedIncident.medicalNotes}</p>
                     </div>
                   )}
                 </div>
 
                 {/* Root Cause & Corrective Actions */}
-                <div className="bg-amber-50 rounded-xl p-4 border border-amber-100">
-                  <h3 className="font-bold text-amber-900 mb-4 flex items-center gap-2">
+                <div className="bg-warning/5 rounded-xl p-4 border border-warning/20">
+                  <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
                     <ClipboardList className="w-5 h-5" />
                     Investigation Details
                   </h3>
                   <div className="space-y-4">
                     <div>
-                      <p className="text-xs font-bold text-amber-400 uppercase mb-1">Root Cause</p>
-                      <p className="text-amber-900">{selectedIncident.rootCause}</p>
+                      <p className="text-xs font-bold text-text-muted uppercase mb-1">Root Cause</p>
+                      <p className="text-text-primary">{selectedIncident.rootCause}</p>
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-amber-400 uppercase mb-1">Corrective Actions</p>
-                      <p className="text-amber-900">{selectedIncident.correctiveActions}</p>
+                      <p className="text-xs font-bold text-text-muted uppercase mb-1">Corrective Actions</p>
+                      <p className="text-text-primary">{selectedIncident.correctiveActions}</p>
                     </div>
                     {selectedIncident.witnesses.length > 0 && (
                       <div>
-                        <p className="text-xs font-bold text-amber-400 uppercase mb-1">Witnesses</p>
-                        <p className="text-amber-900">{selectedIncident.witnesses.join(', ')}</p>
+                        <p className="text-xs font-bold text-text-muted uppercase mb-1">Witnesses</p>
+                        <p className="text-text-primary">{selectedIncident.witnesses.join(', ')}</p>
                       </div>
                     )}
                     <div>
-                      <p className="text-xs font-bold text-amber-400 uppercase mb-1">Reported By</p>
-                      <p className="text-amber-900">{selectedIncident.reportedBy}</p>
+                      <p className="text-xs font-bold text-text-muted uppercase mb-1">Reported By</p>
+                      <p className="text-text-primary">{selectedIncident.reportedBy}</p>
                     </div>
                   </div>
                 </div>
@@ -1307,9 +1307,9 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
                                 >
                                   <Image className="w-8 h-8 text-slate-400" />
                                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                    <Eye className="w-6 h-6 text-white" />
+                                    <Eye className="w-6 h-6 text-text-onAccent" />
                                   </div>
-                                  <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white text-xs p-2 truncate">
+                                  <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-text-onAccent text-xs p-2 truncate">
                                     {attachment.name}
                                   </div>
                                 </div>
@@ -1328,16 +1328,16 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
                               .map(attachment => (
                                 <div
                                   key={attachment.id}
-                                  className="flex items-center gap-3 p-3 bg-white rounded-lg border border-slate-200 hover:border-brand-300 transition-colors cursor-pointer"
+                                  className="flex items-center gap-3 p-3 bg-surface-overlay rounded-lg border border-slate-200 hover:border-brand-300 transition-colors cursor-pointer"
                                 >
-                                  <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                                    <Video className="w-5 h-5 text-purple-600" />
+                                  <div className="w-10 h-10 bg-ai/10 rounded-lg flex items-center justify-center">
+                                    <Video className="w-5 h-5 text-ai" />
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <p className="font-medium text-slate-800 truncate">{attachment.name}</p>
                                     <p className="text-xs text-slate-500">{attachment.size} • {attachment.uploadedBy}</p>
                                   </div>
-                                  <Download className="w-4 h-4 text-slate-400 hover:text-brand-600" />
+                                  <Download className="w-4 h-4 text-slate-400 hover:text-accent" />
                                 </div>
                               ))}
                           </div>
@@ -1354,16 +1354,16 @@ export const IncidentAnalytics: React.FC<IncidentAnalyticsProps> = ({
                               .map(attachment => (
                                 <div
                                   key={attachment.id}
-                                  className="flex items-center gap-3 p-3 bg-white rounded-lg border border-slate-200 hover:border-brand-300 transition-colors cursor-pointer"
+                                  className="flex items-center gap-3 p-3 bg-surface-overlay rounded-lg border border-slate-200 hover:border-brand-300 transition-colors cursor-pointer"
                                 >
-                                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                    <File className="w-5 h-5 text-blue-600" />
+                                  <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+                                    <File className="w-5 h-5 text-accent" />
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <p className="font-medium text-slate-800 truncate">{attachment.name}</p>
                                     <p className="text-xs text-slate-500">{attachment.size} • {attachment.uploadedBy}</p>
                                   </div>
-                                  <Download className="w-4 h-4 text-slate-400 hover:text-brand-600" />
+                                  <Download className="w-4 h-4 text-slate-400 hover:text-accent" />
                                 </div>
                               ))}
                           </div>

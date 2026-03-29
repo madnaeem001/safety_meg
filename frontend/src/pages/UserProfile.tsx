@@ -225,7 +225,7 @@ export const UserProfile: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen text-text-primary pb-24 transition-colors duration-300">
+    <div className="page-wrapper transition-colors duration-300">
 
       
       {/* Header */}
@@ -239,7 +239,7 @@ export const UserProfile: React.FC = () => {
             >
               <ArrowLeft className="w-5 h-5 text-text-secondary" />
             </button>
-            <h1 className="flex-1 text-lg font-semibold text-text-primary">Profile</h1>
+            <h1 className="page-title flex-1">Profile</h1>
             {!isEditing ? (
               <button
                 onClick={() => setIsEditing(true)}
@@ -288,7 +288,7 @@ export const UserProfile: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-slate-800 rounded-3xl border border-surface-200/60 dark:border-slate-700/60 shadow-sm overflow-hidden"
+          className="bg-surface-raised rounded-3xl border border-surface-200/60 dark:border-surface-border shadow-sm overflow-hidden"
         >
           {/* Avatar Section */}
           <div className="relative h-32 bg-gradient-to-br from-brand-500 to-brand-600">
@@ -306,7 +306,7 @@ export const UserProfile: React.FC = () => {
                 {/* Avatar display */}
                 <div 
                   onClick={handleAvatarClick}
-                  className={`w-24 h-24 rounded-2xl bg-white dark:bg-slate-700 shadow-lg flex items-center justify-center text-2xl font-bold text-brand-600 dark:text-brand-400 border-4 border-white dark:border-slate-800 overflow-hidden ${isEditing ? 'cursor-pointer' : ''}`}
+                  className={`w-24 h-24 rounded-2xl bg-white shadow-lg flex items-center justify-center text-2xl font-bold text-brand-600 dark:text-brand-400 border-4 border-white dark:border-surface-border overflow-hidden ${isEditing ? 'cursor-pointer' : ''}`}
                 >
                   {(isEditing ? editedProfile.avatar : profile.avatar) ? (
                     <img 
@@ -353,18 +353,18 @@ export const UserProfile: React.FC = () => {
                     value={editedProfile.firstName}
                     onChange={(e) => handleChange('firstName', e.target.value)}
                     placeholder="First name"
-                    className="flex-1 px-3 py-2 bg-surface-50 dark:bg-slate-700 border border-surface-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="flex-1 px-3 py-2 bg-surface-50 border border-surface-200 dark:border-surface-border rounded-xl text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-500"
                   />
                   <input
                     type="text"
                     value={editedProfile.lastName}
                     onChange={(e) => handleChange('lastName', e.target.value)}
                     placeholder="Last name"
-                    className="flex-1 px-3 py-2 bg-surface-50 dark:bg-slate-700 border border-surface-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="flex-1 px-3 py-2 bg-surface-50 border border-surface-200 dark:border-surface-border rounded-xl text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-500"
                   />
                 </div>
               ) : (
-                <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
+                <h2 className="text-xl font-semibold text-text-primary">
                   {profile.firstName} {profile.lastName}
                 </h2>
               )}
@@ -374,7 +374,7 @@ export const UserProfile: React.FC = () => {
                   value={editedProfile.role}
                   onChange={(e) => handleChange('role', e.target.value)}
                   placeholder="Role"
-                  className="w-full px-3 py-2 bg-surface-50 dark:bg-slate-700 border border-surface-200 dark:border-slate-600 rounded-xl text-surface-600 dark:text-surface-300 focus:outline-none focus:ring-2 focus:ring-brand-500 mt-2"
+                  className="w-full px-3 py-2 bg-surface-50 border border-surface-200 dark:border-surface-border rounded-xl text-surface-600 dark:text-surface-300 focus:outline-none focus:ring-2 focus:ring-brand-500 mt-2"
                 />
               ) : (
                 <p className="text-surface-500 dark:text-surface-400">{profile.role}</p>
@@ -394,12 +394,12 @@ export const UserProfile: React.FC = () => {
                     value={editedProfile.email}
                     onChange={(e) => handleChange('email', e.target.value)}
                     placeholder="Email"
-                    className="flex-1 px-3 py-2 bg-surface-50 dark:bg-slate-700 border border-surface-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="flex-1 px-3 py-2 bg-surface-50 border border-surface-200 dark:border-surface-border rounded-xl text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-500"
                   />
                 ) : (
                   <div className="flex-1">
                     <p className="text-xs text-surface-400 dark:text-surface-500">Email</p>
-                    <p className="text-sm text-slate-900 dark:text-white">{profile.email}</p>
+                    <p className="text-sm text-text-primary">{profile.email}</p>
                   </div>
                 )}
               </div>
@@ -415,12 +415,12 @@ export const UserProfile: React.FC = () => {
                     value={editedProfile.phone}
                     onChange={(e) => handleChange('phone', e.target.value)}
                     placeholder="Phone"
-                    className="flex-1 px-3 py-2 bg-surface-50 dark:bg-slate-700 border border-surface-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="flex-1 px-3 py-2 bg-surface-50 border border-surface-200 dark:border-surface-border rounded-xl text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-500"
                   />
                 ) : (
                   <div className="flex-1">
                     <p className="text-xs text-surface-400 dark:text-surface-500">Phone</p>
-                    <p className="text-sm text-slate-900 dark:text-white">{profile.phone}</p>
+                    <p className="text-sm text-text-primary">{profile.phone}</p>
                   </div>
                 )}
               </div>
@@ -436,12 +436,12 @@ export const UserProfile: React.FC = () => {
                     value={editedProfile.department}
                     onChange={(e) => handleChange('department', e.target.value)}
                     placeholder="Department"
-                    className="flex-1 px-3 py-2 bg-surface-50 dark:bg-slate-700 border border-surface-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="flex-1 px-3 py-2 bg-surface-50 border border-surface-200 dark:border-surface-border rounded-xl text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-500"
                   />
                 ) : (
                   <div className="flex-1">
                     <p className="text-xs text-surface-400 dark:text-surface-500">Department</p>
-                    <p className="text-sm text-slate-900 dark:text-white">{profile.department}</p>
+                    <p className="text-sm text-text-primary">{profile.department}</p>
                   </div>
                 )}
               </div>
@@ -453,7 +453,7 @@ export const UserProfile: React.FC = () => {
                 </div>
                 <div className="flex-1">
                   <p className="text-xs text-surface-400 dark:text-surface-500">Member Since</p>
-                  <p className="text-sm text-slate-900 dark:text-white">{formatDate(profile.joinDate)}</p>
+                  <p className="text-sm text-text-primary">{formatDate(profile.joinDate)}</p>
                 </div>
               </div>
             </div>
@@ -465,11 +465,11 @@ export const UserProfile: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="mt-6 bg-white dark:bg-slate-800 rounded-2xl border border-surface-200/60 dark:border-slate-700/60 shadow-sm p-6"
+          className="mt-6 bg-surface-raised rounded-2xl border border-surface-200/60 dark:border-surface-border shadow-sm p-6"
         >
           <div className="flex items-center gap-2 mb-4">
             <Award className="w-5 h-5 text-brand-500" />
-            <h3 className="font-semibold text-slate-900 dark:text-white">Certifications</h3>
+            <h3 className="font-semibold text-text-primary">Certifications</h3>
           </div>
           <div className="flex flex-wrap gap-2">
             {profile.certifications.map((cert, index) => (
@@ -492,25 +492,25 @@ export const UserProfile: React.FC = () => {
         >
           <button
             onClick={() => navigate('/training')}
-            className="flex items-center gap-3 p-4 bg-white dark:bg-slate-800 rounded-2xl border border-surface-200/60 dark:border-slate-700/60 shadow-sm hover:shadow-md transition-shadow"
+            className="flex items-center gap-3 p-4 bg-surface-raised rounded-2xl border border-surface-200/60 dark:border-surface-border shadow-sm hover:shadow-md transition-shadow"
           >
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center">
               <Award className="w-5 h-5 text-white" />
             </div>
             <div className="text-left">
-              <p className="text-sm font-medium text-slate-900 dark:text-white">Training</p>
+              <p className="text-sm font-medium text-text-primary">Training</p>
               <p className="text-xs text-surface-500 dark:text-surface-400">View courses</p>
             </div>
           </button>
           <button
             onClick={() => navigate('/notifications')}
-            className="flex items-center gap-3 p-4 bg-white dark:bg-slate-800 rounded-2xl border border-surface-200/60 dark:border-slate-700/60 shadow-sm hover:shadow-md transition-shadow"
+            className="flex items-center gap-3 p-4 bg-surface-raised rounded-2xl border border-surface-200/60 dark:border-surface-border shadow-sm hover:shadow-md transition-shadow"
           >
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
               <Briefcase className="w-5 h-5 text-white" />
             </div>
             <div className="text-left">
-              <p className="text-sm font-medium text-slate-900 dark:text-white">Settings</p>
+              <p className="text-sm font-medium text-text-primary">Settings</p>
               <p className="text-xs text-surface-500 dark:text-surface-400">Preferences</p>
             </div>
           </button>
@@ -521,11 +521,11 @@ export const UserProfile: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mt-6 bg-white dark:bg-slate-800 rounded-2xl border border-surface-200/60 dark:border-slate-700/60 shadow-sm p-6"
+          className="mt-6 bg-surface-raised rounded-2xl border border-surface-200/60 dark:border-surface-border shadow-sm p-6"
         >
           <div className="flex items-center gap-2 mb-4">
             <Shield className="w-5 h-5 text-brand-500" />
-            <h3 className="font-semibold text-slate-900 dark:text-white">Role & Permissions</h3>
+            <h3 className="font-semibold text-text-primary">Role & Permissions</h3>
           </div>
           
           <div className="mb-6">
@@ -556,11 +556,11 @@ export const UserProfile: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mt-6 bg-white dark:bg-slate-800 rounded-2xl border border-surface-200/60 dark:border-slate-700/60 shadow-sm p-6"
+          className="mt-6 bg-surface-raised rounded-2xl border border-surface-200/60 dark:border-surface-border shadow-sm p-6"
         >
           <div className="flex items-center gap-2 mb-4">
             <Palette className="w-5 h-5 text-brand-500" />
-            <h3 className="font-semibold text-slate-900 dark:text-white">Theme Settings</h3>
+            <h3 className="font-semibold text-text-primary">Theme Settings</h3>
           </div>
           
           {/* Theme Mode */}
@@ -572,7 +572,7 @@ export const UserProfile: React.FC = () => {
                 className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${
                   theme === 'light' 
                     ? 'border-brand-500 bg-brand-50 dark:bg-brand-900/20' 
-                    : 'border-surface-200 dark:border-slate-600 hover:border-surface-300 dark:hover:border-slate-500'
+                    : 'border-surface-200 dark:border-surface-border hover:border-surface-300 dark:hover:border-surface-border'
                 }`}
               >
                 <Sun className={`w-5 h-5 ${theme === 'light' ? 'text-brand-500' : 'text-surface-400'}`} />
@@ -583,7 +583,7 @@ export const UserProfile: React.FC = () => {
                 className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${
                   theme === 'dark' 
                     ? 'border-brand-500 bg-brand-50 dark:bg-brand-900/20' 
-                    : 'border-surface-200 dark:border-slate-600 hover:border-surface-300 dark:hover:border-slate-500'
+                    : 'border-surface-200 dark:border-surface-border hover:border-surface-300 dark:hover:border-surface-border'
                 }`}
               >
                 <Moon className={`w-5 h-5 ${theme === 'dark' ? 'text-brand-500' : 'text-surface-400'}`} />
@@ -594,7 +594,7 @@ export const UserProfile: React.FC = () => {
                 className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${
                   theme === 'system' 
                     ? 'border-brand-500 bg-brand-50 dark:bg-brand-900/20' 
-                    : 'border-surface-200 dark:border-slate-600 hover:border-surface-300 dark:hover:border-slate-500'
+                    : 'border-surface-200 dark:border-surface-border hover:border-surface-300 dark:hover:border-surface-border'
                 }`}
               >
                 <Monitor className={`w-5 h-5 ${theme === 'system' ? 'text-brand-500' : 'text-surface-400'}`} />
@@ -613,7 +613,7 @@ export const UserProfile: React.FC = () => {
                   onClick={() => handleAccentColorChange(color.id)}
                   className={`w-10 h-10 rounded-xl transition-all ${
                     accentColor === color.id 
-                      ? 'ring-2 ring-offset-2 ring-offset-white dark:ring-offset-slate-800 ring-slate-900 dark:ring-white scale-110' 
+                      ? 'ring-2 ring-offset-2 ring-offset-white dark:ring-offset-surface-raised ring-text-primary scale-110' 
                       : 'hover:scale-105'
                   }`}
                   style={{ backgroundColor: color.value }}

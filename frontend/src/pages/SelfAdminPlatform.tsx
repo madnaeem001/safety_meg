@@ -206,14 +206,14 @@ const StatusPill: React.FC<{ status: string }> = ({ status }) => {
   const map: Record<string, string> = {
     deployed: 'bg-emerald-500/20 text-emerald-400',
     testing: 'bg-amber-500/20 text-amber-300',
-    draft: 'bg-surface-500/20 text-surface-400',
+    draft: 'bg-surface-sunken text-text-muted',
     active: 'bg-blue-500/20 text-blue-400',
     investigating: 'bg-orange-500/20 text-orange-400',
     monitoring: 'bg-violet-500/20 text-violet-400',
     scheduled: 'bg-cyan-500/20 text-cyan-400',
   };
   return (
-    <span className={`text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full ${map[status] ?? 'bg-surface-700 text-surface-300'}`}>
+    <span className={`text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full ${map[status] ?? 'bg-surface-sunken text-text-secondary'}`}>
       {status}
     </span>
   );
@@ -236,9 +236,9 @@ export const SelfAdminPlatform: React.FC = () => {
   const [search, setSearch] = useState('');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-surface-950 via-surface-900 to-surface-950">
+    <div className="page-wrapper">
       {/* ── HEADER ──────────────────────────────────────── */}
-      <header className="sticky top-[72px] z-30 bg-surface-900/80 backdrop-blur-xl border-b border-surface-700/50">
+      <header className="sticky top-[72px] z-30 bg-surface-raised border-b border-surface-border">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
@@ -246,7 +246,7 @@ export const SelfAdminPlatform: React.FC = () => {
                 whileHover={{ x: -2 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/')}
-                className="p-2 rounded-xl hover:bg-surface-800 text-surface-400 hover:text-white transition-colors"
+                className="p-2 rounded-xl hover:bg-surface-sunken text-text-muted hover:text-text-primary transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
               </motion.button>
@@ -255,21 +255,21 @@ export const SelfAdminPlatform: React.FC = () => {
                   <Rocket className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold text-white leading-tight">Self-Admin Platform</h1>
-                  <p className="text-[11px] text-surface-400 leading-tight">Deploy · Administer · Configure</p>
+                  <h1 className="text-lg font-bold text-text-primary leading-tight">Self-Admin Platform</h1>
+                  <p className="text-[11px] text-text-muted leading-tight">Deploy · Administer · Configure</p>
                 </div>
               </div>
             </div>
 
             {/* Search */}
-            <div className="hidden md:flex items-center gap-2 bg-surface-800/60 border border-surface-700/50 rounded-xl px-3 py-2 w-72">
-              <Search className="w-4 h-4 text-surface-500" />
+            <div className="hidden md:flex items-center gap-2 bg-surface-raised border border-surface-border rounded-xl px-3 py-2 w-72">
+              <Search className="w-4 h-4 text-text-muted" />
               <input
                 type="text"
                 placeholder="Search modules, apps, alerts…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="bg-transparent text-sm text-white placeholder-surface-500 outline-none w-full"
+                className="bg-transparent text-sm text-text-primary placeholder-text-muted outline-none w-full"
               />
             </div>
 
@@ -277,7 +277,7 @@ export const SelfAdminPlatform: React.FC = () => {
               <motion.button
                 whileHover={{ rotate: 180 }}
                 transition={{ duration: 0.4 }}
-                className="p-2 rounded-xl hover:bg-surface-800 text-surface-400 hover:text-white"
+                className="p-2 rounded-xl hover:bg-surface-sunken text-text-muted hover:text-text-primary"
               >
                 <RefreshCw className="w-4 h-4" />
               </motion.button>
@@ -301,7 +301,7 @@ export const SelfAdminPlatform: React.FC = () => {
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key)}
                   className={`relative flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors whitespace-nowrap ${
-                    isActive ? 'text-brand-400' : 'text-surface-400 hover:text-surface-200'
+                    isActive ? 'text-brand-400' : 'text-text-muted hover:text-text-primary'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -346,8 +346,8 @@ const OverviewSection: React.FC<{ navigate: (p: string) => void }> = ({ navigate
           <Rocket className="w-5 h-5 text-brand-400" />
           <span className="text-brand-400 text-sm font-semibold tracking-wide uppercase">Self-Admin Platform</span>
         </div>
-        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">Complete Control. Zero Dependencies.</h2>
-        <p className="text-surface-300 leading-relaxed text-sm sm:text-base">
+        <h2 className="text-2xl sm:text-3xl font-bold text-text-primary mb-3">Complete Control. Zero Dependencies.</h2>
+        <p className="text-text-secondary leading-relaxed text-sm sm:text-base">
           Empower your team with self-deployment, self-administration, and self-configuration capabilities.
           Modify forms, workflows, and reports without coding — dramatically reducing costs and delays.
           Real-time insights enable proactive risk identification while custom app development ensures the platform evolves with your requirements.
@@ -358,14 +358,14 @@ const OverviewSection: React.FC<{ navigate: (p: string) => void }> = ({ navigate
     {/* Quick Stats */}
     <motion.div variants={fadeUp} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
       {realTimeMetrics.map((m, i) => (
-        <div key={i} className="bg-surface-800/60 border border-surface-700/40 rounded-xl p-4 space-y-2">
+        <div key={i} className="bg-surface-raised border border-surface-border rounded-xl p-4 space-y-2">
           <div className="flex items-center gap-1.5">
             <SeverityDot severity={m.severity} />
-            <span className="text-[11px] text-surface-400 font-medium truncate">{m.label}</span>
+            <span className="text-[11px] text-text-muted font-medium truncate">{m.label}</span>
           </div>
           <div className="flex items-end gap-1">
-            <span className="text-xl font-bold text-white">{m.value}</span>
-            {m.unit && <span className="text-xs text-surface-500 mb-0.5">{m.unit}</span>}
+            <span className="text-xl font-bold text-text-primary">{m.value}</span>
+            {m.unit && <span className="text-xs text-text-muted mb-0.5">{m.unit}</span>}
           </div>
           <div className={`flex items-center gap-1 text-[11px] font-medium ${m.trend === 'up' && m.severity === 'success' ? 'text-emerald-400' : m.trend === 'down' && m.severity === 'success' ? 'text-emerald-400' : m.trend === 'up' ? 'text-red-400' : 'text-emerald-400'}`}>
             {m.trend === 'up' ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
@@ -378,17 +378,17 @@ const OverviewSection: React.FC<{ navigate: (p: string) => void }> = ({ navigate
     {/* 3-Column Features */}
     <motion.div variants={fadeUp} className="grid md:grid-cols-3 gap-5">
       {/* Self-Configuration */}
-      <div className="bg-surface-800/60 border border-surface-700/40 rounded-2xl p-5 hover:border-brand-500/30 transition-colors group">
+      <div className="bg-surface-raised border border-surface-border rounded-2xl p-5 hover:border-brand-500/30 transition-colors group">
         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-4 shadow-lg shadow-blue-500/20">
           <Cog className="w-5 h-5 text-white" />
         </div>
-        <h3 className="text-white font-bold mb-2">Self-Configuration</h3>
-        <p className="text-surface-400 text-sm mb-4 leading-relaxed">
+        <h3 className="text-text-primary font-bold mb-2">Self-Configuration</h3>
+        <p className="text-text-muted text-sm mb-4 leading-relaxed">
           Eliminate coding and third-party dependencies. Your team independently modifies forms, workflows, and reports.
         </p>
         <div className="space-y-2">
           {['Form Builder', 'Workflow Engine', 'Report Designer', 'Alert Manager'].map((item) => (
-            <div key={item} className="flex items-center gap-2 text-sm text-surface-300">
+            <div key={item} className="flex items-center gap-2 text-sm text-text-secondary">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
               {item}
             </div>
@@ -400,17 +400,17 @@ const OverviewSection: React.FC<{ navigate: (p: string) => void }> = ({ navigate
       </div>
 
       {/* Real-Time Insights */}
-      <div className="bg-surface-800/60 border border-surface-700/40 rounded-2xl p-5 hover:border-emerald-500/30 transition-colors group">
+      <div className="bg-surface-raised border border-surface-border rounded-2xl p-5 hover:border-emerald-500/30 transition-colors group">
         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center mb-4 shadow-lg shadow-emerald-500/20">
           <Activity className="w-5 h-5 text-white" />
         </div>
-        <h3 className="text-white font-bold mb-2">Real-Time Insights</h3>
-        <p className="text-surface-400 text-sm mb-4 leading-relaxed">
+        <h3 className="text-text-primary font-bold mb-2">Real-Time Insights</h3>
+        <p className="text-text-muted text-sm mb-4 leading-relaxed">
           Proactive risk identification with live sensor data, AI predictions, and instant compliance alerts.
         </p>
         <div className="space-y-2">
           {['Live Risk Dashboard', 'AI-Powered Predictions', 'Compliance Alerts', 'Trend Analytics'].map((item) => (
-            <div key={item} className="flex items-center gap-2 text-sm text-surface-300">
+            <div key={item} className="flex items-center gap-2 text-sm text-text-secondary">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
               {item}
             </div>
@@ -422,17 +422,17 @@ const OverviewSection: React.FC<{ navigate: (p: string) => void }> = ({ navigate
       </div>
 
       {/* Custom App Builder */}
-      <div className="bg-surface-800/60 border border-surface-700/40 rounded-2xl p-5 hover:border-violet-500/30 transition-colors group">
+      <div className="bg-surface-raised border border-surface-border rounded-2xl p-5 hover:border-violet-500/30 transition-colors group">
         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center mb-4 shadow-lg shadow-violet-500/20">
           <Blocks className="w-5 h-5 text-white" />
         </div>
-        <h3 className="text-white font-bold mb-2">Custom App Builder</h3>
-        <p className="text-surface-400 text-sm mb-4 leading-relaxed">
+        <h3 className="text-text-primary font-bold mb-2">Custom App Builder</h3>
+        <p className="text-text-muted text-sm mb-4 leading-relaxed">
           Build purpose-built safety apps from templates. Deploy to any device with your branding.
         </p>
         <div className="space-y-2">
           {['App Templates', 'Drag & Drop Builder', 'Offline Capable', 'Multi-Device Deploy'].map((item) => (
-            <div key={item} className="flex items-center gap-2 text-sm text-surface-300">
+            <div key={item} className="flex items-center gap-2 text-sm text-text-secondary">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
               {item}
             </div>
@@ -445,21 +445,21 @@ const OverviewSection: React.FC<{ navigate: (p: string) => void }> = ({ navigate
     </motion.div>
 
     {/* Recent Activity */}
-    <motion.div variants={fadeUp} className="bg-surface-800/60 border border-surface-700/40 rounded-2xl overflow-hidden">
-      <div className="px-5 py-4 border-b border-surface-700/40 flex items-center justify-between">
-        <h3 className="text-white font-bold flex items-center gap-2">
+    <motion.div variants={fadeUp} className="bg-surface-raised border border-surface-border rounded-2xl overflow-hidden">
+      <div className="px-5 py-4 border-b border-surface-border flex items-center justify-between">
+        <h3 className="text-text-primary font-bold flex items-center gap-2">
           <Zap className="w-4 h-4 text-amber-400" />
           Live Risk Alerts
         </h3>
         <button className="text-sm text-brand-400 hover:text-brand-300 font-medium">View All</button>
       </div>
-      <div className="divide-y divide-surface-700/30">
+      <div className="divide-y divide-surface-border">
         {riskAlerts.map((alert) => (
-          <div key={alert.id} className="px-5 py-3 flex items-center gap-4 hover:bg-surface-700/20 transition-colors cursor-pointer">
+          <div key={alert.id} className="px-5 py-3 flex items-center gap-4 hover:bg-surface-sunken transition-colors cursor-pointer">
             <div className={`w-2 h-2 rounded-full shrink-0 ${alert.priority === 'critical' ? 'bg-red-500 animate-pulse' : alert.priority === 'high' ? 'bg-orange-500' : 'bg-amber-400'}`} />
             <div className="flex-1 min-w-0">
-              <p className="text-sm text-white font-medium truncate">{alert.title}</p>
-              <p className="text-xs text-surface-500">Assigned to {alert.assigned} · {alert.time}</p>
+              <p className="text-sm text-text-primary font-medium truncate">{alert.title}</p>
+              <p className="text-xs text-text-muted">Assigned to {alert.assigned} · {alert.time}</p>
             </div>
             <PriorityBadge priority={alert.priority} />
             <StatusPill status={alert.status} />
@@ -481,8 +481,8 @@ const ConfigSection: React.FC<{ navigate: (p: string) => void }> = ({ navigate }
   <motion.div key="config" variants={stagger} initial="hidden" animate="visible" exit={{ opacity: 0 }} className="space-y-6">
     {/* Header */}
     <motion.div variants={fadeUp}>
-      <h2 className="text-xl font-bold text-white mb-1">Self-Configuration Tools</h2>
-      <p className="text-surface-400 text-sm">Eliminate coding or third-party dependencies — your team owns every configuration.</p>
+      <h2 className="text-xl font-bold text-text-primary mb-1">Self-Configuration Tools</h2>
+      <p className="text-text-muted text-sm">Eliminate coding or third-party dependencies — your team owns every configuration.</p>
     </motion.div>
 
     {/* Module Grid */}
@@ -495,7 +495,7 @@ const ConfigSection: React.FC<{ navigate: (p: string) => void }> = ({ navigate }
             variants={scaleIn}
             whileHover={{ y: -4, transition: { duration: 0.2 } }}
             onClick={() => mod.route && navigate(mod.route)}
-            className="group bg-surface-800/60 border border-surface-700/40 rounded-2xl p-5 cursor-pointer hover:border-brand-500/30 transition-all"
+            className="group bg-surface-raised border border-surface-border rounded-2xl p-5 cursor-pointer hover:border-brand-500/30 transition-all"
           >
             <div className="flex items-start justify-between mb-4">
               <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${mod.color} flex items-center justify-center shadow-lg`}>
@@ -503,9 +503,9 @@ const ConfigSection: React.FC<{ navigate: (p: string) => void }> = ({ navigate }
               </div>
               <StatusPill status={mod.status} />
             </div>
-            <h3 className="text-white font-bold mb-1">{mod.title}</h3>
-            <p className="text-surface-400 text-sm leading-relaxed mb-4">{mod.desc}</p>
-            <div className="flex items-center justify-between text-xs text-surface-500">
+            <h3 className="text-text-primary font-bold mb-1">{mod.title}</h3>
+            <p className="text-text-muted text-sm leading-relaxed mb-4">{mod.desc}</p>
+            <div className="flex items-center justify-between text-xs text-text-muted">
               <span>{mod.itemCount} items</span>
               <span>Edited {mod.lastEdited}</span>
             </div>
@@ -515,12 +515,12 @@ const ConfigSection: React.FC<{ navigate: (p: string) => void }> = ({ navigate }
     </motion.div>
 
     {/* Permissions Info */}
-    <motion.div variants={fadeUp} className="bg-surface-800/60 border border-surface-700/40 rounded-2xl p-5">
-      <h3 className="text-white font-bold mb-3 flex items-center gap-2">
+    <motion.div variants={fadeUp} className="bg-surface-raised border border-surface-border rounded-2xl p-5">
+      <h3 className="text-text-primary font-bold mb-3 flex items-center gap-2">
         <Lock className="w-4 h-4 text-amber-400" />
         Configuration Access Control
       </h3>
-      <p className="text-surface-400 text-sm mb-4">Manage who can create, modify, and publish configurations across your organization.</p>
+      <p className="text-text-muted text-sm mb-4">Manage who can create, modify, and publish configurations across your organization.</p>
       <div className="grid sm:grid-cols-3 gap-3">
         {[
           { role: 'Admin', perms: 'Full access to all config tools', count: 3, color: 'border-red-500/30 bg-red-500/5' },
@@ -529,24 +529,24 @@ const ConfigSection: React.FC<{ navigate: (p: string) => void }> = ({ navigate }
         ].map((r) => (
           <div key={r.role} className={`border rounded-xl p-4 ${r.color}`}>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-white font-semibold text-sm">{r.role}</span>
-              <span className="text-surface-500 text-xs">{r.count} users</span>
+              <span className="text-text-primary font-semibold text-sm">{r.role}</span>
+              <span className="text-text-muted text-xs">{r.count} users</span>
             </div>
-            <p className="text-surface-400 text-xs">{r.perms}</p>
+            <p className="text-text-muted text-xs">{r.perms}</p>
           </div>
         ))}
       </div>
     </motion.div>
 
     {/* Deployment Pipeline */}
-    <motion.div variants={fadeUp} className="bg-surface-800/60 border border-surface-700/40 rounded-2xl p-5">
-      <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+    <motion.div variants={fadeUp} className="bg-surface-raised border border-surface-border rounded-2xl p-5">
+      <h3 className="text-text-primary font-bold mb-4 flex items-center gap-2">
         <Rocket className="w-4 h-4 text-brand-400" />
         Self-Deployment Pipeline
       </h3>
       <div className="flex flex-wrap gap-3">
         {[
-          { step: 1, label: 'Draft', desc: 'Build & configure', icon: PenLine, color: 'border-surface-600' },
+          { step: 1, label: 'Draft', desc: 'Build & configure', icon: PenLine, color: 'border-surface-border' },
           { step: 2, label: 'Review', desc: 'Internal QA check', icon: Eye, color: 'border-amber-500/40' },
           { step: 3, label: 'Approve', desc: 'Manager sign-off', icon: CheckCircle2, color: 'border-blue-500/40' },
           { step: 4, label: 'Deploy', desc: 'Push to production', icon: Rocket, color: 'border-emerald-500/40' },
@@ -555,17 +555,17 @@ const ConfigSection: React.FC<{ navigate: (p: string) => void }> = ({ navigate }
           const SIcon = s.icon;
           return (
             <React.Fragment key={s.step}>
-              <div className={`flex-1 min-w-[130px] border ${s.color} rounded-xl p-3 bg-surface-800/40`}>
+              <div className={`flex-1 min-w-[130px] border ${s.color} rounded-xl p-3 bg-surface-sunken`}>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[10px] font-bold text-surface-500">STEP {s.step}</span>
+                  <span className="text-[10px] font-bold text-text-muted">STEP {s.step}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <SIcon className="w-4 h-4 text-surface-300" />
-                  <span className="text-white text-sm font-semibold">{s.label}</span>
+                  <SIcon className="w-4 h-4 text-text-secondary" />
+                  <span className="text-text-primary text-sm font-semibold">{s.label}</span>
                 </div>
-                <p className="text-surface-500 text-xs mt-1">{s.desc}</p>
+                <p className="text-text-muted text-xs mt-1">{s.desc}</p>
               </div>
-              {i < 4 && <div className="hidden lg:flex items-center text-surface-600"><ChevronRight className="w-4 h-4" /></div>}
+              {i < 4 && <div className="hidden lg:flex items-center text-text-muted"><ChevronRight className="w-4 h-4" /></div>}
             </React.Fragment>
           );
         })}
@@ -586,16 +586,16 @@ const InsightsSection: React.FC = () => {
       {/* Header */}
       <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-white mb-1">Real-Time Insights</h2>
-          <p className="text-surface-400 text-sm">Proactive risk management and compliance monitoring — live data, zero lag.</p>
+          <h2 className="text-xl font-bold text-text-primary mb-1">Real-Time Insights</h2>
+          <p className="text-text-muted text-sm">Proactive risk management and compliance monitoring — live data, zero lag.</p>
         </div>
-        <div className="flex bg-surface-800/60 border border-surface-700/40 rounded-xl p-1">
+        <div className="flex bg-surface-raised border border-surface-border rounded-xl p-1">
           {(['1h', '24h', '7d', '30d'] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTimeRange(t)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                timeRange === t ? 'bg-brand-600 text-white' : 'text-surface-400 hover:text-white'
+                timeRange === t ? 'bg-brand-600 text-white' : 'text-text-muted hover:text-text-primary'
               }`}
             >
               {t}
@@ -610,12 +610,12 @@ const InsightsSection: React.FC = () => {
           <motion.div
             key={i}
             variants={scaleIn}
-            className="bg-surface-800/60 border border-surface-700/40 rounded-xl p-4 hover:border-surface-600/60 transition-colors"
+            className="bg-surface-raised border border-surface-border rounded-xl p-4 hover:border-surface-border transition-colors"
           >
-            <span className="text-[11px] text-surface-400 font-medium">{m.label}</span>
+            <span className="text-[11px] text-text-muted font-medium">{m.label}</span>
             <div className="flex items-end gap-1 mt-1">
-              <span className="text-2xl font-bold text-white">{m.value}</span>
-              {m.unit && <span className="text-xs text-surface-500 mb-1">{m.unit}</span>}
+              <span className="text-2xl font-bold text-text-primary">{m.value}</span>
+              {m.unit && <span className="text-xs text-text-muted mb-1">{m.unit}</span>}
             </div>
             <div className={`flex items-center gap-1 mt-1 text-xs font-medium ${
               (m.trend === 'down' && (m.severity === 'warning' || m.severity === 'success')) || (m.trend === 'up' && m.severity === 'success')
@@ -632,8 +632,8 @@ const InsightsSection: React.FC = () => {
       {/* Risk Heat & Alerts Split */}
       <div className="grid lg:grid-cols-5 gap-5">
         {/* Risk Heatmap Placeholder */}
-        <motion.div variants={fadeUp} className="lg:col-span-3 bg-surface-800/60 border border-surface-700/40 rounded-2xl p-5">
-          <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+        <motion.div variants={fadeUp} className="lg:col-span-3 bg-surface-raised border border-surface-border rounded-2xl p-5">
+          <h3 className="text-text-primary font-bold mb-4 flex items-center gap-2">
             <Brain className="w-4 h-4 text-violet-400" />
             AI Risk Prediction Matrix
           </h3>
@@ -648,7 +648,7 @@ const InsightsSection: React.FC = () => {
               );
             })}
           </div>
-          <div className="flex items-center gap-4 mt-4 text-xs text-surface-500">
+          <div className="flex items-center gap-4 mt-4 text-xs text-text-muted">
             <div className="flex items-center gap-1"><div className="w-3 h-3 rounded bg-emerald-500/20" /> Low</div>
             <div className="flex items-center gap-1"><div className="w-3 h-3 rounded bg-amber-500/40" /> Med</div>
             <div className="flex items-center gap-1"><div className="w-3 h-3 rounded bg-orange-500/50" /> High</div>
@@ -657,8 +657,8 @@ const InsightsSection: React.FC = () => {
         </motion.div>
 
         {/* Compliance Pulse */}
-        <motion.div variants={fadeUp} className="lg:col-span-2 bg-surface-800/60 border border-surface-700/40 rounded-2xl p-5">
-          <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+        <motion.div variants={fadeUp} className="lg:col-span-2 bg-surface-raised border border-surface-border rounded-2xl p-5">
+          <h3 className="text-text-primary font-bold mb-4 flex items-center gap-2">
             <Shield className="w-4 h-4 text-emerald-400" />
             Compliance Pulse
           </h3>
@@ -672,10 +672,10 @@ const InsightsSection: React.FC = () => {
             ].map((c) => (
               <div key={c.label}>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm text-surface-300">{c.label}</span>
-                  <span className="text-sm font-bold text-white">{c.score}%</span>
+                  <span className="text-sm text-text-secondary">{c.label}</span>
+                  <span className="text-sm font-bold text-text-primary">{c.score}%</span>
                 </div>
-                <div className="h-2 bg-surface-700/50 rounded-full overflow-hidden">
+                <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${c.score}%` }}
@@ -690,18 +690,18 @@ const InsightsSection: React.FC = () => {
       </div>
 
       {/* Live Alerts */}
-      <motion.div variants={fadeUp} className="bg-surface-800/60 border border-surface-700/40 rounded-2xl overflow-hidden">
-        <div className="px-5 py-4 border-b border-surface-700/40 flex items-center justify-between">
-          <h3 className="text-white font-bold flex items-center gap-2">
+      <motion.div variants={fadeUp} className="bg-surface-raised border border-surface-border rounded-2xl overflow-hidden">
+        <div className="px-5 py-4 border-b border-surface-border flex items-center justify-between">
+          <h3 className="text-text-primary font-bold flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-amber-400" />
             Active Risk Alerts
             <span className="bg-red-500/20 text-red-400 text-[10px] font-bold px-2 py-0.5 rounded-full">{riskAlerts.length} active</span>
           </h3>
           <button className="text-sm text-brand-400 hover:text-brand-300 font-medium">Manage Alerts</button>
         </div>
-        <div className="divide-y divide-surface-700/30">
+        <div className="divide-y divide-surface-border">
           {riskAlerts.map((alert) => (
-            <div key={alert.id} className="px-5 py-3.5 flex items-center gap-4 hover:bg-surface-700/20 transition-colors cursor-pointer group">
+            <div key={alert.id} className="px-5 py-3.5 flex items-center gap-4 hover:bg-surface-sunken transition-colors cursor-pointer group">
               <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
                 alert.priority === 'critical' ? 'bg-red-500/20' : alert.priority === 'high' ? 'bg-orange-500/20' : 'bg-amber-500/20'
               }`}>
@@ -710,12 +710,12 @@ const InsightsSection: React.FC = () => {
                 }`} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-white font-medium truncate">{alert.title}</p>
-                <p className="text-xs text-surface-500">{alert.assigned} · {alert.time}</p>
+                <p className="text-sm text-text-primary font-medium truncate">{alert.title}</p>
+                <p className="text-xs text-text-muted">{alert.assigned} · {alert.time}</p>
               </div>
               <PriorityBadge priority={alert.priority} />
               <StatusPill status={alert.status} />
-              <ChevronRight className="w-4 h-4 text-surface-600 group-hover:text-surface-400 transition-colors" />
+              <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-muted transition-colors" />
             </div>
           ))}
         </div>
@@ -736,20 +736,20 @@ const AppBuilderSection: React.FC = () => {
       {/* Header */}
       <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-white mb-1">Custom App Builder</h2>
-          <p className="text-surface-400 text-sm">Build, deploy, and manage purpose-built safety apps — no developers needed.</p>
+          <h2 className="text-xl font-bold text-text-primary mb-1">Custom App Builder</h2>
+          <p className="text-text-muted text-sm">Build, deploy, and manage purpose-built safety apps — no developers needed.</p>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex bg-surface-800/60 border border-surface-700/40 rounded-xl p-1">
+          <div className="flex bg-surface-raised border border-surface-border rounded-xl p-1">
             <button
               onClick={() => setView('apps')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${view === 'apps' ? 'bg-brand-600 text-white' : 'text-surface-400 hover:text-white'}`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${view === 'apps' ? 'bg-brand-600 text-white' : 'text-text-muted hover:text-text-primary'}`}
             >
               My Apps
             </button>
             <button
               onClick={() => setView('templates')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${view === 'templates' ? 'bg-brand-600 text-white' : 'text-surface-400 hover:text-white'}`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${view === 'templates' ? 'bg-brand-600 text-white' : 'text-text-muted hover:text-text-primary'}`}
             >
               Templates
             </button>
@@ -777,7 +777,7 @@ const AppBuilderSection: React.FC = () => {
                     key={app.id}
                     variants={scaleIn}
                     whileHover={{ y: -3 }}
-                    className="bg-surface-800/60 border border-surface-700/40 rounded-2xl p-5 cursor-pointer hover:border-brand-500/30 transition-all group"
+                    className="bg-surface-raised border border-surface-border rounded-2xl p-5 cursor-pointer hover:border-brand-500/30 transition-all group"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className={`w-10 h-10 rounded-xl ${app.color} flex items-center justify-center`}>
@@ -785,19 +785,19 @@ const AppBuilderSection: React.FC = () => {
                       </div>
                       <StatusPill status={app.status} />
                     </div>
-                    <h3 className="text-white font-bold text-sm mb-1">{app.name}</h3>
-                    <div className="flex items-center gap-2 text-xs text-surface-500">
+                    <h3 className="text-text-primary font-bold text-sm mb-1">{app.name}</h3>
+                    <div className="flex items-center gap-2 text-xs text-text-muted">
                       <Users className="w-3 h-3" />
                       {app.users} active users
                     </div>
-                    <div className="flex items-center gap-2 mt-4 pt-3 border-t border-surface-700/30">
+                    <div className="flex items-center gap-2 mt-4 pt-3 border-t border-surface-border">
                       <button className="text-xs text-brand-400 hover:text-brand-300 font-medium flex items-center gap-1">
                         <PenLine className="w-3 h-3" /> Edit
                       </button>
-                      <button className="text-xs text-surface-400 hover:text-white font-medium flex items-center gap-1">
+                      <button className="text-xs text-text-muted hover:text-text-primary font-medium flex items-center gap-1">
                         <MonitorSmartphone className="w-3 h-3" /> Preview
                       </button>
-                      <button className="text-xs text-surface-400 hover:text-white font-medium flex items-center gap-1 ml-auto">
+                      <button className="text-xs text-text-muted hover:text-text-primary font-medium flex items-center gap-1 ml-auto">
                         <Settings className="w-3 h-3" /> Settings
                       </button>
                     </div>
@@ -809,18 +809,18 @@ const AppBuilderSection: React.FC = () => {
               <motion.div
                 variants={scaleIn}
                 onClick={() => navigate('/app-builder')}
-                className="bg-surface-800/30 border-2 border-dashed border-surface-700/40 rounded-2xl p-5 flex flex-col items-center justify-center gap-3 cursor-pointer hover:border-brand-500/40 hover:bg-surface-800/50 transition-all min-h-[180px]"
+                className="bg-surface-sunken border-2 border-dashed border-surface-border rounded-2xl p-5 flex flex-col items-center justify-center gap-3 cursor-pointer hover:border-brand-500/40 hover:bg-surface-sunken transition-all min-h-[180px]"
               >
-                <div className="w-12 h-12 rounded-xl bg-surface-700/30 flex items-center justify-center">
-                  <Plus className="w-6 h-6 text-surface-400" />
+                <div className="w-12 h-12 rounded-xl bg-surface-sunken flex items-center justify-center">
+                  <Plus className="w-6 h-6 text-text-muted" />
                 </div>
-                <span className="text-surface-400 text-sm font-medium">Create New App</span>
+                <span className="text-text-muted text-sm font-medium">Create New App</span>
               </motion.div>
             </div>
 
             {/* Deployment Stats */}
-            <motion.div variants={fadeUp} className="bg-surface-800/60 border border-surface-700/40 rounded-2xl p-5">
-              <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+            <motion.div variants={fadeUp} className="bg-surface-raised border border-surface-border rounded-2xl p-5">
+              <h3 className="text-text-primary font-bold mb-4 flex items-center gap-2">
                 <Gauge className="w-4 h-4 text-cyan-400" />
                 Deployment Overview
               </h3>
@@ -833,10 +833,10 @@ const AppBuilderSection: React.FC = () => {
                 ].map((stat) => {
                   const SIcon = stat.icon;
                   return (
-                    <div key={stat.label} className="text-center p-3 bg-surface-700/20 rounded-xl">
+                    <div key={stat.label} className="text-center p-3 bg-surface-sunken rounded-xl">
                       <SIcon className={`w-5 h-5 ${stat.color} mx-auto mb-2`} />
-                      <div className="text-2xl font-bold text-white">{stat.value}</div>
-                      <div className="text-xs text-surface-500 mt-1">{stat.label}</div>
+                      <div className="text-2xl font-bold text-text-primary">{stat.value}</div>
+                      <div className="text-xs text-text-muted mt-1">{stat.label}</div>
                     </div>
                   );
                 })}
@@ -853,18 +853,18 @@ const AppBuilderSection: React.FC = () => {
                     key={tmpl.id}
                     variants={scaleIn}
                     whileHover={{ y: -3 }}
-                    className="bg-surface-800/60 border border-surface-700/40 rounded-2xl p-5 cursor-pointer hover:border-brand-500/30 transition-all group"
+                    className="bg-surface-raised border border-surface-border rounded-2xl p-5 cursor-pointer hover:border-brand-500/30 transition-all group"
                   >
                     <div className="flex items-start justify-between mb-3">
-                      <div className="w-10 h-10 rounded-xl bg-surface-700/40 flex items-center justify-center group-hover:bg-brand-600/20 transition-colors">
-                        <Icon className="w-5 h-5 text-surface-300 group-hover:text-brand-400 transition-colors" />
+                      <div className="w-10 h-10 rounded-xl bg-surface-sunken flex items-center justify-center group-hover:bg-brand-600/20 transition-colors">
+                        <Icon className="w-5 h-5 text-text-secondary group-hover:text-brand-400 transition-colors" />
                       </div>
-                      <span className="text-[10px] font-semibold text-surface-500 uppercase bg-surface-700/40 px-2 py-0.5 rounded-full">
+                      <span className="text-[10px] font-semibold text-text-muted uppercase bg-surface-sunken px-2 py-0.5 rounded-full">
                         {tmpl.complexity}
                       </span>
                     </div>
-                    <h3 className="text-white font-bold text-sm mb-1">{tmpl.name}</h3>
-                    <p className="text-surface-400 text-xs leading-relaxed mb-4">{tmpl.desc}</p>
+                    <h3 className="text-text-primary font-bold text-sm mb-1">{tmpl.name}</h3>
+                    <p className="text-text-muted text-xs leading-relaxed mb-4">{tmpl.desc}</p>
                     <button 
                       onClick={() => navigate('/app-builder')}
                       className="text-brand-400 text-xs font-medium flex items-center gap-1 group-hover:gap-2 transition-all"

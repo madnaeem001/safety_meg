@@ -759,7 +759,7 @@ export const AIAuditTemplateForm: React.FC = () => {
     : allTemplates;
 
   return (
-    <div className="ai-purple-theme min-h-screen bg-surface-base text-text-primary pb-24 selection:bg-accent/20">
+    <div className="ai-purple-theme page-wrapper selection:bg-accent/20">
       {/* HD Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent/10 blur-[150px] rounded-full" />
@@ -782,7 +782,7 @@ export const AIAuditTemplateForm: React.FC = () => {
                   <ClipboardCheck className="w-6 h-6 text-text-onAccent" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold text-text-primary leading-tight">AI Audit Form</h1>
+                  <h1 className="page-title">AI Audit Form</h1>
                   <p className="text-[11px] text-text-muted uppercase tracking-widest font-medium">Standard Compliance Intelligence</p>
                 </div>
               </div>

@@ -174,20 +174,20 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending': return 'bg-surface-overlay text-text-muted border-surface-border';
-      case 'in-progress': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
-      case 'review': return 'bg-amber-500/20 text-amber-400 border-amber-500/30';
-      case 'completed': return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
-      case 'overdue': return 'bg-red-500/20 text-red-400 border-red-500/30';
+      case 'in-progress': return 'bg-accent/20 text-accent border-accent/30';
+      case 'review': return 'bg-warning/20 text-warning border-warning/30';
+      case 'completed': return 'bg-success/20 text-success border-success/30';
+      case 'overdue': return 'bg-danger/20 text-danger border-danger/30';
       default: return 'bg-surface-overlay text-text-muted border-surface-border';
     }
   };
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'low': return 'bg-green-500/20 text-green-400';
-      case 'medium': return 'bg-amber-500/20 text-amber-400';
-      case 'high': return 'bg-orange-500/20 text-orange-400';
-      case 'critical': return 'bg-red-500/20 text-red-400';
+      case 'low': return 'bg-success/20 text-success';
+      case 'medium': return 'bg-warning/20 text-warning';
+      case 'high': return 'bg-warning/20 text-warning';
+      case 'critical': return 'bg-danger/20 text-danger';
       default: return 'bg-surface-overlay text-text-muted';
     }
   };
@@ -292,7 +292,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
                   onClick={() => setActivePhase('fishbone')}
                   className="flex items-center gap-4 p-4 bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-xl hover:from-amber-500/30 hover:to-orange-500/30 transition-colors"
                 >
-                  <div className="w-12 h-12 bg-amber-500/20 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-warning/20 rounded-xl flex items-center justify-center">
                     <GitBranch className="w-6 h-6 text-amber-400" />
                   </div>
                   <div className="text-left">
@@ -303,10 +303,10 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
                 </button>
                 <button
                   onClick={() => setActivePhase('five-whys')}
-                  className="flex items-center gap-4 p-4 bg-gradient-to-r from-pink-500/20 to-rose-500/20 border border-pink-500/30 rounded-xl hover:from-pink-500/30 hover:to-rose-500/30 transition-colors"
+                  className="flex items-center gap-4 p-4 bg-gradient-to-r from-ai/20 to-ai/10 border border-ai/30 rounded-xl hover:from-ai/30 hover:to-ai/20 transition-colors"
                 >
-                  <div className="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center">
-                    <HelpCircle className="w-6 h-6 text-pink-400" />
+                  <div className="w-12 h-12 bg-ai/20 rounded-xl flex items-center justify-center">
+                    <HelpCircle className="w-6 h-6 text-ai" />
                   </div>
                   <div className="text-left">
                     <h4 className="text-text-primary font-semibold">5 Whys Analysis</h4>
@@ -373,7 +373,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
                 { label: 'In Progress', value: correctiveActions.filter(a => a.status === 'in-progress').length, color: 'from-amber-500 to-orange-500' },
                 { label: 'Pending', value: correctiveActions.filter(a => a.status === 'pending').length, color: 'from-slate-500 to-gray-500' },
               ].map((stat) => (
-                <div key={stat.label} className={`bg-gradient-to-br ${stat.color} rounded-xl p-4 text-white`}>
+                <div key={stat.label} className={`bg-gradient-to-br ${stat.color} rounded-xl p-4 text-text-onAccent`}>
                   <div className="text-2xl font-bold">{stat.value}</div>
                   <div className="text-sm opacity-90">{stat.label}</div>
                 </div>
@@ -398,9 +398,9 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                           <span className={`px-2 py-0.5 text-xs font-bold uppercase rounded ${
-                            action.type === 'immediate' ? 'bg-red-500/20 text-red-400' :
-                            action.type === 'short-term' ? 'bg-amber-500/20 text-amber-400' :
-                            'bg-blue-500/20 text-blue-400'
+                            action.type === 'immediate' ? 'bg-danger/20 text-danger' :
+                            action.type === 'short-term' ? 'bg-warning/20 text-warning' :
+                            'bg-accent/20 text-accent'
                           }`}>
                             {action.type}
                           </span>
@@ -425,7 +425,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
                           onClick={() => setCorrectiveActions(prev =>
                             prev.map(a => a.id === action.id ? { ...a, status: 'completed' } : a)
                           )}
-                          className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-white text-sm font-medium transition-colors"
+                          className="px-3 py-1.5 bg-success hover:bg-success/80 rounded-lg text-text-onAccent text-sm font-medium transition-colors"
                         >
                           <CheckCircle2 className="w-4 h-4" />
                         </button>
@@ -496,9 +496,9 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
                 onClick={() => setActivePhase(phase)}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all ${
                   isActive
-                    ? `bg-gradient-to-r ${config.color} text-white`
+                    ? `bg-gradient-to-r ${config.color} text-text-onAccent`
                     : isCompleted
-                    ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                    ? 'bg-success/20 text-emerald-400 border border-emerald-500/30'
                     : 'bg-surface-raised text-text-muted border border-surface-border hover:bg-surface-overlay'
                 }`}
               >
@@ -509,7 +509,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
                 )}
                 {config.label}
                 {isCurrent && !isCompleted && (
-                  <span className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
+                  <span className="w-2 h-2 bg-warning rounded-full animate-pulse" />
                 )}
               </button>
             );
@@ -578,7 +578,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
             key={stat.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`bg-gradient-to-br ${stat.color} rounded-2xl p-5 text-white relative overflow-hidden`}
+            className={`bg-gradient-to-br ${stat.color} rounded-2xl p-5 text-text-onAccent relative overflow-hidden`}
           >
             <div className="relative z-10">
               <stat.icon className="w-6 h-6 opacity-80 mb-2" />
@@ -613,7 +613,7 @@ export const UnifiedInvestigation: React.FC<UnifiedInvestigationProps> = ({ onBa
               >
                 <div className="flex items-center gap-4">
                   <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${phaseConfig_.color} flex items-center justify-center`}>
-                    <phaseConfig_.icon className="w-6 h-6 text-white" />
+                    <phaseConfig_.icon className="w-6 h-6 text-text-onAccent" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">

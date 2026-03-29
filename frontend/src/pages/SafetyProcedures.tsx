@@ -126,7 +126,7 @@ export const SafetyProcedures: React.FC = () => {
   const hasProcedureData = procedures.length > 0;
 
   return (
-    <div className="min-h-screen bg-surface-base pb-32">
+    <div className="page-wrapper">
 
       
       <main className="max-w-7xl mx-auto">

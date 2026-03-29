@@ -112,7 +112,7 @@ export const CertificationTracker: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 dark:bg-surface-900 pb-20">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="bg-gradient-to-br from-indigo-600 via-indigo-500 to-purple-500 pt-12 pb-8 px-4 safe-top">
         <div className="flex items-center gap-3 mb-6">
@@ -125,8 +125,8 @@ export const CertificationTracker: React.FC = () => {
             </svg>
           </button>
           <div className="flex-1">
-            <h1 className="text-2xl font-bold text-white">Certification Tracker</h1>
-            <p className="text-indigo-100 text-sm">Standards certification management</p>
+            <h1 className="page-title">Certification Tracker</h1>
+            <p className="page-subtitle">Standards certification management</p>
           </div>
           <button className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white active:scale-95 transition-transform">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -222,7 +222,7 @@ export const CertificationTracker: React.FC = () => {
                             </span>
                           )}
                         </div>
-                        <h3 className="font-bold text-lg text-surface-900 dark:text-surface-100">
+                        <h3 className="font-bold text-lg text-text-primary">
                           {cert.standardCode}
                         </h3>
                         <p className="text-sm text-surface-500 mt-0.5 line-clamp-1">

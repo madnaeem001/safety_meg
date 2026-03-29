@@ -189,7 +189,7 @@ export const CustomAppBuilder: React.FC = () => {
   const selectedElement = elements.find(el => el.id === selectedElementId);
 
   return (
-    <div className="flex flex-col h-screen bg-surface-950 text-white overflow-hidden">
+    <div className="flex flex-col h-screen bg-surface-base text-text-primary overflow-hidden">
       {/* ── TOP NAV ─────────────────────────────────────── */}
       <header className="h-14 border-b border-surface-800 bg-surface-900 flex items-center justify-between px-4 shrink-0">
         <div className="flex items-center gap-4">
@@ -365,14 +365,14 @@ export const CustomAppBuilder: React.FC = () => {
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-surface-800 rounded-b-2xl z-20" />
             )}
 
-            <div className="h-full w-full bg-slate-50 overflow-y-auto custom-scrollbar pt-8 pb-4">
+            <div className="h-full w-full bg-surface-sunken overflow-y-auto custom-scrollbar pt-8 pb-4">
               <Reorder.Group axis="y" values={elements} onReorder={setElements} className="px-4 space-y-4">
                 {elements.map(el => (
                   <Reorder.Item
                     key={el.id}
                     value={el}
                     onClick={() => setSelectedElementId(el.id)}
-                    className={`relative group cursor-pointer rounded-xl transition-all ${selectedElementId === el.id ? 'ring-2 ring-brand-500 ring-offset-2 ring-offset-slate-50' : 'hover:ring-1 hover:ring-brand-500/30'}`}
+                    className={`relative group cursor-pointer rounded-xl transition-all ${selectedElementId === el.id ? 'ring-2 ring-brand-500 ring-offset-2 ring-offset-surface-sunken' : 'hover:ring-1 hover:ring-brand-500/30'}`}
                   >
                     <CanvasElement element={el} />
                     
@@ -390,10 +390,10 @@ export const CustomAppBuilder: React.FC = () => {
 
               {elements.length === 0 && (
                 <div className="h-full flex flex-col items-center justify-center p-8 text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
-                    <Plus className="w-8 h-8 text-slate-300" />
+                  <div className="w-16 h-16 rounded-2xl bg-surface-sunken flex items-center justify-center mb-4">
+                    <Plus className="w-8 h-8 text-text-secondary" />
                   </div>
-                  <p className="text-slate-400 text-sm font-medium">Drag components here to start building your app</p>
+                  <p className="text-text-muted text-sm font-medium">Drag components here to start building your app</p>
                 </div>
               )}
             </div>
@@ -508,15 +508,15 @@ const CanvasElement: React.FC<{ element: AppElement }> = ({ element }) => {
   switch (element.type) {
     case 'header':
       return (
-        <div className="bg-white border-b border-slate-100 p-4 flex items-center justify-between rounded-t-xl">
-          <h2 className="text-lg font-bold text-slate-800">{element.props.title || 'App Header'}</h2>
-          <div className="w-8 h-8 rounded-full bg-slate-100" />
+        <div className="bg-white border-b border-surface-border p-4 flex items-center justify-between rounded-t-xl">
+          <h2 className="text-lg font-bold text-text-primary">{element.props.title || 'App Header'}</h2>
+          <div className="w-8 h-8 rounded-full bg-surface-sunken" />
         </div>
       );
     case 'text':
       return (
         <div className="p-2">
-          <p className="text-sm text-slate-600 leading-relaxed">
+          <p className="text-sm text-text-secondary leading-relaxed">
             {element.props.content || 'Click to edit this text block.'}
           </p>
         </div>
@@ -524,20 +524,20 @@ const CanvasElement: React.FC<{ element: AppElement }> = ({ element }) => {
     case 'input':
       return (
         <div className="space-y-1.5 p-2">
-          <label className="text-xs font-bold text-slate-700">Field Label</label>
-          <div className="w-full h-10 bg-white border border-slate-200 rounded-lg px-3 flex items-center text-slate-400 text-sm">
+          <label className="text-xs font-bold text-text-primary">Field Label</label>
+          <div className="w-full h-10 bg-white border border-surface-border rounded-lg px-3 flex items-center text-text-muted text-sm">
             Enter value...
           </div>
         </div>
       );
     case 'checklist':
       return (
-        <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-3 shadow-sm">
-          <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Inspection Checklist</h4>
+        <div className="bg-white border border-surface-border rounded-xl p-4 space-y-3 shadow-sm">
+          <h4 className="text-xs font-bold text-text-primary uppercase tracking-wider">Inspection Checklist</h4>
           {[1, 2, 3].map(i => (
-            <div key={i} className="flex items-center gap-3 py-2 border-b border-slate-50 last:border-0">
-              <div className="w-5 h-5 rounded border border-slate-300" />
-              <span className="text-sm text-slate-600">Safety Check Item {i}</span>
+            <div key={i} className="flex items-center gap-3 py-2 border-b border-surface-border last:border-0">
+              <div className="w-5 h-5 rounded border border-surface-border" />
+              <span className="text-sm text-text-secondary">Safety Check Item {i}</span>
             </div>
           ))}
         </div>
@@ -545,7 +545,7 @@ const CanvasElement: React.FC<{ element: AppElement }> = ({ element }) => {
     case 'camera':
       return (
         <div className="p-2">
-          <div className="w-full aspect-video bg-slate-100 border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center gap-2 text-slate-400">
+          <div className="w-full aspect-video bg-surface-sunken border-2 border-dashed border-surface-border rounded-xl flex flex-col items-center justify-center gap-2 text-text-muted">
             <Camera className="w-8 h-8" />
             <span className="text-xs font-medium">Tap to capture photo</span>
           </div>
@@ -554,8 +554,8 @@ const CanvasElement: React.FC<{ element: AppElement }> = ({ element }) => {
     case 'signature':
       return (
         <div className="space-y-1.5 p-2">
-          <label className="text-xs font-bold text-slate-700">Sign-off</label>
-          <div className="w-full h-24 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-300 italic text-sm">
+          <label className="text-xs font-bold text-text-primary">Sign-off</label>
+          <div className="w-full h-24 bg-white border border-surface-border rounded-xl flex items-center justify-center text-text-secondary italic text-sm">
             Sign here
           </div>
         </div>
@@ -576,10 +576,10 @@ const CanvasElement: React.FC<{ element: AppElement }> = ({ element }) => {
       );
     case 'chart':
       return (
-        <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+        <div className="bg-white border border-surface-border rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <h4 className="text-xs font-bold text-slate-800">Safety Trends</h4>
-            <BarChart3 className="w-4 h-4 text-slate-400" />
+            <h4 className="text-xs font-bold text-text-primary">Safety Trends</h4>
+            <BarChart3 className="w-4 h-4 text-text-muted" />
           </div>
           <div className="flex items-end gap-2 h-24">
             {[40, 70, 45, 90, 65, 80].map((h, i) => (
@@ -593,19 +593,19 @@ const CanvasElement: React.FC<{ element: AppElement }> = ({ element }) => {
     case 'list':
       return (
         <div className="space-y-2 p-2">
-          <h4 className="text-xs font-bold text-slate-800">Recent Records</h4>
+          <h4 className="text-xs font-bold text-text-primary">Recent Records</h4>
           {[1, 2].map(i => (
-            <div key={i} className="bg-white border border-slate-100 rounded-lg p-3 flex items-center justify-between shadow-sm">
+            <div key={i} className="bg-white border border-surface-border rounded-lg p-3 flex items-center justify-between shadow-sm">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded bg-slate-50 flex items-center justify-center">
-                  <FileText className="w-4 h-4 text-slate-400" />
+                <div className="w-8 h-8 rounded bg-surface-sunken flex items-center justify-center">
+                  <FileText className="w-4 h-4 text-text-muted" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-slate-800">Record #{1024 + i}</div>
-                  <div className="text-[10px] text-slate-500">Feb 07, 2026</div>
+                  <div className="text-xs font-bold text-text-primary">Record #{1024 + i}</div>
+                  <div className="text-[10px] text-text-muted">Feb 07, 2026</div>
                 </div>
               </div>
-              <ChevronRight className="w-4 h-4 text-slate-300" />
+              <ChevronRight className="w-4 h-4 text-text-secondary" />
             </div>
           ))}
         </div>

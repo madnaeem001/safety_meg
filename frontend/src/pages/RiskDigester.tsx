@@ -35,7 +35,7 @@ export const RiskDigester: React.FC = () => {
   const openViolations = (riskStats as any)?.openItems ?? (riskStats as any)?.critical ?? 0;
 
   return (
-    <div className="min-h-screen bg-surface-base pb-32">
+    <div className="page-wrapper">
 
       
       <main className="max-w-7xl mx-auto px-6 py-12 space-y-12">
@@ -49,7 +49,7 @@ export const RiskDigester: React.FC = () => {
               <ShieldAlert className="w-4 h-4" />
               Risk Management Module
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-text-primary tracking-tighter leading-none">Risk Digester</h1>
+            <h1 className="page-title">Risk Digester</h1>
             <p className="text-text-muted mt-4 max-w-xl text-lg">
               Comprehensive safety and environmental performance tracking aligned with ISO 14001, OSHA, EPA, and TCEQ standards.
             </p>

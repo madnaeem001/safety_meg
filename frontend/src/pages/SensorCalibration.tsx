@@ -127,7 +127,7 @@ export const SensorCalibration: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen pb-24 bg-gradient-to-br from-surface-50 via-white to-surface-100">
+    <div className="page-wrapper">
       {/* Header */}
       <header className="sticky top-[72px] z-50 bg-white/80 backdrop-blur-xl border-b border-surface-200/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -140,8 +140,8 @@ export const SensorCalibration: React.FC = () => {
                 <ArrowLeft className="w-5 h-5 text-surface-600" />
               </button>
               <div>
-                <h1 className="text-xl font-semibold text-surface-900">Sensor Calibration Tracking</h1>
-                <p className="text-sm text-surface-500">Manage calibration schedules and history</p>
+                <h1 className="page-title">Sensor Calibration Tracking</h1>
+                <p className="page-subtitle">Manage calibration schedules and history</p>
               </div>
             </div>
             <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-brand-600 to-brand-700 text-white rounded-xl shadow-button hover:shadow-lg transition-all">

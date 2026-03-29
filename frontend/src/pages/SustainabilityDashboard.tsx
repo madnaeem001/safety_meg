@@ -303,7 +303,7 @@ export const SustainabilityDashboard: React.FC = () => {
               +18%
             </span>
           </div>
-          <p className="text-3xl font-bold text-surface-900 dark:text-white">68%</p>
+          <p className="text-3xl font-bold text-text-primary">68%</p>
           <p className="text-sm text-surface-500">Renewable Energy</p>
         </motion.div>
 
@@ -320,7 +320,7 @@ export const SustainabilityDashboard: React.FC = () => {
               +5%
             </span>
           </div>
-          <p className="text-3xl font-bold text-surface-900 dark:text-white">92%</p>
+          <p className="text-3xl font-bold text-text-primary">92%</p>
           <p className="text-sm text-surface-500">Waste Diversion</p>
         </motion.div>
 
@@ -334,7 +334,7 @@ export const SustainabilityDashboard: React.FC = () => {
             <Award className="w-8 h-8 text-indigo-500" />
             <span className="text-sm text-surface-500">ESG</span>
           </div>
-          <p className="text-3xl font-bold text-surface-900 dark:text-white">{overallESGScore}</p>
+          <p className="text-3xl font-bold text-text-primary">{overallESGScore}</p>
           <p className="text-sm text-surface-500">ESG Score</p>
         </motion.div>
       </div>
@@ -343,7 +343,7 @@ export const SustainabilityDashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-6">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="font-semibold text-surface-900 dark:text-white">Emissions by Scope</h3>
+            <h3 className="font-semibold text-text-primary">Emissions by Scope</h3>
             <button 
               onClick={() => setViewMode('emissions')}
               className="text-sm text-brand-600 hover:text-brand-700 flex items-center gap-1"
@@ -365,7 +365,7 @@ export const SustainabilityDashboard: React.FC = () => {
                       <div className={`w-3 h-3 rounded-full ${conf.bg}`} style={{ backgroundColor: conf.fill }} />
                       <span className="text-sm font-medium text-surface-700 dark:text-surface-300">{conf.label}</span>
                     </div>
-                    <span className="text-sm font-medium text-surface-900 dark:text-white">
+                    <span className="text-sm font-medium text-text-primary">
                       {total.toLocaleString()} tCO2e ({percentage}%)
                     </span>
                   </div>
@@ -414,7 +414,7 @@ export const SustainabilityDashboard: React.FC = () => {
                 })()}
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <p className="text-2xl font-bold text-surface-900 dark:text-white">{(totalEmissions / 1000).toFixed(1)}k</p>
+                <p className="text-2xl font-bold text-text-primary">{(totalEmissions / 1000).toFixed(1)}k</p>
                 <p className="text-xs text-surface-500">tCO2e</p>
               </div>
             </div>
@@ -424,7 +424,7 @@ export const SustainabilityDashboard: React.FC = () => {
         {/* Goals Progress */}
         <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-6">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="font-semibold text-surface-900 dark:text-white">Sustainability Goals</h3>
+            <h3 className="font-semibold text-text-primary">Sustainability Goals</h3>
             <button 
               onClick={() => setViewMode('goals')}
               className="text-sm text-brand-600 hover:text-brand-700 flex items-center gap-1"
@@ -444,7 +444,7 @@ export const SustainabilityDashboard: React.FC = () => {
                 <div key={goal.id} className="p-4 bg-surface-50 dark:bg-surface-700 rounded-xl">
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <h4 className="font-medium text-surface-900 dark:text-white text-sm">{goal.title}</h4>
+                      <h4 className="font-medium text-text-primary text-sm">{goal.title}</h4>
                       <p className="text-xs text-surface-500">{goal.deadline}</p>
                     </div>
                     <span className={`px-2 py-0.5 text-xs rounded-full ${statConf.bg} ${statConf.text}`}>
@@ -476,7 +476,7 @@ export const SustainabilityDashboard: React.FC = () => {
       {/* ESG Summary */}
       <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="font-semibold text-surface-900 dark:text-white">ESG Performance</h3>
+          <h3 className="font-semibold text-text-primary">ESG Performance</h3>
           <button 
             onClick={() => setViewMode('esg')}
             className="text-sm text-brand-600 hover:text-brand-700 flex items-center gap-1"
@@ -516,7 +516,7 @@ export const SustainabilityDashboard: React.FC = () => {
                     }`} />
                   </div>
                 </div>
-                <p className="text-2xl font-bold text-surface-900 dark:text-white">{score}</p>
+                <p className="text-2xl font-bold text-text-primary">{score}</p>
                 <p className="text-sm text-surface-500 capitalize">{category}</p>
               </div>
             );
@@ -527,7 +527,7 @@ export const SustainabilityDashboard: React.FC = () => {
       {/* Carbon Projects */}
       <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="font-semibold text-surface-900 dark:text-white">Carbon Reduction Projects</h3>
+          <h3 className="font-semibold text-text-primary">Carbon Reduction Projects</h3>
           <button 
             onClick={() => setViewMode('projects')}
             className="text-sm text-brand-600 hover:text-brand-700 flex items-center gap-1"
@@ -555,7 +555,7 @@ export const SustainabilityDashboard: React.FC = () => {
                     }`} />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-medium text-surface-900 dark:text-white text-sm">{project.name}</h4>
+                    <h4 className="font-medium text-text-primary text-sm">{project.name}</h4>
                     <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full mt-1 ${
                       project.status === 'completed' ? 'bg-green-100 text-green-700' :
                       project.status === 'in_progress' ? 'bg-blue-100 text-blue-700' :
@@ -601,7 +601,7 @@ export const SustainabilityDashboard: React.FC = () => {
       {/* Emissions Table */}
       <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 overflow-hidden">
         <div className="p-4 border-b border-surface-200 dark:border-surface-700">
-          <h3 className="font-semibold text-surface-900 dark:text-white">Emissions Inventory</h3>
+          <h3 className="font-semibold text-text-primary">Emissions Inventory</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -629,11 +629,11 @@ export const SustainabilityDashboard: React.FC = () => {
                           {emission.scope.replace('scope', 'Scope ')}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-sm text-surface-900 dark:text-white font-medium">
+                      <td className="px-4 py-3 text-sm text-text-primary font-medium">
                         {emission.category}
                       </td>
                       <td className="px-4 py-3 text-sm text-surface-500">{emission.source}</td>
-                      <td className="px-4 py-3 text-sm text-right font-medium text-surface-900 dark:text-white">
+                      <td className="px-4 py-3 text-sm text-right font-medium text-text-primary">
                         {emission.value.toLocaleString()} {emission.unit}
                       </td>
                       <td className="px-4 py-3 text-sm text-right text-surface-500">
@@ -700,7 +700,7 @@ export const SustainabilityDashboard: React.FC = () => {
               <div className="flex-1">
                 <div className="flex items-start justify-between mb-2">
                   <div>
-                    <h4 className="text-lg font-semibold text-surface-900 dark:text-white">{goal.title}</h4>
+                    <h4 className="text-lg font-semibold text-text-primary">{goal.title}</h4>
                     <p className="text-sm text-surface-500">{goal.description}</p>
                   </div>
                   <span className={`px-3 py-1 text-sm rounded-full ${statConf.bg} ${statConf.text}`}>
@@ -711,32 +711,32 @@ export const SustainabilityDashboard: React.FC = () => {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-4">
                   <div>
                     <p className="text-xs text-surface-500 mb-1">Current</p>
-                    <p className="text-lg font-semibold text-surface-900 dark:text-white">
+                    <p className="text-lg font-semibold text-text-primary">
                       {goal.currentValue.toLocaleString()} {goal.unit}
                     </p>
                   </div>
                   <div>
                     <p className="text-xs text-surface-500 mb-1">Target</p>
-                    <p className="text-lg font-semibold text-surface-900 dark:text-white">
+                    <p className="text-lg font-semibold text-text-primary">
                       {goal.targetValue.toLocaleString()} {goal.unit}
                     </p>
                   </div>
                   <div>
                     <p className="text-xs text-surface-500 mb-1">Baseline</p>
-                    <p className="text-lg font-semibold text-surface-900 dark:text-white">
+                    <p className="text-lg font-semibold text-text-primary">
                       {goal.baselineValue.toLocaleString()} {goal.unit}
                     </p>
                   </div>
                   <div>
                     <p className="text-xs text-surface-500 mb-1">Deadline</p>
-                    <p className="text-lg font-semibold text-surface-900 dark:text-white">{goal.deadline}</p>
+                    <p className="text-lg font-semibold text-text-primary">{goal.deadline}</p>
                   </div>
                 </div>
                 
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm text-surface-600 dark:text-surface-400">Progress</span>
-                    <span className="text-sm font-medium text-surface-900 dark:text-white">{progress}%</span>
+                    <span className="text-sm font-medium text-text-primary">{progress}%</span>
                   </div>
                   <div className="h-3 bg-surface-200 dark:bg-surface-700 rounded-full overflow-hidden">
                     <motion.div
@@ -798,7 +798,7 @@ export const SustainabilityDashboard: React.FC = () => {
         return (
           <div key={category} className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-surface-900 dark:text-white capitalize flex items-center gap-2">
+              <h3 className="font-semibold text-text-primary capitalize flex items-center gap-2">
                 {category === 'environmental' && <Leaf className="w-5 h-5 text-emerald-500" />}
                 {category === 'social' && <Globe className="w-5 h-5 text-blue-500" />}
                 {category === 'governance' && <Building2 className="w-5 h-5 text-purple-500" />}
@@ -826,7 +826,7 @@ export const SustainabilityDashboard: React.FC = () => {
                           {metric.trend === 'up' && <TrendingUp className="w-3 h-3 inline" />}
                           {metric.trend === 'down' && <TrendingDown className="w-3 h-3 inline" />}
                         </span>
-                        <span className="text-sm font-medium text-surface-900 dark:text-white">{metric.score}</span>
+                        <span className="text-sm font-medium text-text-primary">{metric.score}</span>
                       </div>
                     </div>
                     <div className="h-2 bg-surface-200 dark:bg-surface-700 rounded-full overflow-hidden">
@@ -854,25 +854,25 @@ export const SustainabilityDashboard: React.FC = () => {
       {/* Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-white dark:bg-surface-800 rounded-xl p-4 shadow-sm border border-surface-200 dark:border-surface-700">
-          <p className="text-2xl font-bold text-surface-900 dark:text-white">
+          <p className="text-2xl font-bold text-text-primary">
             {carbonProjects.reduce((sum, p) => sum + p.co2Impact, 0).toLocaleString()}
           </p>
           <p className="text-sm text-surface-500">Total tCO2e Impact</p>
         </div>
         <div className="bg-white dark:bg-surface-800 rounded-xl p-4 shadow-sm border border-surface-200 dark:border-surface-700">
-          <p className="text-2xl font-bold text-surface-900 dark:text-white">
+          <p className="text-2xl font-bold text-text-primary">
             ${(carbonProjects.reduce((sum, p) => sum + p.investmentCost, 0) / 1000000).toFixed(1)}M
           </p>
           <p className="text-sm text-surface-500">Total Investment</p>
         </div>
         <div className="bg-white dark:bg-surface-800 rounded-xl p-4 shadow-sm border border-surface-200 dark:border-surface-700">
-          <p className="text-2xl font-bold text-surface-900 dark:text-white">
+          <p className="text-2xl font-bold text-text-primary">
             ${(carbonProjects.reduce((sum, p) => sum + p.annualSavings, 0) / 1000).toFixed(0)}K
           </p>
           <p className="text-sm text-surface-500">Annual Savings</p>
         </div>
         <div className="bg-white dark:bg-surface-800 rounded-xl p-4 shadow-sm border border-surface-200 dark:border-surface-700">
-          <p className="text-2xl font-bold text-surface-900 dark:text-white">
+          <p className="text-2xl font-bold text-text-primary">
             {carbonProjects.filter(p => p.status === 'in_progress').length}
           </p>
           <p className="text-sm text-surface-500">Active Projects</p>
@@ -906,7 +906,7 @@ export const SustainabilityDashboard: React.FC = () => {
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-3">
                     <div>
-                      <h4 className="text-lg font-semibold text-surface-900 dark:text-white">{project.name}</h4>
+                      <h4 className="text-lg font-semibold text-text-primary">{project.name}</h4>
                       <div className="flex items-center gap-2 mt-1">
                         <span className={`px-2 py-0.5 text-xs rounded-full capitalize ${
                           project.type === 'renewable' ? 'bg-amber-100 text-amber-700' :
@@ -935,23 +935,23 @@ export const SustainabilityDashboard: React.FC = () => {
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-4 border-t border-surface-100 dark:border-surface-700">
                     <div>
                       <p className="text-xs text-surface-500 mb-1">Investment</p>
-                      <p className="font-medium text-surface-900 dark:text-white">
+                      <p className="font-medium text-text-primary">
                         ${(project.investmentCost / 1000).toFixed(0)}K
                       </p>
                     </div>
                     <div>
                       <p className="text-xs text-surface-500 mb-1">Annual Savings</p>
-                      <p className="font-medium text-surface-900 dark:text-white">
+                      <p className="font-medium text-text-primary">
                         ${(project.annualSavings / 1000).toFixed(0)}K
                       </p>
                     </div>
                     <div>
                       <p className="text-xs text-surface-500 mb-1">Start Date</p>
-                      <p className="font-medium text-surface-900 dark:text-white">{project.startDate}</p>
+                      <p className="font-medium text-text-primary">{project.startDate}</p>
                     </div>
                     <div>
                       <p className="text-xs text-surface-500 mb-1">Completion</p>
-                      <p className="font-medium text-surface-900 dark:text-white">{project.completionDate}</p>
+                      <p className="font-medium text-text-primary">{project.completionDate}</p>
                     </div>
                   </div>
                 </div>
@@ -974,7 +974,7 @@ export const SustainabilityDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen pb-24 bg-surface-50 dark:bg-surface-900">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="sticky top-[72px] z-50 bg-white/80 dark:bg-surface-800/80 backdrop-blur-xl border-b border-surface-200 dark:border-surface-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -993,7 +993,7 @@ export const SustainabilityDashboard: React.FC = () => {
                 <ArrowLeft className="w-5 h-5 text-surface-600 dark:text-surface-400" />
               </button>
               <div>
-                <h1 className="text-xl font-bold text-surface-900 dark:text-white flex items-center gap-2">
+                <h1 className="page-title flex items-center gap-2">
                   <Leaf className="w-6 h-6 text-green-500" />
                   {getViewTitle()}
                 </h1>

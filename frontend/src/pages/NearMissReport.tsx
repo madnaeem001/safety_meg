@@ -567,7 +567,7 @@ export const NearMissReport: React.FC = () => {
                   <AlertTriangle className="w-6 h-6 text-warning" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-text-primary">Near Miss Report</h1>
+                  <h1 className="page-title">Near Miss Report</h1>
                   <p className="text-sm text-text-muted">OSHA, ISO, and international compliance workflow for high-quality near miss documentation.</p>
                 </div>
               </div>

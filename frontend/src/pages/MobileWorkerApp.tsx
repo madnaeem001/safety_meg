@@ -857,7 +857,7 @@ export const MobileWorkerApp: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-base">
+    <div className="page-wrapper">
       {renderStatusBar()}
       
       {/* Header */}
@@ -886,7 +886,7 @@ export const MobileWorkerApp: React.FC = () => {
             </button>
           )}
           
-          <h1 className="text-lg font-semibold text-text-primary">
+          <h1 className="page-title">
             {getViewTitle() || 'Mobile Worker'}
           </h1>
           

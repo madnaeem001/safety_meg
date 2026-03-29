@@ -322,7 +322,7 @@ export const SupervisorApprovals: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 pb-24">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white sticky top-[72px] z-50 safe-top">
         <div className="px-4 py-4">
@@ -330,7 +330,7 @@ export const SupervisorApprovals: React.FC = () => {
             <button onClick={() => navigate(-1)} className="p-2 -ml-2 hover:bg-white/10 rounded-full transition-colors">
               <ArrowLeft className="w-6 h-6" />
             </button>
-            <h1 className="text-xl font-bold">Approval Queue</h1>
+            <h1 className="page-title">Approval Queue</h1>
             <div className="flex items-center gap-2">
               <button className="p-2 hover:bg-white/10 rounded-full transition-colors relative">
                 <Bell className="w-5 h-5" />

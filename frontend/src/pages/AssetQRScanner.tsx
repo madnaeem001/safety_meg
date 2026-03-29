@@ -215,142 +215,142 @@ const AssetQRScannerContent: React.FC = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#020617', color: 'white', display: 'flex', flexDirection: 'column', fontFamily: 'sans-serif' }}>
+    <div className="page-wrapper flex flex-col text-text-primary">
       {/* Header */}
-      <header style={{ padding: '1rem', borderBottom: '1px solid #1e293b', display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#0f172a' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>
+      <header className="p-4 border-b border-surface-border flex items-center justify-between bg-surface-raised">
+        <div className="flex items-center gap-4">
+          <button onClick={() => navigate(-1)} className="bg-transparent border-none text-text-primary cursor-pointer">
             <ArrowLeft size={24} />
           </button>
-          <img src="/logo.png" alt="SafetyMEG" style={{ width: '2rem', height: '2rem', objectFit: 'contain' }} />
+          <img src="/logo.png" alt="SafetyMEG" className="w-8 h-8 object-contain" />
           <div>
-            <h1 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 'bold' }}>Asset Intelligence</h1>
-            <p style={{ margin: 0, fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Multi-Mode Scanner</p>
+            <h1 className="m-0 text-lg font-bold text-text-primary">Asset Intelligence</h1>
+            <p className="page-subtitle m-0 uppercase tracking-widest !text-xs">Multi-Mode Scanner</p>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <div className="flex gap-2">
           <select 
             value={scanMode}
             onChange={(e) => { setScanMode(e.target.value as any); reset(); }}
-            style={{ padding: '0.5rem', borderRadius: '0.5rem', border: '1px solid #334155', backgroundColor: '#1e293b', color: 'white', fontSize: '0.75rem', fontWeight: 'bold', cursor: 'pointer' }}
+            className="p-2 rounded-lg border border-surface-border bg-surface-sunken text-text-primary text-xs font-bold cursor-pointer"
           >
             <option value="qr">QR Code</option>
             <option value="barcode">Barcode</option>
             <option value="photo">Photo Scan</option>
           </select>
-          <button onClick={reset} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>
+          <button onClick={reset} className="bg-transparent border-none text-text-primary cursor-pointer">
             <RefreshCw size={24} className={isScanning || isAnalyzing ? 'animate-spin' : ''} />
           </button>
         </div>
       </header>
 
-      <main style={{ flex: 1, padding: '1.5rem', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
+      <main className="flex-1 p-6 max-w-[800px] mx-auto w-full">
         {error && (
-          <div style={{ backgroundColor: '#450a0a', border: '1px solid #991b1b', padding: '1rem', borderRadius: '1rem', marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <AlertTriangle size={20} color="#ef4444" />
-              <p style={{ margin: 0, fontSize: '0.875rem' }}>{error}</p>
+          <div className="bg-danger/10 border border-danger/30 p-4 rounded-2xl mb-6 flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <AlertTriangle size={20} className="text-danger" />
+              <p className="m-0 text-sm text-text-primary">{error}</p>
             </div>
-            <button onClick={() => setError(null)} style={{ background: 'none', border: 'none', color: 'white', fontWeight: 'bold', cursor: 'pointer' }}>X</button>
+            <button onClick={() => setError(null)} className="bg-transparent border-none text-text-primary font-bold cursor-pointer">X</button>
           </div>
         )}
 
         {!assetsLoading && allAssets.length === 0 && !scannedAsset && !showManual && !isAnalyzing ? (
-          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
-            <div style={{ width: '5rem', height: '5rem', borderRadius: '1.5rem', backgroundColor: 'rgba(239, 68, 68, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
-              <Database size={40} color="#ef4444" />
+          <div className="text-center py-16">
+            <div className="w-20 h-20 rounded-3xl bg-danger/10 flex items-center justify-center mx-auto mb-6">
+              <Database size={40} className="text-danger" />
             </div>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: '900', marginBottom: '0.5rem' }}>No Backend Assets Available</h2>
-            <p style={{ color: '#94a3b8', fontSize: '0.875rem', maxWidth: '32rem', margin: '0 auto 1.5rem' }}>Asset scanning now depends entirely on backend asset records. Add or sync assets first, then reopen the scanner.</p>
-            <button onClick={() => navigate('/')} style={{ padding: '0.75rem 1.25rem', borderRadius: '0.75rem', border: '1px solid #334155', backgroundColor: '#0f172a', color: 'white', cursor: 'pointer', fontWeight: 'bold' }}>
+            <h2 className="section-heading text-xl font-black mb-2">No Backend Assets Available</h2>
+            <p className="page-subtitle max-w-lg mx-auto mb-6">Asset scanning now depends entirely on backend asset records. Add or sync assets first, then reopen the scanner.</p>
+            <button onClick={() => navigate('/')} className="px-5 py-3 rounded-xl border border-surface-border bg-surface-raised text-text-primary cursor-pointer font-bold">
               Return to Dashboard
             </button>
           </div>
         ) : isScanning && !showManual && scanMode !== 'photo' ? (
-          <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-            <div style={{ width: '280px', height: '280px', border: '4px solid #1e293b', borderRadius: '3rem', margin: '0 auto 2.5rem', position: 'relative', overflow: 'hidden', backgroundColor: 'black', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
-              <div style={{ position: 'absolute', inset: 0, opacity: 0.3, backgroundImage: "url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1000')", backgroundSize: 'cover' }} />
-              <div style={{ position: 'absolute', top: `${scanProgress}%`, left: 0, right: 0, height: '2px', backgroundColor: '#14b8a6', boxShadow: '0 0 15px #14b8a6', zIndex: 10 }} />
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                {scanMode === 'qr' ? <Scan size={80} color="white" style={{ opacity: 0.2 }} /> : <Barcode size={80} color="white" style={{ opacity: 0.2 }} />}
+          <div className="text-center py-8">
+            <div className="w-[280px] h-[280px] border-4 border-surface-border rounded-[3rem] mx-auto mb-10 relative overflow-hidden bg-black shadow-2xl">
+              <div className="absolute inset-0 opacity-30 bg-cover" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1000')" }} />
+              <div className="absolute left-0 right-0 h-0.5 bg-accent shadow-[0_0_15px_var(--color-accent)] z-10" style={{ top: `${scanProgress}%` }} />
+              <div className="absolute inset-0 flex items-center justify-center">
+                {scanMode === 'qr' ? <Scan size={80} className="text-text-inverted opacity-20" /> : <Barcode size={80} className="text-text-inverted opacity-20" />}
               </div>
             </div>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: '900', marginBottom: '0.5rem' }}>{scanMode === 'qr' ? 'Scanning QR Code...' : 'Scanning Barcode...'}</h2>
-            <p style={{ color: '#94a3b8', fontSize: '0.875rem', marginBottom: '2rem' }}>Align the code within the frame for instant regulation sync.</p>
-            <button onClick={() => setShowManual(true)} style={{ color: '#14b8a6', background: 'none', border: 'none', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Enter ID Manually</button>
+            <h2 className="section-heading text-xl font-black mb-2">{scanMode === 'qr' ? 'Scanning QR Code...' : 'Scanning Barcode...'}</h2>
+            <p className="page-subtitle mb-8">Align the code within the frame for instant regulation sync.</p>
+            <button onClick={() => setShowManual(true)} className="text-accent bg-transparent border-none font-bold cursor-pointer text-xs uppercase tracking-widest">Enter ID Manually</button>
           </div>
         ) : scanMode === 'photo' && !scannedAsset && !isAnalyzing ? (
-          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
+          <div className="text-center py-16">
             <div 
               onClick={() => fileInputRef.current?.click()}
-              style={{ width: '100%', maxWidth: '400px', aspectRatio: '1', border: '2px dashed #334155', borderRadius: '2rem', margin: '0 auto 2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backgroundColor: 'rgba(30, 41, 59, 0.3)', padding: '3rem' }}
+              className="w-full max-w-[400px] aspect-square border-2 border-dashed border-surface-border rounded-[2rem] mx-auto mb-8 flex flex-col items-center justify-center cursor-pointer bg-surface-sunken/30 p-12"
             >
-              <div style={{ width: '5rem', height: '5rem', borderRadius: '1.5rem', backgroundColor: '#1e293b', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
-                <Camera size={40} color="#94a3b8" />
+              <div className="w-20 h-20 rounded-3xl bg-surface-sunken flex items-center justify-center mb-6">
+                <Camera size={40} className="text-text-muted" />
               </div>
-              <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>Upload Asset Photo</h2>
-              <p style={{ color: '#64748b', fontSize: '0.875rem' }}>AI will identify the asset and sync regulations</p>
-              <input type="file" ref={fileInputRef} onChange={handlePhotoUpload} style={{ display: 'none' }} accept="image/*" />
+              <h2 className="section-heading text-xl mb-2">Upload Asset Photo</h2>
+              <p className="page-subtitle">AI will identify the asset and sync regulations</p>
+              <input type="file" ref={fileInputRef} onChange={handlePhotoUpload} className="hidden" accept="image/*" />
             </div>
           </div>
         ) : isAnalyzing ? (
-          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
-            <div style={{ position: 'relative', width: '8rem', height: '8rem', margin: '0 auto 2rem' }}>
-              <div style={{ width: '100%', height: '100%', borderRadius: '50%', border: '4px solid rgba(20, 184, 166, 0.2)', borderTopColor: '#14b8a6', animation: 'spin 1s linear infinite' }} />
-              <Brain size={40} color="#14b8a6" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
+          <div className="text-center py-16">
+            <div className="relative w-32 h-32 mx-auto mb-8">
+              <div className="w-full h-full rounded-full border-4 border-accent/20 border-t-accent animate-spin" />
+              <Brain size={40} className="text-accent absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
             </div>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: '900', marginBottom: '0.5rem' }}>AI Analyzing Photo...</h2>
-            <p style={{ color: '#94a3b8', fontSize: '0.875rem' }}>Identifying asset and retrieving compliance data</p>
+            <h2 className="section-heading text-xl font-black mb-2">AI Analyzing Photo...</h2>
+            <p className="page-subtitle">Identifying asset and retrieving compliance data</p>
           </div>
         ) : showManual ? (
-          <div style={{ maxWidth: '400px', margin: '2rem auto' }}>
-            <h2 style={{ textAlign: 'center', fontSize: '1.5rem', fontWeight: '900', marginBottom: '2rem' }}>Manual Asset Entry</h2>
-            <form onSubmit={handleManual} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div className="max-w-[400px] mx-auto mt-8">
+            <h2 className="section-heading text-xl font-black text-center mb-8">Manual Asset Entry</h2>
+            <form onSubmit={handleManual} className="flex flex-col gap-5">
               <input 
                 type="text" 
                 value={manualId} 
                 onChange={e => setManualId(e.target.value)} 
                 placeholder="Asset ID (e.g. ASSET-001)" 
-                style={{ padding: '1.25rem', borderRadius: '1rem', border: '1px solid #334155', backgroundColor: '#0f172a', color: 'white', fontSize: '1rem', fontWeight: 'bold' }}
+                className="p-5 rounded-2xl border border-surface-border bg-surface-raised text-text-primary text-base font-bold"
               />
-              <div style={{ display: 'flex', gap: '1rem' }}>
-                <button type="button" onClick={() => setShowManual(false)} style={{ flex: 1, padding: '1.25rem', borderRadius: '1rem', border: 'none', backgroundColor: '#1e293b', color: 'white', fontWeight: 'bold', cursor: 'pointer' }}>Cancel</button>
-                <button type="submit" style={{ flex: 1, padding: '1.25rem', borderRadius: '1rem', border: 'none', backgroundColor: '#14b8a6', color: 'white', fontWeight: 'bold', cursor: 'pointer' }}>Retrieve Data</button>
+              <div className="flex gap-4">
+                <button type="button" onClick={() => setShowManual(false)} className="flex-1 p-5 rounded-2xl border-none bg-surface-sunken text-text-primary font-bold cursor-pointer">Cancel</button>
+                <button type="submit" className="flex-1 p-5 rounded-2xl border-none bg-accent text-text-inverted font-bold cursor-pointer">Retrieve Data</button>
               </div>
             </form>
           </div>
         ) : scannedAsset ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', paddingBottom: '4rem' }}>
+          <div className="flex flex-col gap-6 pb-16">
             {/* Asset Identity */}
-            <div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', padding: '2rem', borderRadius: '2rem', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                <div style={{ width: '3.5rem', height: '3.5rem', backgroundColor: '#14b8a6', borderRadius: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  {scanMode === 'qr' ? <Scan size={28} color="white" /> : scanMode === 'barcode' ? <Barcode size={28} color="white" /> : <Camera size={28} color="white" />}
+            <div className="bg-surface-raised border border-surface-border p-8 rounded-[2rem] shadow-lg">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 bg-accent rounded-2xl flex items-center justify-center">
+                  {scanMode === 'qr' ? <Scan size={28} className="text-text-inverted" /> : scanMode === 'barcode' ? <Barcode size={28} className="text-text-inverted" /> : <Camera size={28} className="text-text-inverted" />}
                 </div>
                 <div>
-                  <p style={{ color: '#14b8a6', fontWeight: '900', margin: 0, fontSize: '0.75rem', textTransform: 'uppercase' }}>{scannedAsset.id}</p>
-                  <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: '900' }}>{scannedAsset.name}</h2>
+                  <p className="text-accent font-black m-0 text-xs uppercase">{scannedAsset.id}</p>
+                  <h2 className="section-heading m-0 text-xl font-black">{scannedAsset.name}</h2>
                 </div>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <p style={{ color: '#64748b', fontSize: '0.65rem', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Status</p>
-                  <p style={{ margin: 0, fontWeight: 'bold', color: getStatusColor(scannedAsset.status) }}>{scannedAsset.status}</p>
+                  <p className="text-text-muted text-[0.65rem] font-bold uppercase mb-1">Status</p>
+                  <p className="m-0 font-bold" style={{ color: getStatusColor(scannedAsset.status) }}>{scannedAsset.status}</p>
                 </div>
                 <div>
-                  <p style={{ color: '#64748b', fontSize: '0.65rem', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Location</p>
-                  <p style={{ margin: 0, fontWeight: 'bold' }}>{scannedAsset.location}</p>
+                  <p className="text-text-muted text-[0.65rem] font-bold uppercase mb-1">Location</p>
+                  <p className="m-0 font-bold text-text-primary">{scannedAsset.location}</p>
                 </div>
               </div>
             </div>
 
             {/* Regulation & Standard Sync */}
-            <div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', padding: '2rem', borderRadius: '2rem' }}>
-              <h3 style={{ margin: '0 0 1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.1rem', fontWeight: 'bold' }}>
-                <Globe size={22} color="#3b82f6" />
+            <div className="bg-surface-raised border border-surface-border p-8 rounded-[2rem]">
+              <h3 className="section-heading m-0 mb-6 flex items-center gap-3">
+                <Globe size={22} className="text-primary-500" />
                 Regulation & Standard Sync
               </h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div className="grid grid-cols-2 gap-4">
                 {[
                   { label: 'OSHA 1910', status: scannedAsset.complianceSync.osha, color: scannedAsset.complianceSync.osha === 'Compliant' ? '#10b981' : '#ef4444', icon: Shield },
                   { label: 'ISO 45001', status: scannedAsset.complianceSync.iso, color: scannedAsset.complianceSync.iso === 'Certified' ? '#10b981' : '#f59e0b', icon: Globe },
@@ -361,49 +361,49 @@ const AssetQRScannerContent: React.FC = () => {
                   { label: 'NCR Status', status: scannedAsset.ncrHistory?.some(n => n.status === 'Open') ? 'Open NCRs' : 'No Open NCRs', color: scannedAsset.ncrHistory?.some(n => n.status === 'Open') ? '#ef4444' : '#10b981', icon: AlertTriangle },
                   { label: 'SDS Library', status: scannedAsset.sdsUrl ? 'Synced' : 'Not Found', color: scannedAsset.sdsUrl ? '#10b981' : '#ef4444', icon: Database },
                 ].map((item, i) => (
-                  <div key={i} style={{ padding: '1rem', backgroundColor: '#1e293b', borderRadius: '1rem', border: '1px solid #334155' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                      <item.icon size={14} color="#94a3b8" />
-                      <p style={{ margin: 0, fontSize: '0.7rem', color: '#94a3b8', fontWeight: 'bold', textTransform: 'uppercase' }}>{item.label}</p>
+                  <div key={i} className="p-4 bg-surface-sunken rounded-2xl border border-surface-border">
+                    <div className="flex items-center gap-2 mb-2">
+                      <item.icon size={14} className="text-text-muted" />
+                      <p className="m-0 text-[0.7rem] text-text-muted font-bold uppercase">{item.label}</p>
                     </div>
-                    <p style={{ margin: 0, fontSize: '0.875rem', fontWeight: 'bold', color: item.color }}>{item.status}</p>
+                    <p className="m-0 text-sm font-bold" style={{ color: item.color }}>{item.status}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* SDS & Technical Data */}
-            <div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', padding: '2rem', borderRadius: '2rem' }}>
-              <h3 style={{ margin: '0 0 1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.1rem', fontWeight: 'bold' }}>
-                <Database size={22} color="#f59e0b" />
+            <div className="bg-surface-raised border border-surface-border p-8 rounded-[2rem]">
+              <h3 className="section-heading m-0 mb-6 flex items-center gap-3">
+                <Database size={22} className="text-warning" />
                 SDS & Technical Intelligence
               </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <div style={{ padding: '1rem', backgroundColor: '#1e293b', borderRadius: '1rem', border: '1px solid #334155', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <FileText size={20} color="#94a3b8" />
+              <div className="flex flex-col gap-4">
+                <div className="p-4 bg-surface-sunken rounded-2xl border border-surface-border flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <FileText size={20} className="text-text-muted" />
                     <div>
-                      <p style={{ margin: 0, fontSize: '0.875rem', fontWeight: 'bold' }}>Safety Data Sheet (SDS)</p>
-                      <p style={{ margin: 0, fontSize: '0.7rem', color: '#64748b' }}>{scannedAsset.sdsUrl ? 'GHS Compliant • Updated Jan 2026' : 'No SDS found for this asset'}</p>
+                      <p className="m-0 text-sm font-bold text-text-primary">Safety Data Sheet (SDS)</p>
+                      <p className="m-0 text-[0.7rem] text-text-muted">{scannedAsset.sdsUrl ? 'GHS Compliant • Updated Jan 2026' : 'No SDS found for this asset'}</p>
                     </div>
                   </div>
-                  {scannedAsset.sdsUrl && <button style={{ padding: '0.5rem 1rem', borderRadius: '0.5rem', backgroundColor: '#334155', border: 'none', color: 'white', fontSize: '0.7rem', fontWeight: 'bold', cursor: 'pointer' }}>View</button>}
+                  {scannedAsset.sdsUrl && <button className="px-4 py-2 rounded-lg bg-surface-border border-none text-text-primary text-[0.7rem] font-bold cursor-pointer">View</button>}
                 </div>
                 
                 {scannedAsset.ncrHistory && scannedAsset.ncrHistory.length > 0 && (
-                  <div style={{ padding: '1rem', backgroundColor: '#1e293b', borderRadius: '1rem', border: '1px solid #334155' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                      <Scale size={20} color="#94a3b8" />
-                      <p style={{ margin: 0, fontSize: '0.875rem', fontWeight: 'bold' }}>NCR History</p>
+                  <div className="p-4 bg-surface-sunken rounded-2xl border border-surface-border">
+                    <div className="flex items-center gap-4 mb-4">
+                      <Scale size={20} className="text-text-muted" />
+                      <p className="m-0 text-sm font-bold text-text-primary">NCR History</p>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    <div className="flex flex-col gap-3">
                       {scannedAsset.ncrHistory.map((ncr, i) => (
-                        <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.5rem', backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: '0.5rem' }}>
+                        <div key={i} className="flex items-center justify-between p-2 bg-black/20 rounded-lg">
                           <div>
-                            <p style={{ margin: 0, fontSize: '0.75rem', fontWeight: 'bold' }}>{ncr.issue}</p>
-                            <p style={{ margin: 0, fontSize: '0.65rem', color: '#64748b' }}>{ncr.date} • {ncr.id}</p>
+                            <p className="m-0 text-xs font-bold text-text-primary">{ncr.issue}</p>
+                            <p className="m-0 text-[0.65rem] text-text-muted">{ncr.date} • {ncr.id}</p>
                           </div>
-                          <span style={{ fontSize: '0.65rem', fontWeight: 'black', textTransform: 'uppercase', color: ncr.status === 'Resolved' ? '#10b981' : '#ef4444' }}>{ncr.status}</span>
+                          <span className={`text-[0.65rem] font-black uppercase ${ncr.status === 'Resolved' ? 'text-success' : 'text-danger'}`}>{ncr.status}</span>
                         </div>
                       ))}
                     </div>
@@ -412,17 +412,11 @@ const AssetQRScannerContent: React.FC = () => {
               </div>
             </div>
 
-            <button onClick={reset} style={{ padding: '1.25rem', borderRadius: '1.25rem', border: 'none', backgroundColor: '#1e293b', color: 'white', fontWeight: 'bold', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.75rem' }}>Scan Another Asset</button>
+            <button onClick={reset} className="p-5 rounded-[1.25rem] border-none bg-surface-sunken text-text-primary font-bold cursor-pointer uppercase tracking-widest text-xs">Scan Another Asset</button>
           </div>
         ) : null}
       </main>
 
-      <style>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 };

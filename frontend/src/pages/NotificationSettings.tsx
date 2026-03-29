@@ -459,7 +459,7 @@ export const NotificationSettings: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 dark:bg-slate-900 pb-24">
+    <div className="page-wrapper">
 
       
       {/* Keyboard Shortcuts Help Modal */}
@@ -477,17 +477,17 @@ export const NotificationSettings: React.FC = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl max-w-sm w-full overflow-hidden"
+              className="bg-surface-raised rounded-2xl shadow-xl max-w-sm w-full overflow-hidden"
             >
-              <div className="p-4 border-b border-surface-200/60 dark:border-slate-700/60">
+              <div className="p-4 border-b border-surface-200/60 dark:border-surface-border">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Keyboard className="w-5 h-5 text-brand-500" />
-                    <h3 className="font-semibold text-slate-900 dark:text-white">Keyboard Shortcuts</h3>
+                    <h3 className="font-semibold text-text-primary">Keyboard Shortcuts</h3>
                   </div>
                   <button
                     onClick={() => setShowShortcutsHelp(false)}
-                    className="p-1.5 hover:bg-surface-100 dark:hover:bg-slate-700 rounded-lg"
+                    className="p-1.5 hover:bg-surface-100 rounded-lg"
                   >
                     <X className="w-4 h-4 text-surface-500" />
                   </button>
@@ -499,11 +499,11 @@ export const NotificationSettings: React.FC = () => {
                     <span className="text-sm text-surface-600 dark:text-surface-300">{shortcut.description}</span>
                     <div className="flex items-center gap-1">
                       {'meta' in shortcut && shortcut.meta && (
-                        <kbd className="px-1.5 py-0.5 text-xs font-medium bg-surface-100 dark:bg-slate-700 text-surface-600 dark:text-surface-300 rounded border border-surface-200 dark:border-slate-600">
+                        <kbd className="px-1.5 py-0.5 text-xs font-medium bg-surface-100 text-surface-600 dark:text-surface-300 rounded border border-surface-200 dark:border-surface-border">
                           ⌘
                         </kbd>
                       )}
-                      <kbd className="px-1.5 py-0.5 text-xs font-medium bg-surface-100 dark:bg-slate-700 text-surface-600 dark:text-surface-300 rounded border border-surface-200 dark:border-slate-600">
+                      <kbd className="px-1.5 py-0.5 text-xs font-medium bg-surface-100 text-surface-600 dark:text-surface-300 rounded border border-surface-200 dark:border-surface-border">
                         {shortcut.key === 'Backspace' ? '⌫' : shortcut.key}
                       </kbd>
                     </div>
@@ -511,7 +511,7 @@ export const NotificationSettings: React.FC = () => {
                 ))}
                 <div className="flex items-center justify-between py-1.5">
                   <span className="text-sm text-surface-600 dark:text-surface-300">Show this help</span>
-                  <kbd className="px-1.5 py-0.5 text-xs font-medium bg-surface-100 dark:bg-slate-700 text-surface-600 dark:text-surface-300 rounded border border-surface-200 dark:border-slate-600">
+                  <kbd className="px-1.5 py-0.5 text-xs font-medium bg-surface-100 text-surface-600 dark:text-surface-300 rounded border border-surface-200 dark:border-surface-border">
                     ?
                   </kbd>
                 </div>
@@ -522,18 +522,18 @@ export const NotificationSettings: React.FC = () => {
       </AnimatePresence>
       
       {/* Header */}
-      <div className="sticky top-14 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-surface-200/60 dark:border-slate-700/60">
+      <div className="sticky top-14 z-30 bg-white/95/95 backdrop-blur-xl border-b border-surface-200/60 dark:border-surface-border">
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate(-1)}
-              className="p-2 -ml-2 rounded-xl hover:bg-surface-100 dark:hover:bg-slate-800 transition-colors touch-target"
+              className="p-2 -ml-2 rounded-xl hover:bg-surface-100 transition-colors touch-target"
               aria-label="Go back"
             >
               <ArrowLeft className="w-5 h-5 text-surface-600 dark:text-surface-300" />
             </button>
             <div className="flex-1">
-              <h1 className="text-lg font-semibold text-slate-900 dark:text-white">Notifications</h1>
+              <h1 className="page-title">Notifications</h1>
               {unreadCount > 0 && (
                 <p className="text-xs text-surface-500 dark:text-surface-400">{unreadCount} unread</p>
               )}
@@ -541,7 +541,7 @@ export const NotificationSettings: React.FC = () => {
             {/* Keyboard shortcuts help button */}
             <button
               onClick={() => setShowShortcutsHelp(true)}
-              className="p-2 rounded-xl hover:bg-surface-100 dark:hover:bg-slate-800 transition-colors touch-target hidden md:flex"
+              className="p-2 rounded-xl hover:bg-surface-100 transition-colors touch-target hidden md:flex"
               aria-label="Keyboard shortcuts"
               title="Keyboard shortcuts (?)"
             >
@@ -549,7 +549,7 @@ export const NotificationSettings: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveTab(activeTab === 'notifications' ? 'settings' : 'notifications')}
-              className="p-2 rounded-xl hover:bg-surface-100 dark:hover:bg-slate-800 transition-colors touch-target"
+              className="p-2 rounded-xl hover:bg-surface-100 transition-colors touch-target"
               aria-label="Toggle settings"
             >
               <Settings className={`w-5 h-5 transition-colors ${activeTab === 'settings' ? 'text-brand-500' : 'text-surface-500 dark:text-surface-400'}`} />
@@ -557,12 +557,12 @@ export const NotificationSettings: React.FC = () => {
           </div>
 
           {/* Tab Switcher */}
-          <div className="flex gap-1 mt-3 p-1 bg-surface-100 dark:bg-slate-800 rounded-xl">
+          <div className="flex gap-1 mt-3 p-1 bg-surface-100 rounded-xl">
             <button
               onClick={() => setActiveTab('notifications')}
               className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
                 activeTab === 'notifications'
-                  ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
+                  ? 'bg-white text-text-primary shadow-sm'
                   : 'text-surface-500 dark:text-surface-400'
               }`}
             >
@@ -573,7 +573,7 @@ export const NotificationSettings: React.FC = () => {
               onClick={() => setActiveTab('settings')}
               className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
                 activeTab === 'settings'
-                  ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
+                  ? 'bg-white text-text-primary shadow-sm'
                   : 'text-surface-500 dark:text-surface-400'
               }`}
             >
@@ -605,12 +605,12 @@ export const NotificationSettings: React.FC = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search notifications... (press / to focus)"
-                    className="w-full pl-10 pr-10 py-2.5 bg-white dark:bg-slate-800 border border-surface-200/60 dark:border-slate-700/60 rounded-xl text-sm text-slate-900 dark:text-white placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
+                    className="w-full pl-10 pr-10 py-2.5 bg-surface-raised border border-surface-200/60 dark:border-surface-border rounded-xl text-sm text-text-primary placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
                   />
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-surface-100 dark:hover:bg-slate-700 rounded-full"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-surface-100 rounded-full"
                     >
                       <X className="w-4 h-4 text-surface-400" />
                     </button>
@@ -624,7 +624,7 @@ export const NotificationSettings: React.FC = () => {
                     className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       showFilters || hasActiveFilters
                         ? 'bg-brand-50 dark:bg-brand-900/20 text-brand-600 dark:text-brand-400'
-                        : 'bg-surface-100 dark:bg-slate-800 text-surface-600 dark:text-surface-300'
+                        : 'bg-surface-100 text-surface-600 dark:text-surface-300'
                     }`}
                   >
                     <Filter className="w-4 h-4" />
@@ -639,7 +639,7 @@ export const NotificationSettings: React.FC = () => {
                     className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       isSelectionMode
                         ? 'bg-brand-50 dark:bg-brand-900/20 text-brand-600 dark:text-brand-400'
-                        : 'bg-surface-100 dark:bg-slate-800 text-surface-600 dark:text-surface-300'
+                        : 'bg-surface-100 text-surface-600 dark:text-surface-300'
                     }`}
                   >
                     {isSelectionMode ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
@@ -670,7 +670,7 @@ export const NotificationSettings: React.FC = () => {
                         <select
                           value={readFilter}
                           onChange={(e) => setReadFilter(e.target.value as ReadFilter)}
-                          className="px-3 py-1.5 bg-white dark:bg-slate-800 border border-surface-200/60 dark:border-slate-700/60 rounded-lg text-sm text-slate-900 dark:text-white"
+                          className="px-3 py-1.5 bg-surface-raised border border-surface-200/60 dark:border-surface-border rounded-lg text-sm text-text-primary"
                         >
                           <option value="all">All Status</option>
                           <option value="unread">Unread</option>
@@ -681,7 +681,7 @@ export const NotificationSettings: React.FC = () => {
                         <select
                           value={typeFilter}
                           onChange={(e) => setTypeFilter(e.target.value as TypeFilter)}
-                          className="px-3 py-1.5 bg-white dark:bg-slate-800 border border-surface-200/60 dark:border-slate-700/60 rounded-lg text-sm text-slate-900 dark:text-white"
+                          className="px-3 py-1.5 bg-surface-raised border border-surface-200/60 dark:border-surface-border rounded-lg text-sm text-text-primary"
                         >
                           <option value="all">All Types</option>
                           <option value="warning">Warning</option>
@@ -694,7 +694,7 @@ export const NotificationSettings: React.FC = () => {
                         <select
                           value={categoryFilter}
                           onChange={(e) => setCategoryFilter(e.target.value as CategoryFilter)}
-                          className="px-3 py-1.5 bg-white dark:bg-slate-800 border border-surface-200/60 dark:border-slate-700/60 rounded-lg text-sm text-slate-900 dark:text-white capitalize"
+                          className="px-3 py-1.5 bg-surface-raised border border-surface-200/60 dark:border-surface-border rounded-lg text-sm text-text-primary capitalize"
                         >
                           <option value="all">All Categories</option>
                           <option value="safety">Safety</option>
@@ -737,7 +737,7 @@ export const NotificationSettings: React.FC = () => {
                         <button
                           onClick={handleBulkMarkAsRead}
                           disabled={selectedIds.size === 0}
-                          className="px-3 py-1.5 bg-white dark:bg-slate-800 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-50 dark:hover:bg-slate-700 transition-colors"
+                          className="px-3 py-1.5 bg-surface-raised rounded-lg text-sm font-medium text-text-primary dark:text-text-secondary disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-50 transition-colors"
                         >
                           <Check className="w-4 h-4 inline mr-1" />
                           Mark Read
@@ -776,10 +776,10 @@ export const NotificationSettings: React.FC = () => {
               {/* Notifications List */}
               {filteredNotifications.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 text-center">
-                  <div className="w-16 h-16 rounded-full bg-surface-100 dark:bg-slate-800 flex items-center justify-center mb-4">
+                  <div className="w-16 h-16 rounded-full bg-surface-100 flex items-center justify-center mb-4">
                     <BellOff className="w-8 h-8 text-surface-400 dark:text-surface-500" />
                   </div>
-                  <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-1">
+                  <h3 className="text-lg font-medium text-text-primary mb-1">
                     {hasActiveFilters ? 'No matching notifications' : 'No notifications'}
                   </h3>
                   <p className="text-sm text-surface-500 dark:text-surface-400">
@@ -807,7 +807,7 @@ export const NotificationSettings: React.FC = () => {
                           <span className="text-xs font-semibold uppercase tracking-wider text-surface-500 dark:text-surface-400">
                             {group.label}
                           </span>
-                          <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-surface-100 dark:bg-slate-700 text-surface-600 dark:text-surface-300">
+                          <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-surface-100 text-surface-600 dark:text-surface-300">
                             {group.notifications.length}
                           </span>
                         </div>
@@ -844,7 +844,7 @@ export const NotificationSettings: React.FC = () => {
                                     relative rounded-2xl border overflow-hidden transition-all
                                     ${!notification.read
                                       ? 'bg-cyan-500/5 dark:bg-cyan-500/8 border-cyan-500/25 dark:border-cyan-500/20 shadow-md'
-                                      : 'bg-white dark:bg-slate-800 border-surface-200/60 dark:border-slate-700/60 shadow-sm opacity-70'}
+                                      : 'bg-surface-raised border-surface-200/60 dark:border-surface-border shadow-sm opacity-70'}
                                     ${isSelectionMode ? 'cursor-pointer' : ''}
                                     ${isSelected ? 'ring-2 ring-brand-500 bg-brand-50 dark:bg-brand-900/20' : ''}
                                   `}
@@ -883,7 +883,7 @@ export const NotificationSettings: React.FC = () => {
                                       {/* Content */}
                                       <div className="flex-1 min-w-0">
                                         <div className="flex items-start justify-between gap-2">
-                                          <h3 className={`text-sm ${!notification.read ? 'font-bold text-slate-900 dark:text-white' : 'font-medium text-slate-500 dark:text-slate-400'}`}>
+                                          <h3 className={`text-sm ${!notification.read ? 'font-bold text-text-primary' : 'font-medium text-text-muted'}`}>
                                             {notification.title}
                                           </h3>
                                           <span className="shrink-0 text-xs text-surface-400 dark:text-surface-500">
@@ -895,7 +895,7 @@ export const NotificationSettings: React.FC = () => {
                                         </p>
                                         <div className="flex items-center gap-3 mt-2">
                                           {/* Category Badge */}
-                                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-100 dark:bg-slate-700 text-xs text-surface-600 dark:text-surface-300 capitalize">
+                                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-100 text-xs text-surface-600 dark:text-surface-300 capitalize">
                                             <CategoryIconComponent className="w-3 h-3" />
                                             {notification.category}
                                           </span>
@@ -906,7 +906,7 @@ export const NotificationSettings: React.FC = () => {
                                               {!notification.read && (
                                                 <button
                                                   onClick={() => handleMarkAsRead(notification.id)}
-                                                  className="p-1.5 rounded-lg hover:bg-surface-100 dark:hover:bg-slate-700 text-surface-400 hover:text-brand-500 transition-colors"
+                                                  className="p-1.5 rounded-lg hover:bg-surface-100 text-surface-400 hover:text-brand-500 transition-colors"
                                                   title="Mark as read"
                                                 >
                                                   <Check className="w-4 h-4" />
@@ -947,23 +947,23 @@ export const NotificationSettings: React.FC = () => {
             >
               {/* Notification Types */}
               <div>
-                <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-text-primary mb-3 flex items-center gap-2">
                   <BellRing className="w-4 h-4 text-brand-500" />
                   Notification Types
                 </h3>
-                <div className="bg-white dark:bg-slate-800 rounded-2xl border border-surface-200/60 dark:border-slate-700/60 divide-y divide-surface-100 dark:divide-slate-700">
+                <div className="bg-surface-raised rounded-2xl border border-surface-200/60 dark:border-surface-border divide-y divide-surface-100">
                   {settingItems.map((item) => {
                     const Icon = item.icon;
                     return (
                       <label
                         key={item.key}
-                        className="flex items-center gap-3 p-4 cursor-pointer hover:bg-surface-50 dark:hover:bg-slate-750 transition-colors"
+                        className="flex items-center gap-3 p-4 cursor-pointer hover:bg-surface-50 dark:hover:bg-surface-overlay transition-colors"
                       >
                         <div className="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-900/20 flex items-center justify-center">
                           <Icon className="w-5 h-5 text-brand-600 dark:text-brand-400" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-medium text-sm text-slate-900 dark:text-white">{item.label}</p>
+                          <p className="font-medium text-sm text-text-primary">{item.label}</p>
                           <p className="text-xs text-surface-500 dark:text-surface-400">{item.description}</p>
                         </div>
                         <div className="relative">
@@ -975,7 +975,7 @@ export const NotificationSettings: React.FC = () => {
                           />
                           <div className={`
                             w-11 h-6 rounded-full transition-colors
-                            ${settings[item.key] ? 'bg-brand-500' : 'bg-surface-300 dark:bg-slate-600'}
+                            ${settings[item.key] ? 'bg-brand-500' : 'bg-surface-300 dark:bg-surface-overlay'}
                           `}>
                             <div className={`
                               absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform
@@ -991,17 +991,17 @@ export const NotificationSettings: React.FC = () => {
 
               {/* Delivery Settings */}
               <div>
-                <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-3">
+                <h3 className="text-sm font-semibold text-text-primary mb-3">
                   Delivery Preferences
                 </h3>
-                <div className="bg-white dark:bg-slate-800 rounded-2xl border border-surface-200/60 dark:border-slate-700/60 divide-y divide-surface-100 dark:divide-slate-700">
+                <div className="bg-surface-raised rounded-2xl border border-surface-200/60 dark:border-surface-border divide-y divide-surface-100">
                   {deliverySettings.map((item) => (
                     <label
                       key={item.key}
-                      className="flex items-center gap-3 p-4 cursor-pointer hover:bg-surface-50 dark:hover:bg-slate-750 transition-colors"
+                      className="flex items-center gap-3 p-4 cursor-pointer hover:bg-surface-50 dark:hover:bg-surface-overlay transition-colors"
                     >
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-sm text-slate-900 dark:text-white">{item.label}</p>
+                        <p className="font-medium text-sm text-text-primary">{item.label}</p>
                         <p className="text-xs text-surface-500 dark:text-surface-400">{item.description}</p>
                       </div>
                       <div className="relative">
@@ -1013,7 +1013,7 @@ export const NotificationSettings: React.FC = () => {
                         />
                         <div className={`
                           w-11 h-6 rounded-full transition-colors
-                          ${settings[item.key] ? 'bg-brand-500' : 'bg-surface-300 dark:bg-slate-600'}
+                          ${settings[item.key] ? 'bg-brand-500' : 'bg-surface-300 dark:bg-surface-overlay'}
                         `}>
                           <div className={`
                             absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform
@@ -1028,16 +1028,16 @@ export const NotificationSettings: React.FC = () => {
 
               {/* Test Sound Button */}
               <div>
-                <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-3">
+                <h3 className="text-sm font-semibold text-text-primary mb-3">
                   Test Sound
                 </h3>
                 <motion.button
                   onClick={() => handleTestSound()}
                   whileTap={{ scale: 0.97 }}
-                  className="w-full flex items-center justify-center gap-2 p-4 bg-white dark:bg-slate-800 rounded-2xl border border-surface-200/60 dark:border-slate-700/60 hover:bg-surface-50 dark:hover:bg-slate-750 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 p-4 bg-surface-raised rounded-2xl border border-surface-200/60 dark:border-surface-border hover:bg-surface-50 dark:hover:bg-surface-overlay transition-colors"
                 >
                   <Volume2 className="w-5 h-5 text-brand-500" />
-                  <span className="font-medium text-sm text-slate-900 dark:text-white">Play Notification Sound</span>
+                  <span className="font-medium text-sm text-text-primary">Play Notification Sound</span>
                 </motion.button>
                 <p className="mt-2 text-xs text-surface-500 dark:text-surface-400 text-center">
                   Tap to preview the notification chime
@@ -1046,18 +1046,18 @@ export const NotificationSettings: React.FC = () => {
 
               {/* Sound Type Selection */}
               <div>
-                <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-text-primary mb-3 flex items-center gap-2">
                   <Volume2 className="w-4 h-4 text-brand-500" />
                   Notification Sound
                 </h3>
-                <div className="bg-white dark:bg-slate-800 rounded-2xl border border-surface-200/60 dark:border-slate-700/60 divide-y divide-surface-100 dark:divide-slate-700">
+                <div className="bg-surface-raised rounded-2xl border border-surface-200/60 dark:border-surface-border divide-y divide-surface-100">
                   {NOTIFICATION_SOUNDS.map((sound) => (
                     <label
                       key={sound.id}
                       className={`flex items-center gap-3 p-4 cursor-pointer transition-colors ${
                         settings.soundType === sound.id 
                           ? 'bg-brand-50 dark:bg-brand-900/20' 
-                          : 'hover:bg-surface-50 dark:hover:bg-slate-750'
+                          : 'hover:bg-surface-50 dark:hover:bg-surface-overlay'
                       }`}
                     >
                       <input
@@ -1069,7 +1069,7 @@ export const NotificationSettings: React.FC = () => {
                         className="w-4 h-4 text-brand-500 border-surface-300 focus:ring-brand-500"
                       />
                       <div className="flex-1">
-                        <span className="font-medium text-sm text-slate-900 dark:text-white block">{sound.label}</span>
+                        <span className="font-medium text-sm text-text-primary block">{sound.label}</span>
                         {'description' in sound && sound.description && (
                           <span className="text-xs text-surface-500 dark:text-surface-400">{sound.description}</span>
                         )}
@@ -1081,7 +1081,7 @@ export const NotificationSettings: React.FC = () => {
                           className={`p-2 rounded-lg transition-colors ${
                             settings.soundType === sound.id 
                               ? 'bg-brand-100 dark:bg-brand-800/30 text-brand-600' 
-                              : 'hover:bg-surface-100 dark:hover:bg-slate-700 text-brand-500'
+                              : 'hover:bg-surface-100 text-brand-500'
                           }`}
                         >
                           <Play className="w-4 h-4" />
@@ -1094,15 +1094,15 @@ export const NotificationSettings: React.FC = () => {
 
               {/* Badge Animation Speed */}
               <div>
-                <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-text-primary mb-3 flex items-center gap-2">
                   <Gauge className="w-4 h-4 text-brand-500" />
                   Badge Animation Speed
                 </h3>
-                <div className="bg-white dark:bg-slate-800 rounded-2xl border border-surface-200/60 dark:border-slate-700/60 p-4">
+                <div className="bg-surface-raised rounded-2xl border border-surface-200/60 dark:border-surface-border p-4">
                   {/* Live Preview Badge */}
                   <div className="flex justify-center mb-4">
                     <div className="relative">
-                      <div className="w-12 h-12 rounded-xl bg-surface-100 dark:bg-slate-700 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-xl bg-surface-100 flex items-center justify-center">
                         <Bell className="w-6 h-6 text-surface-500 dark:text-surface-400" />
                       </div>
                       <span 
@@ -1132,7 +1132,7 @@ export const NotificationSettings: React.FC = () => {
                       step={0.25}
                       value={settings.badgeAnimationSpeed}
                       onChange={(e) => handleAnimationSpeedChange(Number(e.target.value))}
-                      className="flex-1 h-2 bg-surface-200 dark:bg-slate-600 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:bg-brand-500 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md"
+                      className="flex-1 h-2 bg-surface-200 dark:bg-surface-overlay rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:bg-brand-500 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md"
                     />
                     <span className="text-xs text-surface-500 w-8">2x</span>
                   </div>

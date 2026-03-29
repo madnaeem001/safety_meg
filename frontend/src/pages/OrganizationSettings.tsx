@@ -102,7 +102,7 @@ export const OrganizationSettings: React.FC = () => {
 
   return (
     <FadeContent blur duration={400} delay={0}>
-      <div className="min-h-screen pb-24 bg-surface-base">
+      <div className="page-wrapper">
         {/* Header */}
         <header className="sticky top-[72px] z-40 bg-surface-overlay border-b border-surface-border">
           <div className="px-4 py-3">
@@ -116,7 +116,7 @@ export const OrganizationSettings: React.FC = () => {
                 </svg>
               </button>
               <div>
-                <h1 className="text-lg font-semibold text-text-primary">Organization Settings</h1>
+                <h1 className="page-title">Organization Settings</h1>
                 <p className="text-xs text-text-muted">{organization.name}</p>
               </div>
             </div>
@@ -479,7 +479,7 @@ export const OrganizationSettings: React.FC = () => {
                   <div className="space-y-4">
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-surface-600 dark:text-text-muted">Active Users</span>
+                        <span className="text-surface-600">Active Users</span>
                         <span className="font-medium text-text-primary">{organization.users} / Unlimited</span>
                       </div>
                       <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
@@ -488,7 +488,7 @@ export const OrganizationSettings: React.FC = () => {
                     </div>
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-surface-600 dark:text-text-muted">Facilities</span>
+                        <span className="text-surface-600">Facilities</span>
                         <span className="font-medium text-text-primary">{organization.facilities} / Unlimited</span>
                       </div>
                       <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
@@ -497,7 +497,7 @@ export const OrganizationSettings: React.FC = () => {
                     </div>
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-surface-600 dark:text-text-muted">API Calls</span>
+                        <span className="text-surface-600">API Calls</span>
                         <span className="font-medium text-text-primary">1.2M / 5M</span>
                       </div>
                       <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
@@ -538,7 +538,7 @@ export const OrganizationSettings: React.FC = () => {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between p-4 bg-surface-sunken rounded-lg">
                       <div className="flex items-center gap-3">
-                        <Key className="w-5 h-5 text-surface-600 dark:text-text-muted" />
+                        <Key className="w-5 h-5 text-surface-600" />
                         <div>
                           <p className="font-medium text-text-primary">API Key</p>
                           <p className="text-sm text-text-muted font-mono">sk-••••••••••••••••4a2f</p>

@@ -742,27 +742,27 @@ export const AdvancedTechnologyHub: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen pb-24 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800">
+    <div className="page-wrapper">
       {/* Header */}
-      <header className="sticky top-[72px] z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50">
+      <header className="sticky top-[72px] z-50 bg-surface-raised/80 backdrop-blur-xl border-b border-surface-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => navigate(-1)}
-                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+                className="p-2 hover:bg-surface-overlay rounded-xl transition-colors"
               >
-                <ArrowLeft className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                <ArrowLeft className="w-5 h-5 text-text-secondary" />
               </button>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
                   <Brain className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold text-slate-900 dark:text-white">
+                  <h1 className="page-title">
                     Advanced Technology Hub
                   </h1>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                  <p className="page-subtitle">
                     AI • Analytics • IoT Integration
                   </p>
                 </div>
@@ -770,11 +770,11 @@ export const AdvancedTechnologyHub: React.FC = () => {
             </div>
             
             <div className="flex items-center gap-2">
-              <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-                <Settings className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+              <button className="p-2 hover:bg-surface-overlay rounded-xl transition-colors">
+                <Settings className="w-5 h-5 text-text-secondary" />
               </button>
-              <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors relative">
-                <AlertCircle className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+              <button className="p-2 hover:bg-surface-overlay rounded-xl transition-colors relative">
+                <AlertCircle className="w-5 h-5 text-text-secondary" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>
             </div>
@@ -783,7 +783,7 @@ export const AdvancedTechnologyHub: React.FC = () => {
       </header>
 
       {/* Tab Navigation */}
-      <div className="sticky top-16 z-40 bg-white/60 dark:bg-slate-900/60 backdrop-blur-lg border-b border-slate-200/50 dark:border-slate-700/50">
+      <div className="sticky top-16 z-40 bg-surface-raised/60 backdrop-blur-lg border-b border-surface-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex gap-1 py-2 overflow-x-auto scrollbar-hide">
             {[
@@ -798,7 +798,7 @@ export const AdvancedTechnologyHub: React.FC = () => {
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
                   activeTab === tab.id
                     ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/20'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    : 'text-text-secondary hover:bg-surface-overlay'
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -819,7 +819,7 @@ export const AdvancedTechnologyHub: React.FC = () => {
           >
             {/* Quick Stats */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/50 dark:border-slate-700/50 shadow-sm">
+              <div className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-sm">
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-rose-600 flex items-center justify-center">
                     <AlertTriangle className="w-5 h-5 text-white" />
@@ -828,22 +828,22 @@ export const AdvancedTechnologyHub: React.FC = () => {
                     Critical
                   </span>
                 </div>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">{overallMetrics.criticalCount}</p>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Critical Risks</p>
+                <p className="text-2xl font-bold text-text-primary">{overallMetrics.criticalCount}</p>
+                <p className="text-sm text-text-muted">Critical Risks</p>
               </div>
 
-              <div className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/50 dark:border-slate-700/50 shadow-sm">
+              <div className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-sm">
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
                     <Gauge className="w-5 h-5 text-white" />
                   </div>
                   <TrendingDown className="w-4 h-4 text-green-500" />
                 </div>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">{overallMetrics.avgRisk.toFixed(0)}</p>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Avg Risk Score</p>
+                <p className="text-2xl font-bold text-text-primary">{overallMetrics.avgRisk.toFixed(0)}</p>
+                <p className="text-sm text-text-muted">Avg Risk Score</p>
               </div>
 
-              <div className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/50 dark:border-slate-700/50 shadow-sm">
+              <div className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-sm">
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
                     <TrendingUp className="w-5 h-5 text-white" />
@@ -852,19 +852,19 @@ export const AdvancedTechnologyHub: React.FC = () => {
                     Trending
                   </span>
                 </div>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">{overallMetrics.increasingCount}</p>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Increasing Risks</p>
+                <p className="text-2xl font-bold text-text-primary">{overallMetrics.increasingCount}</p>
+                <p className="text-sm text-text-muted">Increasing Risks</p>
               </div>
 
-              <div className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/50 dark:border-slate-700/50 shadow-sm">
+              <div className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-sm">
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
                     <Shield className="w-5 h-5 text-white" />
                   </div>
                   <CheckCircle2 className="w-4 h-4 text-green-500" />
                 </div>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">94.2%</p>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Prevention Rate</p>
+                <p className="text-2xl font-bold text-text-primary">94.2%</p>
+                <p className="text-sm text-text-muted">Prevention Rate</p>
               </div>
             </div>
 
@@ -906,29 +906,29 @@ export const AdvancedTechnologyHub: React.FC = () => {
             </div>
 
             {/* Analytics Trends */}
-            <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm overflow-hidden">
-              <div className="p-5 border-b border-slate-200 dark:border-slate-700">
+            <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm overflow-hidden">
+              <div className="p-5 border-b border-surface-border">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <BarChart3 className="w-5 h-5 text-indigo-500" />
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-white">Analytics Trends</h2>
+                    <h2 className="text-lg font-bold text-text-primary">Analytics Trends</h2>
                   </div>
                   <button className="text-sm text-indigo-500 hover:text-indigo-600 font-medium flex items-center gap-1">
                     View Full Analytics <ExternalLink className="w-4 h-4" />
                   </button>
                 </div>
               </div>
-              <div className="divide-y divide-slate-200 dark:divide-slate-700">
+              <div className="divide-y divide-surface-border">
                 {liveAnalyticsTrends.map((trend) => (
-                  <div key={trend.id} className="p-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                  <div key={trend.id} className="p-4 hover:bg-surface-overlay transition-colors">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
-                        <p className="font-medium text-slate-900 dark:text-white">{trend.metric}</p>
-                        <p className="text-sm text-slate-500 dark:text-slate-400">{trend.prediction}</p>
+                        <p className="font-medium text-text-primary">{trend.metric}</p>
+                        <p className="text-sm text-text-muted">{trend.prediction}</p>
                       </div>
                       <div className="flex items-center gap-4">
                         <div className="text-right">
-                          <p className="font-bold text-slate-900 dark:text-white">
+                          <p className="font-bold text-text-primary">
                             {typeof trend.currentValue === 'number' && trend.currentValue % 1 !== 0 
                               ? `${trend.currentValue}%` 
                               : trend.currentValue}
@@ -959,45 +959,45 @@ export const AdvancedTechnologyHub: React.FC = () => {
             <div className="grid md:grid-cols-3 gap-4">
               <button 
                 onClick={() => setActiveTab('qr-scanner')}
-                className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all group text-left"
+                className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-sm hover:shadow-md transition-all group text-left"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <QrCode className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 dark:text-white">QR/Barcode Scanner</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Scan equipment for SDS access</p>
+                    <h3 className="font-bold text-text-primary">QR/Barcode Scanner</h3>
+                    <p className="text-sm text-text-muted">Scan equipment for SDS access</p>
                   </div>
                 </div>
               </button>
 
               <button 
                 onClick={() => setActiveTab('geotag')}
-                className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all group text-left"
+                className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-sm hover:shadow-md transition-all group text-left"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <MapPin className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 dark:text-white">Geotagging</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Capture incident locations</p>
+                    <h3 className="font-bold text-text-primary">Geotagging</h3>
+                    <p className="text-sm text-text-muted">Capture incident locations</p>
                   </div>
                 </div>
               </button>
 
               <button 
                 onClick={() => setActiveTab('risk-scoring')}
-                className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all group text-left"
+                className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-sm hover:shadow-md transition-all group text-left"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Gauge className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 dark:text-white">Risk Scoring</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Predictive risk analysis</p>
+                    <h3 className="font-bold text-text-primary">Risk Scoring</h3>
+                    <p className="text-sm text-text-muted">Predictive risk analysis</p>
                   </div>
                 </div>
               </button>
@@ -1013,13 +1013,13 @@ export const AdvancedTechnologyHub: React.FC = () => {
             className="space-y-6"
           >
             {/* Scanner Interface */}
-            <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm overflow-hidden">
-              <div className="p-5 border-b border-slate-200 dark:border-slate-700">
+            <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm overflow-hidden">
+              <div className="p-5 border-b border-surface-border">
                 <div className="flex items-center gap-3">
                   <QrCode className="w-5 h-5 text-indigo-500" />
-                  <h2 className="text-lg font-bold text-slate-900 dark:text-white">Equipment Scanner</h2>
+                  <h2 className="text-lg font-bold text-text-primary">Equipment Scanner</h2>
                 </div>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                <p className="text-sm text-text-muted mt-1">
                   Scan QR codes or barcodes to access Safety Data Sheets and maintenance logs
                 </p>
               </div>
@@ -1027,7 +1027,7 @@ export const AdvancedTechnologyHub: React.FC = () => {
               <div className="p-6">
                 <div className="max-w-md mx-auto">
                   {/* Camera Preview Area */}
-                  <div className="relative aspect-square bg-slate-900 rounded-2xl overflow-hidden mb-6">
+                  <div className="relative aspect-square bg-black rounded-2xl overflow-hidden mb-6">
                     {/* Hidden canvas for processing */}
                     <canvas ref={canvasRef} className="hidden" />
                     
@@ -1058,8 +1058,8 @@ export const AdvancedTechnologyHub: React.FC = () => {
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center">
-                          <Camera className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-                          <p className="text-slate-400 text-sm">Tap to start camera</p>
+                          <Camera className="w-16 h-16 text-text-secondary mx-auto mb-4" />
+                          <p className="text-text-muted text-sm">Tap to start camera</p>
                           {!barcodeSupported && (
                             <p className="text-amber-400 text-xs mt-2">Manual code entry available</p>
                           )}
@@ -1114,7 +1114,7 @@ export const AdvancedTechnologyHub: React.FC = () => {
                   ) : (
                     <button
                       onClick={stopCameraScanning}
-                      className="w-full py-4 bg-slate-600 text-white rounded-xl font-medium hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
+                      className="w-full py-4 bg-surface-overlay text-text-primary rounded-xl font-medium hover:bg-surface-overlay transition-all flex items-center justify-center gap-2"
                     >
                       <XCircle className="w-5 h-5" />
                       Stop Scanning
@@ -1123,14 +1123,14 @@ export const AdvancedTechnologyHub: React.FC = () => {
                   
                   {/* Manual Code Entry */}
                   <div className="mt-4">
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-2 text-center">Or enter code manually:</p>
+                    <p className="text-sm text-text-muted mb-2 text-center">Or enter code manually:</p>
                     <form onSubmit={handleManualCodeSubmit} className="flex gap-2">
                       <input
                         type="text"
                         value={manualCode}
                         onChange={(e) => setManualCode(e.target.value)}
                         placeholder="Enter barcode or QR code"
-                        className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                        className="flex-1 px-4 py-3 bg-surface-sunken border border-surface-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
                       />
                       <button
                         type="submit"
@@ -1152,13 +1152,13 @@ export const AdvancedTechnologyHub: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm overflow-hidden"
+                  className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm overflow-hidden"
                 >
-                  <div className="p-5 border-b border-slate-200 dark:border-slate-700 bg-green-50 dark:bg-green-900/20">
+                  <div className="p-5 border-b border-surface-border bg-green-50 dark:bg-green-900/20">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <CheckCircle2 className="w-5 h-5 text-green-500" />
-                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Equipment Found</h2>
+                        <h2 className="text-lg font-bold text-text-primary">Equipment Found</h2>
                       </div>
                       {scannedEquipment.pendingSync && (
                         <span className="flex items-center gap-1 text-xs text-amber-600 dark:text-amber-400">
@@ -1174,8 +1174,8 @@ export const AdvancedTechnologyHub: React.FC = () => {
                         <Package className="w-8 h-8 text-white" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-white">{scannedEquipment.name}</h3>
-                        <p className="text-slate-500 dark:text-slate-400">{scannedEquipment.type}</p>
+                        <h3 className="text-xl font-bold text-text-primary">{scannedEquipment.name}</h3>
+                        <p className="text-text-muted">{scannedEquipment.type}</p>
                         <div className="flex items-center gap-2 mt-2">
                           <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${getStatusBadge(scannedEquipment.status)}`}>
                             {scannedEquipment.status.replace('_', ' ').toUpperCase()}
@@ -1188,42 +1188,42 @@ export const AdvancedTechnologyHub: React.FC = () => {
                     </div>
                     
                     <div className="grid md:grid-cols-2 gap-4 mb-6">
-                      <div className="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-4">
-                        <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Serial Number</p>
-                        <p className="font-mono font-medium text-slate-900 dark:text-white">{scannedEquipment.serialNumber}</p>
+                      <div className="bg-surface-sunken rounded-xl p-4">
+                        <p className="text-sm text-text-muted mb-1">Serial Number</p>
+                        <p className="font-mono font-medium text-text-primary">{scannedEquipment.serialNumber}</p>
                       </div>
-                      <div className="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-4">
-                        <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Location</p>
-                        <p className="font-medium text-slate-900 dark:text-white">{scannedEquipment.location}</p>
+                      <div className="bg-surface-sunken rounded-xl p-4">
+                        <p className="text-sm text-text-muted mb-1">Location</p>
+                        <p className="font-medium text-text-primary">{scannedEquipment.location}</p>
                       </div>
-                      <div className="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-4">
-                        <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Last Inspection</p>
-                        <p className="font-medium text-slate-900 dark:text-white">{scannedEquipment.lastInspection}</p>
+                      <div className="bg-surface-sunken rounded-xl p-4">
+                        <p className="text-sm text-text-muted mb-1">Last Inspection</p>
+                        <p className="font-medium text-text-primary">{scannedEquipment.lastInspection}</p>
                       </div>
-                      <div className="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-4">
-                        <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Next Inspection</p>
-                        <p className="font-medium text-slate-900 dark:text-white">{scannedEquipment.nextInspection}</p>
+                      <div className="bg-surface-sunken rounded-xl p-4">
+                        <p className="text-sm text-text-muted mb-1">Next Inspection</p>
+                        <p className="font-medium text-text-primary">{scannedEquipment.nextInspection}</p>
                       </div>
                     </div>
                     
                     {/* Linked SDS */}
                     {linkedSDS.length > 0 && (
                       <div className="mb-6">
-                        <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Linked Safety Data Sheets ({linkedSDS.length})</p>
+                        <p className="text-sm font-medium text-text-primary mb-3">Linked Safety Data Sheets ({linkedSDS.length})</p>
                         <div className="space-y-2">
                           {linkedSDS.map(sds => (
                             <div key={sds.id} className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
                               <div className="flex items-center gap-3">
                                 <FileText className="w-5 h-5 text-blue-500" />
                                 <div>
-                                  <p className="font-medium text-slate-900 dark:text-white">{sds.name}</p>
-                                  <p className="text-xs text-slate-500 dark:text-slate-400">{sds.manufacturer}</p>
+                                  <p className="font-medium text-text-primary">{sds.name}</p>
+                                  <p className="text-xs text-text-muted">{sds.manufacturer}</p>
                                 </div>
                               </div>
                               <span className={`text-xs font-medium px-2 py-1 rounded-full ${
                                 sds.signalWord === 'Danger' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
                                 sds.signalWord === 'Warning' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' :
-                                'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400'
+                                'bg-surface-sunken text-text-secondary'
                               }`}>
                                 {sds.signalWord}
                               </span>
@@ -1242,12 +1242,12 @@ export const AdvancedTechnologyHub: React.FC = () => {
                       )}
                       <button 
                         onClick={() => logInspection(scannedEquipment.id)}
-                        className="flex-1 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-white rounded-xl font-medium hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors flex items-center justify-center gap-2"
+                        className="flex-1 py-3 bg-surface-sunken text-text-primary rounded-xl font-medium hover:bg-surface-sunken transition-colors flex items-center justify-center gap-2"
                       >
                         <Clock className="w-5 h-5" />
                         Log Inspection
                       </button>
-                      <button className="flex-1 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-white rounded-xl font-medium hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors flex items-center justify-center gap-2">
+                      <button className="flex-1 py-3 bg-surface-sunken text-text-primary rounded-xl font-medium hover:bg-surface-sunken transition-colors flex items-center justify-center gap-2">
                         <History className="w-5 h-5" />
                         View History
                       </button>
@@ -1258,10 +1258,10 @@ export const AdvancedTechnologyHub: React.FC = () => {
             </AnimatePresence>
 
             {/* Sync Status & Recent Scans */}
-            <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm overflow-hidden">
-              <div className="p-5 border-b border-slate-200 dark:border-slate-700">
+            <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm overflow-hidden">
+              <div className="p-5 border-b border-surface-border">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-bold text-slate-900 dark:text-white">Equipment Database</h2>
+                  <h2 className="text-lg font-bold text-text-primary">Equipment Database</h2>
                   <div className="flex items-center gap-3">
                     {/* Import Button */}
                     <div className="relative">
@@ -1292,7 +1292,7 @@ export const AdvancedTechnologyHub: React.FC = () => {
                       className={`p-2 rounded-lg transition-colors ${
                         showBarcodeGenerator 
                           ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400' 
-                          : 'hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400'
+                          : 'hover:bg-surface-sunken text-text-secondary'
                       }`}
                       title="Generate Barcode"
                     >
@@ -1327,9 +1327,9 @@ export const AdvancedTechnologyHub: React.FC = () => {
                     <button
                       onClick={syncSdsData}
                       disabled={sdsSyncState.status === 'syncing'}
-                      className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50"
+                      className="p-2 hover:bg-surface-sunken rounded-lg transition-colors disabled:opacity-50"
                     >
-                      <RefreshCw className={`w-4 h-4 text-slate-600 dark:text-slate-400 ${sdsSyncState.status === 'syncing' ? 'animate-spin' : ''}`} />
+                      <RefreshCw className={`w-4 h-4 text-text-secondary ${sdsSyncState.status === 'syncing' ? 'animate-spin' : ''}`} />
                     </button>
                   </div>
                 </div>
@@ -1361,10 +1361,10 @@ export const AdvancedTechnologyHub: React.FC = () => {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      className="border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50"
+                      className="border-b border-surface-border bg-surface-sunken"
                     >
                       <div className="p-5">
-                        <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-3">Barcode Generator</h3>
+                        <h3 className="text-sm font-bold text-text-primary mb-3">Barcode Generator</h3>
                         <div className="flex flex-col sm:flex-row gap-4">
                           <div className="flex-1 space-y-3">
                             <input
@@ -1372,13 +1372,13 @@ export const AdvancedTechnologyHub: React.FC = () => {
                               value={barcodeValue}
                               onChange={(e) => setBarcodeValue(e.target.value)}
                               placeholder="Enter text to generate barcode..."
-                              className="w-full px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                              className="w-full px-4 py-2 bg-surface-raised border border-surface-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
                             />
-                            <p className="text-xs text-slate-500 dark:text-slate-400">
+                            <p className="text-xs text-text-muted">
                               Generates a Code 39 style barcode simulation for testing scanners.
                             </p>
                           </div>
-                          <div className="flex-shrink-0 bg-white p-2 rounded-xl border border-slate-200 shadow-sm">
+                          <div className="flex-shrink-0 bg-white p-2 rounded-xl border border-surface-border shadow-sm">
                             <canvas 
                               ref={barcodeCanvasRef} 
                               width={300} 
@@ -1394,27 +1394,27 @@ export const AdvancedTechnologyHub: React.FC = () => {
 
                 {/* Search */}
                 <div className="mt-3 relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
                   <input
                     type="text"
                     value={sdsSearchQuery}
                     onChange={(e) => setSdsSearchQuery(e.target.value)}
                     placeholder="Search equipment..."
-                    className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                    className="w-full pl-10 pr-4 py-2 bg-surface-sunken border border-surface-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
                   />
                 </div>
               </div>
-              <div className="divide-y divide-slate-200 dark:divide-slate-700 max-h-80 overflow-y-auto">
+              <div className="divide-y divide-surface-border max-h-80 overflow-y-auto">
                 {filteredEquipment.map((equipment) => (
-                  <div key={equipment.id} className="p-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                  <div key={equipment.id} className="p-4 hover:bg-surface-overlay transition-colors">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
-                          <Package className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                        <div className="w-10 h-10 rounded-lg bg-surface-sunken flex items-center justify-center">
+                          <Package className="w-5 h-5 text-text-secondary" />
                         </div>
                         <div>
-                          <p className="font-medium text-slate-900 dark:text-white">{equipment.name}</p>
-                          <p className="text-sm text-slate-500 dark:text-slate-400">{equipment.location}</p>
+                          <p className="font-medium text-text-primary">{equipment.name}</p>
+                          <p className="text-sm text-text-muted">{equipment.location}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
@@ -1446,15 +1446,15 @@ export const AdvancedTechnologyHub: React.FC = () => {
             className="space-y-6"
           >
             {/* Geotag Cache Status */}
-            <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm p-5">
+            <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm p-5">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
                     <Database className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 dark:text-white">Offline Cache Status</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Location data stored locally</p>
+                    <h3 className="font-bold text-text-primary">Offline Cache Status</h3>
+                    <p className="text-sm text-text-muted">Location data stored locally</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -1463,7 +1463,7 @@ export const AdvancedTechnologyHub: React.FC = () => {
                     className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-colors ${
                       showMap 
                         ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400' 
-                        : 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600'
+                        : 'bg-surface-sunken text-text-secondary hover:bg-surface-sunken'
                     }`}
                   >
                     <MapPin className="w-4 h-4" />
@@ -1493,7 +1493,7 @@ export const AdvancedTechnologyHub: React.FC = () => {
               </div>
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-4 text-center">
+                <div className="bg-surface-sunken rounded-xl p-4 text-center">
                   <div className="flex items-center justify-center gap-2 mb-1">
                     {geotagState.isOnline ? (
                       <Wifi className="w-4 h-4 text-green-500" />
@@ -1504,24 +1504,24 @@ export const AdvancedTechnologyHub: React.FC = () => {
                       {geotagState.isOnline ? 'Online' : 'Offline'}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">Connection</p>
+                  <p className="text-xs text-text-muted">Connection</p>
                 </div>
-                <div className="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-4 text-center">
-                  <p className="text-2xl font-bold text-slate-900 dark:text-white">{geotagState.totalCached}</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">Cached Locations</p>
+                <div className="bg-surface-sunken rounded-xl p-4 text-center">
+                  <p className="text-2xl font-bold text-text-primary">{geotagState.totalCached}</p>
+                  <p className="text-xs text-text-muted">Cached Locations</p>
                 </div>
-                <div className="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-4 text-center">
+                <div className="bg-surface-sunken rounded-xl p-4 text-center">
                   <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">{geotagState.pendingCount}</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">Pending Sync</p>
+                  <p className="text-xs text-text-muted">Pending Sync</p>
                 </div>
-                <div className="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-4 text-center">
-                  <p className="text-2xl font-bold text-slate-900 dark:text-white">{(geotagState.cacheSize / 1024).toFixed(1)}KB</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">Cache Size</p>
+                <div className="bg-surface-sunken rounded-xl p-4 text-center">
+                  <p className="text-2xl font-bold text-text-primary">{(geotagState.cacheSize / 1024).toFixed(1)}KB</p>
+                  <p className="text-xs text-text-muted">Cache Size</p>
                 </div>
               </div>
               
               {geotagState.lastSyncedAt && (
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-4 text-center">
+                <p className="text-xs text-text-muted mt-4 text-center">
                   Last synced: {new Date(geotagState.lastSyncedAt).toLocaleString()}
                 </p>
               )}
@@ -1534,17 +1534,17 @@ export const AdvancedTechnologyHub: React.FC = () => {
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm overflow-hidden"
+                  className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm overflow-hidden"
                 >
-                  <div className="p-5 border-b border-slate-200 dark:border-slate-700">
-                    <h3 className="font-bold text-slate-900 dark:text-white">Facility Map Visualization</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                  <div className="p-5 border-b border-surface-border">
+                    <h3 className="font-bold text-text-primary">Facility Map Visualization</h3>
+                    <p className="text-sm text-text-muted">
                       Visualizing {facilityZones.length} zones and {recentGeotags.length} recent reports
                     </p>
                   </div>
-                  <div className="relative w-full h-[400px] bg-slate-100 dark:bg-slate-900">
+                  <div className="relative w-full h-[400px] bg-surface-sunken">
                     <canvas ref={mapCanvasRef} className="w-full h-full" />
-                    <div className="absolute bottom-4 right-4 bg-white/90 dark:bg-slate-800/90 p-3 rounded-xl text-xs space-y-2 shadow-lg backdrop-blur-sm">
+                    <div className="absolute bottom-4 right-4 bg-white/90/90 p-3 rounded-xl text-xs space-y-2 shadow-lg backdrop-blur-sm">
                       <div className="flex items-center gap-2">
                         <span className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500"></span>
                         <span>Critical Zone</span>
@@ -1572,13 +1572,13 @@ export const AdvancedTechnologyHub: React.FC = () => {
             </AnimatePresence>
 
             {/* Location Capture */}
-            <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm overflow-hidden">
-              <div className="p-5 border-b border-slate-200 dark:border-slate-700">
+            <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm overflow-hidden">
+              <div className="p-5 border-b border-surface-border">
                 <div className="flex items-center gap-3">
                   <MapPin className="w-5 h-5 text-emerald-500" />
-                  <h2 className="text-lg font-bold text-slate-900 dark:text-white">Location Capture</h2>
+                  <h2 className="text-lg font-bold text-text-primary">Location Capture</h2>
                 </div>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                <p className="text-sm text-text-muted mt-1">
                   Automatically capture GPS coordinates for incident reporting
                 </p>
               </div>
@@ -1586,7 +1586,7 @@ export const AdvancedTechnologyHub: React.FC = () => {
               <div className="p-6">
                 <div className="max-w-lg mx-auto">
                   {/* Map Preview */}
-                  <div className="relative aspect-video bg-slate-100 dark:bg-slate-900 rounded-2xl overflow-hidden mb-6">
+                  <div className="relative aspect-video bg-surface-sunken rounded-2xl overflow-hidden mb-6">
                     {currentLocation ? (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center">
@@ -1595,8 +1595,8 @@ export const AdvancedTechnologyHub: React.FC = () => {
                               <Navigation className="w-4 h-4 text-white" />
                             </div>
                           </div>
-                          <p className="text-sm text-slate-600 dark:text-slate-400">Location captured</p>
-                          <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                          <p className="text-sm text-text-secondary">Location captured</p>
+                          <p className="text-xs text-text-muted mt-1">
                             Accuracy: ±{currentLocation.accuracy.toFixed(0)}m
                           </p>
                         </div>
@@ -1604,8 +1604,8 @@ export const AdvancedTechnologyHub: React.FC = () => {
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center">
-                          <Crosshair className="w-12 h-12 text-slate-400 mx-auto mb-2" />
-                          <p className="text-sm text-slate-500 dark:text-slate-400">
+                          <Crosshair className="w-12 h-12 text-text-muted mx-auto mb-2" />
+                          <p className="text-sm text-text-muted">
                             Tap to capture location
                           </p>
                         </div>
@@ -1631,27 +1631,27 @@ export const AdvancedTechnologyHub: React.FC = () => {
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <p className="text-xs text-emerald-600 dark:text-emerald-400 mb-1">Latitude</p>
-                          <p className="font-mono font-medium text-slate-900 dark:text-white">
+                          <p className="font-mono font-medium text-text-primary">
                             {currentLocation.latitude.toFixed(6)}°
                           </p>
                         </div>
                         <div>
                           <p className="text-xs text-emerald-600 dark:text-emerald-400 mb-1">Longitude</p>
-                          <p className="font-mono font-medium text-slate-900 dark:text-white">
+                          <p className="font-mono font-medium text-text-primary">
                             {currentLocation.longitude.toFixed(6)}°
                           </p>
                         </div>
                         {currentLocation.altitude && (
                           <div>
                             <p className="text-xs text-emerald-600 dark:text-emerald-400 mb-1">Altitude</p>
-                            <p className="font-mono font-medium text-slate-900 dark:text-white">
+                            <p className="font-mono font-medium text-text-primary">
                               {currentLocation.altitude.toFixed(1)}m
                             </p>
                           </div>
                         )}
                         <div>
                           <p className="text-xs text-emerald-600 dark:text-emerald-400 mb-1">Timestamp</p>
-                          <p className="font-medium text-slate-900 dark:text-white text-sm">
+                          <p className="font-medium text-text-primary text-sm">
                             {currentLocation.timestamp.toLocaleTimeString()}
                           </p>
                         </div>
@@ -1659,7 +1659,7 @@ export const AdvancedTechnologyHub: React.FC = () => {
                       {currentLocation.address && (
                         <div className="mt-4 pt-4 border-t border-emerald-200 dark:border-emerald-800">
                           <p className="text-xs text-emerald-600 dark:text-emerald-400 mb-1">Address</p>
-                          <p className="font-medium text-slate-900 dark:text-white">{currentLocation.address}</p>
+                          <p className="font-medium text-text-primary">{currentLocation.address}</p>
                         </div>
                       )}
                     </motion.div>
@@ -1702,54 +1702,54 @@ export const AdvancedTechnologyHub: React.FC = () => {
 
             {/* Geotagging Features */}
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm p-5">
+              <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm p-5">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center">
                     <Zap className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="font-bold text-slate-900 dark:text-white">Auto-Capture</h3>
+                  <h3 className="font-bold text-text-primary">Auto-Capture</h3>
                 </div>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+                <p className="text-sm text-text-muted mb-4">
                   Automatically attach GPS coordinates when submitting incident reports or safety observations.
                 </p>
-                <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl">
-                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Enable Auto-Capture</span>
+                <div className="flex items-center justify-between p-3 bg-surface-sunken rounded-xl">
+                  <span className="text-sm font-medium text-text-primary">Enable Auto-Capture</span>
                   <button className="w-12 h-6 bg-emerald-500 rounded-full relative">
                     <span className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow" />
                   </button>
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm p-5">
+              <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm p-5">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
                     <Layers className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="font-bold text-slate-900 dark:text-white">Zone Mapping</h3>
+                  <h3 className="font-bold text-text-primary">Zone Mapping</h3>
                 </div>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+                <p className="text-sm text-text-muted mb-4">
                   Define facility zones for automatic categorization and risk assessment based on location.
                 </p>
-                <button className="w-full py-2.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-white rounded-xl font-medium hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                <button className="w-full py-2.5 bg-surface-sunken text-text-primary rounded-xl font-medium hover:bg-surface-sunken transition-colors">
                   Configure Zones
                 </button>
               </div>
             </div>
 
             {/* Recent Geotagged Incidents */}
-            <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm overflow-hidden">
-              <div className="p-5 border-b border-slate-200 dark:border-slate-700">
+            <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm overflow-hidden">
+              <div className="p-5 border-b border-surface-border">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-bold text-slate-900 dark:text-white">Recent Geotagged Reports</h2>
-                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                  <h2 className="text-lg font-bold text-text-primary">Recent Geotagged Reports</h2>
+                  <span className="text-xs text-text-muted">
                     {recentGeotags.length} cached
                   </span>
                 </div>
               </div>
-              <div className="divide-y divide-slate-200 dark:divide-slate-700">
+              <div className="divide-y divide-surface-border">
                 {recentGeotags.length > 0 ? (
                   recentGeotags.map((geotag) => (
-                    <div key={geotag.id} className="p-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <div key={geotag.id} className="p-4 hover:bg-surface-overlay transition-colors">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
@@ -1768,12 +1768,12 @@ export const AdvancedTechnologyHub: React.FC = () => {
                             }`} />
                           </div>
                           <div>
-                            <p className="font-medium text-slate-900 dark:text-white capitalize">{geotag.recordType.replace('_', ' ')}</p>
-                            <p className="text-sm text-slate-500 dark:text-slate-400">{geotag.address || `${geotag.latitude.toFixed(4)}°, ${geotag.longitude.toFixed(4)}°`}</p>
+                            <p className="font-medium text-text-primary capitalize">{geotag.recordType.replace('_', ' ')}</p>
+                            <p className="text-sm text-text-muted">{geotag.address || `${geotag.latitude.toFixed(4)}°, ${geotag.longitude.toFixed(4)}°`}</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-xs text-slate-500 dark:text-slate-400">
+                          <span className="text-xs text-text-muted">
                             {new Date(geotag.capturedAt).toLocaleString()}
                           </span>
                           {geotag.syncStatus === 'pending' && (
@@ -1787,7 +1787,7 @@ export const AdvancedTechnologyHub: React.FC = () => {
                     </div>
                   ))
                 ) : (
-                  <div className="p-8 text-center text-slate-500 dark:text-slate-400">
+                  <div className="p-8 text-center text-text-muted">
                     <MapPin className="w-12 h-12 mx-auto mb-3 opacity-20" />
                     <p>No geotagged reports yet</p>
                     <p className="text-sm">Capture a location to see it here</p>
@@ -1851,7 +1851,7 @@ export const AdvancedTechnologyHub: React.FC = () => {
                   className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
                     riskFilter === filter
                       ? 'bg-violet-500 text-white shadow-lg shadow-violet-500/20'
-                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
+                      : 'bg-surface-raised text-text-secondary hover:bg-surface-sunken'
                   }`}
                 >
                   {filter.charAt(0).toUpperCase() + filter.slice(1)}
@@ -1871,10 +1871,10 @@ export const AdvancedTechnologyHub: React.FC = () => {
                   key={risk.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm overflow-hidden"
+                  className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm overflow-hidden"
                 >
                   <div 
-                    className="p-5 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
+                    className="p-5 cursor-pointer hover:bg-surface-overlay transition-colors"
                     onClick={() => setSelectedRisk(selectedRisk?.id === risk.id ? null : risk)}
                   >
                     <div className="flex items-center justify-between">
@@ -1884,21 +1884,21 @@ export const AdvancedTechnologyHub: React.FC = () => {
                         </div>
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-bold text-slate-900 dark:text-white">{risk.category}</h3>
+                            <h3 className="font-bold text-text-primary">{risk.category}</h3>
                             <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${getSeverityBadge(risk.severity)}`}>
                               {risk.severity}
                             </span>
                             {getTrendIcon(risk.trend)}
                           </div>
-                          <p className="text-sm text-slate-500 dark:text-slate-400">{risk.location}</p>
+                          <p className="text-sm text-text-muted">{risk.location}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="text-right">
-                          <p className="text-sm text-slate-500 dark:text-slate-400">Predicted</p>
-                          <p className="font-medium text-slate-900 dark:text-white">{risk.predictedDate}</p>
+                          <p className="text-sm text-text-muted">Predicted</p>
+                          <p className="font-medium text-text-primary">{risk.predictedDate}</p>
                         </div>
-                        <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform ${selectedRisk?.id === risk.id ? 'rotate-180' : ''}`} />
+                        <ChevronDown className={`w-5 h-5 text-text-muted transition-transform ${selectedRisk?.id === risk.id ? 'rotate-180' : ''}`} />
                       </div>
                     </div>
                   </div>
@@ -1909,28 +1909,28 @@ export const AdvancedTechnologyHub: React.FC = () => {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        className="border-t border-slate-200 dark:border-slate-700"
+                        className="border-t border-surface-border"
                       >
                         <div className="p-5 space-y-4">
                           {/* Confidence & Factors */}
                           <div className="grid md:grid-cols-2 gap-4">
                             <div>
-                              <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Confidence Level</p>
+                              <p className="text-sm font-medium text-text-primary mb-2">Confidence Level</p>
                               <div className="flex items-center gap-3">
-                                <div className="flex-1 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                <div className="flex-1 h-2 bg-surface-sunken rounded-full overflow-hidden">
                                   <div 
                                     className="h-full bg-gradient-to-r from-violet-500 to-purple-600 rounded-full"
                                     style={{ width: `${risk.confidence}%` }}
                                   />
                                 </div>
-                                <span className="text-sm font-medium text-slate-900 dark:text-white">{risk.confidence}%</span>
+                                <span className="text-sm font-medium text-text-primary">{risk.confidence}%</span>
                               </div>
                             </div>
                             <div>
-                              <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Contributing Factors</p>
+                              <p className="text-sm font-medium text-text-primary mb-2">Contributing Factors</p>
                               <div className="flex flex-wrap gap-2">
                                 {risk.factors.map((factor, index) => (
-                                  <span key={index} className="text-xs px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-full text-slate-600 dark:text-slate-400">
+                                  <span key={index} className="text-xs px-2 py-1 bg-surface-sunken rounded-full text-text-secondary">
                                     {factor}
                                   </span>
                                 ))}
@@ -1940,12 +1940,12 @@ export const AdvancedTechnologyHub: React.FC = () => {
                           
                           {/* Recommendations */}
                           <div>
-                            <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">AI Recommendations</p>
+                            <p className="text-sm font-medium text-text-primary mb-2">AI Recommendations</p>
                             <div className="space-y-2">
                               {risk.recommendations.map((rec, index) => (
                                 <div key={index} className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
                                   <Lightbulb className="w-4 h-4 text-blue-500" />
-                                  <span className="text-sm text-slate-700 dark:text-slate-300">{rec}</span>
+                                  <span className="text-sm text-text-primary">{rec}</span>
                                 </div>
                               ))}
                             </div>
@@ -1956,10 +1956,10 @@ export const AdvancedTechnologyHub: React.FC = () => {
                             <button className="flex-1 py-2.5 bg-gradient-to-r from-violet-500 to-purple-600 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-violet-500/20 transition-all text-sm">
                               Create Action Item
                             </button>
-                            <button className="px-4 py-2.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-white rounded-xl font-medium hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors text-sm">
+                            <button className="px-4 py-2.5 bg-surface-sunken text-text-primary rounded-xl font-medium hover:bg-surface-sunken transition-colors text-sm">
                               View Details
                             </button>
-                            <button className="px-4 py-2.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-white rounded-xl font-medium hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors text-sm">
+                            <button className="px-4 py-2.5 bg-surface-sunken text-text-primary rounded-xl font-medium hover:bg-surface-sunken transition-colors text-sm">
                               Dismiss
                             </button>
                           </div>
@@ -1972,13 +1972,13 @@ export const AdvancedTechnologyHub: React.FC = () => {
             </div>
 
             {/* SIF Prevention Section */}
-            <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm overflow-hidden">
-              <div className="p-5 border-b border-slate-200 dark:border-slate-700">
+            <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-sm overflow-hidden">
+              <div className="p-5 border-b border-surface-border">
                 <div className="flex items-center gap-3">
                   <Shield className="w-5 h-5 text-red-500" />
-                  <h2 className="text-lg font-bold text-slate-900 dark:text-white">SIF Prevention Analysis</h2>
+                  <h2 className="text-lg font-bold text-text-primary">SIF Prevention Analysis</h2>
                 </div>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                <p className="text-sm text-text-muted mt-1">
                   AI-identified precursors to serious injuries and fatalities
                 </p>
               </div>
@@ -2018,7 +2018,7 @@ export const AdvancedTechnologyHub: React.FC = () => {
                 
                 <button 
                   onClick={() => navigate('/sif-dashboard')}
-                  className="w-full mt-4 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-white rounded-xl font-medium hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors flex items-center justify-center gap-2"
+                  className="w-full mt-4 py-3 bg-surface-sunken text-text-primary rounded-xl font-medium hover:bg-surface-sunken transition-colors flex items-center justify-center gap-2"
                 >
                   View Full SIF Dashboard
                   <ChevronRight className="w-4 h-4" />

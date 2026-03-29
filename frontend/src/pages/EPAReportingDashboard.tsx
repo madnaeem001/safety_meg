@@ -119,7 +119,7 @@ export const EPAReportingDashboard: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-surface-base">
+    <div className="page-wrapper">
       {/* Header */}
       <header className="sticky top-[72px] z-50 bg-surface-overlay/80 backdrop-blur-xl border-b border-surface-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -132,7 +132,7 @@ export const EPAReportingDashboard: React.FC = () => {
                 <ArrowLeft className="w-5 h-5 text-text-secondary" />
               </button>
               <div>
-                <h1 className="text-xl font-semibold text-text-primary">EPA Reporting Dashboard</h1>
+                <h1 className="page-title">EPA Reporting Dashboard</h1>
                 <p className="text-sm text-text-muted">Environmental compliance metrics and trends</p>
               </div>
             </div>

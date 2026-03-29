@@ -227,7 +227,7 @@ const InternationalStandards: React.FC<{ isEmbedded?: boolean }> = ({ isEmbedded
   };
 
   return (
-    <div className={isEmbedded ? 'text-text-primary pb-8 selection:bg-accent/20' : 'min-h-screen bg-surface-base text-text-primary pb-24 selection:bg-accent/20'}>
+    <div className={isEmbedded ? 'text-text-primary pb-8 selection:bg-accent/20' : 'page-wrapper selection:bg-accent/20'}>
       {/* HD Background Elements */}
       {!isEmbedded && (
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -253,7 +253,7 @@ const InternationalStandards: React.FC<{ isEmbedded?: boolean }> = ({ isEmbedded
                   <Globe className="h-7 w-7" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-black tracking-tight text-text-primary">Global Standards</h1>
+                  <h1 className="page-title">Global Standards</h1>
                   <p className="text-[11px] font-bold uppercase tracking-widest text-text-muted">International Compliance Library</p>
                 </div>
               </div>

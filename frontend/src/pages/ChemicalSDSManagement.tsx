@@ -37,7 +37,7 @@ export const ChemicalSDSManagement = () => {
   );
 
   return (
-    <div className="min-h-screen bg-surface-base pb-20">
+    <div className="page-wrapper">
       {/* Header */}
       <header className="sticky top-[72px] z-40 bg-surface-overlay/80 backdrop-blur-xl border-b border-surface-border px-6 py-4">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
@@ -49,7 +49,7 @@ export const ChemicalSDSManagement = () => {
               <ArrowLeft className="w-6 h-6 text-text-secondary" />
             </button>
             <div>
-              <h1 className="text-xl font-bold text-text-primary">Chemical & SDS</h1>
+              <h1 className="page-title">Chemical & SDS</h1>
               <p className="text-sm text-text-muted">Inventory & Safety Data Sheets</p>
             </div>
           </div>

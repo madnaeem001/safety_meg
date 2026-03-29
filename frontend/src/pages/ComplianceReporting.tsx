@@ -172,7 +172,7 @@ export const ComplianceReporting: React.FC = () => {
                   <StatIcon className={`w-6 h-6 ${stat.color}`} />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-surface-900 dark:text-white">{stat.value}</p>
+                  <p className="text-2xl font-bold text-text-primary">{stat.value}</p>
                   <p className="text-sm text-surface-500">{stat.label}</p>
                 </div>
               </div>
@@ -211,7 +211,7 @@ export const ComplianceReporting: React.FC = () => {
       <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700">
         <div className="p-4 border-b border-surface-200 dark:border-surface-700">
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-surface-900 dark:text-white flex items-center gap-2">
+            <h3 className="font-semibold text-text-primary flex items-center gap-2">
               <BarChart3 className="w-5 h-5 text-brand-500" />
               Key Compliance Metrics
             </h3>
@@ -252,7 +252,7 @@ export const ComplianceReporting: React.FC = () => {
       <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700">
         <div className="p-4 border-b border-surface-200 dark:border-surface-700">
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-surface-900 dark:text-white flex items-center gap-2">
+            <h3 className="font-semibold text-text-primary flex items-center gap-2">
               <FileText className="w-5 h-5 text-blue-500" />
               Recent Reports
             </h3>
@@ -285,7 +285,7 @@ export const ComplianceReporting: React.FC = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-medium text-surface-900 dark:text-white truncate">{report.name}</span>
+                    <span className="font-medium text-text-primary truncate">{report.name}</span>
                     {report.automationEnabled && (
                       <Zap className="w-4 h-4 text-amber-500" />
                     )}
@@ -309,7 +309,7 @@ export const ComplianceReporting: React.FC = () => {
       <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700">
         <div className="p-4 border-b border-surface-200 dark:border-surface-700">
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-surface-900 dark:text-white flex items-center gap-2">
+            <h3 className="font-semibold text-text-primary flex items-center gap-2">
               <Globe className="w-5 h-5 text-green-500" />
               Upcoming Regulatory Requirements
             </h3>
@@ -327,7 +327,7 @@ export const ComplianceReporting: React.FC = () => {
               <div className="flex items-start justify-between mb-2">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-medium text-surface-900 dark:text-white">{req.requirement}</span>
+                    <span className="font-medium text-text-primary">{req.requirement}</span>
                     <span className={`px-2 py-0.5 text-xs rounded-full ${
                       req.status === 'in_progress' ? 'bg-blue-100 text-blue-700' :
                       req.status === 'upcoming' ? 'bg-amber-100 text-amber-700' :
@@ -339,7 +339,7 @@ export const ComplianceReporting: React.FC = () => {
                   <p className="text-sm text-surface-500">{req.regulation} • {req.agency}</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium text-surface-900 dark:text-white">{req.dueDate}</p>
+                  <p className="font-medium text-text-primary">{req.dueDate}</p>
                   <p className="text-xs text-surface-500">Due Date</p>
                 </div>
               </div>
@@ -405,7 +405,7 @@ export const ComplianceReporting: React.FC = () => {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h4 className="font-semibold text-surface-900 dark:text-white">{report.name}</h4>
+                    <h4 className="font-semibold text-text-primary">{report.name}</h4>
                     {report.automationEnabled && (
                       <span title="Automated"><Zap className="w-4 h-4 text-amber-500" /></span>
                     )}
@@ -452,7 +452,7 @@ export const ComplianceReporting: React.FC = () => {
             >
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h4 className="font-semibold text-surface-900 dark:text-white">{metric.name}</h4>
+                  <h4 className="font-semibold text-text-primary">{metric.name}</h4>
                   <p className="text-xs text-surface-500">{metric.category}</p>
                 </div>
                 <span className={`px-2 py-1 text-xs rounded-full ${statusConf.bg} ${statusConf.color}`}>
@@ -512,7 +512,7 @@ export const ComplianceReporting: React.FC = () => {
           <div className="flex items-start justify-between mb-4">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <h4 className="font-semibold text-surface-900 dark:text-white">{req.requirement}</h4>
+                <h4 className="font-semibold text-text-primary">{req.requirement}</h4>
                 <span className={`px-2 py-0.5 text-xs rounded-full ${
                   req.status === 'compliant' ? 'bg-green-100 text-green-700' :
                   req.status === 'in_progress' ? 'bg-blue-100 text-blue-700' :
@@ -527,7 +527,7 @@ export const ComplianceReporting: React.FC = () => {
               </p>
             </div>
             <div className="text-right">
-              <p className="text-lg font-bold text-surface-900 dark:text-white">{req.dueDate}</p>
+              <p className="text-lg font-bold text-text-primary">{req.dueDate}</p>
               <p className="text-xs text-surface-500">Due Date</p>
             </div>
           </div>
@@ -558,7 +558,7 @@ export const ComplianceReporting: React.FC = () => {
   const renderSchedules = () => (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-surface-900 dark:text-white">Scheduled Reports</h3>
+        <h3 className="font-semibold text-text-primary">Scheduled Reports</h3>
         <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />}>Add Schedule</SMButton>
       </div>
       
@@ -575,7 +575,7 @@ export const ComplianceReporting: React.FC = () => {
                 <Clock className={`w-5 h-5 ${schedule.enabled ? 'text-green-600' : 'text-gray-500'}`} />
               </div>
               <div>
-                <h4 className="font-semibold text-surface-900 dark:text-white">{schedule.reportName}</h4>
+                <h4 className="font-semibold text-text-primary">{schedule.reportName}</h4>
                 <p className="text-sm text-surface-500">{schedule.schedule}</p>
                 <div className="flex items-center gap-4 mt-2 text-xs text-surface-500">
                   <span className="flex items-center gap-1">
@@ -630,7 +630,7 @@ export const ComplianceReporting: React.FC = () => {
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
-                <h2 className="text-xl font-bold text-surface-900 dark:text-white">{selectedReport.name}</h2>
+                <h2 className="text-xl font-bold text-text-primary">{selectedReport.name}</h2>
                 <span className={`px-3 py-1 text-sm rounded-full ${statConf.color}`}>
                   {statConf.label}
                 </span>
@@ -667,11 +667,11 @@ export const ComplianceReporting: React.FC = () => {
 
         {/* Timeline */}
         <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700 p-6">
-          <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Schedule</h3>
+          <h3 className="font-semibold text-text-primary mb-4">Schedule</h3>
           <div className="flex items-center gap-8">
             <div className="flex-1">
               <p className="text-xs text-surface-500 mb-1">Last Generated</p>
-              <p className="text-lg font-medium text-surface-900 dark:text-white">{selectedReport.lastGenerated}</p>
+              <p className="text-lg font-medium text-text-primary">{selectedReport.lastGenerated}</p>
             </div>
             <div className="flex-1 flex items-center justify-center">
               <div className="h-px flex-1 bg-surface-200 dark:bg-surface-700" />
@@ -680,7 +680,7 @@ export const ComplianceReporting: React.FC = () => {
             </div>
             <div className="flex-1 text-right">
               <p className="text-xs text-surface-500 mb-1">Next Due</p>
-              <p className="text-lg font-medium text-surface-900 dark:text-white">{selectedReport.nextDue}</p>
+              <p className="text-lg font-medium text-text-primary">{selectedReport.nextDue}</p>
             </div>
           </div>
         </div>
@@ -723,7 +723,7 @@ export const ComplianceReporting: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 dark:bg-surface-900">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="sticky top-[72px] z-50 bg-white/80 dark:bg-surface-800/80 backdrop-blur-xl border-b border-surface-200 dark:border-surface-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -745,7 +745,7 @@ export const ComplianceReporting: React.FC = () => {
                 <ArrowLeft className="w-5 h-5 text-surface-600 dark:text-surface-400" />
               </button>
               <div>
-                <h1 className="text-xl font-bold text-surface-900 dark:text-white flex items-center gap-2">
+                <h1 className="page-title flex items-center gap-2">
                   <FileCheck className="w-6 h-6 text-blue-500" />
                   {getViewTitle()}
                 </h1>

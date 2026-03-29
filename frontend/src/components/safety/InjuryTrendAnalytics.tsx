@@ -294,7 +294,7 @@ export const InjuryTrendAnalytics: React.FC<InjuryTrendAnalyticsProps> = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className={`bg-gradient-to-br ${kpi.color} rounded-2xl p-5 text-white relative overflow-hidden`}
+            className={`bg-gradient-to-br ${kpi.color} rounded-2xl p-5 text-text-onAccent relative overflow-hidden`}
           >
             <div className="relative z-10">
               <div className="flex items-center gap-2 mb-2">
@@ -331,11 +331,11 @@ export const InjuryTrendAnalytics: React.FC<InjuryTrendAnalyticsProps> = ({
             </div>
             <div className="flex items-center gap-4 text-sm">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500" />
+                <div className="w-3 h-3 rounded-full bg-danger" />
                 <span className="text-text-muted">Injuries</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-amber-500" />
+                <div className="w-3 h-3 rounded-full bg-warning" />
                 <span className="text-text-muted">Near Misses</span>
               </div>
             </div>

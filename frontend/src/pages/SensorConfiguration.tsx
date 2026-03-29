@@ -150,7 +150,7 @@ export const SensorConfiguration: React.FC = () => {
   const hasChanges = Object.keys(thresholdEdits).length > 0 || Object.keys(typeEdits).length > 0;
 
   return (
-    <div className="min-h-screen bg-surface-base pb-20">
+    <div className="page-wrapper">
       {/* Header */}
       <header className="sticky top-[72px] z-40 bg-surface-overlay/80 backdrop-blur-xl border-b border-surface-border px-6 py-4">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
@@ -159,7 +159,7 @@ export const SensorConfiguration: React.FC = () => {
               <ArrowLeft className="w-6 h-6 text-text-secondary" />
             </button>
             <div>
-              <h1 className="text-xl font-bold text-text-primary flex items-center gap-2">
+              <h1 className="page-title flex items-center gap-2">
                 <Sliders className="w-6 h-6 text-accent" />
                 Sensor Configuration
               </h1>

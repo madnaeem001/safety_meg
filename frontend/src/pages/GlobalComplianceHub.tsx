@@ -152,7 +152,7 @@ export const GlobalComplianceHub: React.FC = () => {
 
   return (
     <FadeContent blur duration={400} delay={0}>
-      <div className="min-h-screen bg-surface-base pb-24">
+      <div className="page-wrapper">
         {/* Header */}
         <header className="sticky top-[var(--nav-height)] z-40 border-b border-surface-border bg-surface-raised/90 backdrop-blur-xl">
           <div className="mx-auto max-w-[1440px] px-4 py-4 sm:px-6 lg:px-8">
@@ -167,7 +167,7 @@ export const GlobalComplianceHub: React.FC = () => {
                   </svg>
                 </button>
                 <div>
-                  <h1 className="text-xl font-bold text-text-primary">Global Compliance Hub</h1>
+                  <h1 className="page-title">Global Compliance Hub</h1>
                   <p className="text-xs font-bold uppercase tracking-widest text-text-muted">Multi-Jurisdictional Compliance Management</p>
                 </div>
               </div>

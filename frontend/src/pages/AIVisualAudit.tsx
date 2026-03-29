@@ -79,7 +79,7 @@ class AuditErrorBoundary extends React.Component<{ children: React.ReactNode }, 
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-surface-base p-8 text-center text-text-primary">
+        <div className="page-wrapper flex flex-col items-center justify-center p-8 text-center">
           <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-danger/10 text-danger">
             <AlertTriangle className="w-10 h-10 text-red-500" />
           </div>
@@ -589,7 +589,7 @@ const AIVisualAuditContent: React.FC = () => {
   );
 
   return (
-    <div className="ai-purple-theme flex min-h-screen flex-col overflow-hidden bg-surface-base text-text-primary selection:bg-accent/20">
+    <div className="ai-purple-theme page-wrapper flex flex-col overflow-hidden selection:bg-accent/20">
       {/* HD Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute right-[-10%] top-[-10%] h-[50%] w-[50%] rounded-full bg-accent/10 blur-[150px]" />
@@ -609,7 +609,7 @@ const AIVisualAuditContent: React.FC = () => {
               </button>
               <div className="flex items-center gap-3">
                 <div>
-                  <h1 className="text-lg font-bold leading-tight text-text-primary">AI Visual Audit</h1>
+                  <h1 className="page-title">AI Visual Audit</h1>
                   <p className="text-[11px] font-medium uppercase tracking-widest text-text-muted">Safety Vision Intelligence</p>
                 </div>
               </div>

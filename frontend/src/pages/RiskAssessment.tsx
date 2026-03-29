@@ -322,12 +322,12 @@ export const RiskAssessment: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-base pb-20">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="bg-surface-raised/80 backdrop-blur-md shadow-sm sticky top-[var(--nav-height)] z-50 px-4 h-16 flex items-center gap-3 safe-top border-b border-surface-border">
         <SMButton variant="ghost" size="sm" onClick={() => navigate(-1)} leftIcon={<ArrowLeft className="w-5 h-5" />} />
         <img src="/logo.png" alt="SafetyMEG" className="w-8 h-8 object-contain" />
-        <h1 className="text-xl font-bold text-text-primary flex items-center gap-2 tracking-tight">
+        <h1 className="page-title flex items-center gap-2">
           AI Risk Assessment
         </h1>
       </div>
