@@ -18,19 +18,19 @@ interface BacklogManagementProps {
 }
 
 const ISSUE_TYPE_ICONS: Record<IssueType, { icon: typeof Target; color: string }> = {
-  epic: { icon: Zap, color: 'text-purple-600 bg-purple-50' },
-  story: { icon: BookOpen, color: 'text-green-600 bg-green-50' },
-  task: { icon: CheckSquare, color: 'text-blue-600 bg-blue-50' },
-  subtask: { icon: Layers, color: 'text-cyan-600 bg-cyan-50' },
-  bug: { icon: Bug, color: 'text-red-600 bg-red-50' },
+  epic: { icon: Zap, color: 'text-purple-600 bg-purple-500/10' },
+  story: { icon: BookOpen, color: 'text-success bg-success/10' },
+  task: { icon: CheckSquare, color: 'text-accent bg-accent/10' },
+  subtask: { icon: Layers, color: 'text-cyan-400 bg-cyan-500/10' },
+  bug: { icon: Bug, color: 'text-danger bg-danger/10' },
 };
 
 const PRIORITY_COLORS: Record<TaskPriority, string> = {
-  highest: 'bg-red-100 text-red-700 border-red-200',
-  high: 'bg-orange-100 text-orange-700 border-orange-200',
-  medium: 'bg-amber-100 text-amber-700 border-amber-200',
-  low: 'bg-blue-100 text-blue-700 border-blue-200',
-  lowest: 'bg-slate-100 text-slate-700 border-slate-200',
+  highest: 'bg-danger/10 text-danger border-danger/20',
+  high: 'bg-warning/10 text-warning border-orange-200',
+  medium: 'bg-warning/10 text-warning border-warning/20',
+  low: 'bg-accent/10 text-accent border-accent/20',
+  lowest: 'bg-surface-sunken text-text-muted border-surface-border',
 };
 
 const BacklogItem: React.FC<{
@@ -54,35 +54,35 @@ const BacklogItem: React.FC<{
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
-      className={`bg-white p-4 rounded-xl border transition-all group ${
-        isSelected ? 'border-brand-500 ring-2 ring-brand-100' : 'border-surface-100 hover:border-brand-200'
+      className={`bg-surface-raised p-4 rounded-xl border transition-all group ${
+        isSelected ? 'border-accent ring-2 ring-brand-100' : 'border-surface-border hover:border-brand-200'
       }`}
     >
       <div className="flex items-center gap-3">
         {/* Drag handle */}
-        <div className="drag-handle cursor-grab active:cursor-grabbing p-1 rounded hover:bg-surface-50 touch-none">
-          <GripVertical className="w-4 h-4 text-surface-300" />
+        <div className="drag-handle cursor-grab active:cursor-grabbing p-1 rounded hover:bg-surface-base touch-none">
+          <GripVertical className="w-4 h-4 text-text-muted" />
         </div>
 
         {/* Checkbox */}
         <button
           onClick={() => onSelect(task.id)}
           className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
-            isSelected ? 'bg-brand-500 border-brand-500' : 'border-surface-300 hover:border-brand-400'
+            isSelected ? 'bg-accent/10 border-accent' : 'border-surface-border hover:border-accent'
           }`}
         >
           {isSelected && <CheckSquare className="w-3.5 h-3.5 text-white" />}
         </button>
 
         {/* Issue type icon */}
-        <span className={`p-1.5 rounded ${ISSUE_TYPE_ICONS[issueType]?.color || 'text-blue-600 bg-blue-50'}`}>
+        <span className={`p-1.5 rounded ${ISSUE_TYPE_ICONS[issueType]?.color || 'text-accent bg-accent/10'}`}>
           <IssueIcon className="w-4 h-4" />
         </span>
 
         {/* Main content */}
         <div className="flex-1 min-w-0 cursor-pointer" onClick={() => onOpen(task)}>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-mono text-surface-500">{task.key || task.id}</span>
+            <span className="text-xs font-mono text-text-muted">{task.key || task.id}</span>
             {epic && (
               <span 
                 className="text-[10px] px-2 py-0.5 rounded-full font-medium"
@@ -92,12 +92,12 @@ const BacklogItem: React.FC<{
               </span>
             )}
             {isOverdue && (
-              <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-red-50 text-red-600 flex items-center gap-1">
+              <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-danger/10 text-danger flex items-center gap-1">
                 <AlertCircle className="w-3 h-3" /> Overdue
               </span>
             )}
           </div>
-          <h4 className="font-medium text-brand-900 text-sm line-clamp-1">{task.title}</h4>
+          <h4 className="font-medium text-text-primary text-sm line-clamp-1">{task.title}</h4>
         </div>
 
         {/* Metadata */}
@@ -109,19 +109,19 @@ const BacklogItem: React.FC<{
 
           {/* Story points */}
           {task.storyPoints && (
-            <span className="px-2 py-1 bg-indigo-50 text-indigo-600 rounded font-bold">
+            <span className="px-2 py-1 bg-accent/10 text-accent rounded font-bold">
               {task.storyPoints} SP
             </span>
           )}
 
           {/* Due date */}
-          <span className={`flex items-center gap-1 ${isOverdue ? 'text-red-500' : 'text-surface-500'}`}>
+          <span className={`flex items-center gap-1 ${isOverdue ? 'text-red-500' : 'text-text-muted'}`}>
             <Calendar className="w-3.5 h-3.5" />
             {task.dueDate}
           </span>
 
           {/* Assignee */}
-          <div className="flex items-center gap-1 text-surface-500">
+          <div className="flex items-center gap-1 text-text-muted">
             <User className="w-3.5 h-3.5" />
             {task.assignee.split(' ')[0]}
           </div>
@@ -131,14 +131,14 @@ const BacklogItem: React.FC<{
         <div className="relative">
           <button
             onClick={() => setShowSprintMenu(!showSprintMenu)}
-            className="p-2 rounded-lg hover:bg-surface-50 transition-colors text-surface-400 hover:text-brand-600"
+            className="p-2 rounded-lg hover:bg-surface-base transition-colors text-text-muted hover:text-accent"
           >
             <ArrowRight className="w-4 h-4" />
           </button>
           
           {showSprintMenu && (
-            <div className="absolute right-0 top-10 bg-white rounded-xl shadow-lg border border-surface-100 py-2 z-20 min-w-[180px]">
-              <div className="px-3 py-1 text-[10px] font-bold text-surface-400 uppercase tracking-wider">
+            <div className="absolute right-0 top-10 bg-surface-raised rounded-xl shadow-lg border border-surface-border py-2 z-20 min-w-[180px]">
+              <div className="px-3 py-1 text-[10px] font-bold text-text-muted uppercase tracking-wider">
                 Move to Sprint
               </div>
               {sprints.filter(s => s.status !== 'completed').map(sprint => (
@@ -148,7 +148,7 @@ const BacklogItem: React.FC<{
                     onMoveToSprint(task.id, String(sprint.id));
                     setShowSprintMenu(false);
                   }}
-                  className="w-full px-3 py-2 text-left text-sm text-surface-700 hover:bg-surface-50 flex items-center gap-2"
+                  className="w-full px-3 py-2 text-left text-sm text-text-secondary hover:bg-surface-base flex items-center gap-2"
                 >
                   {sprint.status === 'active' && <Target className="w-3.5 h-3.5 text-emerald-500" />}
                   {sprint.name}
@@ -247,21 +247,21 @@ export const BacklogManagement: React.FC<BacklogManagementProps> = ({
       <SMCard className="p-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div>
-            <h3 className="text-xl font-bold text-brand-900">Backlog Management</h3>
-            <p className="text-sm text-surface-500 mt-1">Prioritize and plan upcoming work</p>
+            <h3 className="text-xl font-bold text-text-primary">Backlog Management</h3>
+            <p className="text-sm text-text-muted mt-1">Prioritize and plan upcoming work</p>
           </div>
           
           <div className="flex items-center gap-3">
-            <div className="bg-surface-50 px-3 py-1.5 rounded-lg text-sm">
-              <span className="font-bold text-brand-700">{backlogTasks.length}</span>
-              <span className="text-surface-500 ml-1">items</span>
+            <div className="bg-surface-base px-3 py-1.5 rounded-lg text-sm">
+              <span className="font-bold text-accent">{backlogTasks.length}</span>
+              <span className="text-text-muted ml-1">items</span>
             </div>
-            <div className="bg-indigo-50 px-3 py-1.5 rounded-lg text-sm">
-              <span className="font-bold text-indigo-700">{totalPoints}</span>
+            <div className="bg-accent/10 px-3 py-1.5 rounded-lg text-sm">
+              <span className="font-bold text-accent">{totalPoints}</span>
               <span className="text-indigo-500 ml-1">points</span>
             </div>
-            <div className="bg-red-50 px-3 py-1.5 rounded-lg text-sm">
-              <span className="font-bold text-red-700">{highPriorityCount}</span>
+            <div className="bg-danger/10 px-3 py-1.5 rounded-lg text-sm">
+              <span className="font-bold text-danger">{highPriorityCount}</span>
               <span className="text-red-500 ml-1">high priority</span>
             </div>
           </div>
@@ -271,13 +271,13 @@ export const BacklogManagement: React.FC<BacklogManagementProps> = ({
         <div className="flex flex-col sm:flex-row gap-3">
           {/* Search */}
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
             <input
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search backlog..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-surface-border focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all text-sm"
             />
           </div>
           
@@ -285,7 +285,7 @@ export const BacklogManagement: React.FC<BacklogManagementProps> = ({
           <select
             value={filterEpic}
             onChange={e => setFilterEpic(e.target.value)}
-            className="px-4 py-2.5 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm bg-white"
+            className="px-4 py-2.5 rounded-xl border border-surface-border focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all text-sm bg-surface-raised"
           >
             <option value="all">All Epics</option>
             {epics.map(epic => (
@@ -297,7 +297,7 @@ export const BacklogManagement: React.FC<BacklogManagementProps> = ({
           <select
             value={filterPriority}
             onChange={e => setFilterPriority(e.target.value as TaskPriority | 'all')}
-            className="px-4 py-2.5 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm bg-white"
+            className="px-4 py-2.5 rounded-xl border border-surface-border focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all text-sm bg-surface-raised"
           >
             <option value="all">All Priorities</option>
             <option value="highest">Highest</option>
@@ -311,7 +311,7 @@ export const BacklogManagement: React.FC<BacklogManagementProps> = ({
           <select
             value={sortBy}
             onChange={e => setSortBy(e.target.value as typeof sortBy)}
-            className="px-4 py-2.5 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm bg-white"
+            className="px-4 py-2.5 rounded-xl border border-surface-border focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all text-sm bg-surface-raised"
           >
             <option value="priority">Sort by Priority</option>
             <option value="dueDate">Sort by Due Date</option>
@@ -325,24 +325,24 @@ export const BacklogManagement: React.FC<BacklogManagementProps> = ({
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-brand-50 border border-brand-200 p-4 rounded-xl flex items-center justify-between"
+          className="bg-accent/10 border border-brand-200 p-4 rounded-xl flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
-            <span className="font-medium text-brand-700">{selectedTasks.length} selected</span>
+            <span className="font-medium text-accent">{selectedTasks.length} selected</span>
             <button
               onClick={() => setSelectedTasks([])}
-              className="text-sm text-brand-600 hover:text-brand-700"
+              className="text-sm text-accent hover:text-accent"
             >
               Clear selection
             </button>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-brand-600 mr-2">Move to sprint:</span>
+            <span className="text-sm text-accent mr-2">Move to sprint:</span>
             {sprints.filter(s => s.status !== 'completed').map(sprint => (
               <button
                 key={sprint.id}
                 onClick={() => handleBulkMoveToSprint(String(sprint.id))}
-                className="px-3 py-1.5 bg-white text-sm font-medium text-brand-700 rounded-lg border border-brand-200 hover:bg-brand-100 transition-colors"
+                className="px-3 py-1.5 bg-surface-raised text-sm font-medium text-accent rounded-lg border border-brand-200 hover:bg-accent/10 transition-colors"
               >
                 {sprint.name}
               </button>
@@ -357,15 +357,15 @@ export const BacklogManagement: React.FC<BacklogManagementProps> = ({
           onClick={handleSelectAll}
           className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
             selectedTasks.length === filteredTasks.length && filteredTasks.length > 0
-              ? 'bg-brand-500 border-brand-500' 
-              : 'border-surface-300 hover:border-brand-400'
+              ? 'bg-accent/10 border-accent' 
+              : 'border-surface-border hover:border-accent'
           }`}
         >
           {selectedTasks.length === filteredTasks.length && filteredTasks.length > 0 && (
             <CheckSquare className="w-3.5 h-3.5 text-white" />
           )}
         </button>
-        <span className="text-sm text-surface-500">
+        <span className="text-sm text-text-muted">
           {selectedTasks.length === filteredTasks.length && filteredTasks.length > 0 
             ? 'Deselect all' 
             : 'Select all'}
@@ -401,7 +401,7 @@ export const BacklogManagement: React.FC<BacklogManagementProps> = ({
       </Reorder.Group>
 
       {filteredTasks.length === 0 && (
-        <div className="text-center py-12 text-surface-400">
+        <div className="text-center py-12 text-text-muted">
           <div className="text-lg font-medium mb-2">No backlog items found</div>
           <p className="text-sm">Try adjusting your filters or add new items to the backlog</p>
         </div>

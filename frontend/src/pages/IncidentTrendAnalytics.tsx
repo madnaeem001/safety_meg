@@ -277,7 +277,7 @@ export default function IncidentTrendAnalytics() {
             
             <div className="flex items-center gap-3">
               {/* Time Range */}
-              <div className="flex items-center bg-surface-100 rounded-xl p-1">
+              <div className="flex items-center bg-surface-sunken rounded-xl p-1">
                 {[
                   { value: 'week', label: 'Week' },
                   { value: 'month', label: 'Month' },
@@ -299,7 +299,7 @@ export default function IncidentTrendAnalytics() {
               </div>
               
               {/* Export */}
-              <button className="flex items-center gap-2 px-4 py-2 bg-primary text-text-inverted rounded-xl hover:opacity-90 transition-colors">
+              <button className="flex items-center gap-2 px-4 py-2 bg-accent text-text-onAccent rounded-xl hover:opacity-90 transition-colors">
                 <Download className="w-4 h-4" />
                 <span className="text-sm font-medium">Export</span>
               </button>
@@ -465,28 +465,28 @@ export default function IncidentTrendAnalytics() {
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart data={monthlyData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                      <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 12 }} />
-                      <YAxis tick={{ fill: '#64748b', fontSize: 12 }} />
+                      <CartesianGrid strokeDasharray="3 3" stroke="var(--surface-border)" />
+                      <XAxis dataKey="month" tick={{ fill: 'var(--text-muted)', fontSize: 12 }} />
+                      <YAxis tick={{ fill: 'var(--text-muted)', fontSize: 12 }} />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend />
                       <Area
                         type="monotone"
                         dataKey="total"
-                        fill="#3b82f6"
+                        fill="#00A89D"
                         fillOpacity={0.1}
-                        stroke="#3b82f6"
+                        stroke="#00A89D"
                         strokeWidth={2}
                         name="Total"
                       />
-                      <Bar dataKey="injuries" fill="#ef4444" name="Injuries" radius={[4, 4, 0, 0]} />
-                      <Bar dataKey="nearMisses" fill="#f59e0b" name="Near Misses" radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="injuries" fill="#EF4444" name="Injuries" radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="nearMisses" fill="#F59E0B" name="Near Misses" radius={[4, 4, 0, 0]} />
                       <Line
                         type="monotone"
                         dataKey="total"
-                        stroke="#1e40af"
+                        stroke="#00A89D"
                         strokeWidth={2}
-                        dot={{ fill: '#1e40af', r: 4 }}
+                        dot={{ fill: '#00A89D', r: 4 }}
                         name="Trend Line"
                       />
                     </ComposedChart>
@@ -501,24 +501,24 @@ export default function IncidentTrendAnalytics() {
                   <div className="h-60">
                     <ResponsiveContainer width="100%" height="100%">
                       <AreaChart data={weeklyData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                        <XAxis dataKey="week" tick={{ fill: '#64748b', fontSize: 12 }} />
-                        <YAxis tick={{ fill: '#64748b', fontSize: 12 }} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--surface-border)" />
+                        <XAxis dataKey="week" tick={{ fill: 'var(--text-muted)', fontSize: 12 }} />
+                        <YAxis tick={{ fill: 'var(--text-muted)', fontSize: 12 }} />
                         <Tooltip content={<CustomTooltip />} />
                         <Area
                           type="monotone"
                           dataKey="injuries"
                           stackId="1"
-                          fill="#ef4444"
-                          stroke="#ef4444"
+                          fill="#EF4444"
+                          stroke="#EF4444"
                           name="Injuries"
                         />
                         <Area
                           type="monotone"
                           dataKey="nearMisses"
                           stackId="1"
-                          fill="#f59e0b"
-                          stroke="#f59e0b"
+                          fill="#F59E0B"
+                          stroke="#F59E0B"
                           name="Near Misses"
                         />
                       </AreaChart>
@@ -531,7 +531,7 @@ export default function IncidentTrendAnalytics() {
                   <h3 className="font-semibold text-text-primary mb-4">Leading Indicators</h3>
                   <div className="space-y-4">
                     {liData.map((indicator, idx) => (
-                      <div key={idx} className="flex items-center justify-between p-3 bg-surface-100 rounded-xl">
+                      <div key={idx} className="flex items-center justify-between p-3 bg-surface-sunken rounded-xl">
                         <div className="flex items-center gap-3">
                           {getTrendIcon(indicator.trend)}
                           <div>
@@ -630,13 +630,13 @@ export default function IncidentTrendAnalytics() {
                 <div className="h-72">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={deptData} layout="vertical">
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                      <XAxis type="number" tick={{ fill: '#64748b', fontSize: 12 }} />
-                      <YAxis dataKey="department" type="category" tick={{ fill: '#64748b', fontSize: 12 }} width={100} />
+                      <CartesianGrid strokeDasharray="3 3" stroke="var(--surface-border)" />
+                      <XAxis type="number" tick={{ fill: 'var(--text-muted)', fontSize: 12 }} />
+                      <YAxis dataKey="department" type="category" tick={{ fill: 'var(--text-muted)', fontSize: 12 }} width={100} />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend />
-                      <Bar dataKey="injuries" fill="#ef4444" name="Injuries" stackId="a" radius={[0, 0, 0, 0]} />
-                      <Bar dataKey="nearMisses" fill="#f59e0b" name="Near Misses" stackId="a" radius={[0, 4, 4, 0]} />
+                      <Bar dataKey="injuries" fill="#EF4444" name="Injuries" stackId="a" radius={[0, 0, 0, 0]} />
+                      <Bar dataKey="nearMisses" fill="#F59E0B" name="Near Misses" stackId="a" radius={[0, 4, 4, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -644,7 +644,7 @@ export default function IncidentTrendAnalytics() {
                 {/* Department cards */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-6">
                   {deptData.map((dept, idx) => (
-                    <div key={idx} className="p-4 bg-surface-100 rounded-xl text-center">
+                    <div key={idx} className="p-4 bg-surface-sunken rounded-xl text-center">
                       <div className="flex items-center justify-center gap-1 mb-2">
                         {getTrendIcon(dept.trend)}
                         <span className="text-xs text-text-muted">{dept.trend}</span>
@@ -674,15 +674,15 @@ export default function IncidentTrendAnalytics() {
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={dowData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                        <XAxis dataKey="day" tick={{ fill: '#64748b', fontSize: 12 }} />
-                        <YAxis tick={{ fill: '#64748b', fontSize: 12 }} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--surface-border)" />
+                        <XAxis dataKey="day" tick={{ fill: 'var(--text-muted)', fontSize: 12 }} />
+                        <YAxis tick={{ fill: 'var(--text-muted)', fontSize: 12 }} />
                         <Tooltip content={<CustomTooltip />} />
-                        <Bar dataKey="incidents" fill="#3b82f6" name="Incidents" radius={[4, 4, 0, 0]}>
+                        <Bar dataKey="incidents" fill="#00A89D" name="Incidents" radius={[4, 4, 0, 0]}>
                           {dowData.map((entry, index) => (
                             <Cell 
                               key={`cell-${index}`} 
-                              fill={entry.incidents > 35 ? '#ef4444' : entry.incidents > 25 ? '#f59e0b' : '#22c55e'} 
+                              fill={entry.incidents > 35 ? '#EF4444' : entry.incidents > 25 ? '#F59E0B' : '#16A34A'} 
                             />
                           ))}
                         </Bar>
@@ -702,16 +702,16 @@ export default function IncidentTrendAnalytics() {
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
                       <AreaChart data={todData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                        <XAxis dataKey="time" tick={{ fill: '#64748b', fontSize: 12 }} />
-                        <YAxis tick={{ fill: '#64748b', fontSize: 12 }} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--surface-border)" />
+                        <XAxis dataKey="time" tick={{ fill: 'var(--text-muted)', fontSize: 12 }} />
+                        <YAxis tick={{ fill: 'var(--text-muted)', fontSize: 12 }} />
                         <Tooltip content={<CustomTooltip />} />
                         <Area
                           type="monotone"
                           dataKey="incidents"
-                          fill="#8b5cf6"
+                          fill="#8B5CF6"
                           fillOpacity={0.3}
-                          stroke="#8b5cf6"
+                          stroke="#8B5CF6"
                           strokeWidth={2}
                           name="Incidents"
                         />
@@ -731,11 +731,11 @@ export default function IncidentTrendAnalytics() {
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={rcData} layout="vertical">
-                        <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                        <XAxis type="number" tick={{ fill: '#64748b', fontSize: 12 }} />
-                        <YAxis dataKey="cause" type="category" tick={{ fill: '#64748b', fontSize: 12 }} width={120} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--surface-border)" />
+                        <XAxis type="number" tick={{ fill: 'var(--text-muted)', fontSize: 12 }} />
+                        <YAxis dataKey="cause" type="category" tick={{ fill: 'var(--text-muted)', fontSize: 12 }} width={120} />
                         <Tooltip content={<CustomTooltip />} />
-                        <Bar dataKey="count" fill="#6366f1" name="Incidents" radius={[0, 4, 4, 0]} />
+                        <Bar dataKey="count" fill="#8B5CF6" name="Incidents" radius={[0, 4, 4, 0]} />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
@@ -748,9 +748,9 @@ export default function IncidentTrendAnalytics() {
                             <span className="text-sm font-medium text-text-primary">{cause.cause}</span>
                             <span className="text-sm text-text-muted">{cause.percentage}%</span>
                           </div>
-                          <div className="w-full h-2 bg-surface-100 rounded-full">
+                          <div className="w-full h-2 bg-surface-sunken rounded-full">
                             <div
-                              className="h-full bg-indigo-500 rounded-full transition-all duration-500"
+                              className="h-full bg-ai rounded-full transition-all duration-500"
                               style={{ width: `${cause.percentage}%` }}
                             />
                           </div>

@@ -188,19 +188,19 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-violet-100 dark:bg-violet-900/30 rounded-lg">
-            <Settings className="w-6 h-6 text-violet-600 dark:text-violet-400" />
+          <div className="p-2 bg-purple-500/10 rounded-lg">
+            <Settings className="w-6 h-6 text-violet-600" />
           </div>
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Sprint Settings</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Configure sprint duration and team capacity</p>
+            <h2 className="text-xl font-semibold text-text-primary text-text-primary">Sprint Settings</h2>
+            <p className="text-sm text-text-muted">Configure sprint duration and team capacity</p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           <button
             onClick={handleResetConfig}
-            className="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-gray-700 rounded-lg text-sm"
+            className="flex items-center gap-2 px-4 py-2 text-text-secondary hover:text-text-primary border border-surface-border rounded-lg text-sm"
           >
             <RotateCcw className="w-4 h-4" />
             Reset
@@ -210,7 +210,7 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-all ${
               isSaved 
                 ? 'bg-emerald-600 text-white' 
-                : 'bg-violet-600 hover:bg-violet-700 text-white'
+                : 'bg-accent hover:bg-violet-700 text-white'
             }`}
           >
             {isSaved ? <CheckCircle className="w-4 h-4" /> : <Save className="w-4 h-4" />}
@@ -221,10 +221,10 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Sprint Duration */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+        <div className="bg-surface-raised rounded-xl border border-surface-border p-6">
           <div className="flex items-center gap-2 mb-4">
-            <Timer className="w-5 h-5 text-violet-600 dark:text-violet-400" />
-            <h3 className="font-semibold text-gray-900 dark:text-white">Sprint Duration</h3>
+            <Timer className="w-5 h-5 text-violet-600" />
+            <h3 className="font-semibold text-text-primary text-text-primary">Sprint Duration</h3>
           </div>
 
           {/* Duration Presets */}
@@ -235,8 +235,8 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
                 onClick={() => handleDurationChange(preset.days)}
                 className={`py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
                   config.defaultDuration === preset.days
-                    ? 'bg-violet-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    ? 'bg-accent text-white'
+                    : 'bg-surface-sunken text-text-secondary hover:bg-surface-overlay'
                 }`}
               >
                 {preset.label}
@@ -246,7 +246,7 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
 
           {/* Custom Duration */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Custom Duration (days)
             </label>
             <input
@@ -255,19 +255,19 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
               onChange={(e) => handleDurationChange(parseInt(e.target.value) || 14)}
               min={1}
               max={60}
-              className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              className="w-full px-3 py-2 border border-surface-border rounded-lg bg-surface-raised text-text-primary text-text-primary"
             />
           </div>
 
           {/* Sprint Start Day */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Sprint Start Day
             </label>
             <select
               value={config.sprintStartDay}
               onChange={(e) => setConfig(prev => ({ ...prev, sprintStartDay: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              className="w-full px-3 py-2 border border-surface-border rounded-lg bg-surface-raised text-text-primary text-text-primary"
             >
               {WEEKDAYS.map(day => (
                 <option key={day.id} value={day.id}>{day.label}</option>
@@ -277,7 +277,7 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
 
           {/* Working Days */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Working Days
             </label>
             <div className="flex gap-1">
@@ -287,30 +287,30 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
                   onClick={() => handleToggleWorkingDay(day.id)}
                   className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
                     config.workingDays.includes(day.id)
-                      ? 'bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 ring-2 ring-violet-500'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+                      ? 'bg-purple-500/10 text-purple-400 ring-2 ring-violet-500'
+                      : 'bg-surface-sunken text-text-muted'
                   }`}
                 >
                   {day.label}
                 </button>
               ))}
             </div>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+            <p className="text-sm text-text-muted mt-2">
               {workingDaysCount} working days per week
             </p>
           </div>
         </div>
 
         {/* Team Capacity */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+        <div className="bg-surface-raised rounded-xl border border-surface-border p-6">
           <div className="flex items-center gap-2 mb-4">
-            <Users className="w-5 h-5 text-violet-600 dark:text-violet-400" />
-            <h3 className="font-semibold text-gray-900 dark:text-white">Team Capacity</h3>
+            <Users className="w-5 h-5 text-violet-600" />
+            <h3 className="font-semibold text-text-primary text-text-primary">Team Capacity</h3>
           </div>
 
           {/* Velocity Target */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Velocity Target (story points per sprint)
             </label>
             <input
@@ -319,13 +319,13 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
               onChange={(e) => setConfig(prev => ({ ...prev, velocityTarget: parseInt(e.target.value) || 40 }))}
               min={1}
               max={200}
-              className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              className="w-full px-3 py-2 border border-surface-border rounded-lg bg-surface-raised text-text-primary text-text-primary"
             />
           </div>
 
           {/* Max Capacity */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Maximum Capacity (story points)
             </label>
             <input
@@ -334,13 +334,13 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
               onChange={(e) => setConfig(prev => ({ ...prev, maxCapacity: parseInt(e.target.value) || 50 }))}
               min={1}
               max={200}
-              className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              className="w-full px-3 py-2 border border-surface-border rounded-lg bg-surface-raised text-text-primary text-text-primary"
             />
           </div>
 
           {/* Buffer Percentage */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Buffer Percentage: {config.bufferPercentage}%
             </label>
             <input
@@ -351,48 +351,48 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
               max={50}
               className="w-full"
             />
-            <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+            <div className="flex justify-between text-xs text-text-muted mt-1">
               <span>0% (No buffer)</span>
               <span>50% (Conservative)</span>
             </div>
           </div>
 
           {/* Effective Capacity Summary */}
-          <div className="p-4 bg-violet-50 dark:bg-violet-900/20 rounded-lg">
+          <div className="p-4 bg-purple-500/10 rounded-lg">
             <div className="flex items-center gap-2 mb-2">
-              <Target className="w-4 h-4 text-violet-600 dark:text-violet-400" />
-              <span className="text-sm font-medium text-violet-900 dark:text-violet-100">Effective Capacity</span>
+              <Target className="w-4 h-4 text-violet-600" />
+              <span className="text-sm font-medium text-violet-900">Effective Capacity</span>
             </div>
-            <div className="text-2xl font-bold text-violet-700 dark:text-violet-300">
+            <div className="text-2xl font-bold text-purple-400">
               {effectiveCapacity} points
             </div>
-            <p className="text-sm text-violet-600 dark:text-violet-400 mt-1">
+            <p className="text-sm text-violet-600 mt-1">
               {config.maxCapacity} max - {config.bufferPercentage}% buffer
             </p>
           </div>
         </div>
 
         {/* Automation & Notifications */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+        <div className="bg-surface-raised rounded-xl border border-surface-border p-6">
           <div className="flex items-center gap-2 mb-4">
-            <Zap className="w-5 h-5 text-violet-600 dark:text-violet-400" />
-            <h3 className="font-semibold text-gray-900 dark:text-white">Automation & Notifications</h3>
+            <Zap className="w-5 h-5 text-violet-600" />
+            <h3 className="font-semibold text-text-primary text-text-primary">Automation & Notifications</h3>
           </div>
 
           {/* Auto Start */}
-          <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg mb-4">
+          <div className="flex items-center justify-between p-3 bg-surface-sunken rounded-lg mb-4">
             <div>
-              <span className="font-medium text-gray-900 dark:text-white">Auto-start Next Sprint</span>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Automatically start the next sprint when current ends</p>
+              <span className="font-medium text-text-primary text-text-primary">Auto-start Next Sprint</span>
+              <p className="text-sm text-text-muted">Automatically start the next sprint when current ends</p>
             </div>
             <button
               onClick={() => setConfig(prev => ({ ...prev, autoStartEnabled: !prev.autoStartEnabled }))}
               className={`relative w-12 h-6 rounded-full transition-colors ${
-                config.autoStartEnabled ? 'bg-violet-600' : 'bg-gray-300 dark:bg-gray-600'
+                config.autoStartEnabled ? 'bg-accent' : 'bg-surface-border'
               }`}
             >
               <span
-                className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
+                className={`absolute top-1 w-4 h-4 bg-surface-raised rounded-full transition-transform ${
                   config.autoStartEnabled ? 'translate-x-7' : 'translate-x-1'
                 }`}
               />
@@ -409,8 +409,8 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
             ].map(({ key, label, desc }) => (
               <div key={key} className="flex items-center justify-between py-2">
                 <div>
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">{label}</span>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{desc}</p>
+                  <span className="text-sm font-medium text-text-primary text-text-primary">{label}</span>
+                  <p className="text-xs text-text-muted">{desc}</p>
                 </div>
                 <button
                   onClick={() => setConfig(prev => ({
@@ -418,11 +418,11 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
                     notifications: { ...prev.notifications, [key]: !prev.notifications[key as keyof typeof prev.notifications] }
                   }))}
                   className={`relative w-10 h-5 rounded-full transition-colors ${
-                    config.notifications[key as keyof typeof config.notifications] ? 'bg-violet-600' : 'bg-gray-300 dark:bg-gray-600'
+                    config.notifications[key as keyof typeof config.notifications] ? 'bg-accent' : 'bg-surface-border'
                   }`}
                 >
                   <span
-                    className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-transform ${
+                    className={`absolute top-0.5 w-4 h-4 bg-surface-raised rounded-full transition-transform ${
                       config.notifications[key as keyof typeof config.notifications] ? 'translate-x-5' : 'translate-x-0.5'
                     }`}
                   />
@@ -433,15 +433,15 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
         </div>
 
         {/* Sprint Management */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+        <div className="bg-surface-raised rounded-xl border border-surface-border p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-violet-600 dark:text-violet-400" />
-              <h3 className="font-semibold text-gray-900 dark:text-white">Sprint Management</h3>
+              <Calendar className="w-5 h-5 text-violet-600" />
+              <h3 className="font-semibold text-text-primary text-text-primary">Sprint Management</h3>
             </div>
             <button
               onClick={() => setIsCreating(true)}
-              className="flex items-center gap-1 px-3 py-1.5 text-sm bg-violet-600 hover:bg-violet-700 text-white rounded-lg"
+              className="flex items-center gap-1 px-3 py-1.5 text-sm bg-accent hover:bg-violet-700 text-white rounded-lg"
             >
               <Plus className="w-4 h-4" />
               New Sprint
@@ -454,50 +454,50 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="mb-4 p-4 bg-violet-50 dark:bg-violet-900/20 rounded-lg border border-violet-200 dark:border-violet-800"
+              className="mb-4 p-4 bg-purple-500/10 rounded-lg border border-violet-200"
             >
               <div className="grid grid-cols-2 gap-3 mb-3">
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Sprint Name</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Sprint Name</label>
                   <input
                     type="text"
                     value={newSprint.name}
                     onChange={(e) => setNewSprint(prev => ({ ...prev, name: e.target.value }))}
                     placeholder="Sprint 4"
-                    className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 text-sm border border-surface-border rounded-lg bg-surface-raised text-text-primary text-text-primary"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Start Date</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Start Date</label>
                   <input
                     type="date"
                     value={newSprint.startDate}
                     onChange={(e) => setNewSprint(prev => ({ ...prev, startDate: e.target.value }))}
-                    className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 text-sm border border-surface-border rounded-lg bg-surface-raised text-text-primary text-text-primary"
                   />
                 </div>
               </div>
               <div className="mb-3">
-                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Sprint Goal</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Sprint Goal</label>
                 <input
                   type="text"
                   value={newSprint.goal}
                   onChange={(e) => setNewSprint(prev => ({ ...prev, goal: e.target.value }))}
                   placeholder="What do you want to achieve?"
-                  className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 text-sm border border-surface-border rounded-lg bg-surface-raised text-text-primary text-text-primary"
                 />
               </div>
               <div className="flex justify-end gap-2">
                 <button
                   onClick={() => setIsCreating(false)}
-                  className="px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400"
+                  className="px-3 py-1.5 text-sm text-text-secondary"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleCreateSprint}
                   disabled={!newSprint.name || !newSprint.startDate}
-                  className="px-3 py-1.5 text-sm bg-violet-600 hover:bg-violet-700 text-white rounded-lg disabled:opacity-50"
+                  className="px-3 py-1.5 text-sm bg-accent hover:bg-violet-700 text-white rounded-lg disabled:opacity-50"
                 >
                   Create Sprint
                 </button>
@@ -512,10 +512,10 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
                 key={sprint.id}
                 className={`p-3 rounded-lg border ${
                   sprint.status === 'active' 
-                    ? 'border-violet-200 dark:border-violet-800 bg-violet-50 dark:bg-violet-900/20'
+                    ? 'border-violet-200 bg-purple-500/10'
                     : sprint.status === 'completed'
-                      ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20'
-                      : 'border-gray-200 dark:border-gray-700'
+                      ? 'border-success/20 bg-success/10'
+                      : 'border-surface-border'
                 }`}
               >
                 {editingSprint === sprint.id ? (
@@ -524,7 +524,7 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
                       type="text"
                       defaultValue={sprint.name}
                       onBlur={(e) => handleUpdateSprint(sprint.id, { name: e.target.value })}
-                      className="w-full px-2 py-1 text-sm border border-gray-200 dark:border-gray-700 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      className="w-full px-2 py-1 text-sm border border-surface-border rounded bg-surface-raised text-text-primary text-text-primary"
                       autoFocus
                     />
                     <input
@@ -532,41 +532,41 @@ export function SprintSettings({ onUpdateSprints }: SprintSettingsProps) {
                       defaultValue={sprint.goal}
                       onBlur={(e) => handleUpdateSprint(sprint.id, { goal: e.target.value })}
                       placeholder="Sprint goal"
-                      className="w-full px-2 py-1 text-sm border border-gray-200 dark:border-gray-700 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      className="w-full px-2 py-1 text-sm border border-surface-border rounded bg-surface-raised text-text-primary text-text-primary"
                     />
                   </div>
                 ) : (
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-medium text-gray-900 dark:text-white text-sm">{sprint.name}</span>
+                        <span className="font-medium text-text-primary text-text-primary text-sm">{sprint.name}</span>
                         <span className={`px-2 py-0.5 text-xs rounded-full ${
                           sprint.status === 'active' 
-                            ? 'bg-violet-200 dark:bg-violet-800 text-violet-700 dark:text-violet-300'
+                            ? 'bg-purple-500/20 text-purple-400'
                             : sprint.status === 'completed'
-                              ? 'bg-emerald-200 dark:bg-emerald-800 text-emerald-700 dark:text-emerald-300'
-                              : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                              ? 'bg-success/20 text-success'
+                              : 'bg-surface-sunken text-text-secondary'
                         }`}>
                           {sprint.status}
                         </span>
                       </div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      <p className="text-xs text-text-muted mt-1">
                         {sprint.startDate} → {sprint.endDate}
                       </p>
                       {sprint.goal && (
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 italic">{sprint.goal}</p>
+                        <p className="text-xs text-text-secondary mt-1 italic">{sprint.goal}</p>
                       )}
                     </div>
                     <div className="flex gap-1">
                       <button
                         onClick={() => setEditingSprint(sprint.id)}
-                        className="p-1.5 text-gray-400 hover:text-violet-600 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="p-1.5 text-text-muted hover:text-purple-400 rounded hover:bg-surface-sunken"
                       >
                         <Clock className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleDeleteSprint(sprint.id)}
-                        className="p-1.5 text-gray-400 hover:text-red-500 rounded hover:bg-red-50 dark:hover:bg-red-900/20"
+                        className="p-1.5 text-text-muted hover:text-red-500 rounded hover:bg-danger/10"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>

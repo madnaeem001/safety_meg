@@ -16,11 +16,11 @@ export const FacilityBreakdownChart: React.FC<FacilityBreakdownChartProps> = ({ 
       initial={{ opacity: 0, scale: 0.95 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
-      className="bg-white p-8 rounded-[2.5rem] shadow-soft border border-surface-100 h-[400px] flex flex-col"
+      className="bg-surface-raised p-8 rounded-[2.5rem] shadow-soft border border-surface-border h-[400px] flex flex-col"
     >
       <div>
-        <h3 className="text-xl font-bold text-brand-900 tracking-tight">Facility Breakdown</h3>
-        <p className="text-xs text-surface-500 font-medium uppercase tracking-widest mt-1">Emission distribution by location</p>
+        <h3 className="text-xl font-bold text-text-primary tracking-tight">Facility Breakdown</h3>
+        <p className="text-xs text-text-muted font-medium uppercase tracking-widest mt-1">Emission distribution by location</p>
       </div>
       
       {data.length > 0 ? (
@@ -42,28 +42,28 @@ export const FacilityBreakdownChart: React.FC<FacilityBreakdownChartProps> = ({ 
               </Pie>
               <Tooltip
                 contentStyle={{
-                  backgroundColor: '#fff',
+                  backgroundColor: 'var(--color-surface-overlay)',
                   borderRadius: '1rem',
-                  border: '1px solid #f2f0eb',
-                  boxShadow: '0 4px 20px -2px rgba(0, 0, 0, 0.05)'
+                  border: '1px solid var(--color-surface-border)',
+                  boxShadow: '0 4px 20px -2px rgba(0, 0, 0, 0.15)'
                 }}
               />
               <Legend
                 verticalAlign="bottom"
                 align="center"
                 iconType="circle"
-                formatter={(value) => <span className="text-[10px] font-bold text-surface-500 uppercase tracking-widest ml-1">{value}</span>}
+                formatter={(value) => <span className="text-[10px] font-bold text-text-secondary uppercase tracking-widest ml-1">{value}</span>}
               />
             </PieChart>
           </ResponsiveContainer>
         </div>
       ) : (
-        <div className="mt-4 flex flex-1 flex-col items-center justify-center rounded-[2rem] border border-dashed border-surface-200 bg-surface-50/60 px-6 py-12 text-center">
-          <div className="mb-3 rounded-2xl bg-white p-3 shadow-soft">
-            <Database className="h-5 w-5 text-surface-400" />
+        <div className="mt-4 flex flex-1 flex-col items-center justify-center rounded-[2rem] border border-dashed border-surface-border bg-surface-sunken/60 px-6 py-12 text-center">
+          <div className="mb-3 rounded-2xl bg-surface-overlay p-3">
+            <Database className="h-5 w-5 text-text-muted" />
           </div>
-          <p className="font-semibold text-brand-900">No facility emission totals are available</p>
-          <p className="mt-1 text-sm text-surface-500">
+          <p className="font-semibold text-text-primary">No facility emission totals are available</p>
+          <p className="mt-1 text-sm text-text-secondary">
             Facility breakdown now depends entirely on backend gas sensor readings grouped by zone or location.
           </p>
         </div>

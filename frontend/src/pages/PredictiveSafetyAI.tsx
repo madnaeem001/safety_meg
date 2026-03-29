@@ -132,21 +132,21 @@ const RiskDigester: React.FC = () => {
   };
 
   return (
-    <div className="bg-surface-800/60 border border-surface-700/40 rounded-2xl p-6">
+    <div className="bg-surface-raised border border-surface-border rounded-2xl p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-brand-500/20 flex items-center justify-center">
-            <Brain className="w-5 h-5 text-brand-400" />
+          <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
+            <Brain className="w-5 h-5 text-accent" />
           </div>
           <div>
-            <h3 className="text-white font-bold">AI Risk Digester</h3>
-            <p className="text-xs text-surface-400">Analyze cross-platform data for hidden risk patterns</p>
+            <h3 className="text-text-primary font-bold">AI Risk Digester</h3>
+            <p className="text-xs text-text-muted">Analyze cross-platform data for hidden risk patterns</p>
           </div>
         </div>
         <button 
           onClick={handleAnalyze}
           disabled={isAnalyzing}
-          className="px-4 py-2 bg-brand-600 hover:bg-brand-500 disabled:opacity-50 text-white text-sm font-bold rounded-xl transition-all flex items-center gap-2"
+          className="px-4 py-2 bg-accent hover:bg-accent/80 disabled:opacity-50 text-white text-sm font-bold rounded-xl transition-all flex items-center gap-2"
         >
           {isAnalyzing ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
           {isAnalyzing ? 'Analyzing...' : 'Run Deep Analysis'}
@@ -156,35 +156,35 @@ const RiskDigester: React.FC = () => {
       {riskData ? (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
           <div className="grid sm:grid-cols-3 gap-4">
-            <div className="bg-surface-900/50 rounded-xl p-4 border border-surface-700/30">
-              <span className="text-[10px] font-bold text-surface-500 uppercase tracking-widest">Overall Risk Level</span>
+            <div className="bg-surface-sunken rounded-xl p-4 border border-surface-border">
+              <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Overall Risk Level</span>
               <div className="text-2xl font-black text-red-500 mt-1">{riskData.overallRisk}</div>
               <div className="mt-4 h-24 flex items-end gap-1">
                 {riskData.trendData?.map((d: any, i: number) => (
-                  <div key={i} className="flex-1 bg-brand-500/20 rounded-t-sm relative group">
+                  <div key={i} className="flex-1 bg-accent/20 rounded-t-sm relative group">
                     <div 
-                      className="absolute bottom-0 left-0 right-0 bg-brand-500 rounded-t-sm transition-all" 
+                      className="absolute bottom-0 left-0 right-0 bg-accent rounded-t-sm transition-all" 
                       style={{ height: `${d.riskLevel}%` }} 
                     />
-                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-surface-800 text-[8px] px-1 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-surface-raised text-[8px] px-1 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
                       {d.riskLevel}%
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="flex justify-between mt-1 text-[8px] text-surface-500 uppercase font-bold">
+              <div className="flex justify-between mt-1 text-[8px] text-text-muted uppercase font-bold">
                 <span>7d ago</span>
                 <span>Today</span>
               </div>
             </div>
-            <div className="sm:col-span-2 bg-surface-900/50 rounded-xl p-4 border border-surface-700/30">
-              <span className="text-[10px] font-bold text-surface-500 uppercase tracking-widest">Top Predicted Threats</span>
+            <div className="sm:col-span-2 bg-surface-sunken rounded-xl p-4 border border-surface-border">
+              <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Top Predicted Threats</span>
               <div className="mt-2 space-y-2">
                 {riskData.topThreats?.map((t: any, i: number) => (
                   <div key={i} className="flex items-center justify-between text-xs">
-                    <span className="text-surface-300">{t.threat}</span>
+                    <span className="text-text-secondary">{t.threat}</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-surface-500">{t.probability}% prob.</span>
+                      <span className="text-text-muted">{t.probability}% prob.</span>
                       <span className={`font-bold ${t.impact === 'Critical' ? 'text-red-500' : 'text-orange-500'}`}>{t.impact}</span>
                     </div>
                   </div>
@@ -193,15 +193,15 @@ const RiskDigester: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-brand-500/5 border border-brand-500/20 rounded-xl p-4">
-            <h4 className="text-xs font-bold text-brand-400 mb-3 flex items-center gap-2">
+          <div className="bg-accent/5 border border-accent/20 rounded-xl p-4">
+            <h4 className="text-xs font-bold text-accent mb-3 flex items-center gap-2">
               <Lightbulb className="w-4 h-4" />
               Smart Recommendations
             </h4>
             <ul className="space-y-2">
               {riskData.recommendations?.map((r: string, i: number) => (
-                <li key={i} className="flex items-start gap-2 text-xs text-surface-300">
-                  <div className="w-1.5 h-1.5 rounded-full bg-brand-500 mt-1.5 shrink-0" />
+                <li key={i} className="flex items-start gap-2 text-xs text-text-secondary">
+                  <div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" />
                   {r}
                 </li>
               ))}
@@ -209,9 +209,9 @@ const RiskDigester: React.FC = () => {
           </div>
         </motion.div>
       ) : (
-        <div className="h-48 flex flex-col items-center justify-center text-center border-2 border-dashed border-surface-700/40 rounded-xl">
-          <Activity className="w-8 h-8 text-surface-700 mb-2" />
-          <p className="text-sm text-surface-500">Click the button above to start AI risk analysis</p>
+        <div className="h-48 flex flex-col items-center justify-center text-center border-2 border-dashed border-surface-border rounded-xl">
+          <Activity className="w-8 h-8 text-text-muted mb-2" />
+          <p className="text-sm text-text-muted">Click the button above to start AI risk analysis</p>
         </div>
       )}
     </div>
@@ -273,51 +273,51 @@ export const PredictiveSafetyAI: React.FC = () => {
   }, []);
 
   return (
-    <div className="ai-purple-theme min-h-screen pb-24 bg-surface-950">
+    <div className="ai-purple-theme min-h-screen pb-24 bg-surface-base">
       {/* Header */}
-      <header className="sticky top-[72px] z-30 bg-surface-900/80 backdrop-blur-xl border-b border-surface-800">
+      <header className="sticky top-[72px] z-30 bg-surface-overlay/80 backdrop-blur-xl border-b border-surface-border">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => navigate('/')}
-                className="p-2 rounded-xl hover:bg-surface-800 text-surface-400 hover:text-white transition-colors"
+                className="p-2 rounded-xl hover:bg-surface-raised text-text-muted hover:text-text-primary transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
               <div className="flex items-center gap-3">
                 <img src="/logo.png" alt="SafetyMEG" className="w-8 h-8 object-contain" />
-                <div className="w-10 h-10 rounded-xl bg-brand-500/20 flex items-center justify-center">
-                  <Brain className="w-6 h-6 text-brand-400" />
+                <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
+                  <Brain className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold text-white">Predictive Safety AI</h1>
-                  <p className="text-xs text-surface-400">Advanced Risk Forecasting & Prevention</p>
+                  <h1 className="text-lg font-bold text-text-primary">Predictive Safety AI</h1>
+                  <p className="text-xs text-text-muted">Advanced Risk Forecasting & Prevention</p>
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="hidden md:flex items-center gap-3 px-4 py-2 bg-surface-800/50 rounded-xl border border-surface-700/50">
+              <div className="hidden md:flex items-center gap-3 px-4 py-2 bg-surface-sunken rounded-xl border border-surface-border">
                 <div className="flex items-center gap-2">
-                  <Cpu className="w-3.5 h-3.5 text-brand-400" />
-                  <span className="text-[10px] font-black text-white uppercase tracking-widest">AI RAM</span>
+                  <Cpu className="w-3.5 h-3.5 text-accent" />
+                  <span className="text-[10px] font-black text-text-primary uppercase tracking-widest">AI RAM</span>
                 </div>
-                <div className="w-24 h-1.5 bg-surface-700 rounded-full overflow-hidden">
+                <div className="w-24 h-1.5 bg-surface-raised rounded-full overflow-hidden">
                   <motion.div 
                     animate={{ width: `${memoryUsage}%` }}
-                    className={`h-full ${memoryUsage > 85 ? 'bg-red-500' : memoryUsage > 70 ? 'bg-amber-500' : 'bg-brand-500'}`}
+                    className={`h-full ${memoryUsage > 85 ? 'bg-danger' : memoryUsage > 70 ? 'bg-warning' : 'bg-accent'}`}
                   />
                 </div>
-                <span className="text-[10px] font-bold text-surface-400 w-8">{Math.round(memoryUsage)}%</span>
+                <span className="text-[10px] font-bold text-text-muted w-8">{Math.round(memoryUsage)}%</span>
               </div>
-              <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
-                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-xs font-bold text-emerald-400">Model Active</span>
+              <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-success/10 border border-success/20 rounded-lg">
+                <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
+                <span className="text-xs font-bold text-success">Model Active</span>
               </div>
-              <button className="p-2 rounded-xl hover:bg-surface-800 text-surface-400">
+              <button className="p-2 rounded-xl hover:bg-surface-raised text-text-muted">
                 <RefreshCw className="w-5 h-5" />
               </button>
-              <button className="p-2 rounded-xl hover:bg-surface-800 text-surface-400">
+              <button className="p-2 rounded-xl hover:bg-surface-raised text-text-muted">
                 <Settings className="w-5 h-5" />
               </button>
             </div>
@@ -332,17 +332,17 @@ export const PredictiveSafetyAI: React.FC = () => {
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: 'Model Accuracy',   value: stats ? `${stats.modelAccuracy}%`                     : '—', icon: Target,        color: 'text-brand-400' },
+            { label: 'Model Accuracy',   value: stats ? `${stats.modelAccuracy}%`                     : '—', icon: Target,        color: 'text-accent' },
             { label: 'Predictions Made', value: stats ? stats.predictionsMade.toLocaleString()         : '—', icon: Activity,       color: 'text-blue-400' },
-            { label: 'Risks Mitigated',  value: stats ? stats.risksMitigated.toLocaleString()          : '—', icon: Shield,         color: 'text-emerald-400' },
-            { label: 'Active Alerts',    value: stats ? String(stats.activeAlerts)                     : '—', icon: AlertTriangle,  color: 'text-amber-400' },
+            { label: 'Risks Mitigated',  value: stats ? stats.risksMitigated.toLocaleString()          : '—', icon: Shield,         color: 'text-success' },
+            { label: 'Active Alerts',    value: stats ? String(stats.activeAlerts)                     : '—', icon: AlertTriangle,  color: 'text-warning' },
           ].map((stat) => (
-            <div key={stat.label} className="bg-surface-800/60 border border-surface-700/40 rounded-2xl p-4">
+            <div key={stat.label} className="bg-surface-raised border border-surface-border rounded-2xl p-4">
               <div className="flex items-center gap-3 mb-2">
                 <stat.icon className={`w-4 h-4 ${stat.color}`} />
-                <span className="text-xs font-medium text-surface-400">{stat.label}</span>
+                <span className="text-xs font-medium text-text-muted">{stat.label}</span>
               </div>
-              <div className="text-2xl font-bold text-white">{stat.value}</div>
+              <div className="text-2xl font-bold text-text-primary">{stat.value}</div>
             </div>
           ))}
         </div>
@@ -351,8 +351,8 @@ export const PredictiveSafetyAI: React.FC = () => {
           {/* Predictions List */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                <Zap className="w-5 h-5 text-brand-400" />
+              <h2 className="text-lg font-bold text-text-primary flex items-center gap-2">
+                <Zap className="w-5 h-5 text-accent" />
                 Active Predictions
               </h2>
               <div className="flex gap-2">
@@ -361,7 +361,7 @@ export const PredictiveSafetyAI: React.FC = () => {
                     key={f}
                     onClick={() => setFilter(f)}
                     className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
-                      filter === f ? 'bg-brand-600 text-white' : 'bg-surface-800 text-surface-400 hover:text-white'
+                      filter === f ? 'bg-accent text-white' : 'bg-surface-raised text-text-muted hover:text-text-primary'
                     }`}
                   >
                     {f}
@@ -376,8 +376,8 @@ export const PredictiveSafetyAI: React.FC = () => {
                   key={pred.id}
                   layoutId={pred.id}
                   onClick={() => setSelectedPrediction(pred)}
-                  className={`bg-surface-800/60 border border-surface-700/40 rounded-2xl p-5 cursor-pointer hover:border-brand-500/30 transition-all ${
-                    selectedPrediction?.id === pred.id ? 'ring-2 ring-brand-500/50' : ''
+                  className={`bg-surface-raised border border-surface-border rounded-2xl p-5 cursor-pointer hover:border-accent/30 transition-all ${
+                    selectedPrediction?.id === pred.id ? 'ring-2 ring-accent/50' : ''
                   }`}
                 >
                   <div className="flex items-start justify-between mb-4">
@@ -389,7 +389,7 @@ export const PredictiveSafetyAI: React.FC = () => {
                       </div>
                       <div>
                         <h3 className="font-bold text-white">{pred.title}</h3>
-                        <div className="flex items-center gap-2 text-xs text-surface-400">
+                        <div className="flex items-center gap-2 text-xs text-text-muted">
                           <MapPin className="w-3 h-3" /> {pred.location}
                         </div>
                       </div>
@@ -400,24 +400,24 @@ export const PredictiveSafetyAI: React.FC = () => {
                       }`}>
                         {pred.probability}%
                       </div>
-                      <div className="text-[10px] font-bold text-surface-500 uppercase tracking-widest">Probability</div>
+                      <div className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Probability</div>
                     </div>
                   </div>
 
-                  <p className="text-sm text-surface-300 mb-4 line-clamp-2">{pred.description}</p>
+                  <p className="text-sm text-text-secondary mb-4 line-clamp-2">{pred.description}</p>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-surface-700/40">
+                  <div className="flex items-center justify-between pt-4 border-t border-surface-border">
                     <div className="flex gap-3">
                       <div className="flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5 text-surface-500" />
-                        <span className="text-xs text-surface-400">{pred.timeframe}</span>
+                        <Clock className="w-3.5 h-3.5 text-text-muted" />
+                        <span className="text-xs text-text-muted">{pred.timeframe}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <Target className="w-3.5 h-3.5 text-surface-500" />
-                        <span className="text-xs text-surface-400">{pred.confidenceLevel}% confidence</span>
+                        <Target className="w-3.5 h-3.5 text-text-muted" />
+                        <span className="text-xs text-text-muted">{pred.confidenceLevel}% confidence</span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-1 text-brand-400 text-xs font-bold">
+                    <div className="flex items-center gap-1 text-accent text-xs font-bold">
                       View Details <ChevronRight className="w-4 h-4" />
                     </div>
                   </div>
@@ -428,27 +428,27 @@ export const PredictiveSafetyAI: React.FC = () => {
 
           {/* Insights & Metrics */}
           <div className="space-y-6">
-            <div className="bg-surface-800/60 border border-surface-700/40 rounded-2xl p-6">
-              <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+            <div className="bg-surface-raised border border-surface-border rounded-2xl p-6">
+              <h2 className="text-lg font-bold text-text-primary mb-4 flex items-center gap-2">
                 <Lightbulb className="w-5 h-5 text-amber-400" />
                 AI Insights
               </h2>
               <div className="space-y-4">
                 {insights.map((insight, i) => (
-                  <div key={insight.id ?? i} className="p-3 rounded-xl bg-surface-900/50 border border-surface-700/30">
-                    <h4 className="text-sm font-bold text-white mb-1">{insight.title}</h4>
-                    <p className="text-xs text-surface-400 leading-relaxed">{insight.description}</p>
+                  <div key={insight.id ?? i} className="p-3 rounded-xl bg-surface-sunken border border-surface-border">
+                    <h4 className="text-sm font-bold text-text-primary mb-1">{insight.title}</h4>
+                    <p className="text-xs text-text-muted leading-relaxed">{insight.description}</p>
                   </div>
                 ))}
               </div>
-              <button className="w-full mt-4 py-2 bg-surface-700 hover:bg-surface-600 text-white text-xs font-bold rounded-lg transition-colors">
+              <button className="w-full mt-4 py-2 bg-surface-sunken hover:bg-surface-overlay text-text-primary text-xs font-bold rounded-lg transition-colors">
                 View All Insights
               </button>
             </div>
 
-            <div className="bg-surface-800/60 border border-surface-700/40 rounded-2xl p-6">
-              <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <Gauge className="w-5 h-5 text-brand-400" />
+            <div className="bg-surface-raised border border-surface-border rounded-2xl p-6">
+              <h2 className="text-lg font-bold text-text-primary mb-4 flex items-center gap-2">
+                <Gauge className="w-5 h-5 text-accent" />
                 Model Performance
               </h2>
               <div className="space-y-4">
@@ -459,14 +459,14 @@ export const PredictiveSafetyAI: React.FC = () => {
                 ].map((m) => (
                   <div key={m.label}>
                     <div className="flex justify-between text-xs mb-1.5">
-                      <span className="text-surface-400">{m.label}</span>
-                      <span className="text-white font-bold">{m.value}%</span>
+                      <span className="text-text-muted">{m.label}</span>
+                      <span className="text-text-primary font-bold">{m.value}%</span>
                     </div>
-                    <div className="h-1.5 bg-surface-700 rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-surface-sunken rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${m.value}%` }}
-                        className="h-full bg-brand-500"
+                        className="h-full bg-accent"
                       />
                     </div>
                   </div>
@@ -486,15 +486,15 @@ export const PredictiveSafetyAI: React.FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedPrediction(null)}
-              className="absolute inset-0 bg-surface-950/80 backdrop-blur-sm"
+              className="absolute inset-0 bg-surface-base/80 backdrop-blur-sm"
             />
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-4xl bg-surface-900 border border-surface-700 rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+              className="relative w-full max-w-4xl bg-surface-overlay border border-surface-border rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
             >
-              <div className="p-6 border-b border-surface-800 flex items-center justify-between shrink-0">
+              <div className="p-6 border-b border-surface-border flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
                     selectedPrediction.severity === 'critical' ? 'bg-red-500/20 text-red-400' : 'bg-amber-500/20 text-amber-400'
@@ -502,13 +502,13 @@ export const PredictiveSafetyAI: React.FC = () => {
                     <Brain className="w-6 h-6" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-white">{selectedPrediction.title}</h2>
-                    <p className="text-xs text-surface-400">Prediction ID: {selectedPrediction.id}</p>
+                    <h2 className="text-xl font-bold text-text-primary">{selectedPrediction.title}</h2>
+                    <p className="text-xs text-text-muted">Prediction ID: {selectedPrediction.id}</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setSelectedPrediction(null)}
-                  className="p-2 hover:bg-surface-800 rounded-xl text-surface-400 transition-colors"
+                  className="p-2 hover:bg-surface-raised rounded-xl text-text-muted transition-colors"
                 >
                   <XCircle className="w-6 h-6" />
                 </button>
@@ -516,75 +516,75 @@ export const PredictiveSafetyAI: React.FC = () => {
 
               <div className="p-6 overflow-y-auto custom-scrollbar space-y-8">
                 <div className="grid md:grid-cols-3 gap-6">
-                  <div className="bg-surface-800/40 rounded-2xl p-4 border border-surface-700/30">
-                    <div className="text-[10px] font-bold text-surface-500 uppercase tracking-widest mb-1">Probability</div>
-                    <div className="text-3xl font-black text-white">{selectedPrediction.probability}%</div>
+                  <div className="bg-surface-raised rounded-2xl p-4 border border-surface-border">
+                    <div className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1">Probability</div>
+                    <div className="text-3xl font-black text-text-primary">{selectedPrediction.probability}%</div>
                     <div className="flex items-center gap-1 mt-2 text-xs text-red-400">
                       <TrendingUp className="w-3 h-3" /> +5% from yesterday
                     </div>
                   </div>
-                  <div className="bg-surface-800/40 rounded-2xl p-4 border border-surface-700/30">
-                    <div className="text-[10px] font-bold text-surface-500 uppercase tracking-widest mb-1">Severity</div>
+                  <div className="bg-surface-raised rounded-2xl p-4 border border-surface-border">
+                    <div className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1">Severity</div>
                     <div className={`text-3xl font-black uppercase ${
                       selectedPrediction.severity === 'critical' ? 'text-red-500' : 'text-amber-500'
                     }`}>{selectedPrediction.severity}</div>
                   </div>
-                  <div className="bg-surface-800/40 rounded-2xl p-4 border border-surface-700/30">
-                    <div className="text-[10px] font-bold text-surface-500 uppercase tracking-widest mb-1">Confidence</div>
-                    <div className="text-3xl font-black text-brand-400">{selectedPrediction.confidenceLevel}%</div>
+                  <div className="bg-surface-raised rounded-2xl p-4 border border-surface-border">
+                    <div className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1">Confidence</div>
+                    <div className="text-3xl font-black text-accent">{selectedPrediction.confidenceLevel}%</div>
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  <h3 className="text-lg font-bold text-white">Risk Factors</h3>
+                  <h3 className="text-lg font-bold text-text-primary">Risk Factors</h3>
                   <div className="grid sm:grid-cols-2 gap-4">
                     {selectedPrediction.riskFactors.map((factor) => (
-                      <div key={factor.id} className="p-4 rounded-xl bg-surface-800/40 border border-surface-700/30">
+                      <div key={factor.id} className="p-4 rounded-xl bg-surface-raised border border-surface-border">
                         <div className="flex justify-between items-start mb-2">
-                          <span className="text-sm font-bold text-white">{factor.factor}</span>
-                          <span className="text-[10px] font-bold text-surface-500 uppercase bg-surface-900 px-2 py-0.5 rounded-full">
+                          <span className="text-sm font-bold text-text-primary">{factor.factor}</span>
+                          <span className="text-[10px] font-bold text-text-muted uppercase bg-surface-sunken px-2 py-0.5 rounded-full">
                             {factor.category}
                           </span>
                         </div>
                         <div className="flex items-center gap-4 mt-3">
                           <div className="flex-1">
-                            <div className="h-1.5 bg-surface-700 rounded-full overflow-hidden">
+                            <div className="h-1.5 bg-surface-sunken rounded-full overflow-hidden">
                               <div 
-                                className="h-full bg-brand-500" 
+                                className="h-full bg-accent" 
                                 style={{ width: `${(factor.currentValue / factor.threshold) * 100}%` }} 
                               />
                             </div>
                           </div>
-                          <span className="text-xs font-mono text-surface-400">
+                          <span className="text-xs font-mono text-text-muted">
                             {factor.currentValue}/{factor.threshold}
                           </span>
                         </div>
-                        <div className="text-[10px] text-surface-500 mt-2">Source: {factor.dataSource}</div>
+                        <div className="text-[10px] text-text-muted mt-2">Source: {factor.dataSource}</div>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  <h3 className="text-lg font-bold text-white">AI Recommendations</h3>
+                  <h3 className="text-lg font-bold text-text-primary">AI Recommendations</h3>
                   <div className="space-y-3">
                     {selectedPrediction.recommendations.map((rec) => (
-                      <div key={rec.id} className="flex items-center gap-4 p-4 rounded-xl bg-brand-500/5 border border-brand-500/20">
+                      <div key={rec.id} className="flex items-center gap-4 p-4 rounded-xl bg-accent/5 border border-accent/20">
                         <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
-                          rec.priority === 'critical' ? 'bg-red-500/20 text-red-400' : 'bg-brand-500/20 text-brand-400'
+                          rec.priority === 'critical' ? 'bg-red-500/20 text-red-400' : 'bg-accent/20 text-accent'
                         }`}>
                           <CheckCircle2 className="w-5 h-5" />
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="text-sm font-bold text-white">{rec.action}</span>
+                            <span className="text-sm font-bold text-text-primary">{rec.action}</span>
                             <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
-                              rec.priority === 'critical' ? 'bg-red-500/20 text-red-400' : 'bg-surface-800 text-surface-400'
+                              rec.priority === 'critical' ? 'bg-red-500/20 text-red-400' : 'bg-surface-raised text-text-muted'
                             }`}>
                               {rec.priority}
                             </span>
                           </div>
-                          <div className="flex gap-4 text-[10px] text-surface-500">
+                          <div className="flex gap-4 text-[10px] text-text-muted">
                             <span>Impact: +{rec.expectedImpact}% safety</span>
                             <span>Cost: {rec.cost}</span>
                             <span>Time: {rec.implementationTime}</span>
@@ -592,7 +592,7 @@ export const PredictiveSafetyAI: React.FC = () => {
                         </div>
                         <button
                           onClick={() => handleAssign(rec.id)}
-                          className="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold rounded-lg transition-colors">
+                          className="px-4 py-2 bg-accent hover:bg-accent/80 text-white text-xs font-bold rounded-lg transition-colors">
                           Assign
                         </button>
                       </div>
@@ -601,19 +601,19 @@ export const PredictiveSafetyAI: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-6 border-t border-surface-800 bg-surface-900/50 flex justify-between items-center shrink-0">
+              <div className="p-6 border-t border-surface-border bg-surface-overlay/50 flex justify-between items-center shrink-0">
                 <div className="flex items-center gap-4">
-                  <button className="flex items-center gap-2 text-surface-400 hover:text-white text-sm font-medium">
+                  <button className="flex items-center gap-2 text-text-muted hover:text-text-primary text-sm font-medium">
                     <ThumbsUp className="w-4 h-4" /> Helpful
                   </button>
-                  <button className="flex items-center gap-2 text-surface-400 hover:text-white text-sm font-medium">
+                  <button className="flex items-center gap-2 text-text-muted hover:text-text-primary text-sm font-medium">
                     <ThumbsDown className="w-4 h-4" /> Not Accurate
                   </button>
                 </div>
                 <div className="flex gap-3">
                   <button
                     onClick={handleDismiss}
-                    className="px-6 py-2 bg-surface-800 hover:bg-surface-700 text-white text-sm font-bold rounded-xl transition-colors">
+                    className="px-6 py-2 bg-surface-raised hover:bg-surface-overlay text-text-primary text-sm font-bold rounded-xl transition-colors">
                     Dismiss
                   </button>
                    <SMButton variant="primary" size="sm">Create Action Plan</SMButton>

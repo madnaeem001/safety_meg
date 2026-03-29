@@ -148,7 +148,7 @@ export const QualityManagement: React.FC = () => {
               className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4">
               <div className={`w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center mb-2 ${kpi.color}`}><kpi.icon className="w-4 h-4" /></div>
               <p className="text-2xl font-black text-white">{kpi.value}</p>
-              <p className="text-[10px] text-slate-400 uppercase tracking-wider">{kpi.label}</p>
+              <p className="text-[10px] text-text-muted uppercase tracking-wider">{kpi.label}</p>
             </motion.div>
           ))}
         </div>
@@ -162,7 +162,7 @@ export const QualityManagement: React.FC = () => {
             </div>
             <div>
               <h3 className="text-sm font-bold text-white mb-1">AI Quality Insight</h3>
-              <p className="text-xs text-slate-300">Pattern detected: 3 NCRs in Fabrication dept this quarter relate to welding parameters. Recommend systemic review of welder qualification records and WPS validation per ASME Section IX. CAPA trend analysis suggests training gap.</p>
+              <p className="text-xs text-text-secondary">Pattern detected: 3 NCRs in Fabrication dept this quarter relate to welding parameters. Recommend systemic review of welder qualification records and WPS validation per ASME Section IX. CAPA trend analysis suggests training gap.</p>
             </div>
           </div>
         </motion.div>
@@ -171,7 +171,7 @@ export const QualityManagement: React.FC = () => {
         <div className="flex gap-2 overflow-x-auto pb-2">
           {tabs.map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${activeTab === tab.id ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' : 'bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10'}`}>
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${activeTab === tab.id ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' : 'bg-white/5 text-text-muted border border-white/10 hover:bg-white/10'}`}>
               <tab.icon className="w-4 h-4" /> {tab.label}
             </button>
           ))}
@@ -183,14 +183,14 @@ export const QualityManagement: React.FC = () => {
               {/* Search & Filter */}
               <div className="flex flex-col md:flex-row gap-3">
                 <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
                   <input type="text" placeholder="Search records..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40" />
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-cyan-500/40" />
                 </div>
                 <div className="flex gap-2 flex-wrap">
                   {['all', 'ncr', 'capa', 'audit_finding', 'deviation'].map(type => (
                     <button key={type} onClick={() => setFilterType(type)}
-                      className={`px-3 py-2 rounded-xl text-xs font-medium transition-all ${filterType === type ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' : 'bg-white/5 text-slate-400 border border-white/10'}`}>
+                      className={`px-3 py-2 rounded-xl text-xs font-medium transition-all ${filterType === type ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' : 'bg-white/5 text-text-muted border border-white/10'}`}>
                       {type === 'all' ? 'All' : type === 'audit_finding' ? 'Findings' : type.toUpperCase()}
                     </button>
                   ))}
@@ -211,14 +211,14 @@ export const QualityManagement: React.FC = () => {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-[10px] font-mono text-slate-500">{rec.id}</span>
+                            <span className="text-[10px] font-mono text-text-muted">{rec.id}</span>
                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${tc.color}`}>{tc.label}</span>
                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${statusConfig[rec.status].bg} ${statusConfig[rec.status].color}`}>{statusConfig[rec.status].label}</span>
                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${priorityColors[rec.priority]}`}>{rec.priority.toUpperCase()}</span>
                           </div>
                           <h3 className="text-sm font-bold text-white mt-1">{rec.title}</h3>
-                          <p className="text-xs text-slate-400 mt-0.5 line-clamp-1">{rec.description}</p>
-                          <div className="flex items-center gap-3 mt-2 flex-wrap text-xs text-slate-500">
+                          <p className="text-xs text-text-muted mt-0.5 line-clamp-1">{rec.description}</p>
+                          <div className="flex items-center gap-3 mt-2 flex-wrap text-xs text-text-muted">
                             <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {rec.assignee}</span>
                             <span className="flex items-center gap-1"><Shield className="w-3 h-3" /> {rec.standard}</span>
                             <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> Due: {rec.dueDate}</span>
@@ -249,7 +249,7 @@ export const QualityManagement: React.FC = () => {
                     </div>
                     <div className="flex items-end gap-2 mb-3">
                       <span className={`text-3xl font-black ${m.color}`}>{m.value}</span>
-                      <span className="text-xs text-slate-500 pb-1">Target: {m.target}</span>
+                      <span className="text-xs text-text-muted pb-1">Target: {m.target}</span>
                     </div>
                     <div className="h-10 bg-white/5 rounded-lg flex items-end gap-0.5 px-1 overflow-hidden">
                       {m.data.map((val, j) => (
@@ -272,9 +272,9 @@ export const QualityManagement: React.FC = () => {
                     { label: 'External Failure', value: '$23K', pct: '18%', color: 'text-red-400' },
                   ].map((coq, i) => (
                     <div key={i} className="bg-white/5 rounded-xl p-4 border border-white/5">
-                      <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">{coq.label}</p>
+                      <p className="text-[10px] text-text-muted uppercase tracking-wider mb-1">{coq.label}</p>
                       <p className={`text-xl font-black ${coq.color}`}>{coq.value}</p>
-                      <p className="text-xs text-slate-400">{coq.pct} of total</p>
+                      <p className="text-xs text-text-muted">{coq.pct} of total</p>
                     </div>
                   ))}
                 </div>
@@ -298,14 +298,14 @@ export const QualityManagement: React.FC = () => {
                     <div className="flex items-start justify-between mb-3">
                       <div>
                         <h3 className="text-sm font-bold text-white">{std.name}</h3>
-                        <p className="text-xs text-slate-400">{std.desc}</p>
+                        <p className="text-xs text-text-muted">{std.desc}</p>
                       </div>
-                      <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${std.status === 'Certified' ? 'bg-emerald-500/10 text-emerald-400' : std.status === 'In Progress' ? 'bg-blue-500/10 text-blue-400' : 'bg-slate-500/10 text-slate-400'}`}>
+                      <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${std.status === 'Certified' ? 'bg-emerald-500/10 text-emerald-400' : std.status === 'In Progress' ? 'bg-blue-500/10 text-blue-400' : 'bg-slate-500/10 text-text-muted'}`}>
                         {std.status}
                       </span>
                     </div>
                     <div className="mb-2">
-                      <div className="flex justify-between text-[10px] text-slate-500 mb-1">
+                      <div className="flex justify-between text-[10px] text-text-muted mb-1">
                         <span>Coverage</span><span className="font-bold text-white">{std.coverage}%</span>
                       </div>
                       <div className="w-full bg-white/10 rounded-full h-2">
@@ -313,7 +313,7 @@ export const QualityManagement: React.FC = () => {
                           style={{ width: `${std.coverage}%` }} />
                       </div>
                     </div>
-                    <p className="text-[10px] text-slate-500">Next Audit: {std.nextAudit}</p>
+                    <p className="text-[10px] text-text-muted">Next Audit: {std.nextAudit}</p>
                   </motion.div>
                 ))}
               </div>
@@ -340,13 +340,13 @@ export const QualityManagement: React.FC = () => {
                         </span>
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400">{audit.status}</span>
                       </div>
-                      <div className="flex items-center gap-3 mt-1 text-xs text-slate-400">
+                      <div className="flex items-center gap-3 mt-1 text-xs text-text-muted">
                         <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {audit.auditor}</span>
                         <span className="flex items-center gap-1"><Activity className="w-3 h-3" /> {audit.dept}</span>
                       </div>
                     </div>
                     <div className="text-right flex-shrink-0">
-                      <p className="text-xs text-slate-500">Date</p>
+                      <p className="text-xs text-text-muted">Date</p>
                       <p className="text-sm font-bold text-white">{audit.date}</p>
                     </div>
                   </div>

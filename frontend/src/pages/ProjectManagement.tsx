@@ -23,33 +23,33 @@ import { SecurityIncidentResponse } from '../components/safety/SecurityIncidentR
 
 // Task status columns configuration
 const COLUMNS: { id: TaskStatus; label: string; color: string }[] = [
-  { id: 'backlog', label: 'Backlog', color: 'bg-slate-50 border-slate-200' },
-  { id: 'todo', label: 'To Do', color: 'bg-surface-100 border-surface-200' },
-  { id: 'in_progress', label: 'In Progress', color: 'bg-blue-50 border-blue-100' },
-  { id: 'review', label: 'In Review', color: 'bg-purple-50 border-purple-100' },
-  { id: 'completed', label: 'Done', color: 'bg-emerald-50 border-emerald-100' },
+  { id: 'backlog', label: 'Backlog', color: 'bg-surface-raised border-surface-border' },
+  { id: 'todo', label: 'To Do', color: 'bg-surface-sunken border-surface-border' },
+  { id: 'in_progress', label: 'In Progress', color: 'bg-blue-500/5 border-blue-500/20' },
+  { id: 'review', label: 'In Review', color: 'bg-purple-500/5 border-purple-500/20' },
+  { id: 'completed', label: 'Done', color: 'bg-success/5 border-success/20' },
 ];
 
 const PRIORITY_COLORS: Record<TaskPriority, string> = {
-  highest: 'bg-red-100 text-red-700 border-red-200',
-  high: 'bg-orange-100 text-orange-700 border-orange-200',
-  medium: 'bg-amber-100 text-amber-700 border-amber-200',
-  low: 'bg-blue-100 text-blue-700 border-blue-200',
-  lowest: 'bg-slate-100 text-slate-700 border-slate-200',
+  highest: 'bg-danger/10 text-danger border-danger/20',
+  high: 'bg-warning/10 text-warning border-warning/20',
+  medium: 'bg-warning/10 text-warning border-warning/20',
+  low: 'bg-accent/10 text-accent border-accent/20',
+  lowest: 'bg-surface-sunken text-text-muted border-surface-border',
 };
 
 const ISSUE_TYPE_ICONS: Record<IssueType, { icon: typeof Target; color: string }> = {
-  epic: { icon: Zap, color: 'text-purple-600 bg-purple-50' },
-  story: { icon: BookOpen, color: 'text-green-600 bg-green-50' },
-  task: { icon: CheckSquare, color: 'text-blue-600 bg-blue-50' },
-  subtask: { icon: Layers, color: 'text-cyan-600 bg-cyan-50' },
-  bug: { icon: Bug, color: 'text-red-600 bg-red-50' },
+  epic: { icon: Zap, color: 'text-purple-400 bg-purple-500/10' },
+  story: { icon: BookOpen, color: 'text-emerald-400 bg-success/10' },
+  task: { icon: CheckSquare, color: 'text-accent bg-accent/10' },
+  subtask: { icon: Layers, color: 'text-cyan-400 bg-cyan-500/10' },
+  bug: { icon: Bug, color: 'text-danger bg-danger/10' },
 };
 
 const MILESTONE_STATUS_COLORS = {
-  pending: 'bg-surface-100 text-surface-600 border-surface-200',
-  in_progress: 'bg-blue-100 text-blue-700 border-blue-200',
-  completed: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+  pending: 'bg-surface-sunken text-text-secondary border-surface-border',
+  in_progress: 'bg-accent/10 text-accent border-accent/20',
+  completed: 'bg-success/10 text-success border-success/20',
 };
 
 interface DraggableTaskCardProps {
@@ -79,15 +79,15 @@ const DraggableTaskCard: React.FC<DraggableTaskCardProps> = ({ task, onStatusCha
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: isDragging ? 0.8 : 1, y: 0, scale: isDragging ? 1.02 : 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      className={`bg-white p-4 rounded-2xl shadow-soft border border-surface-100 cursor-pointer hover:shadow-md transition-shadow ${isDragging ? 'shadow-lg ring-2 ring-brand-300' : ''}`}
+      className={`bg-surface-raised p-4 rounded-2xl shadow-soft border border-surface-border cursor-pointer hover:shadow-md transition-shadow ${isDragging ? 'shadow-lg ring-2 ring-brand-300' : ''}`}
       onClick={handleCardClick}
     >
       <div className="flex justify-between items-start mb-2">
         <div className="flex items-center gap-2">
-          <div className="drag-handle cursor-grab active:cursor-grabbing p-1 -ml-1 rounded hover:bg-surface-50 touch-none">
+          <div className="drag-handle cursor-grab active:cursor-grabbing p-1 -ml-1 rounded hover:bg-surface-sunken touch-none">
             <GripVertical className="w-4 h-4 text-surface-300" />
           </div>
-          <span className={`p-1 rounded ${ISSUE_TYPE_ICONS[issueType]?.color || 'text-blue-600 bg-blue-50'}`}>
+          <span className={`p-1 rounded ${ISSUE_TYPE_ICONS[issueType]?.color || 'text-accent bg-accent/10'}`}>
             <IssueIcon className="w-3.5 h-3.5" />
           </span>
           <span className="text-xs font-mono text-surface-500">{task.key || task.id}</span>
@@ -95,21 +95,21 @@ const DraggableTaskCard: React.FC<DraggableTaskCardProps> = ({ task, onStatusCha
         <div className="relative menu-button">
           <button 
             onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }}
-            className="p-1 rounded-lg hover:bg-surface-50 transition-colors"
+            className="p-1 rounded-lg hover:bg-surface-sunken transition-colors"
           >
-            <MoreVertical className="w-4 h-4 text-surface-400" />
+            <MoreVertical className="w-4 h-4 text-text-muted" />
           </button>
           {showMenu && (
-            <div className="absolute right-0 top-6 bg-white rounded-xl shadow-lg border border-surface-100 py-1 z-10 min-w-[120px]">
+            <div className="absolute right-0 top-6 bg-surface-overlay rounded-xl shadow-lg border border-surface-border py-1 z-10 min-w-[120px]">
               <button 
                 onClick={(e) => { e.stopPropagation(); onOpen(task); setShowMenu(false); }}
-                className="w-full px-3 py-2 text-left text-sm text-surface-700 hover:bg-surface-50 flex items-center gap-2"
+                className="w-full px-3 py-2 text-left text-sm text-text-secondary hover:bg-surface-sunken flex items-center gap-2"
               >
                 <Eye className="w-3.5 h-3.5" /> View
               </button>
               <button 
                 onClick={(e) => { e.stopPropagation(); onDelete(task.id); setShowMenu(false); }}
-                className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                className="w-full px-3 py-2 text-left text-sm text-danger hover:bg-danger/10 flex items-center gap-2"
               >
                 <Trash2 className="w-3.5 h-3.5" /> Delete
               </button>
@@ -128,7 +128,7 @@ const DraggableTaskCard: React.FC<DraggableTaskCardProps> = ({ task, onStatusCha
         </div>
       )}
       
-      <h4 className="font-semibold text-brand-900 text-sm mb-2 line-clamp-2">{task.title}</h4>
+      <h4 className="font-semibold text-text-primary text-sm mb-2 line-clamp-2">{task.title}</h4>
       
       <div className="flex items-center justify-between text-[10px] mt-3">
         <div className="flex items-center gap-2">
@@ -136,13 +136,13 @@ const DraggableTaskCard: React.FC<DraggableTaskCardProps> = ({ task, onStatusCha
             {task.priority.charAt(0).toUpperCase()}
           </span>
           {task.storyPoints && (
-            <span className="px-1.5 py-0.5 bg-indigo-50 text-indigo-600 rounded font-bold">
+            <span className="px-1.5 py-0.5 bg-accent/10 text-accent rounded font-bold">
               {task.storyPoints}
             </span>
           )}
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 text-surface-400">
+          <div className="flex items-center gap-1 text-text-muted">
             <User className="w-3 h-3" />
             {task.assignee.split(' ')[0]}
           </div>
@@ -152,7 +152,7 @@ const DraggableTaskCard: React.FC<DraggableTaskCardProps> = ({ task, onStatusCha
       {task.labels && task.labels.length > 0 && (
         <div className="flex flex-wrap gap-1 mt-2">
           {task.labels.slice(0, 2).map(label => (
-            <span key={label} className="text-[9px] px-1.5 py-0.5 bg-surface-50 text-surface-500 rounded-md">
+            <span key={label} className="text-[9px] px-1.5 py-0.5 bg-surface-sunken text-text-muted rounded-md">
               {label}
             </span>
           ))}
@@ -230,13 +230,13 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, onAdd, epi
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
-        className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto"
+        className="bg-surface-overlay rounded-3xl shadow-2xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-bold text-brand-900">Add New Task</h3>
-          <button onClick={onClose} className="p-2 hover:bg-surface-50 rounded-xl transition-colors">
-            <X className="w-5 h-5 text-surface-400" />
+          <h3 className="text-xl font-bold text-text-primary">Add New Task</h3>
+          <button onClick={onClose} className="p-2 hover:bg-surface-sunken rounded-xl transition-colors">
+            <X className="w-5 h-5 text-text-muted" />
           </button>
         </div>
 
@@ -247,7 +247,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, onAdd, epi
               type="text"
               value={title}
               onChange={e => setTitle(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm"
+              className="w-full px-4 py-3 rounded-xl border border-surface-border focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all text-sm bg-surface-sunken text-text-primary"
               placeholder="Enter task title"
               required
             />
@@ -258,7 +258,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, onAdd, epi
             <textarea
               value={description}
               onChange={e => setDescription(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm resize-none"
+              className="w-full px-4 py-3 rounded-xl border border-surface-border focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all text-sm bg-surface-sunken text-text-primary resize-none"
               placeholder="Enter task description"
               rows={3}
             />
@@ -271,7 +271,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, onAdd, epi
                 type="text"
                 value={assignee}
                 onChange={e => setAssignee(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-surface-border focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all text-sm bg-surface-sunken text-text-primary"
                 placeholder="Name"
               />
             </div>
@@ -280,7 +280,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, onAdd, epi
               <select
                 value={priority}
                 onChange={e => setPriority(e.target.value as TaskPriority)}
-                className="w-full px-4 py-3 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-surface-border focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all text-sm bg-surface-sunken text-text-primary"
               >
                 <option value="lowest">Lowest</option>
                 <option value="low">Low</option>
@@ -297,7 +297,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, onAdd, epi
               <select
                 value={issueType}
                 onChange={e => setIssueType(e.target.value as IssueType)}
-                className="w-full px-4 py-3 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-surface-border focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all text-sm bg-surface-sunken text-text-primary"
               >
                 <option value="task">Task</option>
                 <option value="story">Story</option>
@@ -311,7 +311,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, onAdd, epi
                 type="number"
                 value={storyPoints}
                 onChange={e => setStoryPoints(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-surface-border focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all text-sm bg-surface-sunken text-text-primary"
                 placeholder="0"
                 min="0"
                 max="100"
@@ -326,7 +326,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, onAdd, epi
                 type="date"
                 value={dueDate}
                 onChange={e => setDueDate(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-surface-border focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all text-sm bg-surface-sunken text-text-primary"
               />
             </div>
             <div>
@@ -334,7 +334,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, onAdd, epi
               <select
                 value={epicId}
                 onChange={e => setEpicId(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-surface-border focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all text-sm bg-surface-sunken text-text-primary"
               >
                 <option value="">None</option>
                 {EPICS.map(epic => (
@@ -377,26 +377,26 @@ const FilterBar: React.FC<FilterBarProps> = ({
   assignees,
 }) => {
   return (
-    <div className="flex flex-col sm:flex-row gap-3 bg-white p-4 rounded-2xl shadow-soft border border-surface-100">
+    <div className="flex flex-col sm:flex-row gap-3 bg-surface-raised p-4 rounded-2xl shadow-soft border border-surface-border">
       {/* Search */}
       <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
         <input
           type="text"
           value={searchQuery}
           onChange={e => onSearchChange(e.target.value)}
           placeholder="Search tasks..."
-          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm"
+          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-surface-border focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all text-sm bg-surface-sunken text-text-primary"
         />
       </div>
       
       {/* Priority Filter */}
       <div className="flex items-center gap-2">
-        <Filter className="w-4 h-4 text-surface-400" />
+        <Filter className="w-4 h-4 text-text-muted" />
         <select
           value={priorityFilter}
           onChange={e => onPriorityChange(e.target.value as TaskPriority | 'all')}
-          className="px-3 py-2.5 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm bg-white"
+          className="px-3 py-2.5 rounded-xl border border-surface-border focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all text-sm bg-surface-sunken text-text-primary"
         >
           <option value="all">All Priorities</option>
           <option value="high">High</option>
@@ -409,7 +409,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
       <select
         value={assigneeFilter}
         onChange={e => onAssigneeChange(e.target.value)}
-        className="px-3 py-2.5 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm bg-white"
+        className="px-3 py-2.5 rounded-xl border border-surface-border focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all text-sm bg-surface-sunken text-text-primary"
       >
         <option value="all">All Assignees</option>
         {assignees.map(a => (
@@ -430,15 +430,15 @@ const MilestoneCard: React.FC<{ milestone: Milestone; tasks: ProjectTask[] }> = 
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white p-5 rounded-2xl shadow-soft border border-surface-100"
+      className="bg-surface-raised p-5 rounded-2xl shadow-soft border border-surface-border"
     >
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className={`p-2 rounded-xl ${milestone.status === 'completed' ? 'bg-emerald-50' : milestone.status === 'in_progress' ? 'bg-blue-50' : 'bg-surface-50'}`}>
-            <Target className={`w-5 h-5 ${milestone.status === 'completed' ? 'text-emerald-600' : milestone.status === 'in_progress' ? 'text-blue-600' : 'text-surface-400'}`} />
+          <div className={`p-2 rounded-xl ${milestone.status === 'completed' ? 'bg-success/10' : milestone.status === 'in_progress' ? 'bg-blue-500/10' : 'bg-surface-sunken'}`}>
+            <Target className={`w-5 h-5 ${milestone.status === 'completed' ? 'text-success' : milestone.status === 'in_progress' ? 'text-blue-600' : 'text-text-muted'}`} />
           </div>
           <div>
-            <h4 className="font-semibold text-brand-900 text-sm">{milestone.title}</h4>
+            <h4 className="font-semibold text-text-primary text-sm">{milestone.title}</h4>
             <p className="text-[10px] text-surface-500 mt-0.5">{milestone.description}</p>
           </div>
         </div>
@@ -462,30 +462,30 @@ const MilestoneCard: React.FC<{ milestone: Milestone; tasks: ProjectTask[] }> = 
         <div className="space-y-1.5">
           <div className="flex justify-between text-[10px]">
             <span className="text-surface-500">Progress</span>
-            <span className="font-bold text-brand-700">{progress}%</span>
+            <span className="font-bold text-accent">{progress}%</span>
           </div>
-          <div className="h-2 bg-surface-100 rounded-full overflow-hidden">
+          <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
-              className={`h-full rounded-full ${milestone.status === 'completed' ? 'bg-emerald-500' : 'bg-brand-500'}`}
+              className={`h-full rounded-full ${milestone.status === 'completed' ? 'bg-emerald-500' : 'bg-accent'}`}
             />
           </div>
         </div>
         
         {linkedTasks.length > 0 && (
-          <div className="pt-3 border-t border-surface-100">
-            <div className="text-[10px] font-bold text-surface-400 uppercase tracking-wider mb-2">Linked Tasks ({completedCount}/{linkedTasks.length})</div>
+          <div className="pt-3 border-t border-surface-border">
+            <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-2">Linked Tasks ({completedCount}/{linkedTasks.length})</div>
             <div className="space-y-1.5">
               {linkedTasks.map(task => (
                 <div key={task.id} className="flex items-center gap-2 text-xs">
                   {task.status === 'completed' ? (
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                   ) : (
-                    <div className="w-3.5 h-3.5 rounded-full border-2 border-surface-300" />
+                    <div className="w-3.5 h-3.5 rounded-full border-2 border-surface-border" />
                   )}
-                  <span className={task.status === 'completed' ? 'text-surface-400 line-through' : 'text-brand-800'}>{task.title}</span>
+                  <span className={task.status === 'completed' ? 'text-text-muted line-through' : 'text-text-primary'}>{task.title}</span>
                 </div>
               ))}
             </div>
@@ -699,7 +699,7 @@ export const ProjectManagement: React.FC = () => {
   const overdueTasks = tasks.filter(t => new Date(t.dueDate) < new Date() && t.status !== 'completed').length;
 
   return (
-    <div className="min-h-screen bg-surface-50 pb-32">
+    <div className="min-h-screen bg-surface-base pb-32">
 
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-6">
@@ -709,11 +709,11 @@ export const ProjectManagement: React.FC = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
           >
-            <div className="flex items-center gap-2 text-brand-500 font-bold text-[10px] uppercase tracking-[0.3em] mb-2">
+            <div className="flex items-center gap-2 text-accent font-bold text-[10px] uppercase tracking-[0.3em] mb-2">
               <ListTodo className="w-4 h-4" />
               Project Workflow
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-brand-900 tracking-tighter leading-none">Project Management</h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-text-primary tracking-tighter leading-none">Project Management</h1>
             <p className="text-surface-500 mt-3 max-w-xl text-base">
               Task management, schedule tracking, and RFI register for enterprise projects.
             </p>
@@ -742,14 +742,14 @@ export const ProjectManagement: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
-              className="bg-white p-4 rounded-2xl shadow-soft border border-surface-100"
+              className="bg-surface-raised p-4 rounded-2xl shadow-soft border border-surface-border"
             >
               <div className="flex items-center gap-3">
                 <div className={`p-2 rounded-xl bg-${stat.color}-50`}>
                   <stat.icon className={`w-5 h-5 text-${stat.color}-500`} />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-brand-900">{stat.value}</div>
+                  <div className="text-2xl font-bold text-text-primary">{stat.value}</div>
                   <div className="text-[10px] font-medium text-surface-500 uppercase tracking-wider">{stat.label}</div>
                 </div>
               </div>
@@ -758,7 +758,7 @@ export const ProjectManagement: React.FC = () => {
         </div>
 
         {/* View Tabs */}
-        <div className="flex gap-2 bg-surface-100/50 p-1 rounded-2xl w-fit overflow-x-auto">
+        <div className="flex gap-2 bg-surface-sunken/50 p-1 rounded-2xl w-fit overflow-x-auto">
           {[
             { id: 'kanban', label: 'Board', icon: ListTodo },
             { id: 'sprint', label: 'Sprint Planning', icon: Play },
@@ -784,8 +784,8 @@ export const ProjectManagement: React.FC = () => {
               onClick={() => { hapticFeedback('light'); setSearchParams({ view: tab.id }); }}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
                 activeView === tab.id 
-                  ? 'bg-white shadow-soft text-brand-700' 
-                  : 'text-surface-500 hover:text-brand-600'
+                  ? 'bg-surface-raised shadow-soft text-accent' 
+                  : 'text-text-muted hover:text-accent'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -815,8 +815,8 @@ export const ProjectManagement: React.FC = () => {
               return (
                 <div key={column.id} className={`p-4 rounded-2xl ${column.color} border min-h-[200px]`}>
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold text-brand-900 text-sm">{column.label}</h3>
-                    <span className="text-xs font-bold text-surface-500 bg-white px-2 py-0.5 rounded-full">
+                    <h3 className="font-semibold text-text-primary text-sm">{column.label}</h3>
+                    <span className="text-xs font-bold text-text-muted bg-surface-sunken px-2 py-0.5 rounded-full">
                       {columnTasks.length}
                     </span>
                   </div>
@@ -845,7 +845,7 @@ export const ProjectManagement: React.FC = () => {
                     </AnimatePresence>
                   </Reorder.Group>
                   {columnTasks.length === 0 && (
-                    <div className="text-center py-8 text-surface-400 text-sm">
+                    <div className="text-center py-8 text-text-muted text-sm">
                       No tasks
                     </div>
                   )}
@@ -911,39 +911,39 @@ export const ProjectManagement: React.FC = () => {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-bold text-brand-900">Project Milestones</h3>
+                <h3 className="text-xl font-bold text-text-primary">Project Milestones</h3>
                 <p className="text-sm text-surface-500 mt-1">Backend-owned milestones for {activeProjectName}</p>
               </div>
               <div className="flex items-center gap-4 text-xs">
                 <div className="flex items-center gap-1.5">
                   <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                  <span className="text-surface-600">Completed</span>
+                  <span className="text-text-secondary">Completed</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="w-3 h-3 rounded-full bg-blue-500" />
-                  <span className="text-surface-600">In Progress</span>
+                  <span className="text-text-secondary">In Progress</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-surface-300" />
-                  <span className="text-surface-600">Pending</span>
+                  <div className="w-3 h-3 rounded-full bg-surface-border" />
+                  <span className="text-text-secondary">Pending</span>
                 </div>
               </div>
             </div>
             
             {/* Timeline visualization */}
             {milestones.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-dashed border-surface-200 p-8 text-center text-surface-500">
+              <div className="bg-surface-raised rounded-2xl border border-dashed border-surface-border p-8 text-center text-text-muted">
                 No backend milestones are currently available for this project.
               </div>
             ) : (
               <div className="relative">
-                <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-surface-200" />
+                <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-surface-border" />
                 <div className="space-y-6">
                   {milestones.slice().sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()).map((milestone) => (
                     <div key={milestone.id} className="relative pl-14">
                       <div className={`absolute left-4 w-5 h-5 rounded-full border-4 border-white ${
                         milestone.status === 'completed' ? 'bg-emerald-500' : 
-                        milestone.status === 'in_progress' ? 'bg-blue-500' : 'bg-surface-300'
+                        milestone.status === 'in_progress' ? 'bg-blue-500' : 'bg-surface-border'
                       }`} />
                       <MilestoneCard milestone={milestone} tasks={tasks} />
                     </div>
@@ -959,19 +959,19 @@ export const ProjectManagement: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white p-6 sm:p-8 rounded-3xl shadow-soft border border-surface-100"
+            className="bg-surface-raised p-6 sm:p-8 rounded-3xl shadow-soft border border-surface-border"
           >
             <div className="flex justify-between items-center mb-8">
               <div>
-                <h3 className="text-xl font-bold text-brand-900 tracking-tight">Project Schedule</h3>
+                <h3 className="text-xl font-bold text-text-primary tracking-tight">Project Schedule</h3>
                 <p className="text-sm text-surface-500 mt-1">Timeline generated from backend project tasks for {activeProjectName}</p>
               </div>
-              <button className="text-[10px] font-bold text-brand-600 uppercase tracking-widest hover:text-brand-700 transition-colors flex items-center gap-1">
+              <button className="text-[10px] font-bold text-accent uppercase tracking-widest hover:opacity-80 transition-colors flex items-center gap-1">
                 Gantt View <ArrowUpRight className="w-3 h-3" />
               </button>
             </div>
             {projectSchedule.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-surface-200 p-8 text-center text-surface-500">
+              <div className="rounded-2xl border border-dashed border-surface-border p-8 text-center text-text-muted">
                 No scheduled backend task timeline is available for this project yet.
               </div>
             ) : (
@@ -980,22 +980,22 @@ export const ProjectManagement: React.FC = () => {
                   <div key={task.id} className="space-y-2">
                     <div className="flex justify-between items-end">
                       <div>
-                        <div className="text-sm font-bold text-brand-900">{task.task}</div>
-                        <div className="text-[10px] text-surface-400 font-medium uppercase tracking-wider">{task.startDate} — {task.endDate}</div>
+                        <div className="text-sm font-bold text-text-primary">{task.task}</div>
+                        <div className="text-[10px] text-text-muted font-medium uppercase tracking-wider">{task.startDate} — {task.endDate}</div>
                       </div>
                       <div className="text-right">
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${task.status === 'Completed' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : task.status === 'Delayed' ? 'bg-accent-50 text-accent-600 border-accent-100' : 'bg-brand-50 text-brand-600 border-brand-100'}`}>
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${task.status === 'Completed' ? 'bg-success/10 text-success border-success/20' : task.status === 'Delayed' ? 'bg-accent/10 text-accent border-accent/20' : 'bg-accent/10 text-accent border-accent/20'}`}>
                           {task.status}
                         </span>
-                        <div className="text-xs font-bold text-brand-900 mt-1">{task.progress}%</div>
+                        <div className="text-xs font-bold text-text-primary mt-1">{task.progress}%</div>
                       </div>
                     </div>
-                    <div className="h-1.5 bg-surface-50 rounded-full overflow-hidden border border-surface-100">
+                    <div className="h-1.5 bg-surface-sunken rounded-full overflow-hidden border border-surface-border">
                       <motion.div 
                         initial={{ width: 0 }}
                         animate={{ width: `${task.progress}%` }}
                         transition={{ duration: 1, delay: index * 0.1 }}
-                        className={`h-full rounded-full ${task.status === 'Completed' ? 'bg-emerald-500' : task.status === 'Delayed' ? 'bg-accent-500' : 'bg-brand-500'}`}
+                        className={`h-full rounded-full ${task.status === 'Completed' ? 'bg-emerald-500' : task.status === 'Delayed' ? 'bg-accent' : 'bg-accent'}`}
                       />
                     </div>
                   </div>
@@ -1010,41 +1010,41 @@ export const ProjectManagement: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white p-6 sm:p-8 rounded-3xl shadow-soft border border-surface-100"
+            className="bg-surface-raised p-6 sm:p-8 rounded-3xl shadow-soft border border-surface-border"
           >
             <div className="flex justify-between items-center mb-8">
               <div>
-                <h3 className="text-xl font-bold text-brand-900 tracking-tight">RFI Register</h3>
+                <h3 className="text-xl font-bold text-text-primary tracking-tight">RFI Register</h3>
                 <p className="text-sm text-surface-500 mt-1">Backend-owned RFIs for {activeProjectName}</p>
               </div>
-              <button className="text-[10px] font-bold text-brand-600 uppercase tracking-widest hover:text-brand-700 transition-colors flex items-center gap-1">
+              <button className="text-[10px] font-bold text-accent uppercase tracking-widest hover:opacity-80 transition-colors flex items-center gap-1">
                 New RFI <ArrowUpRight className="w-3 h-3" />
               </button>
             </div>
             {rfiRegister.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-surface-200 p-8 text-center text-surface-500">
+              <div className="rounded-2xl border border-dashed border-surface-border p-8 text-center text-text-muted">
                 No backend RFIs are currently available for this project.
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left">
                   <thead>
-                    <tr className="border-b border-surface-50">
-                      <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest">Subject</th>
-                      <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest text-center">Status</th>
-                      <th className="pb-4 text-[10px] font-bold text-surface-400 uppercase tracking-widest text-right">Due Date</th>
+                    <tr className="border-b border-surface-border">
+                      <th className="pb-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">Subject</th>
+                      <th className="pb-4 text-[10px] font-bold text-text-muted uppercase tracking-widest text-center">Status</th>
+                      <th className="pb-4 text-[10px] font-bold text-text-muted uppercase tracking-widest text-right">Due Date</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-surface-50">
                     {rfiRegister.map(rfi => (
-                      <tr key={rfi.id} className="group hover:bg-surface-50/50 transition-colors">
+                      <tr key={rfi.id} className="group hover:bg-surface-sunken/50 transition-colors">
                         <td className="py-4">
-                          <div className="text-sm font-bold text-brand-900">{rfi.subject}</div>
+                          <div className="text-sm font-bold text-text-primary">{rfi.subject}</div>
                           <div className="text-[10px] text-surface-500 mt-0.5">From: {rfi.from}</div>
                         </td>
                         <td className="py-4 text-center">
-                          <div className="flex items-center justify-center gap-2 text-xs font-medium text-surface-600">
-                            {rfi.status === 'Overdue' ? <AlertCircle className="w-4 h-4 text-accent-500" /> : rfi.status === 'Closed' ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <Clock className="w-4 h-4 text-brand-500" />}
+                          <div className="flex items-center justify-center gap-2 text-xs font-medium text-text-secondary">
+                            {rfi.status === 'Overdue' ? <AlertCircle className="w-4 h-4 text-danger" /> : rfi.status === 'Closed' ? <CheckCircle2 className="w-4 h-4 text-success" /> : <Clock className="w-4 h-4 text-accent" />}
                             {rfi.status}
                           </div>
                         </td>
@@ -1075,7 +1075,7 @@ export const ProjectManagement: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-xs font-bold text-emerald-600">LIVE</span>
+                  <span className="text-xs font-bold text-success">LIVE</span>
                 </div>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
@@ -1108,7 +1108,7 @@ export const ProjectManagement: React.FC = () => {
             </div>
             
             {/* AI Workflow Stages */}
-            <h3 className="text-lg font-bold text-brand-900 dark:text-white tracking-tight">AI Workflow Stages</h3>
+            <h3 className="text-lg font-bold text-text-primary tracking-tight">AI Workflow Stages</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
                 { name: 'Auto Risk Scoring', engine: 'Predictive Risk Engine', status: 'active', confidence: 94.1, automation: 'Full Auto', tasks: 4823, trigger: '2m ago' },
@@ -1121,11 +1121,11 @@ export const ProjectManagement: React.FC = () => {
                 { name: 'Ergonomic Risk Detector', engine: 'Behavioral Analytics', status: 'learning', confidence: 82.1, automation: 'AI Suggest', tasks: 534, trigger: '45m ago' },
               ].map((stage, i) => (
                 <motion.div key={stage.name} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-                  className="bg-white dark:bg-slate-800/50 rounded-xl p-5 border border-surface-200 dark:border-slate-700/50 hover:border-cyan-500/30 transition-all">
+                  className="bg-surface-raised rounded-xl p-5 border border-surface-border hover:border-accent/30 transition-all">
                   <div className="flex items-start justify-between mb-3">
                     <div>
-                      <h4 className="text-sm font-bold text-brand-900 dark:text-white">{stage.name}</h4>
-                      <p className="text-[10px] text-surface-500 dark:text-slate-400">{stage.engine}</p>
+                      <h4 className="text-sm font-bold text-text-primary">{stage.name}</h4>
+                      <p className="text-[10px] text-text-muted">{stage.engine}</p>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <div className={`w-2 h-2 rounded-full ${stage.status === 'active' ? 'bg-emerald-400' : 'bg-amber-400'} animate-pulse`} />
@@ -1134,21 +1134,21 @@ export const ProjectManagement: React.FC = () => {
                   </div>
                   <div className="grid grid-cols-3 gap-3 mb-3">
                     <div>
-                      <p className="text-lg font-black text-brand-900 dark:text-white">{stage.confidence}%</p>
-                      <p className="text-[9px] text-surface-400 dark:text-slate-500 uppercase">Accuracy</p>
+                      <p className="text-lg font-black text-text-primary">{stage.confidence}%</p>
+                      <p className="text-[9px] text-text-muted uppercase">Accuracy</p>
                     </div>
                     <div>
-                      <p className="text-lg font-black text-brand-900 dark:text-white">{stage.tasks.toLocaleString()}</p>
-                      <p className="text-[9px] text-surface-400 dark:text-slate-500 uppercase">Processed</p>
+                      <p className="text-lg font-black text-text-primary">{stage.tasks.toLocaleString()}</p>
+                      <p className="text-[9px] text-text-muted uppercase">Processed</p>
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-brand-900 dark:text-white mt-0.5">{stage.trigger}</p>
-                      <p className="text-[9px] text-surface-400 dark:text-slate-500 uppercase">Last Run</p>
+                      <p className="text-xs font-bold text-text-primary mt-0.5">{stage.trigger}</p>
+                      <p className="text-[9px] text-text-muted uppercase">Last Run</p>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between pt-3 border-t border-surface-100 dark:border-slate-700/50">
-                    <span className="text-[10px] font-bold text-cyan-600 dark:text-cyan-400 px-2 py-1 bg-cyan-50 dark:bg-cyan-500/10 rounded-lg">{stage.automation}</span>
-                    <div className="w-20 h-1.5 rounded-full bg-surface-100 dark:bg-slate-700/50 overflow-hidden">
+                  <div className="flex items-center justify-between pt-3 border-t border-surface-border">
+                    <span className="text-[10px] font-bold text-accent px-2 py-1 bg-accent/10 rounded-lg">{stage.automation}</span>
+                    <div className="w-20 h-1.5 rounded-full bg-surface-sunken overflow-hidden">
                       <div className="h-full rounded-full bg-cyan-500" style={{ width: `${stage.confidence}%` }} />
                     </div>
                   </div>
@@ -1163,8 +1163,8 @@ export const ProjectManagement: React.FC = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
             <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-purple-100 border border-purple-200 flex items-center justify-center">
-                  <Brain className="w-5 h-5 text-purple-600" />
+                <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
+                  <Brain className="w-5 h-5 text-purple-400" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-text-primary">AI Task Intelligence Engine</h3>
@@ -1173,10 +1173,10 @@ export const ProjectManagement: React.FC = () => {
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {[
-                  { label: 'Tasks Analyzed', value: '2,847', color: 'text-purple-600' },
-                  { label: 'Bottlenecks Found', value: '12', color: 'text-red-600' },
+                  { label: 'Tasks Analyzed', value: '2,847', color: 'text-purple-400' },
+                  { label: 'Bottlenecks Found', value: '12', color: 'text-danger' },
                   { label: 'Auto-Assigned', value: '847', color: 'text-accent' },
-                  { label: 'Risk Predictions', value: '23', color: 'text-amber-600' },
+                  { label: 'Risk Predictions', value: '23', color: 'text-warning' },
                 ].map((m, i) => (
                   <div key={i} className="bg-surface-overlay rounded-xl p-3 border border-surface-border">
                     <p className={`text-xl font-black ${m.color}`}>{m.value}</p>
@@ -1196,15 +1196,15 @@ export const ProjectManagement: React.FC = () => {
                 { title: 'Compliance Blocker', desc: 'OSHA 1910.147 training required before confined space feature rollout.', risk: 'critical', action: 'Block deployment until training complete' },
               ].map((item, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-                  className="bg-white rounded-2xl p-5 border border-surface-100 shadow-soft">
+                  className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-soft">
                   <div className="flex items-start justify-between mb-3">
-                    <h4 className="text-sm font-bold text-brand-900">{item.title}</h4>
-                    <span className={`text-[9px] font-bold px-2 py-1 rounded-lg uppercase ${item.risk === 'critical' ? 'bg-red-50 text-red-600' : item.risk === 'high' ? 'bg-orange-50 text-orange-600' : item.risk === 'medium' ? 'bg-amber-50 text-amber-600' : 'bg-green-50 text-green-600'}`}>{item.risk}</span>
+                    <h4 className="text-sm font-bold text-text-primary">{item.title}</h4>
+                    <span className={`text-[9px] font-bold px-2 py-1 rounded-lg uppercase ${item.risk === 'critical' ? 'bg-danger/10 text-danger' : item.risk === 'high' ? 'bg-warning/10 text-warning' : item.risk === 'medium' ? 'bg-warning/10 text-warning' : 'bg-success/10 text-success'}`}>{item.risk}</span>
                   </div>
-                  <p className="text-xs text-surface-600 mb-3">{item.desc}</p>
-                  <div className="flex items-center gap-2 p-2 bg-indigo-50 rounded-xl border border-indigo-100">
-                    <Zap className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                    <span className="text-[10px] text-indigo-700 font-semibold">{item.action}</span>
+                  <p className="text-xs text-text-secondary mb-3">{item.desc}</p>
+                  <div className="flex items-center gap-2 p-2 bg-accent/10 rounded-xl border border-accent/20">
+                    <Zap className="w-3.5 h-3.5 text-accent shrink-0" />
+                    <span className="text-[10px] text-accent font-semibold">{item.action}</span>
                   </div>
                 </motion.div>
               ))}
@@ -1222,8 +1222,8 @@ export const ProjectManagement: React.FC = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
             <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 border border-emerald-200 flex items-center justify-center">
-                  <Brain className="w-5 h-5 text-emerald-600" />
+                <div className="w-10 h-10 rounded-xl bg-success/10 border border-success/20 flex items-center justify-center">
+                  <Brain className="w-5 h-5 text-success" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-text-primary">AI Resource Planning Engine</h3>
@@ -1240,7 +1240,7 @@ export const ProjectManagement: React.FC = () => {
                   <div key={i} className="bg-surface-overlay rounded-xl p-4 border border-surface-border">
                     <p className="text-xs text-text-muted mb-1">{metric.label}</p>
                     <p className="text-xl font-black text-text-primary">{metric.value}</p>
-                    <p className="text-[10px] text-emerald-600 font-mono mt-1">↑ {metric.trend}</p>
+                    <p className="text-[10px] text-success font-mono mt-1">↑ {metric.trend}</p>
                   </div>
                 ))}
               </div>
@@ -1255,29 +1255,29 @@ export const ProjectManagement: React.FC = () => {
                 { name: 'Lisa Wang', role: 'Full-Stack Developer', allocation: 72, tasks: 5, sprint: 'Sprint 14', risk: 'Optimal', riskColor: 'green', skills: ['TypeScript', 'GraphQL', 'PostgreSQL'], aiSuggestion: 'Good candidate for the upcoming API refactor' },
                 { name: 'David Martinez', role: 'UX Designer', allocation: 55, tasks: 3, sprint: 'Sprint 14', risk: 'Available', riskColor: 'blue', skills: ['Figma', 'Prototyping', 'Research'], aiSuggestion: 'Has bandwidth for design system component library work' },
               ].map((person, idx) => (
-                <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-white rounded-2xl p-5 border border-surface-100 shadow-soft">
+                <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-soft">
                   <div className="flex justify-between items-start mb-3">
                     <div>
-                      <h4 className="font-bold text-brand-900">{person.name}</h4>
+                      <h4 className="font-bold text-text-primary">{person.name}</h4>
                       <p className="text-xs text-surface-500">{person.role}</p>
                     </div>
-                    <span className={`px-2 py-1 rounded-lg text-[10px] font-bold ${person.riskColor === 'red' ? 'bg-red-50 text-red-700' : person.riskColor === 'yellow' ? 'bg-yellow-50 text-yellow-700' : person.riskColor === 'green' ? 'bg-emerald-50 text-emerald-700' : person.riskColor === 'blue' ? 'bg-blue-50 text-blue-700' : 'bg-orange-50 text-orange-700'}`}>{person.risk}</span>
+                    <span className={`px-2 py-1 rounded-lg text-[10px] font-bold ${person.riskColor === 'red' ? 'bg-danger/10 text-danger' : person.riskColor === 'yellow' ? 'bg-warning/10 text-warning' : person.riskColor === 'green' ? 'bg-success/10 text-success' : person.riskColor === 'blue' ? 'bg-accent/10 text-accent' : 'bg-warning/10 text-warning'}`}>{person.risk}</span>
                   </div>
                   <div className="mb-3">
                     <div className="flex justify-between text-xs mb-1">
                       <span className="text-surface-500">Allocation</span>
-                      <span className="font-bold text-brand-900">{person.allocation}%</span>
+                      <span className="font-bold text-accent">{person.allocation}%</span>
                     </div>
-                    <div className="h-2 bg-surface-100 rounded-full overflow-hidden">
+                    <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
                       <div className={`h-full rounded-full ${person.allocation > 90 ? 'bg-red-500' : person.allocation > 75 ? 'bg-amber-500' : 'bg-emerald-500'}`} style={{ width: `${person.allocation}%` }} />
                     </div>
                   </div>
                   <div className="flex gap-1 flex-wrap mb-3">
-                    {person.skills.map(s => (<span key={s} className="px-2 py-0.5 bg-surface-50 text-surface-600 rounded text-[10px] font-medium">{s}</span>))}
+                    {person.skills.map(s => (<span key={s} className="px-2 py-0.5 bg-surface-sunken text-text-secondary rounded text-[10px] font-medium">{s}</span>))}
                   </div>
-                  <div className="bg-emerald-50 rounded-lg p-2 flex items-start gap-2">
-                    <Brain className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                    <p className="text-[10px] text-emerald-700 font-medium">{person.aiSuggestion}</p>
+                  <div className="bg-success/10 rounded-lg p-2 flex items-start gap-2">
+                    <Brain className="w-3.5 h-3.5 text-success shrink-0 mt-0.5" />
+                    <p className="text-[10px] text-success font-medium">{person.aiSuggestion}</p>
                   </div>
                 </motion.div>
               ))}
@@ -1290,8 +1290,8 @@ export const ProjectManagement: React.FC = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
             <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-red-100 border border-red-200 flex items-center justify-center">
-                  <Target className="w-5 h-5 text-red-600" />
+                <div className="w-10 h-10 rounded-xl bg-danger/10 border border-danger/20 flex items-center justify-center">
+                  <Target className="w-5 h-5 text-danger" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-text-primary">AI Risk Matrix Engine</h3>
@@ -1308,23 +1308,23 @@ export const ProjectManagement: React.FC = () => {
                   <div key={i} className="bg-surface-overlay rounded-xl p-4 border border-surface-border">
                     <p className="text-xs text-text-muted mb-1">{m.label}</p>
                     <p className="text-xl font-black text-text-primary">{m.value}</p>
-                    <p className="text-[10px] text-red-600 font-mono mt-1">{m.trend}</p>
+                    <p className="text-[10px] text-danger font-mono mt-1">{m.trend}</p>
                   </div>
                 ))}
               </div>
             </div>
             {/* 5x5 Risk Matrix Grid */}
-            <div className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft">
-              <h4 className="font-bold text-brand-900 mb-4">Probability vs. Impact Matrix (AI-Scored)</h4>
+            <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
+              <h4 className="font-bold text-text-primary mb-4">Probability vs. Impact Matrix (AI-Scored)</h4>
               <div className="overflow-x-auto">
                 <div className="grid grid-cols-6 gap-1 min-w-[500px]">
-                  <div className="p-2 text-[10px] font-bold text-surface-400"></div>
+                  <div className="p-2 text-[10px] font-bold text-text-muted"></div>
                   {['Negligible', 'Minor', 'Moderate', 'Major', 'Catastrophic'].map(h => (
-                    <div key={h} className="p-2 text-[10px] font-bold text-center text-surface-600">{h}</div>
+                    <div key={h} className="p-2 text-[10px] font-bold text-center text-text-secondary">{h}</div>
                   ))}
                   {['Almost Certain', 'Likely', 'Possible', 'Unlikely', 'Rare'].map((prob, pi) => (
                     <React.Fragment key={prob}>
-                      <div className="p-2 text-[10px] font-bold text-surface-600 flex items-center">{prob}</div>
+                      <div className="p-2 text-[10px] font-bold text-text-secondary flex items-center">{prob}</div>
                       {[1,2,3,4,5].map((impact) => {
                         const score = (5 - pi) * impact;
                         const risks = [
@@ -1339,8 +1339,8 @@ export const ProjectManagement: React.FC = () => {
                         ].filter(r => r.prob === pi && r.impact === impact - 1);
                         const bg = score >= 15 ? 'bg-red-500' : score >= 10 ? 'bg-orange-400' : score >= 5 ? 'bg-yellow-400' : 'bg-green-400';
                         return (
-                          <div key={impact} className={`${bg} bg-opacity-20 rounded-lg p-2 min-h-[60px] border border-surface-100 relative`}>
-                            <span className="text-[8px] font-bold text-surface-400 absolute top-1 right-1">{score}</span>
+                          <div key={impact} className={`${bg} bg-opacity-20 rounded-lg p-2 min-h-[60px] border border-surface-border relative`}>
+                            <span className="text-[8px] font-bold text-text-muted absolute top-1 right-1">{score}</span>
                             {risks.map(r => (
                               <div key={r.name} className={`text-[9px] font-bold px-1 py-0.5 rounded ${bg} text-white mb-0.5`}>{r.name}</div>
                             ))}
@@ -1361,31 +1361,31 @@ export const ProjectManagement: React.FC = () => {
                 { id: 'RISK-004', name: 'Critical Security Vulnerability in Dependencies', probability: 'Possible', impact: 'Major', score: 12, status: 'Active', owner: 'Mike Thompson', mitigation: 'Automated dependency scanning with Snyk, weekly patch cycle', aiPrediction: '2 new CVEs expected in current dependency tree within 14 days', category: 'Security' },
                 { id: 'RISK-005', name: 'Key Team Member Departure', probability: 'Likely', impact: 'Major', score: 16, status: 'Monitoring', owner: 'Project Manager', mitigation: 'Knowledge sharing sessions, documentation initiative, cross-training program', aiPrediction: 'Retention risk elevated for 2 team members based on engagement metrics', category: 'People' },
               ].map((risk, idx) => (
-                <motion.div key={risk.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.1 }} className="bg-white rounded-2xl p-5 border border-surface-100 shadow-soft">
+                <motion.div key={risk.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.1 }} className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-soft">
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex items-center gap-3">
-                      <span className="text-xs font-mono text-surface-400">{risk.id}</span>
-                      <h4 className="font-bold text-brand-900 text-sm">{risk.name}</h4>
+                      <span className="text-xs font-mono text-text-muted">{risk.id}</span>
+                      <h4 className="font-bold text-text-primary text-sm">{risk.name}</h4>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className={`px-2 py-1 rounded-lg text-[10px] font-bold ${risk.score >= 15 ? 'bg-red-50 text-red-700' : risk.score >= 10 ? 'bg-orange-50 text-orange-700' : risk.score >= 5 ? 'bg-yellow-50 text-yellow-700' : 'bg-green-50 text-green-700'}`}>
+                      <span className={`px-2 py-1 rounded-lg text-[10px] font-bold ${risk.score >= 15 ? 'bg-danger/10 text-danger' : risk.score >= 10 ? 'bg-warning/10 text-warning' : risk.score >= 5 ? 'bg-warning/10 text-warning' : 'bg-success/10 text-success'}`}>
                         Score: {risk.score}
                       </span>
-                      <span className={`px-2 py-1 rounded-lg text-[10px] font-bold ${risk.status === 'Active' ? 'bg-red-50 text-red-700' : risk.status === 'Mitigating' ? 'bg-blue-50 text-blue-700' : 'bg-surface-50 text-surface-600'}`}>{risk.status}</span>
+                      <span className={`px-2 py-1 rounded-lg text-[10px] font-bold ${risk.status === 'Active' ? 'bg-danger/10 text-danger' : risk.status === 'Mitigating' ? 'bg-accent/10 text-accent' : 'bg-surface-sunken text-text-secondary'}`}>{risk.status}</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3 text-xs">
-                    <div><span className="text-surface-400">Probability:</span> <span className="font-bold">{risk.probability}</span></div>
-                    <div><span className="text-surface-400">Impact:</span> <span className="font-bold">{risk.impact}</span></div>
-                    <div><span className="text-surface-400">Category:</span> <span className="font-bold">{risk.category}</span></div>
-                    <div><span className="text-surface-400">Owner:</span> <span className="font-bold">{risk.owner}</span></div>
+                    <div><span className="text-text-muted">Probability:</span> <span className="font-bold">{risk.probability}</span></div>
+                    <div><span className="text-text-muted">Impact:</span> <span className="font-bold">{risk.impact}</span></div>
+                    <div><span className="text-text-muted">Category:</span> <span className="font-bold">{risk.category}</span></div>
+                    <div><span className="text-text-muted">Owner:</span> <span className="font-bold">{risk.owner}</span></div>
                   </div>
-                  <div className="bg-surface-50 rounded-lg p-3 mb-2">
-                    <p className="text-xs text-surface-600"><span className="font-bold">Mitigation:</span> {risk.mitigation}</p>
+                  <div className="bg-surface-sunken rounded-lg p-3 mb-2">
+                    <p className="text-xs text-text-secondary"><span className="font-bold">Mitigation:</span> {risk.mitigation}</p>
                   </div>
-                  <div className="bg-amber-50 rounded-lg p-2 flex items-start gap-2">
-                    <Brain className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
-                    <p className="text-[10px] text-amber-700 font-medium">AI Prediction: {risk.aiPrediction}</p>
+                  <div className="bg-warning/10 rounded-lg p-2 flex items-start gap-2">
+                    <Brain className="w-3.5 h-3.5 text-warning shrink-0 mt-0.5" />
+                    <p className="text-[10px] text-warning font-medium">AI Prediction: {risk.aiPrediction}</p>
                   </div>
                 </motion.div>
               ))}
@@ -1398,8 +1398,8 @@ export const ProjectManagement: React.FC = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
             <div className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-violet-100 border border-violet-200 flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-violet-600" />
+                <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
+                  <Zap className="w-5 h-5 text-purple-400" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-text-primary">AI Dependency Analyzer</h3>
@@ -1416,7 +1416,7 @@ export const ProjectManagement: React.FC = () => {
                   <div key={i} className="bg-surface-overlay rounded-xl p-4 border border-surface-border">
                     <p className="text-xs text-text-muted mb-1">{m.label}</p>
                     <p className="text-xl font-black text-text-primary">{m.value}</p>
-                    <p className="text-[10px] text-violet-600 font-mono mt-1">{m.trend}</p>
+                    <p className="text-[10px] text-purple-400 font-mono mt-1">{m.trend}</p>
                   </div>
                 ))}
               </div>
@@ -1430,17 +1430,17 @@ export const ProjectManagement: React.FC = () => {
                 { chain: 'CI/CD-PIPELINE → STAGING → LOAD-TEST → PRODUCTION', status: 'On Track', criticalPath: true, blockers: 0, tasks: 6, eta: '2 days ahead', aiInsight: 'Pipeline optimizations reduced build time by 40%. Staging environment is stable. Load testing can begin early.', teams: ['DevOps', 'SRE'], health: 95 },
                 { chain: 'SECURITY-AUDIT → PENETRATION-TEST → COMPLIANCE → SIGN-OFF', status: 'At Risk', criticalPath: false, blockers: 1, tasks: 9, eta: '1 day delayed', aiInsight: 'Penetration test vendor rescheduled. Recommend using automated DAST tools as interim measure to maintain compliance timeline.', teams: ['Security', 'Compliance'], health: 52 },
               ].map((dep, idx) => (
-                <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-white rounded-2xl p-5 border border-surface-100 shadow-soft">
+                <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-soft">
                   <div className="flex justify-between items-start mb-3">
                     <div>
-                      <p className="text-[10px] font-mono text-violet-600 mb-1">{dep.chain}</p>
+                      <p className="text-[10px] font-mono text-purple-400 mb-1">{dep.chain}</p>
                       <div className="flex items-center gap-2">
-                        {dep.criticalPath && <span className="px-2 py-0.5 bg-red-50 text-red-700 rounded text-[9px] font-bold">CRITICAL PATH</span>}
-                        <span className={`px-2 py-0.5 rounded text-[9px] font-bold ${dep.status === 'Blocked' ? 'bg-red-50 text-red-700' : dep.status === 'At Risk' ? 'bg-orange-50 text-orange-700' : 'bg-emerald-50 text-emerald-700'}`}>{dep.status}</span>
+                        {dep.criticalPath && <span className="px-2 py-0.5 bg-danger/10 text-danger rounded text-[9px] font-bold">CRITICAL PATH</span>}
+                        <span className={`px-2 py-0.5 rounded text-[9px] font-bold ${dep.status === 'Blocked' ? 'bg-danger/10 text-danger' : dep.status === 'At Risk' ? 'bg-warning/10 text-warning' : 'bg-success/10 text-success'}`}>{dep.status}</span>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-xs font-bold text-brand-900">{dep.tasks} tasks</p>
+                      <p className="text-xs font-bold text-text-primary">{dep.tasks} tasks</p>
                       <p className="text-[10px] text-surface-500">{dep.eta}</p>
                     </div>
                   </div>
@@ -1449,17 +1449,17 @@ export const ProjectManagement: React.FC = () => {
                       <span className="text-surface-500">Health Score</span>
                       <span className="font-bold">{dep.health}%</span>
                     </div>
-                    <div className="h-2 bg-surface-100 rounded-full overflow-hidden">
+                    <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
                       <div className={`h-full rounded-full ${dep.health >= 75 ? 'bg-emerald-500' : dep.health >= 50 ? 'bg-amber-500' : 'bg-red-500'}`} style={{ width: `${dep.health}%` }} />
                     </div>
                   </div>
                   <div className="flex gap-1 flex-wrap mb-3">
-                    {dep.teams.map(t => (<span key={t} className="px-2 py-0.5 bg-violet-50 text-violet-700 rounded text-[10px] font-medium">{t}</span>))}
-                    {dep.blockers > 0 && <span className="px-2 py-0.5 bg-red-50 text-red-700 rounded text-[10px] font-bold">{dep.blockers} Blocker{dep.blockers > 1 ? 's' : ''}</span>}
+                    {dep.teams.map(t => (<span key={t} className="px-2 py-0.5 bg-purple-500/10 text-purple-400 rounded text-[10px] font-medium">{t}</span>))}
+                    {dep.blockers > 0 && <span className="px-2 py-0.5 bg-danger/10 text-danger rounded text-[10px] font-bold">{dep.blockers} Blocker{dep.blockers > 1 ? 's' : ''}</span>}
                   </div>
-                  <div className="bg-violet-50 rounded-lg p-2 flex items-start gap-2">
-                    <Brain className="w-3.5 h-3.5 text-violet-600 shrink-0 mt-0.5" />
-                    <p className="text-[10px] text-violet-700 font-medium">{dep.aiInsight}</p>
+                  <div className="bg-purple-500/10 rounded-lg p-2 flex items-start gap-2">
+                    <Brain className="w-3.5 h-3.5 text-purple-400 shrink-0 mt-0.5" />
+                    <p className="text-[10px] text-purple-400 font-medium">{dep.aiInsight}</p>
                   </div>
                 </motion.div>
               ))}

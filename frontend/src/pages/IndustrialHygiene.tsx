@@ -68,7 +68,7 @@ const riskColors = {
 };
 
 const planStatusConfig = {
-  scheduled: { label: 'Scheduled', color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
+  scheduled: { label: 'Scheduled', color: 'text-accent', bg: 'bg-accent/10' },
   in_progress: { label: 'In Progress', color: 'text-blue-400', bg: 'bg-blue-500/10' },
   completed: { label: 'Completed', color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
   overdue: { label: 'Overdue', color: 'text-red-400', bg: 'bg-red-500/10' },
@@ -157,21 +157,21 @@ export const IndustrialHygiene: React.FC = () => {
       <main className="max-w-7xl mx-auto px-4 md:px-6 pt-20 md:pt-24 space-y-6">
         {/* Header */}
         <div className="flex items-center gap-3 mb-2">
-          <button onClick={() => navigate(-1)} className="p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+          <button onClick={() => navigate(-1)} className="p-2 rounded-xl bg-surface-raised border border-surface-border hover:bg-surface-overlay transition-colors">
             <ArrowLeft className="w-5 h-5 text-text-primary" />
           </button>
           <div>
-            <div className="flex items-center gap-2 text-cyan-400 font-bold text-[10px] uppercase tracking-[0.3em]">
+            <div className="flex items-center gap-2 text-accent font-bold text-[10px] uppercase tracking-[0.3em]">
               <Beaker className="w-4 h-4" /> Industrial Hygiene
             </div>
-            <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight">Exposure & Monitoring</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-text-primary tracking-tight">Exposure & Monitoring</h1>
           </div>
         </div>
 
         {/* KPI Cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {[
-            { label: 'Total Agents', value: stats.total, icon: Beaker, color: 'text-cyan-400' },
+            { label: 'Total Agents', value: stats.total, icon: Beaker, color: 'text-accent' },
             { label: 'Above OEL', value: stats.aboveOel, icon: AlertTriangle, color: 'text-red-400' },
             { label: 'Near OEL', value: stats.nearOel, icon: Shield, color: 'text-amber-400' },
             { label: 'Below OEL', value: stats.belowOel, icon: CheckCircle2, color: 'text-emerald-400' },
@@ -179,8 +179,8 @@ export const IndustrialHygiene: React.FC = () => {
             { label: 'Overdue Samples', value: stats.overduePlans, icon: Clock, color: 'text-orange-400' },
           ].map((kpi, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-              className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4">
-              <div className={`w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center mb-2 ${kpi.color}`}>
+              className="bg-surface-raised border border-surface-border rounded-2xl p-4">
+              <div className={`w-8 h-8 rounded-xl bg-surface-sunken flex items-center justify-center mb-2 ${kpi.color}`}>
                 <kpi.icon className="w-4 h-4" />
               </div>
               <p className="text-2xl font-black text-text-primary">{kpi.value}</p>
@@ -197,7 +197,7 @@ export const IndustrialHygiene: React.FC = () => {
               <Brain className="w-5 h-5 text-purple-400" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white mb-1">AI Hygiene Alert</h3>
+              <h3 className="text-sm font-bold text-text-primary mb-1">AI Hygiene Alert</h3>
               <p className="text-xs text-text-secondary">Lead exposure in Paint Shop (EA-004) exceeds PEL by 24%. Immediate engineering controls and enhanced medical surveillance recommended per OSHA 29 CFR 1910.1025. 3 workers require blood lead level testing within 48 hours.</p>
             </div>
           </div>
@@ -207,7 +207,7 @@ export const IndustrialHygiene: React.FC = () => {
         <div className="flex gap-2 overflow-x-auto pb-2">
           {tabs.map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${activeTab === tab.id ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' : 'bg-white/5 text-text-muted border border-white/10 hover:bg-white/10'}`}>
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${activeTab === tab.id ? 'bg-accent/20 text-accent border border-accent/30' : 'bg-surface-raised text-text-muted border border-surface-border hover:bg-surface-overlay'}`}>
               <tab.icon className="w-4 h-4" /> {tab.label}
             </button>
           ))}
@@ -218,12 +218,12 @@ export const IndustrialHygiene: React.FC = () => {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
             <input type="text" placeholder="Search agents, locations..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40" />
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-surface-sunken border border-surface-border text-text-primary text-sm placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/40" />
           </div>
           <div className="flex gap-2">
             {['all', 'chemical', 'physical', 'biological'].map(type => (
               <button key={type} onClick={() => setFilterType(type)}
-                className={`px-3 py-2 rounded-xl text-xs font-medium capitalize transition-all ${filterType === type ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' : 'bg-white/5 text-text-muted border border-white/10 hover:bg-white/10'}`}>
+                className={`px-3 py-2 rounded-xl text-xs font-medium capitalize transition-all ${filterType === type ? 'bg-accent/20 text-accent border border-accent/30' : 'bg-surface-raised text-text-muted border border-surface-border hover:bg-surface-overlay'}`}>
                 {type === 'all' ? 'All Types' : type}
               </button>
             ))}
@@ -236,7 +236,7 @@ export const IndustrialHygiene: React.FC = () => {
             <motion.div key="exposures" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-3">
               {filteredExposures.map((exp, i) => (
                 <motion.div key={exp.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}
-                  className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 hover:bg-white/[0.07] transition-colors">
+                  className="bg-surface-raised border border-surface-border rounded-2xl p-4 hover:bg-surface-overlay transition-colors">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex items-start gap-3 flex-1">
                       <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${riskColors[exp.riskLevel]}`}>
@@ -275,7 +275,7 @@ export const IndustrialHygiene: React.FC = () => {
             <motion.div key="sampling" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-3">
               {samplingPlans.map((plan, i) => (
                 <motion.div key={plan.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}
-                  className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 hover:bg-white/[0.07] transition-colors">
+                  className="bg-surface-raised border border-surface-border rounded-2xl p-4 hover:bg-surface-overlay transition-colors">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
@@ -308,22 +308,22 @@ export const IndustrialHygiene: React.FC = () => {
                 {[
                   { title: 'Real-Time Air Quality', desc: 'PM2.5, VOCs, CO₂ monitoring across 14 sensors', icon: Wind, value: 'AQI 42', status: 'Good', color: 'text-emerald-400' },
                   { title: 'Noise Dosimetry', desc: '8-hour TWA tracking for 24 workers in Assembly', icon: Volume2, value: '79.2 dBA', status: 'Below PEL', color: 'text-emerald-400' },
-                  { title: 'Thermal Environment', desc: 'WBGT monitoring at 6 outdoor locations', icon: Thermometer, value: '25.3°C', status: 'Normal', color: 'text-cyan-400' },
+                  { title: 'Thermal Environment', desc: 'WBGT monitoring at 6 outdoor locations', icon: Thermometer, value: '25.3°C', status: 'Normal', color: 'text-accent' },
                   { title: 'Radiation Monitoring', desc: 'Personal dosimeters for 8 radiology staff', icon: Zap, value: '0.12 mSv', status: 'Well Below Limit', color: 'text-emerald-400' },
                 ].map((card, i) => (
                   <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-                    className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5">
+                    className="bg-surface-raised border border-surface-border rounded-2xl p-5">
                     <div className="flex items-start justify-between mb-3">
-                      <div className={`w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center ${card.color}`}>
+                      <div className={`w-10 h-10 rounded-xl bg-surface-sunken flex items-center justify-center ${card.color}`}>
                         <card.icon className="w-5 h-5" />
                       </div>
-                      <span className={`text-[10px] font-bold px-2 py-1 rounded-full bg-white/5 ${card.color}`}>{card.status}</span>
+                      <span className={`text-[10px] font-bold px-2 py-1 rounded-full bg-surface-sunken ${card.color}`}>{card.status}</span>
                     </div>
-                    <h3 className="text-sm font-bold text-white mb-1">{card.title}</h3>
+                    <h3 className="text-sm font-bold text-text-primary mb-1">{card.title}</h3>
                     <p className="text-xs text-text-muted mb-3">{card.desc}</p>
                     <p className="text-2xl font-black text-text-primary">{card.value}</p>
                     {/* Mini sparkline placeholder */}
-                    <div className="mt-3 h-8 bg-white/5 rounded-lg flex items-end gap-0.5 px-1 overflow-hidden">
+                    <div className="mt-3 h-8 bg-surface-sunken rounded-lg flex items-end gap-0.5 px-1 overflow-hidden">
                       {Array.from({ length: 20 }, (_, j) => (
                         <div key={j} className={`flex-1 rounded-t-sm ${card.color.replace('text-', 'bg-')}`}
                           style={{ height: `${Math.random() * 80 + 20}%`, opacity: 0.6 }} />
@@ -334,11 +334,11 @@ export const IndustrialHygiene: React.FC = () => {
               </div>
 
               {/* Standards Reference */}
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5">
-                <h3 className="text-sm font-bold text-white mb-3 flex items-center gap-2"><Shield className="w-4 h-4 text-cyan-400" /> Regulatory Standards Applied</h3>
+              <div className="bg-surface-raised border border-surface-border rounded-2xl p-5">
+                <h3 className="text-sm font-bold text-text-primary mb-3 flex items-center gap-2"><Shield className="w-4 h-4 text-accent" /> Regulatory Standards Applied</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {['OSHA PELs (29 CFR 1910.1000)', 'NIOSH RELs', 'ACGIH TLVs (2026)', 'AIHA WEELs'].map((std, i) => (
-                    <div key={i} className="bg-white/5 rounded-xl p-3 border border-white/5">
+                    <div key={i} className="bg-surface-sunken rounded-xl p-3 border border-surface-border">
                       <p className="text-xs text-text-secondary font-medium">{std}</p>
                     </div>
                   ))}

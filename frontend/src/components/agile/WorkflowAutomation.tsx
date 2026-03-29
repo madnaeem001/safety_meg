@@ -190,17 +190,17 @@ export function WorkflowAutomation() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
-            <Zap className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+          <div className="p-2 bg-warning/10 rounded-lg">
+            <Zap className="w-6 h-6 text-warning" />
           </div>
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Workflow Automation</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Automate notifications and actions</p>
+            <h2 className="text-xl font-semibold text-text-primary text-text-primary">Workflow Automation</h2>
+            <p className="text-sm text-text-muted">Automate notifications and actions</p>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+          <div className="flex bg-surface-sunken rounded-lg p-1">
             {[
               { id: 'rules', label: 'Rules', icon: Settings },
               { id: 'history', label: 'History', icon: Clock },
@@ -210,8 +210,8 @@ export function WorkflowAutomation() {
                 onClick={() => setView(id as 'rules' | 'history')}
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-colors ${
                   view === id
-                    ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
-                    : 'text-gray-600 dark:text-gray-400'
+                    ? 'bg-surface-raised text-text-primary text-text-primary shadow-sm'
+                    : 'text-text-secondary'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -238,12 +238,12 @@ export function WorkflowAutomation() {
           { label: 'Total Triggers', value: stats.totalTriggers, icon: Zap, color: 'amber' },
           { label: 'Last 24h', value: stats.recentEvents, icon: Clock, color: 'blue' },
         ].map(stat => (
-          <div key={stat.label} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+          <div key={stat.label} className="bg-surface-raised rounded-xl border border-surface-border p-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</span>
+              <span className="text-sm text-text-muted">{stat.label}</span>
               <stat.icon className={`w-5 h-5 text-${stat.color}-500`} />
             </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{stat.value}</p>
+            <p className="text-2xl font-bold text-text-primary text-text-primary mt-1">{stat.value}</p>
           </div>
         ))}
       </div>
@@ -261,21 +261,21 @@ export function WorkflowAutomation() {
                   key={rule.id}
                   layout
                   onClick={() => setSelectedRule(rule)}
-                  className={`bg-white dark:bg-gray-800 rounded-xl border p-4 cursor-pointer transition-all ${
+                  className={`bg-surface-raised rounded-xl border p-4 cursor-pointer transition-all ${
                     selectedRule?.id === rule.id
                       ? 'border-amber-500 ring-1 ring-amber-500'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-amber-300'
+                      : 'border-surface-border hover:border-amber-300'
                   }`}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-3">
-                      <div className={`p-2 rounded-lg bg-${trigger.color}-100 dark:bg-${trigger.color}-900/30`}>
-                        <TriggerIcon className={`w-5 h-5 text-${trigger.color}-600 dark:text-${trigger.color}-400`} />
+                      <div className={`p-2 rounded-lg bg-surface-sunken`}>
+                        <TriggerIcon className={`w-5 h-5 text-text-secondary`} />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-white">{rule.name}</h4>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">{rule.description}</p>
-                        <div className="flex items-center gap-4 mt-2 text-xs text-gray-500 dark:text-gray-400">
+                        <h4 className="font-semibold text-text-primary text-text-primary">{rule.name}</h4>
+                        <p className="text-sm text-text-muted">{rule.description}</p>
+                        <div className="flex items-center gap-4 mt-2 text-xs text-text-muted">
                           <span className="flex items-center gap-1">
                             <Zap className="w-3 h-3" />
                             {rule.triggerCount} triggers
@@ -296,7 +296,7 @@ export function WorkflowAutomation() {
                           e.stopPropagation();
                           handleToggleRule(rule.id);
                         }}
-                        className={`p-1 rounded ${rule.enabled ? 'text-emerald-600' : 'text-gray-400'}`}
+                        className={`p-1 rounded ${rule.enabled ? 'text-success' : 'text-text-muted'}`}
                       >
                         {rule.enabled ? <ToggleRight className="w-8 h-8" /> : <ToggleLeft className="w-8 h-8" />}
                       </button>
@@ -304,19 +304,19 @@ export function WorkflowAutomation() {
                   </div>
 
                   {/* Actions Preview */}
-                  <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
-                    <span className="text-xs text-gray-500 dark:text-gray-400">Actions:</span>
+                  <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100">
+                    <span className="text-xs text-text-muted">Actions:</span>
                     {rule.actions.slice(0, 3).map((action, idx) => {
                       const ActionIcon = actionConfig[action.type].icon;
                       return (
-                        <div key={idx} className="flex items-center gap-1 px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs">
+                        <div key={idx} className="flex items-center gap-1 px-2 py-1 bg-surface-sunken rounded text-xs">
                           <ActionIcon className="w-3 h-3" />
                           {actionConfig[action.type].label}
                         </div>
                       );
                     })}
                     {rule.actions.length > 3 && (
-                      <span className="text-xs text-gray-500">+{rule.actions.length - 3} more</span>
+                      <span className="text-xs text-text-muted">+{rule.actions.length - 3} more</span>
                     )}
                   </div>
                 </motion.div>
@@ -325,14 +325,14 @@ export function WorkflowAutomation() {
           </div>
 
           {/* Rule Details */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 h-fit sticky top-4">
+          <div className="bg-surface-raised rounded-xl border border-surface-border p-4 h-fit sticky top-4">
             {selectedRule ? (
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-gray-900 dark:text-white">Rule Details</h3>
+                  <h3 className="font-semibold text-text-primary text-text-primary">Rule Details</h3>
                   <button
                     onClick={() => handleDeleteRule(selectedRule.id)}
-                    className="p-1.5 text-gray-400 hover:text-red-500 rounded hover:bg-red-50 dark:hover:bg-red-900/20"
+                    className="p-1.5 text-text-muted hover:text-red-500 rounded hover:bg-danger/10"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -341,22 +341,22 @@ export function WorkflowAutomation() {
                 <div className="space-y-4">
                   {/* Trigger */}
                   <div>
-                    <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Trigger</span>
-                    <div className={`mt-1 p-3 rounded-lg bg-${triggerConfig[selectedRule.trigger.type].color}-50 dark:bg-${triggerConfig[selectedRule.trigger.type].color}-900/20`}>
+                    <span className="text-xs font-medium text-text-muted uppercase">Trigger</span>
+                    <div className={`mt-1 p-3 rounded-lg bg-surface-sunken`}>
                       <div className="flex items-center gap-2">
                         {(() => {
                           const TIcon = triggerConfig[selectedRule.trigger.type].icon;
                           return <TIcon className={`w-4 h-4 text-${triggerConfig[selectedRule.trigger.type].color}-600`} />;
                         })()}
-                        <span className="font-medium text-gray-900 dark:text-white">
+                        <span className="font-medium text-text-primary text-text-primary">
                           {triggerConfig[selectedRule.trigger.type].label}
                         </span>
                       </div>
                       {selectedRule.trigger.conditions.length > 0 && (
-                        <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                        <div className="mt-2 text-sm text-text-secondary">
                           {selectedRule.trigger.conditions.map((cond, idx) => (
                             <div key={idx} className="flex items-center gap-1">
-                              <span className="text-xs bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded">
+                              <span className="text-xs bg-surface-sunken px-1.5 py-0.5 rounded">
                                 {cond.field} {cond.operator} {cond.value}
                               </span>
                             </div>
@@ -368,19 +368,19 @@ export function WorkflowAutomation() {
 
                   {/* Actions */}
                   <div>
-                    <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Actions</span>
+                    <span className="text-xs font-medium text-text-muted uppercase">Actions</span>
                     <div className="mt-1 space-y-2">
                       {selectedRule.actions.map((action, idx) => {
                         const ActionIcon = actionConfig[action.type].icon;
                         return (
-                          <div key={idx} className="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                          <div key={idx} className="p-3 bg-surface-sunken rounded-lg">
                             <div className="flex items-center gap-2">
-                              <ActionIcon className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                              <span className="font-medium text-sm text-gray-900 dark:text-white">
+                              <ActionIcon className="w-4 h-4 text-text-secondary" />
+                              <span className="font-medium text-sm text-text-primary text-text-primary">
                                 {actionConfig[action.type].label}
                               </span>
                             </div>
-                            <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            <div className="mt-1 text-xs text-text-muted">
                               {Object.entries(action.config).map(([key, value]) => (
                                 <span key={key} className="mr-2">{key}: {value}</span>
                               ))}
@@ -392,20 +392,20 @@ export function WorkflowAutomation() {
                   </div>
 
                   {/* Stats */}
-                  <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
+                  <div className="pt-3 border-t border-surface-border">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">Created</span>
-                      <span className="text-gray-900 dark:text-white">{selectedRule.createdAt}</span>
+                      <span className="text-text-muted">Created</span>
+                      <span className="text-text-primary text-text-primary">{selectedRule.createdAt}</span>
                     </div>
                     <div className="flex justify-between text-sm mt-1">
-                      <span className="text-gray-500 dark:text-gray-400">Total Triggers</span>
-                      <span className="font-medium text-amber-600">{selectedRule.triggerCount}</span>
+                      <span className="text-text-muted">Total Triggers</span>
+                      <span className="font-medium text-warning">{selectedRule.triggerCount}</span>
                     </div>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-8 text-text-muted">
                 <Settings className="w-12 h-12 mx-auto mb-2 opacity-50" />
                 <p>Select a rule to view details</p>
               </div>
@@ -415,35 +415,35 @@ export function WorkflowAutomation() {
       )}
 
       {view === 'history' && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 className="font-semibold text-gray-900 dark:text-white">Automation History</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Recent automated actions and notifications</p>
+        <div className="bg-surface-raised rounded-xl border border-surface-border overflow-hidden">
+          <div className="p-4 border-b border-surface-border">
+            <h3 className="font-semibold text-text-primary text-text-primary">Automation History</h3>
+            <p className="text-sm text-text-muted">Recent automated actions and notifications</p>
           </div>
-          <div className="divide-y divide-gray-100 dark:divide-gray-700">
+          <div className="divide-y divide-surface-border">
             {events.map(event => {
               const trigger = triggerConfig[event.triggerType];
               const TriggerIcon = trigger.icon;
 
               return (
-                <div key={event.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                <div key={event.id} className="p-4 hover:bg-surface-sunken">
                   <div className="flex items-start gap-4">
-                    <div className={`p-2 rounded-lg bg-${trigger.color}-100 dark:bg-${trigger.color}-900/30`}>
-                      <TriggerIcon className={`w-4 h-4 text-${trigger.color}-600 dark:text-${trigger.color}-400`} />
+                    <div className={`p-2 rounded-lg bg-surface-sunken`}>
+                      <TriggerIcon className={`w-4 h-4 text-text-secondary`} />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium text-gray-900 dark:text-white">{event.ruleName}</span>
+                        <span className="font-medium text-text-primary text-text-primary">{event.ruleName}</span>
                         <span className={`px-2 py-0.5 text-xs rounded-full ${
                           event.status === 'success' 
-                            ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300'
-                            : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+                            ? 'bg-success/10 text-success'
+                            : 'bg-danger/10 text-danger'
                         }`}>
                           {event.status}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{event.details}</p>
-                      <div className="flex items-center gap-4 mt-2 text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-sm text-text-secondary mt-1">{event.details}</p>
+                      <div className="flex items-center gap-4 mt-2 text-xs text-text-muted">
                         <span className="flex items-center gap-1">
                           <Clock className="w-3 h-3" />
                           {new Date(event.timestamp).toLocaleString()}

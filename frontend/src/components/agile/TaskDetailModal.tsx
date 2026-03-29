@@ -30,27 +30,27 @@ interface TaskDetailModalProps {
 }
 
 const PRIORITY_CONFIG: Record<TaskPriority, { color: string; icon: typeof ArrowUpRight; label: string }> = {
-  highest: { color: 'text-red-600 bg-red-50 border-red-200', icon: ArrowUpRight, label: 'Highest' },
-  high: { color: 'text-orange-600 bg-orange-50 border-orange-200', icon: ArrowUpRight, label: 'High' },
-  medium: { color: 'text-amber-600 bg-amber-50 border-amber-200', icon: Flag, label: 'Medium' },
-  low: { color: 'text-blue-600 bg-blue-50 border-blue-200', icon: ArrowDownRight, label: 'Low' },
-  lowest: { color: 'text-slate-600 bg-slate-50 border-slate-200', icon: ArrowDownRight, label: 'Lowest' },
+  highest: { color: 'text-danger bg-danger/10 border-danger/20', icon: ArrowUpRight, label: 'Highest' },
+  high: { color: 'text-warning bg-warning/10 border-orange-200', icon: ArrowUpRight, label: 'High' },
+  medium: { color: 'text-warning bg-warning/10 border-warning/20', icon: Flag, label: 'Medium' },
+  low: { color: 'text-accent bg-accent/10 border-accent/20', icon: ArrowDownRight, label: 'Low' },
+  lowest: { color: 'text-text-muted bg-surface-sunken border-surface-border', icon: ArrowDownRight, label: 'Lowest' },
 };
 
 const STATUS_CONFIG: Record<TaskStatus, { color: string; label: string }> = {
-  backlog: { color: 'bg-slate-100 text-slate-700 border-slate-200', label: 'Backlog' },
-  todo: { color: 'bg-surface-100 text-surface-700 border-surface-200', label: 'To Do' },
-  in_progress: { color: 'bg-blue-100 text-blue-700 border-blue-200', label: 'In Progress' },
-  review: { color: 'bg-purple-100 text-purple-700 border-purple-200', label: 'In Review' },
-  completed: { color: 'bg-emerald-100 text-emerald-700 border-emerald-200', label: 'Done' },
+  backlog: { color: 'bg-surface-sunken text-text-muted border-surface-border', label: 'Backlog' },
+  todo: { color: 'bg-surface-sunken text-text-secondary border-surface-border', label: 'To Do' },
+  in_progress: { color: 'bg-accent/10 text-accent border-accent/20', label: 'In Progress' },
+  review: { color: 'bg-purple-500/10 text-purple-700 border-purple-500/20', label: 'In Review' },
+  completed: { color: 'bg-success/10 text-success border-success/20', label: 'Done' },
 };
 
 const ISSUE_TYPE_CONFIG: Record<IssueType, { color: string; icon: typeof Target; label: string }> = {
-  epic: { color: 'text-purple-600 bg-purple-50', icon: Zap, label: 'Epic' },
-  story: { color: 'text-green-600 bg-green-50', icon: BookOpen, label: 'Story' },
-  task: { color: 'text-blue-600 bg-blue-50', icon: CheckSquare, label: 'Task' },
-  subtask: { color: 'text-cyan-600 bg-cyan-50', icon: Layers, label: 'Sub-task' },
-  bug: { color: 'text-red-600 bg-red-50', icon: Bug, label: 'Bug' },
+  epic: { color: 'text-purple-600 bg-purple-500/10', icon: Zap, label: 'Epic' },
+  story: { color: 'text-success bg-success/10', icon: BookOpen, label: 'Story' },
+  task: { color: 'text-accent bg-accent/10', icon: CheckSquare, label: 'Task' },
+  subtask: { color: 'text-cyan-400 bg-cyan-500/10', icon: Layers, label: 'Sub-task' },
+  bug: { color: 'text-danger bg-danger/10', icon: Bug, label: 'Bug' },
 };
 
 export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({ 
@@ -207,11 +207,11 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl my-8 overflow-hidden"
+        className="bg-surface-raised rounded-2xl shadow-2xl w-full max-w-4xl my-8 overflow-hidden"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="border-b border-surface-100 p-4 lg:p-6">
+        <div className="border-b border-surface-border p-4 lg:p-6">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
               {/* Issue Type & Key */}
@@ -219,7 +219,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                 <span className={`p-1.5 rounded-lg ${ISSUE_TYPE_CONFIG[task.issueType || 'task'].color}`}>
                   <IssueIcon className="w-4 h-4" />
                 </span>
-                <span className="text-sm font-mono text-brand-600 hover:underline cursor-pointer">
+                <span className="text-sm font-mono text-accent hover:underline cursor-pointer">
                   {task.key || task.id}
                 </span>
                 {epic && (
@@ -238,11 +238,11 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                   type="text"
                   value={editedTitle}
                   onChange={e => setEditedTitle(e.target.value)}
-                  className="text-xl font-bold text-brand-900 w-full px-3 py-2 border border-brand-300 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none"
+                  className="text-xl font-bold text-text-primary w-full px-3 py-2 border border-brand-300 rounded-xl focus:ring-2 focus:ring-accent outline-none"
                   autoFocus
                 />
               ) : (
-                <h2 className="text-xl lg:text-2xl font-bold text-brand-900 leading-tight">
+                <h2 className="text-xl lg:text-2xl font-bold text-text-primary leading-tight">
                   {task.title}
                 </h2>
               )}
@@ -251,15 +251,15 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setIsEditing(!isEditing)}
-                className="p-2 hover:bg-surface-50 rounded-xl transition-colors"
+                className="p-2 hover:bg-surface-base rounded-xl transition-colors"
               >
-                <Edit3 className="w-5 h-5 text-surface-400" />
+                <Edit3 className="w-5 h-5 text-text-muted" />
               </button>
               <button
                 onClick={onClose}
-                className="p-2 hover:bg-surface-50 rounded-xl transition-colors"
+                className="p-2 hover:bg-surface-base rounded-xl transition-colors"
               >
-                <X className="w-5 h-5 text-surface-400" />
+                <X className="w-5 h-5 text-text-muted" />
               </button>
             </div>
           </div>
@@ -272,12 +272,12 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                 {STATUS_CONFIG[task.status].label}
                 <ChevronDown className="w-3.5 h-3.5" />
               </button>
-              <div className="absolute top-full left-0 mt-1 bg-white rounded-xl shadow-lg border border-surface-100 py-1 min-w-[140px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
+              <div className="absolute top-full left-0 mt-1 bg-surface-raised rounded-xl shadow-lg border border-surface-border py-1 min-w-[140px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
                 {Object.entries(STATUS_CONFIG).map(([status, config]) => (
                   <button
                     key={status}
                     onClick={() => handleStatusChange(status as TaskStatus)}
-                    className={`w-full px-3 py-2 text-left text-sm hover:bg-surface-50 ${task.status === status ? 'font-semibold' : ''}`}
+                    className={`w-full px-3 py-2 text-left text-sm hover:bg-surface-base ${task.status === status ? 'font-semibold' : ''}`}
                   >
                     {config.label}
                   </button>
@@ -292,14 +292,14 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                 {PRIORITY_CONFIG[task.priority].label}
                 <ChevronDown className="w-3.5 h-3.5" />
               </button>
-              <div className="absolute top-full left-0 mt-1 bg-white rounded-xl shadow-lg border border-surface-100 py-1 min-w-[140px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
+              <div className="absolute top-full left-0 mt-1 bg-surface-raised rounded-xl shadow-lg border border-surface-border py-1 min-w-[140px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
                 {Object.entries(PRIORITY_CONFIG).map(([priority, config]) => {
                   const Icon = config.icon;
                   return (
                     <button
                       key={priority}
                       onClick={() => handlePriorityChange(priority as TaskPriority)}
-                      className={`w-full px-3 py-2 text-left text-sm hover:bg-surface-50 flex items-center gap-2 ${task.priority === priority ? 'font-semibold' : ''}`}
+                      className={`w-full px-3 py-2 text-left text-sm hover:bg-surface-base flex items-center gap-2 ${task.priority === priority ? 'font-semibold' : ''}`}
                     >
                       <Icon className="w-3.5 h-3.5" />
                       {config.label}
@@ -311,7 +311,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
 
             {/* Story Points */}
             {task.storyPoints !== undefined && (
-              <span className="px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-semibold border border-indigo-200 flex items-center gap-1.5">
+              <span className="px-3 py-1.5 bg-accent/10 text-accent rounded-lg text-sm font-semibold border border-indigo-200 flex items-center gap-1.5">
                 <Target className="w-3.5 h-3.5" />
                 {task.storyPoints} pts
               </span>
@@ -322,9 +322,9 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
         {/* Main Content */}
         <div className="flex flex-col lg:flex-row">
           {/* Left Panel - Content */}
-          <div className="flex-1 p-4 lg:p-6 border-b lg:border-b-0 lg:border-r border-surface-100">
+          <div className="flex-1 p-4 lg:p-6 border-b lg:border-b-0 lg:border-r border-surface-border">
             {/* Tabs */}
-            <div className="flex gap-1 bg-surface-50 p-1 rounded-xl mb-4">
+            <div className="flex gap-1 bg-surface-base p-1 rounded-xl mb-4">
               {[
                 { id: 'details', label: 'Details' },
                 { id: 'comments', label: `Comments (${displayComments.length})` },
@@ -335,8 +335,8 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                     activeTab === tab.id 
-                      ? 'bg-white shadow-soft text-brand-700' 
-                      : 'text-surface-500 hover:text-brand-600'
+                      ? 'bg-surface-raised shadow-soft text-accent' 
+                      : 'text-text-muted hover:text-accent'
                   }`}
                 >
                   {tab.label}
@@ -349,16 +349,16 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
               <div className="space-y-6">
                 {/* Description */}
                 <div>
-                  <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2">Description</h4>
+                  <h4 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Description</h4>
                   {isEditing ? (
                     <textarea
                       value={editedDescription}
                       onChange={e => setEditedDescription(e.target.value)}
                       rows={6}
-                      className="w-full px-4 py-3 border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none text-sm resize-none"
+                      className="w-full px-4 py-3 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm resize-none"
                     />
                   ) : (
-                    <div className="prose prose-sm max-w-none text-surface-700 bg-surface-50 p-4 rounded-xl">
+                    <div className="prose prose-sm max-w-none text-text-secondary bg-surface-base p-4 rounded-xl">
                       {task.description.split('\n').map((line, i) => (
                         <p key={i} className="mb-2 last:mb-0">{line}</p>
                       ))}
@@ -381,7 +381,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                         setEditedTitle(task.title);
                         setEditedDescription(task.description);
                       }}
-                      className="px-4 py-2 bg-surface-100 text-surface-700 rounded-xl text-sm font-semibold hover:bg-surface-200"
+                      className="px-4 py-2 bg-surface-sunken text-text-secondary rounded-xl text-sm font-semibold hover:bg-surface-sunken"
                     >
                       Cancel
                     </button>
@@ -391,16 +391,16 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                 {/* Linked Issues */}
                 {linkedTasks.length > 0 && (
                   <div>
-                    <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <h4 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 flex items-center gap-2">
                       <Link2 className="w-3.5 h-3.5" />
                       Linked Issues
                     </h4>
                     <div className="space-y-2">
                       {linkedTasks.map((link, i) => (
-                        <div key={i} className="flex items-center gap-3 p-3 bg-surface-50 rounded-xl">
-                          <span className="text-xs text-surface-500 capitalize">{link.type.replace('_', ' ')}</span>
-                          <span className="text-sm font-mono text-brand-600">{link.task?.key}</span>
-                          <span className="text-sm text-surface-700 flex-1 truncate">{link.task?.title}</span>
+                        <div key={i} className="flex items-center gap-3 p-3 bg-surface-base rounded-xl">
+                          <span className="text-xs text-text-muted capitalize">{link.type.replace('_', ' ')}</span>
+                          <span className="text-sm font-mono text-accent">{link.task?.key}</span>
+                          <span className="text-sm text-text-secondary flex-1 truncate">{link.task?.title}</span>
                           <span className={`text-[10px] px-2 py-0.5 rounded-full border ${STATUS_CONFIG[link.task?.status || 'todo'].color}`}>
                             {STATUS_CONFIG[link.task?.status || 'todo'].label}
                           </span>
@@ -413,17 +413,17 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                 {/* Attachments */}
                 {task.attachments && task.attachments.length > 0 && (
                   <div>
-                    <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <h4 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 flex items-center gap-2">
                       <Paperclip className="w-3.5 h-3.5" />
                       Attachments ({task.attachments.length})
                     </h4>
                     <div className="space-y-2">
                       {task.attachments.map(att => (
-                        <div key={att.id} className="flex items-center gap-3 p-3 bg-surface-50 rounded-xl hover:bg-surface-100 cursor-pointer">
-                          <Paperclip className="w-4 h-4 text-surface-400" />
+                        <div key={att.id} className="flex items-center gap-3 p-3 bg-surface-base rounded-xl hover:bg-surface-sunken cursor-pointer">
+                          <Paperclip className="w-4 h-4 text-text-muted" />
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-brand-900 truncate">{att.name}</p>
-                            <p className="text-xs text-surface-500">{att.size} • {att.uploadedBy}</p>
+                            <p className="text-sm font-medium text-text-primary truncate">{att.name}</p>
+                            <p className="text-xs text-text-muted">{att.size} • {att.uploadedBy}</p>
                           </div>
                         </div>
                       ))}
@@ -438,8 +438,8 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
               <div className="space-y-4">
                 {/* Comment Input */}
                 <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center flex-shrink-0">
-                    <User className="w-4 h-4 text-brand-600" />
+                  <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
+                    <User className="w-4 h-4 text-accent" />
                   </div>
                   <div className="flex-1">
                     <textarea
@@ -447,7 +447,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                       onChange={e => setNewComment(e.target.value)}
                       placeholder="Add a comment..."
                       rows={3}
-                      className="w-full px-4 py-3 border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none text-sm resize-none"
+                      className="w-full px-4 py-3 border border-surface-border rounded-xl focus:ring-2 focus:ring-accent outline-none text-sm resize-none"
                     />
                     <div className="flex justify-end mt-2">
                       <SMButton
@@ -467,20 +467,20 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                 <div className="space-y-4">
                   {displayComments.map(comment => (
                     <div key={comment.id} className="flex gap-3">
-                      <div className="w-8 h-8 rounded-full bg-surface-100 flex items-center justify-center flex-shrink-0">
-                        <User className="w-4 h-4 text-surface-500" />
+                      <div className="w-8 h-8 rounded-full bg-surface-sunken flex items-center justify-center flex-shrink-0">
+                        <User className="w-4 h-4 text-text-muted" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-sm font-semibold text-brand-900">{comment.author}</span>
-                          <span className="text-xs text-surface-400">{formatTimestamp(comment.timestamp)}</span>
+                          <span className="text-sm font-semibold text-text-primary">{comment.author}</span>
+                          <span className="text-xs text-text-muted">{formatTimestamp(comment.timestamp)}</span>
                         </div>
-                        <p className="text-sm text-surface-700 bg-surface-50 p-3 rounded-xl">{comment.content}</p>
+                        <p className="text-sm text-text-secondary bg-surface-base p-3 rounded-xl">{comment.content}</p>
                       </div>
                     </div>
                   ))}
                   {(displayComments.length === 0) && (
-                    <div className="text-center py-8 text-surface-400">
+                    <div className="text-center py-8 text-text-muted">
                       <MessageSquare className="w-10 h-10 mx-auto mb-2 opacity-50" />
                       <p className="text-sm">No comments yet</p>
                     </div>
@@ -494,34 +494,34 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
               <div className="space-y-3">
                 {(task.activityLog || []).map(activity => (
                   <div key={activity.id} className="flex items-start gap-3 py-2">
-                    <div className="w-6 h-6 rounded-full bg-surface-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Activity className="w-3 h-3 text-surface-500" />
+                    <div className="w-6 h-6 rounded-full bg-surface-sunken flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Activity className="w-3 h-3 text-text-muted" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-surface-700">
-                        <span className="font-semibold text-brand-900">{activity.user}</span>
+                      <p className="text-sm text-text-secondary">
+                        <span className="font-semibold text-text-primary">{activity.user}</span>
                         {' '}{activity.action}
                         {activity.field && (
-                          <span className="text-surface-500"> {activity.field}</span>
+                          <span className="text-text-muted"> {activity.field}</span>
                         )}
                         {activity.oldValue && activity.newValue && (
                           <>
-                            <span className="text-surface-400"> from </span>
-                            <span className="line-through text-surface-400">{activity.oldValue}</span>
-                            <span className="text-surface-400"> to </span>
-                            <span className="font-medium text-brand-700">{activity.newValue}</span>
+                            <span className="text-text-muted"> from </span>
+                            <span className="line-through text-text-muted">{activity.oldValue}</span>
+                            <span className="text-text-muted"> to </span>
+                            <span className="font-medium text-accent">{activity.newValue}</span>
                           </>
                         )}
                         {!activity.oldValue && activity.newValue && (
-                          <span className="font-medium text-brand-700"> {activity.newValue}</span>
+                          <span className="font-medium text-accent"> {activity.newValue}</span>
                         )}
                       </p>
-                      <p className="text-xs text-surface-400 mt-0.5">{formatTimestamp(activity.timestamp)}</p>
+                      <p className="text-xs text-text-muted mt-0.5">{formatTimestamp(activity.timestamp)}</p>
                     </div>
                   </div>
                 ))}
                 {(!task.activityLog || task.activityLog.length === 0) && (
-                  <div className="text-center py-8 text-surface-400">
+                  <div className="text-center py-8 text-text-muted">
                     <Activity className="w-10 h-10 mx-auto mb-2 opacity-50" />
                     <p className="text-sm">No activity recorded</p>
                   </div>
@@ -531,27 +531,27 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
           </div>
 
           {/* Right Panel - Details */}
-          <div className="w-full lg:w-72 p-4 lg:p-6 bg-surface-50/50 space-y-4">
+          <div className="w-full lg:w-72 p-4 lg:p-6 bg-surface-sunken/50 space-y-4">
             {/* Assignee */}
             <div>
-              <label className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2 block">Assignee</label>
-              <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-surface-200">
-                <div className="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center">
-                  <User className="w-4 h-4 text-brand-600" />
+              <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 block">Assignee</label>
+              <div className="flex items-center gap-3 p-3 bg-surface-raised rounded-xl border border-surface-border">
+                <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center">
+                  <User className="w-4 h-4 text-accent" />
                 </div>
-                <span className="text-sm font-medium text-brand-900">{task.assignee}</span>
+                <span className="text-sm font-medium text-text-primary">{task.assignee}</span>
               </div>
             </div>
 
             {/* Reporter */}
             {task.reporter && (
               <div>
-                <label className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2 block">Reporter</label>
-                <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-surface-200">
-                  <div className="w-8 h-8 rounded-full bg-surface-100 flex items-center justify-center">
-                    <User className="w-4 h-4 text-surface-500" />
+                <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 block">Reporter</label>
+                <div className="flex items-center gap-3 p-3 bg-surface-raised rounded-xl border border-surface-border">
+                  <div className="w-8 h-8 rounded-full bg-surface-sunken flex items-center justify-center">
+                    <User className="w-4 h-4 text-text-muted" />
                   </div>
-                  <span className="text-sm text-surface-700">{task.reporter}</span>
+                  <span className="text-sm text-text-secondary">{task.reporter}</span>
                 </div>
               </div>
             )}
@@ -559,23 +559,23 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
             {/* Sprint */}
             {sprint && (
               <div>
-                <label className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2 block">Sprint</label>
-                <div className="p-3 bg-white rounded-xl border border-surface-200">
-                  <p className="text-sm font-medium text-brand-900">{sprint.name}</p>
-                  <p className="text-xs text-surface-500 mt-1">{sprint.startDate} - {sprint.endDate}</p>
+                <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 block">Sprint</label>
+                <div className="p-3 bg-surface-raised rounded-xl border border-surface-border">
+                  <p className="text-sm font-medium text-text-primary">{sprint.name}</p>
+                  <p className="text-xs text-text-muted mt-1">{sprint.startDate} - {sprint.endDate}</p>
                 </div>
               </div>
             )}
 
             {/* Due Date */}
             <div>
-              <label className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2 block">Due Date</label>
-              <div className="flex items-center gap-2 p-3 bg-white rounded-xl border border-surface-200">
-                <Calendar className="w-4 h-4 text-surface-400" />
+              <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 block">Due Date</label>
+              <div className="flex items-center gap-2 p-3 bg-surface-raised rounded-xl border border-surface-border">
+                <Calendar className="w-4 h-4 text-text-muted" />
                 <span className={`text-sm font-medium ${
                   new Date(task.dueDate) < new Date() && task.status !== 'completed' 
-                    ? 'text-red-600' 
-                    : 'text-brand-900'
+                    ? 'text-danger' 
+                    : 'text-text-primary'
                 }`}>
                   {formatDate(task.dueDate)}
                 </span>
@@ -585,19 +585,19 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
             {/* Time Tracking */}
             {(task.timeEstimate || task.timeSpent) && (
               <div>
-                <label className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2 block">Time Tracking</label>
-                <div className="p-3 bg-white rounded-xl border border-surface-200 space-y-2">
+                <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 block">Time Tracking</label>
+                <div className="p-3 bg-surface-raised rounded-xl border border-surface-border space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-surface-500">Logged</span>
-                    <span className="font-medium text-brand-900">{task.timeSpent || 0}h</span>
+                    <span className="text-text-muted">Logged</span>
+                    <span className="font-medium text-text-primary">{task.timeSpent || 0}h</span>
                   </div>
-                  <div className="h-2 bg-surface-100 rounded-full overflow-hidden">
+                  <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-brand-500 rounded-full"
+                      className="h-full bg-accent/100 rounded-full"
                       style={{ width: `${Math.min(((task.timeSpent || 0) / (task.timeEstimate || 1)) * 100, 100)}%` }}
                     />
                   </div>
-                  <div className="flex justify-between text-xs text-surface-400">
+                  <div className="flex justify-between text-xs text-text-muted">
                     <span>Estimated: {task.timeEstimate || 0}h</span>
                     <span>{task.timeEstimate ? Math.round(((task.timeSpent || 0) / task.timeEstimate) * 100) : 0}%</span>
                   </div>
@@ -608,10 +608,10 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
             {/* Labels */}
             {task.labels && task.labels.length > 0 && (
               <div>
-                <label className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2 block">Labels</label>
+                <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 block">Labels</label>
                 <div className="flex flex-wrap gap-1.5">
                   {task.labels.map(label => (
-                    <span key={label} className="px-2 py-1 bg-white rounded-lg text-xs font-medium text-surface-600 border border-surface-200">
+                    <span key={label} className="px-2 py-1 bg-surface-raised rounded-lg text-xs font-medium text-text-secondary border border-surface-border">
                       {label}
                     </span>
                   ))}
@@ -622,13 +622,13 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
             {/* Watchers */}
             {task.watchers && task.watchers.length > 0 && (
               <div>
-                <label className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2 block flex items-center gap-1">
+                <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 block flex items-center gap-1">
                   <Eye className="w-3.5 h-3.5" />
                   Watchers ({task.watchers.length})
                 </label>
                 <div className="flex flex-wrap gap-1">
                   {task.watchers.map(watcher => (
-                    <span key={watcher} className="px-2 py-1 bg-white rounded-lg text-xs text-surface-600 border border-surface-200">
+                    <span key={watcher} className="px-2 py-1 bg-surface-raised rounded-lg text-xs text-text-secondary border border-surface-border">
                       {watcher.split(' ')[0]}
                     </span>
                   ))}
@@ -637,7 +637,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
             )}
 
             {/* Dates */}
-            <div className="pt-4 border-t border-surface-200 space-y-2 text-xs text-surface-400">
+            <div className="pt-4 border-t border-surface-border space-y-2 text-xs text-text-muted">
               <div className="flex justify-between">
                 <span>Created</span>
                 <span>{formatDate(task.createdAt)}</span>

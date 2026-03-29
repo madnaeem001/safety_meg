@@ -436,7 +436,7 @@ export default function IncidentHeatmap() {
       'fire': { bg: 'bg-warning/10', text: 'text-warning', icon: <Flame className="w-3 h-3" /> },
       'vehicle': { bg: 'bg-accent/10', text: 'text-accent', icon: <Activity className="w-3 h-3" /> },
     };
-    return badges[type] || { bg: 'bg-surface-100', text: 'text-text-muted', icon: null };
+    return badges[type] || { bg: 'bg-surface-sunken', text: 'text-text-muted', icon: null };
   };
   
   const getSeverityBadge = (severity: string) => {
@@ -446,7 +446,7 @@ export default function IncidentHeatmap() {
       'medium': { bg: 'bg-warning/5', text: 'text-warning', dot: 'bg-warning' },
       'low': { bg: 'bg-success/10', text: 'text-success', dot: 'bg-success' },
     };
-    return badges[severity] || { bg: 'bg-surface-100', text: 'text-text-muted', dot: 'bg-surface-border' };
+    return badges[severity] || { bg: 'bg-surface-sunken', text: 'text-text-muted', dot: 'bg-surface-border' };
   };
   
   const getEventIcon = (type: RealTimeEvent['type']) => {
@@ -513,7 +513,7 @@ export default function IncidentHeatmap() {
               <button
                 onClick={() => setSoundEnabled(!soundEnabled)}
                 className={`p-2 rounded-xl transition-all ${
-                  soundEnabled ? 'bg-accent/10 text-accent' : 'bg-surface-100 text-text-muted'
+                  soundEnabled ? 'bg-accent/10 text-accent' : 'bg-surface-sunken text-text-muted'
                 }`}
                 title={soundEnabled ? 'Sound alerts on' : 'Sound alerts off'}
               >
@@ -524,7 +524,7 @@ export default function IncidentHeatmap() {
               <button
                 onClick={() => setIsLiveEnabled(!isLiveEnabled)}
                 className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all ${
-                  isLiveEnabled ? 'bg-danger/10 text-danger' : 'bg-surface-100 text-text-muted'
+                  isLiveEnabled ? 'bg-danger/10 text-danger' : 'bg-surface-sunken text-text-muted'
                 }`}
               >
                 <Radio className={`w-4 h-4 ${isLiveEnabled ? 'animate-pulse' : ''}`} />
@@ -532,7 +532,7 @@ export default function IncidentHeatmap() {
               </button>
               
               {/* View Toggle */}
-              <div className="flex items-center bg-surface-100 rounded-xl p-1">
+              <div className="flex items-center bg-surface-sunken rounded-xl p-1">
                 <button
                   onClick={() => setViewMode('heatmap')}
                   className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-all ${
@@ -560,8 +560,8 @@ export default function IncidentHeatmap() {
                 onClick={() => setShowFilters(!showFilters)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${
                   showFilters || incidentTypes.length > 0 || severities.length > 0 || departments.length > 0
-                    ? 'bg-primary text-text-inverted'
-                    : 'bg-surface-100 text-text-primary hover:bg-surface-100'
+                    ? 'bg-accent text-text-onAccent'
+                    : 'bg-surface-sunken text-text-primary hover:bg-surface-overlay'
                 }`}
               >
                 <Filter className="w-4 h-4" />
@@ -645,8 +645,8 @@ export default function IncidentHeatmap() {
               <div>
                 <motion.p
                   key={stats.newToday}
-                  initial={{ scale: 1.2, color: '#16a34a' }}
-                  animate={{ scale: 1, color: '#0f172a' }}
+                  initial={{ scale: 1.2, color: 'var(--success)' }}
+                  animate={{ scale: 1, color: 'var(--text-primary)' }}
                   className="text-2xl font-bold"
                 >
                   {stats.newToday}
@@ -719,7 +719,7 @@ export default function IncidentHeatmap() {
                           className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
                             timeRange === option.value
                               ? 'bg-accent text-text-onAccent'
-                              : 'bg-surface-100 text-text-muted hover:bg-surface-100'
+                              : 'bg-surface-sunken text-text-muted hover:bg-surface-overlay'
                           }`}
                         >
                           {option.label}
@@ -743,7 +743,7 @@ export default function IncidentHeatmap() {
                             onClick={() => toggleFilter(type, incidentTypes, setIncidentTypes)}
                             className={`flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
                               incidentTypes.includes(type)
-                                ? 'bg-primary text-text-inverted'
+                                ? 'bg-accent text-text-onAccent'
                                 : `${badge.bg} ${badge.text}`
                             }`}
                           >
@@ -770,7 +770,7 @@ export default function IncidentHeatmap() {
                             onClick={() => toggleFilter(sev, severities, setSeverities)}
                             className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
                               severities.includes(sev)
-                                ? 'bg-primary text-text-inverted'
+                                ? 'bg-accent text-text-onAccent'
                                 : `${badge.bg} ${badge.text}`
                             }`}
                           >
@@ -795,8 +795,8 @@ export default function IncidentHeatmap() {
                           onClick={() => toggleFilter(dept, departments, setDepartments)}
                           className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
                             departments.includes(dept)
-                              ? 'bg-primary text-text-inverted'
-                              : 'bg-surface-100 text-text-muted hover:bg-surface-100'
+                              ? 'bg-accent text-text-onAccent'
+                              : 'bg-surface-sunken text-text-muted hover:bg-surface-overlay'
                           }`}
                         >
                           {dept}
@@ -834,7 +834,7 @@ export default function IncidentHeatmap() {
                   <button
                     onClick={() => setShowLiveFeed(!showLiveFeed)}
                     className={`text-sm px-3 py-1 rounded-lg transition-all ${
-                      showLiveFeed ? 'bg-accent/10 text-accent' : 'bg-surface-100 text-text-muted'
+                      showLiveFeed ? 'bg-accent/10 text-accent' : 'bg-surface-sunken text-text-muted'
                     }`}
                   >
                     {showLiveFeed ? 'Hide' : 'Show'} Feed
@@ -850,12 +850,12 @@ export default function IncidentHeatmap() {
               </div>
               
               {/* Interactive Map */}
-              <div className="relative bg-surface-100 aspect-[4/3]">
+              <div className="relative bg-surface-sunken aspect-[4/3]">
                 {/* Grid Background */}
                 <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
                   <defs>
                     <pattern id="grid" width="10%" height="10%" patternUnits="userSpaceOnUse">
-                      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="#e2e8f0" strokeWidth="0.5" />
+                      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="var(--surface-border)" strokeWidth="0.5" />
                     </pattern>
                   </defs>
                   <rect width="100%" height="100%" fill="url(#grid)" />
@@ -1037,10 +1037,10 @@ export default function IncidentHeatmap() {
                       liveEvents.map((event, idx) => (
                         <motion.div
                           key={event.id}
-                          initial={{ opacity: 0, x: -20, backgroundColor: event.type === 'new_incident' ? '#fef2f2' : '#ffffff' }}
-                          animate={{ opacity: 1, x: 0, backgroundColor: '#ffffff' }}
+                          initial={{ opacity: 0, x: -20, backgroundColor: event.type === 'new_incident' ? 'rgba(220,38,38,0.07)' : 'transparent' }}
+                          animate={{ opacity: 1, x: 0, backgroundColor: 'transparent' }}
                           transition={{ delay: idx === 0 ? 0 : 0.05 }}
-                          className="p-3 border-b border-surface-border hover:bg-surface-100 cursor-pointer transition-colors"
+                          className="p-3 border-b border-surface-border hover:bg-surface-sunken cursor-pointer transition-colors"
                           onClick={() => {
                             if (event.type === 'new_incident' && event.data) {
                               setSelectedIncident(event.data as IncidentLocation);
@@ -1101,7 +1101,7 @@ export default function IncidentHeatmap() {
                         initial={{ opacity: 0, x: 10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: idx * 0.05 }}
-                        className={`p-4 border-b border-surface-border hover:bg-surface-100 cursor-pointer transition-colors ${
+                        className={`p-4 border-b border-surface-border hover:bg-surface-sunken cursor-pointer transition-colors ${
                           incident.isNew ? 'bg-success/5' : ''
                         } ${selectedIncident?.id === incident.id ? 'bg-accent/5' : ''}`}
                         onClick={() => setSelectedIncident(incident)}
@@ -1176,7 +1176,7 @@ export default function IncidentHeatmap() {
                   </div>
                   <button
                     onClick={() => setSelectedCell(null)}
-                    className="p-2 hover:bg-surface-100 rounded-xl transition-colors"
+                    className="p-2 hover:bg-surface-sunken rounded-xl transition-colors"
                   >
                     <X className="w-5 h-5 text-text-muted" />
                   </button>
@@ -1190,7 +1190,7 @@ export default function IncidentHeatmap() {
                     return (
                       <div
                         key={incident.id}
-                        className={`p-4 bg-surface-100 rounded-xl ${incident.isNew ? 'ring-2 ring-success' : ''}`}
+                        className={`p-4 bg-surface-sunken rounded-xl ${incident.isNew ? 'ring-2 ring-success' : ''}`}
                       >
                         <div className="flex items-start justify-between gap-2 mb-2">
                           <div>
@@ -1265,7 +1265,7 @@ export default function IncidentHeatmap() {
                   </div>
                   <button
                     onClick={() => setSelectedIncident(null)}
-                    className="p-2 hover:bg-surface-100 rounded-xl transition-colors"
+                    className="p-2 hover:bg-surface-sunken rounded-xl transition-colors"
                   >
                     <X className="w-5 h-5 text-text-muted" />
                   </button>
@@ -1326,7 +1326,7 @@ export default function IncidentHeatmap() {
                 
                 <button
                   onClick={() => navigate('/report-incident')}
-                  className="w-full mt-4 py-3 bg-primary text-text-inverted font-medium rounded-xl hover:opacity-90 transition-colors"
+                  className="w-full mt-4 py-3 bg-accent text-text-onAccent font-medium rounded-xl hover:opacity-90 transition-colors"
                 >
                   View Full Report
                 </button>

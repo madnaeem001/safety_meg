@@ -87,7 +87,7 @@ const getStatusColor = (status: string) => {
     case 'Open':
       return 'bg-warning/10 text-warning border-warning/20';
     default:
-      return 'bg-surface-100 text-text-muted border-surface-border';
+      return 'bg-surface-raised text-text-muted border-surface-border';
   }
 };
 
@@ -251,7 +251,7 @@ export const InvestigationReports: React.FC = () => {
             onClick={handleExportAll}
             disabled={exportingAll || listViewModels.length === 0}
             className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-all shadow-sm ${
-              exportingAll ? 'bg-success/10 text-success' : 'bg-primary text-text-inverted hover:opacity-90'
+              exportingAll ? 'bg-success/10 text-success' : 'bg-accent text-white hover:bg-accent/90'
             } disabled:opacity-60`}
           >
             {exportingAll ? <CheckCircle2 className="w-4 h-4 animate-pulse" /> : <FileSpreadsheet className="w-4 h-4" />}
@@ -289,7 +289,7 @@ export const InvestigationReports: React.FC = () => {
         )}
 
         {error && (
-          <div className="bg-red-50 rounded-3xl border border-red-200 p-6 text-red-700">
+          <div className="bg-danger/10 rounded-3xl border border-danger/20 p-6 text-danger">
             Failed to load investigations from backend.
           </div>
         )}
@@ -423,7 +423,7 @@ export const InvestigationReports: React.FC = () => {
                             )}
                           </div>
 
-                          <div className="p-4 bg-surface-50 rounded-2xl border border-surface-border">
+                          <div className="p-4 bg-surface-raised rounded-2xl border border-surface-border">
                             <h4 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-3 flex items-center gap-2">
                               <TrendingUp className="w-4 h-4" />Contributing Factors
                             </h4>
@@ -490,7 +490,7 @@ export const InvestigationReports: React.FC = () => {
                                       <span className="text-[10px] text-text-muted">by {event.user}</span>
                                     </div>
                                     <p className="text-xs text-text-muted mt-0.5">{event.details}</p>
-                                    <p className="text-[10px] text-surface-300 mt-1">{new Date(event.timestamp).toLocaleString()}</p>
+                                    <p className="text-[10px] text-text-muted mt-1">{new Date(event.timestamp).toLocaleString()}</p>
                                   </div>
                                 </div>
                               ))}

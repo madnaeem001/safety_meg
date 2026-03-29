@@ -526,7 +526,7 @@ export const ESGReporting: React.FC = () => {
                 </p>
               </div>
               <div className="space-y-3">
-                <button className="w-full rounded-2xl bg-white py-4 text-xs font-bold uppercase tracking-widest text-accent transition-colors hover:bg-slate-50 shadow-soft">
+                <button className="w-full rounded-2xl bg-surface-raised py-4 text-xs font-bold uppercase tracking-widest text-accent transition-colors hover:bg-surface-sunken shadow-soft">
                   Generate GRI Report
                 </button>
                 <button className="w-full rounded-2xl border border-white/30 bg-white/15 py-4 text-xs font-bold uppercase tracking-widest text-white transition-colors hover:bg-white/20">

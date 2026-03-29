@@ -175,8 +175,8 @@ const SectionEmptyState = ({
   title: string;
   description: string;
 }) => (
-  <div className="rounded-2xl border border-dashed border-surface-200 bg-surface-raised p-8 text-center">
-    <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-100 text-text-muted">
+  <div className="rounded-2xl border border-dashed border-surface-border bg-surface-raised p-8 text-center">
+    <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-sunken text-text-muted">
       <Database className="h-5 w-5" />
     </div>
     <p className="font-medium text-text-primary">{title}</p>
@@ -189,12 +189,12 @@ const KPICard = ({ data, index }: { data: KpiCardData; index: number }) => (
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay: index * 0.08 }}
-    className="rounded-2xl border border-surface-100 bg-surface-raised p-4 shadow-soft"
+    className="rounded-2xl border border-surface-border bg-surface-raised p-4 shadow-soft"
   >
     <div className="mb-2 flex items-start justify-between">
       <span className="text-sm font-medium text-text-muted">{data.label}</span>
       <div className={`flex items-center rounded-full px-2 py-1 text-xs font-bold ${
-        data.trend === 'up' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
+        data.trend === 'up' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'
       }`}>
         {data.trend === 'up' ? <TrendingUp className="mr-1 h-3 w-3" /> : <TrendingDown className="mr-1 h-3 w-3" />}
         {data.change}
@@ -213,20 +213,20 @@ const QualityScoreGauge = ({ score, previousScore }: { score: number; previousSc
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="relative overflow-hidden rounded-3xl bg-primary p-6 text-white shadow-xl"
+      className="relative overflow-hidden rounded-3xl bg-accent p-6 text-text-onAccent shadow-xl"
     >
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/20 bg-white/10 backdrop-blur-md">
-            <Award className="h-7 w-7 text-accent-300" />
+            <Award className="h-7 w-7 text-text-onAccent" />
           </div>
           <div>
             <h3 className="text-lg font-bold">Safety Score</h3>
-            <p className="text-xs text-accent-300">Backend-derived executive KPI</p>
+            <p className="text-xs text-text-onAccent">Backend-derived executive KPI</p>
           </div>
         </div>
         <div className={`flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-bold ${
-          diff >= 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'
+          diff >= 0 ? 'bg-success/20 text-success' : 'bg-danger/20 text-danger'
         }`}>
           {diff >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
           {diff >= 0 ? '+' : ''}
@@ -251,7 +251,7 @@ const QualityScoreGauge = ({ score, previousScore }: { score: number; previousSc
         </ResponsiveContainer>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-5xl font-bold">{score}</span>
-          <span className="text-sm text-accent-300">out of 100</span>
+          <span className="text-sm text-text-onAccent">out of 100</span>
         </div>
       </div>
 
@@ -269,10 +269,10 @@ const QualityEventCard = ({ event, index }: { event: ActivityEvent; index: numbe
   };
 
   const colors = {
-    improvement: 'text-emerald-500 bg-emerald-50',
-    alert: 'text-amber-500 bg-amber-50',
-    achievement: 'text-purple-500 bg-purple-50',
-    action: 'text-blue-500 bg-blue-50',
+    improvement: 'text-success bg-success/10',
+    alert: 'text-warning bg-warning/10',
+    achievement: 'text-ai bg-ai/10',
+    action: 'text-accent bg-accent/10',
   };
 
   const Icon = icons[event.type];
@@ -283,7 +283,7 @@ const QualityEventCard = ({ event, index }: { event: ActivityEvent; index: numbe
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.08 }}
-      className="flex items-start gap-3 rounded-2xl border border-surface-100 bg-surface-raised p-4 shadow-soft"
+      className="flex items-start gap-3 rounded-2xl border border-surface-border bg-surface-raised p-4 shadow-soft"
     >
       <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${colorClass}`}>
         <Icon className="h-5 w-5" />
@@ -312,10 +312,10 @@ const BenchmarkRow = ({ benchmark, index }: { benchmark: BenchmarkItem; index: n
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08 }}
-      className="flex items-center justify-between rounded-xl bg-surface-50 p-3"
+      className="flex items-center justify-between rounded-xl bg-surface-sunken p-3"
     >
       <div className="flex items-center gap-3">
-        <div className={`h-8 w-2 rounded-full ${isAboveTarget ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+        <div className={`h-8 w-2 rounded-full ${isAboveTarget ? 'bg-success' : 'bg-warning'}`} />
         <div>
           <span className="text-sm font-medium text-text-primary">{benchmark.metric}</span>
           <div className="text-xs text-text-secondary">{benchmark.unit || 'benchmark'}</div>
@@ -324,11 +324,11 @@ const BenchmarkRow = ({ benchmark, index }: { benchmark: BenchmarkItem; index: n
       <div className="flex items-center gap-4">
         <div className="text-right">
           <div className="font-bold text-text-primary">{benchmark.current}</div>
-          <div className={`text-xs ${isBetterThanIndustry ? 'text-emerald-600' : 'text-text-secondary'}`}>
+          <div className={`text-xs ${isBetterThanIndustry ? 'text-success' : 'text-text-secondary'}`}>
             vs {benchmark.industryAvg} avg
           </div>
         </div>
-        <Target className={`h-5 w-5 ${isAboveTarget ? 'text-emerald-500' : 'text-amber-500'}`} />
+        <Target className={`h-5 w-5 ${isAboveTarget ? 'text-success' : 'text-warning'}`} />
       </div>
     </motion.div>
   );
@@ -347,18 +347,18 @@ const DepartmentCard = ({
 }) => {
   const getScoreColor = (score: number) => {
     if (score >= 95) {
-      return 'text-emerald-600 bg-emerald-50';
+      return 'bg-success/10 text-success';
     }
 
     if (score >= 90) {
-      return 'text-blue-600 bg-blue-50';
+      return 'bg-accent/10 text-accent';
     }
 
     if (score >= 85) {
-      return 'text-amber-600 bg-amber-50';
+      return 'bg-warning/10 text-warning';
     }
 
-    return 'text-rose-600 bg-rose-50';
+    return 'bg-danger/10 text-danger';
   };
 
   return (
@@ -366,11 +366,11 @@ const DepartmentCard = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08 }}
-      className="overflow-hidden rounded-2xl border border-surface-100 bg-surface-raised shadow-soft"
+      className="overflow-hidden rounded-2xl border border-surface-border bg-surface-raised shadow-soft"
     >
       <button
         onClick={onToggle}
-        className="flex w-full items-center justify-between p-4 text-left transition-colors hover:bg-surface-50"
+        className="flex w-full items-center justify-between p-4 text-left transition-colors hover:bg-surface-sunken"
       >
         <div className="flex items-center gap-3">
           <div
@@ -397,19 +397,19 @@ const DepartmentCard = ({
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: 'auto', opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
-          className="border-t border-surface-100"
+          className="border-t border-surface-border"
         >
           <div className="space-y-4 p-4">
             <div className="grid grid-cols-3 gap-2">
-              <div className="rounded-xl bg-surface-50 p-2 text-center">
+              <div className="rounded-xl bg-surface-sunken p-2 text-center">
                 <div className="text-lg font-bold text-text-primary">{dept.metrics.incidents}</div>
                 <div className="text-xs text-text-secondary">Incidents</div>
               </div>
-              <div className="rounded-xl bg-surface-50 p-2 text-center">
+              <div className="rounded-xl bg-surface-sunken p-2 text-center">
                 <div className="text-lg font-bold text-text-primary">{dept.metrics.highSeverityIncidents}</div>
                 <div className="text-xs text-text-secondary">High Severity</div>
               </div>
-              <div className="rounded-xl bg-surface-50 p-2 text-center">
+              <div className="rounded-xl bg-surface-sunken p-2 text-center">
                 <div className="text-lg font-bold text-text-primary">{dept.metrics.openActions}</div>
                 <div className="text-xs text-text-secondary">Open CAPAs</div>
               </div>
@@ -423,7 +423,7 @@ const DepartmentCard = ({
                   </span>
                   <span className="font-medium text-text-primary">{dept.metrics.safetyScore}%</span>
                 </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-surface-100">
+                <div className="h-1.5 overflow-hidden rounded-full bg-surface-sunken">
                   <div className="h-full rounded-full" style={{ width: `${dept.metrics.safetyScore}%`, backgroundColor: dept.color }} />
                 </div>
               </div>
@@ -434,13 +434,13 @@ const DepartmentCard = ({
                   </span>
                   <span className="font-medium text-text-primary">{dept.metrics.closureRate}%</span>
                 </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-surface-100">
+                <div className="h-1.5 overflow-hidden rounded-full bg-surface-sunken">
                   <div className="h-full rounded-full" style={{ width: `${dept.metrics.closureRate}%`, backgroundColor: dept.color }} />
                 </div>
               </div>
             </div>
 
-            <div className="rounded-xl bg-surface-50 p-3 text-xs text-text-secondary">
+            <div className="rounded-xl bg-surface-sunken p-3 text-xs text-text-secondary">
               {dept.metrics.totalCapas} total CAPAs tracked for this department, with {dept.metrics.highSeverityIncidents} high-severity incidents currently influencing the score.
             </div>
           </div>
@@ -692,8 +692,8 @@ export const Analytics: React.FC = () => {
     const indicatorCoverage = (leadingIndicators?.length ?? 0) + (laggingIndicators?.length ?? 0);
 
     return [
-      { label: 'Predictive Risk Score', value: riskLevel, icon: Brain, color: riskLevel === 'High' ? 'text-red-400' : riskLevel === 'Moderate' ? 'text-yellow-400' : 'text-green-400' },
-      { label: 'Flagged Departments', value: `${flaggedDepartments}`, icon: ShieldAlert, color: flaggedDepartments > 0 ? 'text-yellow-400' : 'text-green-400' },
+      { label: 'Predictive Risk Score', value: riskLevel, icon: Brain, color: riskLevel === 'High' ? 'text-danger' : riskLevel === 'Moderate' ? 'text-warning' : 'text-success' },
+      { label: 'Flagged Departments', value: `${flaggedDepartments}`, icon: ShieldAlert, color: flaggedDepartments > 0 ? 'text-warning' : 'text-success' },
       { label: 'Signal Coverage', value: `${indicatorCoverage} feeds`, icon: Zap, color: 'text-accent-400' },
     ];
   }, [baseDepartments, executiveKpis, incidentTrendData, laggingIndicators, leadingIndicators]);
@@ -754,7 +754,7 @@ export const Analytics: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl border border-surface-100 bg-surface-raised p-4 shadow-soft"
+          className="rounded-2xl border border-surface-border bg-surface-raised p-4 shadow-soft"
         >
           <div className="mb-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -776,8 +776,8 @@ export const Analytics: React.FC = () => {
                 onClick={() => setDateRange(option.value as DateRange)}
                 className={`flex-1 rounded-xl py-2 text-xs font-semibold transition-all ${
                   dateRange === option.value
-                    ? 'bg-accent text-white shadow-md'
-                    : 'bg-surface-100 text-text-secondary hover:bg-surface-200'
+                    ? 'bg-accent text-text-onAccent shadow-md'
+                    : 'bg-surface-sunken text-text-secondary hover:bg-surface-overlay'
                 }`}
               >
                 {option.label}
@@ -806,7 +806,7 @@ export const Analytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="rounded-3xl border border-surface-100 bg-surface-raised p-5 shadow-soft"
+          className="rounded-3xl border border-surface-border bg-surface-raised p-5 shadow-soft"
         >
           <h3 className="mb-4 flex items-center gap-2 font-bold text-text-primary">
             <Shield className="h-5 w-5 text-accent" />
@@ -820,7 +820,7 @@ export const Analytics: React.FC = () => {
                     <span className="font-medium text-text-primary">{category.name}</span>
                     <span className="font-bold text-text-primary">{category.score}%</span>
                   </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-surface-100">
+                  <div className="h-2 overflow-hidden rounded-full bg-surface-sunken">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${category.score}%` }}
@@ -857,14 +857,14 @@ export const Analytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="rounded-3xl border border-surface-100 bg-surface-raised p-5 shadow-soft"
+          className="rounded-3xl border border-surface-border bg-surface-raised p-5 shadow-soft"
         >
           <div className="mb-6 flex items-center justify-between">
             <h3 className="flex items-center gap-2 font-bold text-text-primary">
               <TrendingUp className="h-5 w-5 text-accent" />
               Operational Trend
             </h3>
-            <span className="rounded-full bg-surface-100 px-2 py-1 text-xs font-medium text-text-secondary">{getDateRangeLabel()}</span>
+            <span className="rounded-full bg-surface-sunken px-2 py-1 text-xs font-medium text-text-secondary">{getDateRangeLabel()}</span>
           </div>
           {qualityTrend.length > 0 ? (
             <div className="h-56 w-full">
@@ -876,9 +876,9 @@ export const Analytics: React.FC = () => {
                       <stop offset="95%" stopColor="#14b8a6" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} dy={10} />
-                  <YAxis domain={[40, 100]} axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--surface-border)" />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--text-muted)' }} dy={10} />
+                  <YAxis domain={[40, 100]} axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--text-muted)' }} />
                   <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
                   <Area type="monotone" dataKey="score" stroke="#14b8a6" fill="url(#colorQuality)" strokeWidth={0} />
                   <Line type="monotone" dataKey="score" stroke="#14b8a6" strokeWidth={3} dot={{ fill: '#14b8a6', strokeWidth: 2, r: 4 }} activeDot={{ r: 6, fill: '#14b8a6' }} />
@@ -897,7 +897,7 @@ export const Analytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="rounded-3xl border border-surface-100 bg-surface-raised p-5 shadow-soft"
+          className="rounded-3xl border border-surface-border bg-surface-raised p-5 shadow-soft"
         >
           <div className="mb-4 flex items-center justify-between">
             <h3 className="flex items-center gap-2 font-bold text-text-primary">
@@ -905,7 +905,7 @@ export const Analytics: React.FC = () => {
               Compliance & Action Status
             </h3>
             <span className={`rounded-full px-3 py-1 text-sm font-bold ${
-              complianceSummary.rate >= 95 ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'
+              complianceSummary.rate >= 95 ? 'bg-success/10 text-success' : 'bg-warning/10 text-warning'
             }`}>
               {complianceSummary.rate}%
             </span>
@@ -914,28 +914,28 @@ export const Analytics: React.FC = () => {
           {executiveKpis || complianceSummary.byCategory.length > 0 ? (
             <>
               <div className="mb-4 grid grid-cols-3 gap-3">
-                <div className="rounded-xl bg-emerald-50 p-3 text-center">
-                  <div className="text-2xl font-bold text-emerald-600">{complianceSummary.healthy}</div>
-                  <div className="text-xs text-emerald-700">Healthy</div>
+                <div className="rounded-xl bg-success/10 p-3 text-center">
+                  <div className="text-2xl font-bold text-success">{complianceSummary.healthy}</div>
+                  <div className="text-xs text-success">Healthy</div>
                 </div>
-                <div className="rounded-xl bg-amber-50 p-3 text-center">
-                  <div className="text-2xl font-bold text-amber-600">{complianceSummary.watch}</div>
-                  <div className="text-xs text-amber-700">Watchlist</div>
+                <div className="rounded-xl bg-warning/10 p-3 text-center">
+                  <div className="text-2xl font-bold text-warning">{complianceSummary.watch}</div>
+                  <div className="text-xs text-warning">Watchlist</div>
                 </div>
-                <div className="rounded-xl bg-rose-50 p-3 text-center">
-                  <div className="text-2xl font-bold text-rose-600">{complianceSummary.overdue}</div>
-                  <div className="text-xs text-rose-700">Overdue Actions</div>
+                <div className="rounded-xl bg-danger/10 p-3 text-center">
+                  <div className="text-2xl font-bold text-danger">{complianceSummary.overdue}</div>
+                  <div className="text-xs text-danger">Overdue Actions</div>
                 </div>
               </div>
 
               <div className="space-y-2">
                 {complianceSummary.byCategory.length > 0 ? (
                   complianceSummary.byCategory.map((category) => (
-                    <div key={category.category} className="flex items-center justify-between rounded-lg bg-surface-50 p-2 text-sm">
+                    <div key={category.category} className="flex items-center justify-between rounded-lg bg-surface-sunken p-2 text-sm">
                       <span className="font-medium text-text-primary">{category.category}</span>
                       <div className="flex items-center gap-2">
                         <span className="text-text-secondary">{category.compliant}/{category.total}</span>
-                        <span className={`font-bold ${category.rate >= 80 ? 'text-emerald-600' : 'text-amber-600'}`}>{category.rate}%</span>
+                        <span className={`font-bold ${category.rate >= 80 ? 'text-success' : 'text-warning'}`}>{category.rate}%</span>
                       </div>
                     </div>
                   ))
@@ -959,14 +959,14 @@ export const Analytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.52 }}
-          className="rounded-3xl border border-surface-100 bg-surface-raised p-5 shadow-soft"
+          className="rounded-3xl border border-surface-border bg-surface-raised p-5 shadow-soft"
         >
           <div className="mb-6 flex items-center justify-between">
             <h3 className="flex items-center gap-2 font-bold text-text-primary">
               <TrendingUp className="h-5 w-5 text-accent" />
               Incident Trend
             </h3>
-            <span className="rounded-full bg-surface-100 px-2 py-1 text-xs font-medium text-text-secondary">{getDateRangeLabel()}</span>
+            <span className="rounded-full bg-surface-sunken px-2 py-1 text-xs font-medium text-text-secondary">{getDateRangeLabel()}</span>
           </div>
           {incidentTrendData.length > 0 ? (
             <div className="h-56 w-full">
@@ -978,9 +978,9 @@ export const Analytics: React.FC = () => {
                       <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} dy={10} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--surface-border)" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--text-muted)' }} dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--text-muted)' }} />
                   <Tooltip
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                     cursor={{ stroke: '#cbd5e1', strokeWidth: 1, strokeDasharray: '4 4' }}
@@ -1011,7 +1011,7 @@ export const Analytics: React.FC = () => {
             <button
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
-                hasActiveFilters ? 'bg-accent text-white' : 'bg-surface-100 text-text-secondary hover:bg-surface-200'
+                hasActiveFilters ? 'bg-accent text-text-onAccent' : 'bg-surface-sunken text-text-secondary hover:bg-surface-overlay'
               }`}
             >
               <SlidersHorizontal className="h-4 w-4" />
@@ -1029,7 +1029,7 @@ export const Analytics: React.FC = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="space-y-4 rounded-2xl border border-surface-100 bg-surface-raised p-4 shadow-soft"
+              className="space-y-4 rounded-2xl border border-surface-border bg-surface-raised p-4 shadow-soft"
             >
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold text-text-primary">Filters</span>
@@ -1049,8 +1049,8 @@ export const Analytics: React.FC = () => {
                       onClick={() => toggleDeptSelection(department.id)}
                       className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
                         selectedDepts.includes(department.id)
-                          ? 'text-white'
-                          : 'bg-surface-100 text-text-secondary hover:bg-surface-200'
+                          ? 'text-text-onAccent'
+                          : 'bg-surface-sunken text-text-secondary hover:bg-surface-overlay'
                       }`}
                       style={selectedDepts.includes(department.id) ? { backgroundColor: department.color } : {}}
                     >
@@ -1073,7 +1073,7 @@ export const Analytics: React.FC = () => {
                       key={option.value}
                       onClick={() => setScoreFilter(option.value as 'all' | 'high' | 'medium' | 'low')}
                       className={`flex-1 rounded-xl px-2 py-2 text-xs font-medium transition-all ${
-                        scoreFilter === option.value ? 'bg-accent text-white' : 'bg-surface-100 text-text-secondary hover:bg-surface-200'
+                        scoreFilter === option.value ? 'bg-accent text-text-onAccent' : 'bg-surface-sunken text-text-secondary hover:bg-surface-overlay'
                       }`}
                     >
                       {option.label}
@@ -1094,7 +1094,7 @@ export const Analytics: React.FC = () => {
                       key={option.value}
                       onClick={() => setSortBy(option.value as 'score' | 'incidents' | 'name')}
                       className={`flex-1 rounded-xl px-2 py-2 text-xs font-medium transition-all ${
-                        sortBy === option.value ? 'bg-accent text-white' : 'bg-surface-100 text-text-secondary hover:bg-surface-200'
+                        sortBy === option.value ? 'bg-accent text-text-onAccent' : 'bg-surface-sunken text-text-secondary hover:bg-surface-overlay'
                       }`}
                     >
                       {option.label}
@@ -1106,21 +1106,21 @@ export const Analytics: React.FC = () => {
           )}
 
           {sortedDepartments.length > 0 ? (
-            <div className="rounded-2xl border border-accent-100 bg-accent-50 p-4">
+            <div className="rounded-2xl border border-accent/20 bg-accent/10 p-4">
               <div className="mb-3 flex items-center gap-2">
                 <Award className="h-4 w-4 text-accent" />
                 <span className="text-sm font-semibold text-text-primary">Top Performers</span>
               </div>
               <div className="flex gap-2 overflow-x-auto pb-1">
                 {sortedDepartments.slice(0, 3).map((department, index) => (
-                  <div key={department.id} className="flex flex-shrink-0 items-center gap-2 rounded-xl border border-surface-100 bg-surface-raised px-3 py-2">
+                  <div key={department.id} className="flex flex-shrink-0 items-center gap-2 rounded-xl border border-surface-border bg-surface-raised px-3 py-2">
                     <span className={`flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold ${
-                      index === 0 ? 'bg-amber-100 text-amber-700' : index === 1 ? 'bg-surface-200 text-text-secondary' : 'bg-orange-100 text-orange-700'
+                      index === 0 ? 'bg-warning/10 text-warning' : index === 1 ? 'bg-surface-overlay text-text-secondary' : 'bg-warning/15 text-warning'
                     }`}>
                       {index + 1}
                     </span>
                     <span className="text-sm font-medium text-text-primary">{department.name}</span>
-                    <span className="text-xs font-bold text-emerald-600">{department.metrics.safetyScore}%</span>
+                    <span className="text-xs font-bold text-success">{department.metrics.safetyScore}%</span>
                   </div>
                 ))}
               </div>
@@ -1150,8 +1150,8 @@ export const Analytics: React.FC = () => {
               />
             ))
           ) : baseDepartments.length > 0 ? (
-            <div className="rounded-2xl border border-surface-100 bg-surface-raised p-8 text-center shadow-soft">
-              <Filter className="mx-auto mb-3 h-10 w-10 text-surface-300" />
+            <div className="rounded-2xl border border-surface-border bg-surface-raised p-8 text-center shadow-soft">
+              <Filter className="mx-auto mb-3 h-10 w-10 text-text-muted" />
               <p className="font-medium text-text-secondary">No departments match your filters</p>
               <p className="mt-1 text-sm text-text-muted">Try adjusting your filter criteria.</p>
               <SMButton variant="primary" size="sm" className="mt-4" onClick={clearFilters}>Clear Filters</SMButton>
@@ -1163,7 +1163,7 @@ export const Analytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.56 }}
-          className="rounded-3xl border border-surface-100 bg-surface-raised p-5 shadow-soft"
+          className="rounded-3xl border border-surface-border bg-surface-raised p-5 shadow-soft"
         >
           <h3 className="mb-4 flex items-center gap-2 font-bold text-text-primary">
             <Target className="h-5 w-5 text-accent" />
@@ -1187,7 +1187,7 @@ export const Analytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="rounded-3xl border border-surface-100 bg-surface-raised p-5 shadow-soft"
+          className="rounded-3xl border border-surface-border bg-surface-raised p-5 shadow-soft"
         >
           <div className="mb-6 flex items-center justify-between">
             <h3 className="flex items-center gap-2 font-bold text-text-primary">
@@ -1222,7 +1222,7 @@ export const Analytics: React.FC = () => {
                   <div key={entry.name} className="flex items-center gap-2 text-xs">
                     <div className="h-3 w-3 rounded-full" style={{ backgroundColor: entry.color }} />
                     <span className="text-text-secondary">{entry.name}</span>
-                    <span className="ml-auto font-bold text-surface-900">{entry.value}</span>
+                    <span className="ml-auto font-bold text-text-primary">{entry.value}</span>
                   </div>
                 ))}
               </div>
@@ -1239,7 +1239,7 @@ export const Analytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65 }}
-          className="rounded-3xl border border-surface-100 bg-surface-raised p-5 shadow-soft"
+          className="rounded-3xl border border-surface-border bg-surface-raised p-5 shadow-soft"
         >
           <div className="mb-6 flex items-center justify-between">
             <h3 className="flex items-center gap-2 font-bold text-text-primary">
@@ -1251,9 +1251,9 @@ export const Analytics: React.FC = () => {
             <div className="h-56 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={monthlyActivity}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                  <XAxis dataKey="period" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} dy={10} />
-                  <Tooltip cursor={{ fill: '#f8fafc' }} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--surface-border)" />
+                  <XAxis dataKey="period" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--text-muted)' }} dy={10} />
+                  <Tooltip cursor={{ fill: 'var(--surface-sunken)' }} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
                   <Bar dataKey="completed" fill="#10b981" radius={[4, 4, 0, 0]} barSize={20} />
                 </BarChart>
               </ResponsiveContainer>
@@ -1295,16 +1295,16 @@ export const Analytics: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="relative overflow-hidden rounded-[2.5rem] bg-primary p-6 text-white shadow-xl"
+          className="relative overflow-hidden rounded-[2.5rem] bg-accent p-6 text-text-onAccent shadow-xl"
         >
           <div className="relative z-10">
             <div className="mb-6 flex items-center gap-2">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 backdrop-blur-md">
-                <Sparkles className="h-6 w-6 text-accent-300" />
+                <Sparkles className="h-6 w-6 text-text-onAccent" />
               </div>
               <div>
                 <h3 className="text-lg font-bold">AI Safety Insights</h3>
-                <p className="text-xs text-accent-300">Derived from live analytics signals</p>
+                <p className="text-xs text-text-onAccent">Derived from live analytics signals</p>
               </div>
             </div>
 
@@ -1314,14 +1314,14 @@ export const Analytics: React.FC = () => {
                   <div key={insight.label} className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
                     <div className="flex items-center gap-3">
                       <insight.icon className={`h-5 w-5 ${insight.color}`} />
-                      <span className="text-sm font-medium text-white/80">{insight.label}</span>
+                      <span className="text-sm font-medium text-text-onAccent">{insight.label}</span>
                     </div>
                     <span className="font-bold">{insight.value}</span>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/80">
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-text-onAccent">
                 AI insights are waiting for backend analytics inputs before a summary can be generated.
               </div>
             )}
@@ -1330,7 +1330,7 @@ export const Analytics: React.FC = () => {
               Refresh AI Summary
             </SMButton>
           </div>
-          <Sparkles className="absolute bottom-[-20px] right-[-20px] h-48 w-48 rotate-12 text-white/5" />
+          <Sparkles className="absolute bottom-[-20px] right-[-20px] h-48 w-48 rotate-12 text-text-onAccent opacity-5" />
         </motion.div>
       </div>
     </PageContainer>

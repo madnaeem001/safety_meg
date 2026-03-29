@@ -185,25 +185,25 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
       icon: ThumbsUp, 
       label: 'What Went Well', 
       color: 'emerald',
-      bgColor: 'bg-emerald-50 dark:bg-emerald-900/20',
-      borderColor: 'border-emerald-200 dark:border-emerald-800',
-      iconColor: 'text-emerald-600 dark:text-emerald-400'
+      bgColor: 'bg-success/10',
+      borderColor: 'border-success/20',
+      iconColor: 'text-success'
     },
     needs_improvement: { 
       icon: ThumbsDown, 
       label: 'Needs Improvement', 
       color: 'amber',
-      bgColor: 'bg-amber-50 dark:bg-amber-900/20',
-      borderColor: 'border-amber-200 dark:border-amber-800',
-      iconColor: 'text-amber-600 dark:text-amber-400'
+      bgColor: 'bg-warning/10',
+      borderColor: 'border-warning/20',
+      iconColor: 'text-warning'
     },
     action_items: { 
       icon: Lightbulb, 
       label: 'Action Items', 
       color: 'blue',
-      bgColor: 'bg-blue-50 dark:bg-blue-900/20',
-      borderColor: 'border-blue-200 dark:border-blue-800',
-      iconColor: 'text-blue-600 dark:text-blue-400'
+      bgColor: 'bg-accent/10',
+      borderColor: 'border-accent/20',
+      iconColor: 'text-accent'
     },
   };
 
@@ -230,12 +230,12 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
       {/* Header with Sprint Selector */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-            <MessageSquare className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+          <div className="p-2 bg-purple-500/10 rounded-lg">
+            <MessageSquare className="w-6 h-6 text-purple-400" />
           </div>
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Sprint Retrospective</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Reflect, learn, and improve together</p>
+            <h2 className="text-xl font-semibold text-text-primary text-text-primary">Sprint Retrospective</h2>
+            <p className="text-sm text-text-muted">Reflect, learn, and improve together</p>
           </div>
         </div>
 
@@ -246,7 +246,7 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
               setSelectedSprintId(e.target.value);
               setUserSentiment(null);
             }}
-            className="px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+            className="px-3 py-2 text-sm border border-surface-border rounded-lg bg-surface-raised text-text-primary text-text-primary"
           >
             {sprints.map(sprint => (
               <option key={sprint.id} value={sprint.id}>{sprint.name}</option>
@@ -258,7 +258,7 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
             className={`px-3 py-2 text-sm rounded-lg flex items-center gap-2 transition-colors ${
               showActionItems 
                 ? 'bg-blue-600 text-white' 
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                : 'bg-surface-sunken text-text-secondary'
             }`}
           >
             <Zap className="w-4 h-4" />
@@ -270,15 +270,15 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
       {/* Sprint Info & Sentiment */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Sprint Details Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+        <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
           <div className="flex items-center gap-2 mb-3">
-            <Calendar className="w-5 h-5 text-gray-400" />
-            <span className="font-medium text-gray-900 dark:text-white">{selectedSprint?.name}</span>
+            <Calendar className="w-5 h-5 text-text-muted" />
+            <span className="font-medium text-text-primary text-text-primary">{selectedSprint?.name}</span>
           </div>
-          <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+          <div className="space-y-2 text-sm text-text-secondary">
             <div className="flex justify-between">
               <span>Sprint Goal:</span>
-              <span className="text-gray-900 dark:text-white font-medium">{selectedSprint?.goal}</span>
+              <span className="text-text-primary text-text-primary font-medium">{selectedSprint?.goal}</span>
             </div>
             <div className="flex justify-between">
               <span>Duration:</span>
@@ -286,7 +286,7 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
             </div>
             <div className="flex justify-between">
               <span>Facilitator:</span>
-              <span className="text-purple-600 dark:text-purple-400">{currentRetro.facilitator}</span>
+              <span className="text-purple-400">{currentRetro.facilitator}</span>
             </div>
             <div className="flex items-center gap-2 mt-3">
               <Users className="w-4 h-4" />
@@ -296,10 +296,10 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
         </div>
 
         {/* Team Sentiment */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+        <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
           <div className="flex items-center gap-2 mb-3">
             <Heart className="w-5 h-5 text-pink-500" />
-            <span className="font-medium text-gray-900 dark:text-white">Team Sentiment</span>
+            <span className="font-medium text-text-primary text-text-primary">Team Sentiment</span>
           </div>
           
           {/* Sentiment Vote Buttons */}
@@ -315,25 +315,25 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
                 disabled={!!userSentiment}
                 className={`flex flex-col items-center p-3 rounded-lg transition-all ${
                   userSentiment === type 
-                    ? `bg-${color}-100 dark:bg-${color}-900/30 ring-2 ring-${color}-500` 
+                    ? `bg-${color}-100  ring-2 ring-${color}-500` 
                     : userSentiment 
-                      ? 'opacity-50 cursor-not-allowed bg-gray-50 dark:bg-gray-700'
-                      : 'hover:bg-gray-100 dark:hover:bg-gray-700 bg-gray-50 dark:bg-gray-700'
+                      ? 'opacity-50 cursor-not-allowed bg-surface-sunken'
+                      : 'hover:bg-surface-sunken bg-surface-sunken'
                 }`}
               >
                 <span className="text-2xl mb-1">{emoji}</span>
-                <span className="text-xs text-gray-600 dark:text-gray-400">{label}</span>
+                <span className="text-xs text-text-secondary">{label}</span>
               </button>
             ))}
           </div>
 
           {/* Sentiment Bar */}
-          <div className="h-3 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden flex">
+          <div className="h-3 bg-surface-sunken rounded-full overflow-hidden flex">
             <div className="bg-emerald-500 transition-all" style={{ width: `${sentimentPercentage.happy}%` }} />
-            <div className="bg-gray-400 transition-all" style={{ width: `${sentimentPercentage.neutral}%` }} />
+            <div className="bg-surface-border transition-all" style={{ width: `${sentimentPercentage.neutral}%` }} />
             <div className="bg-red-500 transition-all" style={{ width: `${sentimentPercentage.sad}%` }} />
           </div>
-          <div className="flex justify-between text-xs text-gray-500 mt-2">
+          <div className="flex justify-between text-xs text-text-muted mt-2">
             <span>😊 {sentimentPercentage.happy}%</span>
             <span>😐 {sentimentPercentage.neutral}%</span>
             <span>😔 {sentimentPercentage.sad}%</span>
@@ -341,35 +341,35 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
         </div>
 
         {/* Action Items Summary */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+        <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
           <div className="flex items-center gap-2 mb-3">
             <TrendingUp className="w-5 h-5 text-blue-500" />
-            <span className="font-medium text-gray-900 dark:text-white">Action Items Progress</span>
+            <span className="font-medium text-text-primary text-text-primary">Action Items Progress</span>
           </div>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-emerald-500" />
-                <span className="text-sm text-gray-600 dark:text-gray-400">Completed</span>
+                <span className="text-sm text-text-secondary">Completed</span>
               </div>
-              <span className="font-semibold text-emerald-600">{actionItemsStats.completed}</span>
+              <span className="font-semibold text-success">{actionItemsStats.completed}</span>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-blue-500" />
-                <span className="text-sm text-gray-600 dark:text-gray-400">In Progress</span>
+                <span className="text-sm text-text-secondary">In Progress</span>
               </div>
-              <span className="font-semibold text-blue-600">{actionItemsStats.inProgress}</span>
+              <span className="font-semibold text-accent">{actionItemsStats.inProgress}</span>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-amber-500" />
-                <span className="text-sm text-gray-600 dark:text-gray-400">Pending</span>
+                <span className="text-sm text-text-secondary">Pending</span>
               </div>
-              <span className="font-semibold text-amber-600">{actionItemsStats.pending}</span>
+              <span className="font-semibold text-warning">{actionItemsStats.pending}</span>
             </div>
             {/* Progress Bar */}
-            <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden flex">
+            <div className="h-2 bg-surface-sunken rounded-full overflow-hidden flex">
               <div 
                 className="bg-emerald-500 transition-all" 
                 style={{ width: `${actionItemsStats.total > 0 ? (actionItemsStats.completed / actionItemsStats.total) * 100 : 0}%` }} 
@@ -385,23 +385,23 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
 
       {/* Summary (if exists) */}
       {currentRetro.summary && (
-        <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4">
+        <div className="bg-purple-500/10 border border-purple-500/20 rounded-xl p-4">
           <div className="flex items-start gap-3">
-            <Star className="w-5 h-5 text-purple-600 dark:text-purple-400 mt-0.5" />
+            <Star className="w-5 h-5 text-purple-400 mt-0.5" />
             <div>
-              <h4 className="font-medium text-purple-900 dark:text-purple-100 mb-1">Sprint Summary</h4>
-              <p className="text-sm text-purple-800 dark:text-purple-200">{currentRetro.summary}</p>
+              <h4 className="font-medium text-purple-400 mb-1">Sprint Summary</h4>
+              <p className="text-sm text-text-secondary">{currentRetro.summary}</p>
             </div>
           </div>
         </div>
       )}
 
       {/* Add New Item */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+      <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
         {!isAddingItem ? (
           <button
             onClick={() => setIsAddingItem(true)}
-            className="w-full flex items-center justify-center gap-2 py-3 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-300 dark:hover:border-purple-700 transition-colors"
+            className="w-full flex items-center justify-center gap-2 py-3 text-text-secondary hover:text-purple-400 border-2 border-dashed border-surface-border rounded-lg hover:border-purple-400/50 transition-colors"
           >
             <Plus className="w-5 h-5" />
             Add Retrospective Item
@@ -418,7 +418,7 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
                     className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
                       newItemCategory === cat
                         ? `${config.bgColor} ${config.iconColor} ring-2 ring-${config.color}-500`
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                        : 'bg-surface-sunken text-text-muted'
                     }`}
                   >
                     <config.icon className="w-4 h-4" />
@@ -431,7 +431,7 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
               value={newItemContent}
               onChange={(e) => setNewItemContent(e.target.value)}
               placeholder="Share your thoughts..."
-              className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white resize-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-surface-border rounded-lg bg-surface-raised text-text-primary text-text-primary resize-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               rows={3}
               autoFocus
             />
@@ -441,7 +441,7 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
                   setIsAddingItem(false);
                   setNewItemContent('');
                 }}
-                className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                className="px-4 py-2 text-sm text-text-secondary hover:text-text-primary"
               >
                 Cancel
               </button>
@@ -460,30 +460,30 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
       {/* Retrospective Categories */}
       {showActionItems ? (
         /* Action Items View */
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-          <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border-b border-blue-200 dark:border-blue-800 flex items-center gap-3">
-            <Lightbulb className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <span className="font-medium text-blue-900 dark:text-blue-100">All Action Items</span>
+        <div className="bg-surface-raised rounded-xl border border-surface-border overflow-hidden">
+          <div className="p-4 bg-accent/10 border-b border-accent/20 flex items-center gap-3">
+            <Lightbulb className="w-5 h-5 text-accent" />
+            <span className="font-medium text-text-primary">All Action Items</span>
           </div>
-          <div className="divide-y divide-gray-100 dark:divide-gray-700">
+          <div className="divide-y divide-surface-border">
             {itemsByCategory.action_items.length === 0 ? (
-              <div className="p-8 text-center text-gray-500 dark:text-gray-400">
+              <div className="p-8 text-center text-text-muted">
                 No action items yet. Add one to track improvements!
               </div>
             ) : (
               itemsByCategory.action_items.map(item => (
-                <div key={item.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                <div key={item.id} className="p-4 hover:bg-surface-sunken">
                   <div className="flex items-start gap-4">
                     <button
                       onClick={() => handleVote(item.id)}
-                      className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-surface-sunken"
                     >
-                      <ChevronUp className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm font-semibold text-gray-900 dark:text-white">{item.votes}</span>
+                      <ChevronUp className="w-4 h-4 text-text-muted" />
+                      <span className="text-sm font-semibold text-text-primary text-text-primary">{item.votes}</span>
                     </button>
                     <div className="flex-1">
-                      <p className="text-gray-900 dark:text-white">{item.content}</p>
-                      <div className="flex flex-wrap items-center gap-4 mt-2 text-sm text-gray-500 dark:text-gray-400">
+                      <p className="text-text-primary text-text-primary">{item.content}</p>
+                      <div className="flex flex-wrap items-center gap-4 mt-2 text-sm text-text-muted">
                         <span>by {item.author}</span>
                         {item.assignee && (
                           <span className="flex items-center gap-1">
@@ -505,10 +505,10 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
                         onChange={(e) => handleUpdateActionStatus(item.id, e.target.value as 'pending' | 'in_progress' | 'completed')}
                         className={`px-3 py-1.5 text-sm rounded-lg border-0 ${
                           item.status === 'completed' 
-                            ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300'
+                            ? 'bg-success/10 text-success'
                             : item.status === 'in_progress'
-                              ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
-                              : 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300'
+                              ? 'bg-accent/10 text-accent'
+                              : 'bg-warning/10 text-warning'
                         }`}
                       >
                         <option value="pending">Pending</option>
@@ -517,7 +517,7 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
                       </select>
                       <button
                         onClick={() => handleDeleteItem(item.id)}
-                        className="p-2 text-gray-400 hover:text-red-500 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20"
+                        className="p-2 text-text-muted hover:text-red-500 rounded-lg hover:bg-danger/10"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -547,15 +547,15 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
                 >
                   <div className="flex items-center gap-3">
                     <config.icon className={`w-5 h-5 ${config.iconColor}`} />
-                    <span className="font-medium text-gray-900 dark:text-white">{config.label}</span>
+                    <span className="font-medium text-text-primary text-text-primary">{config.label}</span>
                     <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${config.bgColor} ${config.iconColor}`}>
                       {items.length}
                     </span>
                   </div>
                   {isExpanded ? (
-                    <ChevronUp className="w-5 h-5 text-gray-400" />
+                    <ChevronUp className="w-5 h-5 text-text-muted" />
                   ) : (
-                    <ChevronDown className="w-5 h-5 text-gray-400" />
+                    <ChevronDown className="w-5 h-5 text-text-muted" />
                   )}
                 </button>
 
@@ -565,31 +565,31 @@ export function SprintRetrospectives(_props: SprintRetrospectivesProps) {
                       initial={{ height: 0 }}
                       animate={{ height: 'auto' }}
                       exit={{ height: 0 }}
-                      className="overflow-hidden bg-white dark:bg-gray-800"
+                      className="overflow-hidden bg-surface-raised"
                     >
-                      <div className="divide-y divide-gray-100 dark:divide-gray-700">
+                      <div className="divide-y divide-surface-border">
                         {items.length === 0 ? (
-                          <div className="p-4 text-center text-gray-500 dark:text-gray-400 text-sm">
+                          <div className="p-4 text-center text-text-muted text-sm">
                             No items yet
                           </div>
                         ) : (
                           items.map(item => (
-                            <div key={item.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                            <div key={item.id} className="p-4 hover:bg-surface-sunken">
                               <div className="flex items-start gap-3">
                                 <button
                                   onClick={() => handleVote(item.id)}
-                                  className="flex flex-col items-center p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                                  className="flex flex-col items-center p-1.5 rounded hover:bg-surface-sunken"
                                 >
-                                  <ChevronUp className="w-4 h-4 text-gray-400" />
-                                  <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">{item.votes}</span>
+                                  <ChevronUp className="w-4 h-4 text-text-muted" />
+                                  <span className="text-xs font-semibold text-gray-700">{item.votes}</span>
                                 </button>
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm text-gray-900 dark:text-white">{item.content}</p>
-                                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">— {item.author}</p>
+                                  <p className="text-sm text-text-primary text-text-primary">{item.content}</p>
+                                  <p className="text-xs text-text-muted mt-1">— {item.author}</p>
                                 </div>
                                 <button
                                   onClick={() => handleDeleteItem(item.id)}
-                                  className="p-1 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100"
+                                  className="p-1 text-text-muted hover:text-red-500 opacity-0 group-hover:opacity-100"
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
                                 </button>

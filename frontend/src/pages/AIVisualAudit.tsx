@@ -174,6 +174,7 @@ const AIVisualAuditContent: React.FC = () => {
   const [showPredictive, setShowPredictive] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [teamActivity, setTeamActivity] = useState<any[]>([]);
+  const [isMobileRailOpen, setIsMobileRailOpen] = useState(false);
 
   // ── Backend Integration Hooks ──────────────────────────────────────────────────
   const { data: backendResults } = useVisualAuditResults();
@@ -211,6 +212,22 @@ const AIVisualAuditContent: React.FC = () => {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const auditTypes = [
+    { id: 'environment', label: 'Environment Scan', icon: Camera, desc: 'Structural & area hazards' },
+    { id: 'employee', label: 'PPE Compliance', icon: Users, desc: 'Worker safety gear check' },
+    { id: 'machine', label: 'Machine Guarding', icon: Wrench, desc: 'Equipment safety audit' },
+    { id: 'hazard', label: 'Hazard Detection', icon: AlertTriangle, desc: 'General risk identification' },
+    { id: 'comparison', label: 'Visual Comparison', icon: Split, desc: 'Before vs After analysis' },
+    { id: 'robotics', label: 'Robotics Safety', icon: Cpu, desc: 'ANSI/RIA & ISO compliance' },
+  ] as const;
+
+  const viewModes = [
+    { id: 'upload', label: 'Upload', icon: Upload },
+    { id: 'live', label: 'Live Monitor', icon: Activity },
+    { id: 'batch', label: 'Batch Scan', icon: Grid3X3 },
+    { id: 'compare', label: 'Compare', icon: Split },
+  ] as const;
 
   // Load results from backend on mount, enrich with localStorage blob URLs for current session
   useEffect(() => {
@@ -462,6 +479,115 @@ const AIVisualAuditContent: React.FC = () => {
     }
   };
 
+  const sidebarContent = (
+    <div className="p-4 sm:p-6 space-y-6">
+      <div>
+        <h3 className="mb-4 text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">Inspection Type</h3>
+        <div className="space-y-2">
+          {auditTypes.map((type) => (
+            <button
+              key={type.id}
+              onClick={() => {
+                setActiveType(type.id as AuditType);
+                setIsMobileRailOpen(false);
+              }}
+              className={`flex w-full items-start gap-4 rounded-2xl border p-4 transition-all ${
+                activeType === type.id
+                  ? 'border-accent/30 bg-accent/10 text-text-primary shadow-soft'
+                  : 'border-transparent bg-surface-sunken text-text-secondary hover:border-surface-border hover:bg-surface-overlay'
+              }`}
+            >
+              <div className={`rounded-xl p-2 ${activeType === type.id ? 'bg-accent text-text-onAccent' : 'bg-surface-overlay text-text-muted'}`}>
+                {type.icon ? <type.icon className="w-5 h-5" /> : <Shield className="w-5 h-5" />}
+              </div>
+              <div className="text-left">
+                <p className="text-sm font-bold leading-none mb-1">{type.label}</p>
+                <p className="text-[10px] opacity-60">{type.desc}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="border-t border-surface-border pt-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">Audit History</h3>
+          {results.length > 0 && (
+            <button
+              onClick={() => { if(confirm('Clear all history?')) setResults([]); }}
+              className="text-[9px] text-red-400 hover:text-red-300 font-bold uppercase tracking-widest"
+            >
+              Clear All
+            </button>
+          )}
+        </div>
+        <div className="space-y-3">
+          {results.length === 0 ? (
+            <div className="rounded-2xl border-2 border-dashed border-surface-border bg-surface-sunken p-8 text-center">
+              <History className="mx-auto mb-2 h-8 w-8 text-text-muted" />
+              <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">No history yet</p>
+            </div>
+          ) : (
+            results.map((res) => (
+              <div key={res.id} className="group relative">
+                <button
+                  onClick={() => {
+                    setSelectedResult(res);
+                    setIsMobileRailOpen(false);
+                  }}
+                  className={`w-full flex items-center gap-3 p-2 rounded-xl transition-all ${
+                    selectedResult?.id === res.id ? 'bg-surface-overlay ring-1 ring-accent/20' : 'hover:bg-surface-sunken'
+                  }`}
+                >
+                  <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-surface-sunken">
+                    <img
+                      src={res.mediaUrl}
+                      alt="Scan"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=100';
+                      }}
+                    />
+                  </div>
+                  <div className="text-left min-w-0">
+                    <p className="text-xs font-bold text-text-primary truncate capitalize">{res.type} Scan</p>
+                    <p className="text-[10px] text-text-muted">{formatTimestamp(res.timestamp)}</p>
+                  </div>
+                  <div className={`ml-auto w-2 h-2 rounded-full ${
+                    res.status === 'safe' ? 'bg-emerald-500' : res.status === 'warning' ? 'bg-amber-500' : 'bg-red-500'
+                  }`} />
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); deleteAudit(res.id); }}
+                  className="absolute -top-1 -right-1 p-1 bg-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                >
+                  <X className="w-2 h-2 text-white" />
+                </button>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      <div className="border-t border-surface-border pt-6">
+        <h3 className="mb-4 text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">Team Activity (Live)</h3>
+        <div className="space-y-3">
+          {teamActivity.map((act, i) => (
+            <div key={i} className="flex items-center gap-3 rounded-xl border border-surface-border bg-surface-sunken p-2">
+              <div className={`w-1.5 h-8 rounded-full ${
+                act.status === 'safe' ? 'bg-emerald-500' : act.status === 'warning' ? 'bg-amber-500' : 'bg-red-500'
+              }`} />
+              <div className="min-w-0">
+                <p className="truncate text-[10px] font-bold text-text-primary">{act.user} performed {act.action}</p>
+                <p className="text-[8px] uppercase tracking-widest text-text-muted">{act.time}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="ai-purple-theme flex min-h-screen flex-col overflow-hidden bg-surface-base text-text-primary selection:bg-accent/20">
       {/* HD Background Elements */}
@@ -475,7 +601,7 @@ const AIVisualAuditContent: React.FC = () => {
         <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
           <div className="flex min-h-16 flex-wrap items-center justify-between gap-4 py-2">
             <div className="flex items-center gap-4">
-              <button 
+              <button
                 onClick={() => navigate('/visual-audit')}
                 className="group rounded-2xl p-2.5 text-text-muted transition-colors hover:bg-surface-overlay"
               >
@@ -492,7 +618,7 @@ const AIVisualAuditContent: React.FC = () => {
             <div className="hidden lg:flex items-center gap-3 rounded-2xl border border-surface-border bg-surface-sunken px-4 py-2">
               <div className="flex items-center gap-2">
                 <Globe className="w-4 h-4 text-accent" />
-                <select 
+                <select
                   value={selectedStandard}
                   onChange={(e) => setSelectedStandard(e.target.value as any)}
                   className="cursor-pointer bg-transparent text-[10px] font-bold uppercase tracking-widest text-text-secondary outline-none transition-colors hover:text-accent"
@@ -517,12 +643,7 @@ const AIVisualAuditContent: React.FC = () => {
             </div>
 
             <div className="hidden md:flex items-center gap-1 rounded-2xl border border-surface-border bg-surface-sunken p-1">
-              {[
-                { id: 'upload', label: 'Upload', icon: Upload },
-                { id: 'live', label: 'Live Monitor', icon: Activity },
-                { id: 'batch', label: 'Batch Scan', icon: Grid3X3 },
-                { id: 'compare', label: 'Compare', icon: Split },
-              ].map((mode) => (
+              {viewModes.map((mode) => (
                 <button
                   key={mode.id}
                   onClick={() => setViewMode(mode.id as ViewMode)}
@@ -549,119 +670,101 @@ const AIVisualAuditContent: React.FC = () => {
               </button>
             </div>
           </div>
-        </div>
-      </header>
 
-      <main className="relative z-10 flex flex-1 flex-col overflow-hidden lg:grid lg:grid-cols-[320px_minmax(0,1fr)]">
-        {/* Sidebar - Tool Selection & History */}
-        <aside className="w-full overflow-y-auto border-b border-surface-border bg-surface-raised/70 lg:w-auto lg:border-b-0 lg:border-r">
-          <div className="p-6 space-y-6">
-            <div>
-              <h3 className="mb-4 text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">Inspection Type</h3>
-              <div className="space-y-2">
-                {[
-                  { id: 'environment', label: 'Environment Scan', icon: Camera, desc: 'Structural & area hazards' },
-                  { id: 'employee', label: 'PPE Compliance', icon: Users, desc: 'Worker safety gear check' },
-                  { id: 'machine', label: 'Machine Guarding', icon: Wrench, desc: 'Equipment safety audit' },
-                  { id: 'hazard', label: 'Hazard Detection', icon: AlertTriangle, desc: 'General risk identification' },
-                  { id: 'comparison', label: 'Visual Comparison', icon: Split, desc: 'Before vs After analysis' },
-                  { id: 'robotics', label: 'Robotics Safety', icon: Cpu, desc: 'ANSI/RIA & ISO compliance' },
-                ].map((type) => (
+          <div className="pb-3 lg:hidden">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setIsMobileRailOpen(true)}
+                  className="flex min-w-0 items-center gap-2 rounded-2xl border border-surface-border bg-surface-sunken px-4 py-3 text-[10px] font-black uppercase tracking-widest text-text-primary transition-colors hover:bg-surface-overlay"
+                >
+                  <Layers className="w-4 h-4 text-accent" />
+                  Inspection Tools
+                </button>
+                <div className="flex min-w-0 flex-1 items-center gap-2 rounded-2xl border border-surface-border bg-surface-sunken px-3 py-3">
+                  <Globe className="w-4 h-4 shrink-0 text-accent" />
+                  <select
+                    value={selectedStandard}
+                    onChange={(e) => setSelectedStandard(e.target.value as any)}
+                    className="min-w-0 flex-1 cursor-pointer bg-transparent text-[10px] font-bold uppercase tracking-widest text-text-secondary outline-none"
+                  >
+                    <option value="osha">OSHA (USA)</option>
+                    <option value="epa">EPA (Environmental)</option>
+                    <option value="niosh">NIOSH (Health)</option>
+                    <option value="iso">ISO 45001</option>
+                    <option value="ilo">ILO Global</option>
+                    <option value="ncr">NCR (Non-Conformance)</option>
+                    <option value="sds">SDS (Chemical Safety)</option>
+                    <option value="asme">ASME (Mechanical)</option>
+                    <option value="api">API (Petroleum)</option>
+                    <option value="robotics">Robotics (ANSI/ISO)</option>
+                    <option value="nfpa">NFPA (Fire/Electrical)</option>
+                    <option value="eu_machinery">EU Machinery Dir.</option>
+                    <option value="cal_osha">Cal/OSHA (California)</option>
+                    <option value="bsee">BSEE (Offshore Safety)</option>
+                    <option value="ansi">ANSI Standards</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {viewModes.map((mode) => (
                   <button
-                    key={type.id}
-                    onClick={() => setActiveType(type.id as AuditType)}
-                    className={`flex w-full items-start gap-4 rounded-2xl border p-4 transition-all ${
-                      activeType === type.id 
-                        ? 'border-accent/30 bg-accent/10 text-text-primary shadow-soft' 
-                        : 'border-transparent bg-surface-sunken text-text-secondary hover:border-surface-border hover:bg-surface-overlay'
+                    key={mode.id}
+                    onClick={() => setViewMode(mode.id as ViewMode)}
+                    className={`flex shrink-0 items-center gap-2 rounded-xl px-4 py-2 text-[10px] font-bold uppercase tracking-wider transition-all ${
+                      viewMode === mode.id ? 'bg-accent text-text-onAccent shadow-soft' : 'border border-surface-border bg-surface-sunken text-text-muted hover:bg-surface-overlay hover:text-text-primary'
                     }`}
                   >
-                    <div className={`rounded-xl p-2 ${activeType === type.id ? 'bg-accent text-text-onAccent' : 'bg-surface-overlay text-text-muted'}`}>
-                      {type.icon ? <type.icon className="w-5 h-5" /> : <Shield className="w-5 h-5" />}
-                    </div>
-                    <div className="text-left">
-                      <p className="text-sm font-bold leading-none mb-1">{type.label}</p>
-                      <p className="text-[10px] opacity-60">{type.desc}</p>
-                    </div>
+                    <mode.icon className="w-3.5 h-3.5" />
+                    {mode.label}
                   </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="border-t border-surface-border pt-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">Audit History</h3>
-                {results.length > 0 && (
-                  <button 
-                    onClick={() => { if(confirm('Clear all history?')) setResults([]); }}
-                    className="text-[9px] text-red-400 hover:text-red-300 font-bold uppercase tracking-widest"
-                  >
-                    Clear All
-                  </button>
-                )}
-              </div>
-              <div className="space-y-3">
-                {results.length === 0 ? (
-                  <div className="rounded-2xl border-2 border-dashed border-surface-border bg-surface-sunken p-8 text-center">
-                    <History className="mx-auto mb-2 h-8 w-8 text-text-muted" />
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">No history yet</p>
-                  </div>
-                ) : (
-                  results.map((res) => (
-                    <div key={res.id} className="group relative">
-                      <button
-                        onClick={() => setSelectedResult(res)}
-                        className={`w-full flex items-center gap-3 p-2 rounded-xl transition-all ${
-                          selectedResult?.id === res.id ? 'bg-surface-overlay ring-1 ring-accent/20' : 'hover:bg-surface-sunken'
-                        }`}
-                      >
-                        <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-surface-sunken">
-                          <img 
-                            src={res.mediaUrl} 
-                            alt="Scan" 
-                            className="w-full h-full object-cover" 
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=100';
-                            }}
-                          />
-                        </div>
-                        <div className="text-left min-w-0">
-                          <p className="text-xs font-bold text-text-primary truncate capitalize">{res.type} Scan</p>
-                          <p className="text-[10px] text-text-muted">{formatTimestamp(res.timestamp)}</p>
-                        </div>
-                        <div className={`ml-auto w-2 h-2 rounded-full ${
-                          res.status === 'safe' ? 'bg-emerald-500' : res.status === 'warning' ? 'bg-amber-500' : 'bg-red-500'
-                        }`} />
-                      </button>
-                      <button 
-                        onClick={(e) => { e.stopPropagation(); deleteAudit(res.id); }}
-                        className="absolute -top-1 -right-1 p-1 bg-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
-                      >
-                        <X className="w-2 h-2 text-white" />
-                      </button>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-
-            <div className="border-t border-surface-border pt-6">
-              <h3 className="mb-4 text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">Team Activity (Live)</h3>
-              <div className="space-y-3">
-                {teamActivity.map((act, i) => (
-                  <div key={i} className="flex items-center gap-3 rounded-xl border border-surface-border bg-surface-sunken p-2">
-                    <div className={`w-1.5 h-8 rounded-full ${
-                      act.status === 'safe' ? 'bg-emerald-500' : act.status === 'warning' ? 'bg-amber-500' : 'bg-red-500'
-                    }`} />
-                    <div className="min-w-0">
-                      <p className="truncate text-[10px] font-bold text-text-primary">{act.user} performed {act.action}</p>
-                      <p className="text-[8px] uppercase tracking-widest text-text-muted">{act.time}</p>
-                    </div>
-                  </div>
                 ))}
               </div>
             </div>
           </div>
+        </div>
+      </header>
+
+      <AnimatePresence>
+        {isMobileRailOpen && (
+          <div className="fixed inset-0 z-40 lg:hidden">
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileRailOpen(false)}
+              className="absolute inset-0 bg-surface-base/70 backdrop-blur-sm"
+            />
+            <motion.aside
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+              className="relative h-full w-[min(88vw,360px)] overflow-y-auto border-r border-surface-border bg-surface-raised shadow-2xl"
+            >
+              <div className="sticky top-0 z-10 flex items-center justify-between border-b border-surface-border bg-surface-raised/95 px-4 py-4 backdrop-blur-xl">
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-text-muted">Audit Workspace</p>
+                  <h2 className="mt-1 text-base font-black text-text-primary">Tools and history</h2>
+                </div>
+                <button
+                  onClick={() => setIsMobileRailOpen(false)}
+                  className="rounded-xl p-2 text-text-muted transition-colors hover:bg-surface-overlay hover:text-text-primary"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              {sidebarContent}
+            </motion.aside>
+          </div>
+        )}
+      </AnimatePresence>
+
+      <main className="relative z-10 flex flex-1 flex-col overflow-hidden lg:grid lg:grid-cols-[320px_minmax(0,1fr)]">
+        {/* Sidebar - Tool Selection & History */}
+        <aside className="hidden overflow-y-auto border-r border-surface-border bg-surface-raised/70 lg:block">
+          {sidebarContent}
         </aside>
 
         {/* Main Viewport */}
@@ -702,19 +805,19 @@ const AIVisualAuditContent: React.FC = () => {
                           </div>
                         </div>
 
-                        <div 
+                        <div
                           onClick={() => fileInputRef.current?.click()}
                           className="group relative flex aspect-video cursor-pointer flex-col items-center justify-center overflow-hidden rounded-[2.5rem] border-2 border-dashed border-surface-border bg-surface-sunken transition-all hover:border-accent/40 hover:bg-surface-overlay"
                         >
                           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(18,178,168,0.14),_transparent_55%),radial-gradient(circle_at_bottom_right,_rgba(12,77,162,0.10),_transparent_45%)] opacity-0 transition-opacity group-hover:opacity-100" />
-                          
+
                           <div className="relative z-10 p-8 text-center sm:p-12">
                             <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-surface-raised text-accent shadow-soft transition-all duration-500 group-hover:scale-110 group-hover:bg-accent group-hover:text-text-onAccent">
                               <Upload className="h-10 w-10" />
                             </div>
                             <h3 className="mb-2 text-2xl font-black text-text-primary">Upload or Drag Files</h3>
                             <p className="mb-8 text-sm text-text-muted">Supports image and video evidence for AI-led hazard detection, PPE verification, and machinery review.</p>
-                            
+
                             <div className="flex flex-wrap items-center justify-center gap-3">
                               <span className="rounded-xl border border-surface-border bg-surface-raised px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-text-secondary">Select Files</span>
                               <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">or</span>
@@ -722,82 +825,80 @@ const AIVisualAuditContent: React.FC = () => {
                             </div>
                           </div>
 
-                        {isAnalyzing && (
-                          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-surface-base/85 backdrop-blur-md">
-                            <div className="relative mb-8">
-                              <div className="h-32 w-32 animate-spin rounded-full border-4 border-accent/20 border-t-accent" />
-                              <Brain className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 animate-pulse text-accent" />
-                              
-                              {/* Simulated Detection Boxes during analysis */}
-                              <motion.div 
-                                animate={{ opacity: [0, 1, 0], scale: [0.8, 1.1, 0.8] }}
-                                transition={{ duration: 2, repeat: Infinity }}
-                                className="absolute -top-4 -left-4 w-12 h-12 border-2 border-emerald-500 rounded-lg"
-                              />
-                              <motion.div 
-                                animate={{ opacity: [0, 1, 0], scale: [0.8, 1.1, 0.8] }}
-                                transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                                className="absolute -bottom-4 -right-4 w-16 h-16 border-2 border-red-500 rounded-lg"
-                              />
+                          {isAnalyzing && (
+                            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-surface-base/85 backdrop-blur-md">
+                              <div className="relative mb-8">
+                                <div className="h-32 w-32 animate-spin rounded-full border-4 border-accent/20 border-t-accent" />
+                                <Brain className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 animate-pulse text-accent" />
+                                <motion.div
+                                  animate={{ opacity: [0, 1, 0], scale: [0.8, 1.1, 0.8] }}
+                                  transition={{ duration: 2, repeat: Infinity }}
+                                  className="absolute -top-4 -left-4 h-12 w-12 rounded-lg border-2 border-emerald-500"
+                                />
+                                <motion.div
+                                  animate={{ opacity: [0, 1, 0], scale: [0.8, 1.1, 0.8] }}
+                                  transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                                  className="absolute -bottom-4 -right-4 h-16 w-16 rounded-lg border-2 border-red-500"
+                                />
+                              </div>
+                              <p className="animate-pulse text-xl font-black uppercase tracking-tighter text-text-primary">AI Vision Engine Analyzing...</p>
+                              <div className="mt-4 flex gap-2">
+                                <span className="rounded-full border border-surface-border bg-surface-raised px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-text-muted">Scanning Pixels</span>
+                                <span className="rounded-full border border-surface-border bg-surface-raised px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-text-muted">Mapping Hazards</span>
+                              </div>
                             </div>
-                            <p className="animate-pulse text-xl font-black uppercase tracking-tighter text-text-primary">AI Vision Engine Analyzing...</p>
-                            <div className="mt-4 flex gap-2">
-                              <span className="rounded-full border border-surface-border bg-surface-raised px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-text-muted">Scanning Pixels</span>
-                              <span className="rounded-full border border-surface-border bg-surface-raised px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-text-muted">Mapping Hazards</span>
+                          )}
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                          <button
+                            onClick={startCamera}
+                            className="group flex items-center justify-center gap-3 rounded-2xl border border-surface-border bg-primary px-4 py-4 font-bold text-text-inverted transition-all hover:brightness-110"
+                          >
+                            <Camera className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                            <span className="text-xs uppercase tracking-widest">Open Camera</span>
+                          </button>
+                          <button
+                            onClick={() => setViewMode('live')}
+                            className="group flex items-center justify-center gap-3 rounded-2xl border border-accent/20 bg-accent px-4 py-4 font-bold text-text-onAccent transition-all hover:brightness-110"
+                          >
+                            <Activity className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                            <span className="text-xs uppercase tracking-widest">Live Stream</span>
+                          </button>
+                        </div>
+
+                        <div className="grid gap-4 md:grid-cols-3">
+                          {[
+                            { label: 'Best for', value: activeType === 'employee' ? 'PPE verification' : activeType === 'machine' ? 'Guarding checks' : 'Hazard discovery' },
+                            { label: 'Accepted media', value: 'Images and video clips' },
+                            { label: 'Output', value: 'Findings, overlays, recommendations' },
+                          ].map((item) => (
+                            <div key={item.label} className="rounded-2xl border border-surface-border bg-surface-sunken p-4">
+                              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-text-muted">{item.label}</p>
+                              <p className="mt-2 text-sm font-semibold text-text-primary">{item.value}</p>
+                            </div>
+                          ))}
+                        </div>
+
+                        {stream && (
+                          <div className="relative aspect-video overflow-hidden rounded-[2.5rem] border border-surface-border bg-black">
+                            <video ref={videoRef} autoPlay playsInline className="h-full w-full object-cover" />
+                            <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-4">
+                              <button
+                                onClick={capturePhoto}
+                                className="flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-2xl transition-all hover:scale-110 active:scale-95"
+                              >
+                                <div className="h-12 w-12 rounded-full border-4 border-black" />
+                              </button>
+                              <button
+                                onClick={stopCamera}
+                                className="flex h-16 w-16 items-center justify-center rounded-full bg-red-500 shadow-2xl transition-all hover:scale-110 active:scale-95"
+                              >
+                                <X className="w-8 h-8 text-white" />
+                              </button>
                             </div>
                           </div>
                         )}
-                      </div>
-
-                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        <button 
-                          onClick={startCamera}
-                          className="group flex items-center justify-center gap-3 rounded-2xl border border-surface-border bg-primary px-4 py-4 font-bold text-text-inverted transition-all hover:brightness-110"
-                        >
-                          <Camera className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                          <span className="text-xs uppercase tracking-widest">Open Camera</span>
-                        </button>
-                        <button 
-                          onClick={() => setViewMode('live')}
-                          className="group flex items-center justify-center gap-3 rounded-2xl border border-accent/20 bg-accent px-4 py-4 font-bold text-text-onAccent transition-all hover:brightness-110"
-                        >
-                          <Activity className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                          <span className="text-xs uppercase tracking-widest">Live Stream</span>
-                        </button>
-                      </div>
-
-                      <div className="grid gap-4 md:grid-cols-3">
-                        {[
-                          { label: 'Best for', value: activeType === 'employee' ? 'PPE verification' : activeType === 'machine' ? 'Guarding checks' : 'Hazard discovery' },
-                          { label: 'Accepted media', value: 'Images and video clips' },
-                          { label: 'Output', value: 'Findings, overlays, recommendations' },
-                        ].map((item) => (
-                          <div key={item.label} className="rounded-2xl border border-surface-border bg-surface-sunken p-4">
-                            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-text-muted">{item.label}</p>
-                            <p className="mt-2 text-sm font-semibold text-text-primary">{item.value}</p>
-                          </div>
-                        ))}
-                      </div>
-
-                      {stream && (
-                        <div className="relative aspect-video overflow-hidden rounded-[2.5rem] border border-surface-border bg-black">
-                          <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover" />
-                          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-4">
-                            <button 
-                              onClick={capturePhoto}
-                              className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all"
-                            >
-                              <div className="w-12 h-12 rounded-full border-4 border-black" />
-                            </button>
-                            <button 
-                              onClick={stopCamera}
-                              className="w-16 h-16 rounded-full bg-red-500 flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all"
-                            >
-                              <X className="w-8 h-8 text-white" />
-                            </button>
-                          </div>
-                        </div>
-                      )}
                       </div>
 
                       <div className="space-y-4 rounded-[2rem] border border-surface-border bg-surface-raised p-6 shadow-card">
@@ -930,8 +1031,8 @@ const AIVisualAuditContent: React.FC = () => {
                         ))}
                       </AnimatePresence>
 
-                      <div className="absolute bottom-6 left-6 right-6 z-20 flex items-center justify-between opacity-0 transition-opacity group-hover:opacity-100">
-                        <div className="flex gap-2">
+                      <div className="absolute bottom-4 left-4 right-4 z-20 flex flex-col gap-3 opacity-100 transition-opacity sm:bottom-6 sm:left-6 sm:right-6 sm:flex-row sm:items-center sm:justify-between sm:opacity-0 sm:group-hover:opacity-100">
+                        <div className="flex flex-wrap gap-2">
                           <button 
                             onClick={() => setShowHeatmap(!showHeatmap)}
                             className={`rounded-2xl border p-3 text-text-primary transition-colors backdrop-blur-md ${showHeatmap ? 'border-accent/20 bg-accent text-text-onAccent' : 'border-surface-border bg-surface-raised/90 hover:bg-surface-overlay'}`}
@@ -952,7 +1053,7 @@ const AIVisualAuditContent: React.FC = () => {
                         </div>
                         <button 
                           onClick={() => setSelectedResult(null)}
-                          className="rounded-2xl bg-accent px-6 py-3 text-xs font-bold uppercase tracking-widest text-text-onAccent transition-all shadow-soft hover:brightness-110"
+                          className="w-full rounded-2xl bg-accent px-6 py-3 text-xs font-bold uppercase tracking-widest text-text-onAccent transition-all shadow-soft hover:brightness-110 sm:w-auto"
                         >
                           New Scan
                         </button>
@@ -963,7 +1064,7 @@ const AIVisualAuditContent: React.FC = () => {
                     <div className="flex w-full flex-col gap-6 shrink-0">
                       {/* Main Analysis */}
                       <div className="rounded-3xl border border-surface-border bg-surface-raised p-6 shadow-card backdrop-blur-xl">
-                        <div className="flex items-center justify-between mb-6">
+                        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                           <div className="flex items-center gap-3">
                             <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
                               selectedResult.status === 'safe' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'
@@ -1034,7 +1135,7 @@ const AIVisualAuditContent: React.FC = () => {
                           </div>
                           <h3 className="text-lg font-bold text-text-primary">Media Gallery</h3>
                         </div>
-                        <div className="grid grid-cols-3 gap-3">
+                        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                           {[selectedResult.mediaUrl, ...results.slice(0, 2).map(r => r.mediaUrl)].map((url, i) => (
                             <div key={i} className="group aspect-square cursor-pointer overflow-hidden rounded-xl border border-surface-border bg-surface-sunken">
                               <img src={url} className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
@@ -1055,7 +1156,7 @@ const AIVisualAuditContent: React.FC = () => {
                             </div>
                             <h3 className="text-lg font-bold text-text-primary">PPE Inventory</h3>
                           </div>
-                          <div className="grid grid-cols-2 gap-3">
+                          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                             {selectedResult.ppeInventory.map((item, i) => (
                               <div key={i} className="flex items-center justify-between rounded-2xl border border-surface-border bg-surface-sunken p-3">
                                 <span className="text-xs font-bold text-text-secondary">{item.item}</span>
@@ -1104,7 +1205,7 @@ const AIVisualAuditContent: React.FC = () => {
                       </div>
 
                       {/* Actions */}
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <button className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-surface-border bg-surface-raised p-4 transition-colors hover:bg-surface-overlay">
                           <Download className="w-5 h-5 text-text-muted group-hover:text-accent" />
                           <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Export PDF</span>
@@ -1125,7 +1226,7 @@ const AIVisualAuditContent: React.FC = () => {
           {viewMode === 'batch' && (
             <div className="flex flex-1 flex-col overflow-y-auto p-8">
               <div className="max-w-4xl mx-auto w-full">
-                <div className="flex items-center justify-between mb-8">
+                <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h2 className="mb-1 text-2xl font-black text-text-primary">Enterprise Batch Scan</h2>
                     <p className="text-sm text-text-muted">Analyze up to 500 assets simultaneously using distributed AI nodes</p>
@@ -1168,7 +1269,7 @@ const AIVisualAuditContent: React.FC = () => {
           {viewMode === 'live' && (
             <div className="relative flex-1 overflow-hidden rounded-t-[2rem] bg-surface-base lg:rounded-none">
               {/* Multi-Cam Grid Simulation */}
-              <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-1 p-1">
+              <div className="absolute inset-0 grid grid-cols-1 gap-1 p-1 sm:grid-cols-2 sm:grid-rows-2">
                 {[
                   { name: 'Loading Dock A', status: 'safe', icon: Activity },
                   { name: 'Fabrication Shop', status: 'warning', icon: Zap },
@@ -1198,7 +1299,7 @@ const AIVisualAuditContent: React.FC = () => {
               </div>
 
               {/* Live HUD Overlays */}
-              <div className="absolute top-8 left-8 flex items-center gap-4">
+              <div className="absolute left-4 right-4 top-4 flex flex-col gap-2 sm:left-8 sm:right-auto sm:top-8 sm:flex-row sm:items-center sm:gap-4">
                 <div className="flex items-center gap-2 rounded-full bg-danger px-4 py-2 shadow-soft">
                   <div className="h-2 w-2 rounded-full bg-white animate-pulse" />
                   <span className="text-[10px] font-black uppercase tracking-widest text-white">Live Monitoring</span>
@@ -1208,7 +1309,7 @@ const AIVisualAuditContent: React.FC = () => {
                 </div>
               </div>
 
-              <div className="absolute bottom-8 left-8 right-8 flex items-end justify-between">
+              <div className="absolute bottom-4 left-4 right-4 flex flex-col gap-4 sm:bottom-8 sm:left-8 sm:right-8 sm:flex-row sm:items-end sm:justify-between">
                 <div className="space-y-2">
                   <div className="max-w-xs rounded-2xl border border-surface-border bg-surface-raised/90 p-4 backdrop-blur-md">
                     <div className="flex items-center gap-2 mb-2">

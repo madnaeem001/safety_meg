@@ -188,24 +188,24 @@ export const TrainingManagement: React.FC = () => {
                     </SMCard>
                     <SMCard className="p-5">
                       <div className="flex items-center gap-2 mb-2">
-                        <ShieldCheck className="w-5 h-5 text-emerald-500" />
-                        <span className="text-xs font-bold text-surface-500 uppercase tracking-wider">Current</span>
+                        <ShieldCheck className="w-5 h-5 text-success" />
+                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Current</span>
                       </div>
-                      <div className="text-2xl font-bold text-emerald-600">{compliance?.current ?? 0}</div>
+                      <div className="text-2xl font-bold text-success">{compliance?.current ?? 0}</div>
                     </SMCard>
                     <SMCard className="p-5">
                       <div className="flex items-center gap-2 mb-2">
-                        <Clock className="w-5 h-5 text-amber-500" />
-                        <span className="text-xs font-bold text-surface-500 uppercase tracking-wider">Expiring</span>
+                        <Clock className="w-5 h-5 text-warning" />
+                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Expiring</span>
                       </div>
-                      <div className="text-2xl font-bold text-amber-600">{compliance?.expiringSoon ?? 0}</div>
+                      <div className="text-2xl font-bold text-warning">{compliance?.expiringSoon ?? 0}</div>
                     </SMCard>
                     <SMCard className="p-5">
                       <div className="flex items-center gap-2 mb-2">
-                        <AlertCircle className="w-5 h-5 text-red-500" />
-                        <span className="text-xs font-bold text-surface-500 uppercase tracking-wider">Expired</span>
+                        <AlertCircle className="w-5 h-5 text-danger" />
+                        <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Expired</span>
                       </div>
-                      <div className="text-2xl font-bold text-red-600">{compliance?.expired ?? 0}</div>
+                      <div className="text-2xl font-bold text-danger">{compliance?.expired ?? 0}</div>
                     </SMCard>
                     <SMCard className="p-5">
                       <div className="flex items-center gap-2 mb-2">
@@ -242,7 +242,7 @@ export const TrainingManagement: React.FC = () => {
                       ) : filteredExpiring.length > 0 ? (
                         <div className="space-y-3">
                           {filteredExpiring.slice(0, 5).map((record) => (
-                            <div key={record.id} className="p-4 rounded-2xl border border-surface-100 bg-surface-50 flex items-start justify-between gap-3">
+                            <div key={record.id} className="p-4 rounded-2xl border border-surface-border bg-surface-sunken flex items-start justify-between gap-3">
                               <div>
                                 <p className="font-semibold text-text-primary">{record.employeeName}</p>
                                 <p className="text-sm text-text-secondary">{record.courseName}</p>
@@ -330,15 +330,15 @@ export const TrainingManagement: React.FC = () => {
                         <h3 className="font-bold text-text-primary">Operational Notes</h3>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                      <div className="p-4 rounded-2xl bg-surface-50 border border-surface-100">
+                      <div className="p-4 rounded-2xl bg-surface-sunken border border-surface-border">
                         <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Overdue Assignments</div>
                         <div className="text-2xl font-bold text-text-primary">{compliance?.overdueAssignments ?? 0}</div>
                       </div>
-                      <div className="p-4 rounded-2xl bg-surface-50 border border-surface-100">
+                      <div className="p-4 rounded-2xl bg-surface-sunken border border-surface-border">
                         <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Course Library</div>
                         <div className="text-2xl font-bold text-text-primary">{courses.length}</div>
                       </div>
-                      <div className="p-4 rounded-2xl bg-surface-50 border border-surface-100">
+                      <div className="p-4 rounded-2xl bg-surface-sunken border border-surface-border">
                         <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Backend Sync</div>
                         <div className="text-sm text-text-secondary">
                           Courses, compliance, expiring records, and assignments now use backend endpoints.
@@ -397,7 +397,7 @@ export const TrainingManagement: React.FC = () => {
                               <SMSkeleton className="h-16 w-full rounded-xl" />
                             </div>
                           </div>
-                          <div className="px-5 py-4 bg-surface-50 border-t border-surface-100">
+                          <div className="px-5 py-4 bg-surface-sunken border-t border-surface-border">
                             <SMSkeleton className="h-3 w-28 rounded-lg mb-3" />
                             <div className="flex gap-2 flex-wrap">
                               <SMSkeleton className="h-6 w-20 rounded-full" />
@@ -413,7 +413,7 @@ export const TrainingManagement: React.FC = () => {
                         <SMCard key={course.id} className="overflow-hidden">
                           <div className="p-5 space-y-4">
                             <div className="flex items-start justify-between gap-3">
-                              <div className="w-11 h-11 rounded-2xl bg-accent-50 border border-accent-100 flex items-center justify-center text-accent">
+                              <div className="w-11 h-11 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
                                 <BookOpen className="w-5 h-5" />
                               </div>
                               <span className="text-xs font-bold text-text-muted uppercase tracking-[0.2em]">
@@ -433,11 +433,11 @@ export const TrainingManagement: React.FC = () => {
                               )}
                             </div>
                             <div className="grid grid-cols-2 gap-3 text-sm">
-                              <div className="p-3 rounded-xl bg-surface-50 border border-surface-100">
+                              <div className="p-3 rounded-xl bg-surface-sunken border border-surface-border">
                                 <div className="text-xs font-bold text-text-muted uppercase tracking-wider">Duration</div>
                                 <div className="font-semibold text-text-primary mt-1">{course.durationHours}h</div>
                               </div>
-                              <div className="p-3 rounded-xl bg-surface-50 border border-surface-100">
+                              <div className="p-3 rounded-xl bg-surface-sunken border border-surface-border">
                                 <div className="text-xs font-bold text-text-muted uppercase tracking-wider">Validity</div>
                                 <div className="font-semibold text-text-primary mt-1">
                                   {course.validityMonths > 0 ? `${course.validityMonths} mo` : 'One-time'}
@@ -445,12 +445,12 @@ export const TrainingManagement: React.FC = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="px-5 py-4 bg-surface-50 border-t border-surface-100">
+                          <div className="px-5 py-4 bg-surface-sunken border-t border-surface-border">
                             <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Required Roles</div>
                             <div className="flex flex-wrap gap-2">
                               {course.requiredForRoles.length > 0 ? (
                                 course.requiredForRoles.map((role) => (
-                                  <span key={`${course.id}-${role}`} className="px-2.5 py-1 rounded-full bg-white border border-surface-200 text-xs text-text-secondary">
+                                  <span key={`${course.id}-${role}`} className="px-2.5 py-1 rounded-full bg-surface-overlay border border-surface-border text-xs text-text-secondary">
                                     {role}
                                   </span>
                                 ))
@@ -481,9 +481,9 @@ export const TrainingManagement: React.FC = () => {
                     ))}
                   </div>
 
-                  <div className="bg-surface-raised rounded-2xl border border-surface-200 shadow-soft overflow-hidden">
+                  <div className="bg-surface-raised rounded-2xl border border-surface-border shadow-soft overflow-hidden">
                     <table className="w-full text-left border-collapse">
-                      <thead className="bg-surface-50 border-b border-surface-200">
+                      <thead className="bg-surface-sunken border-b border-surface-border">
                         <tr>
                           <th className="px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider">Employee</th>
                           <th className="px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider">Role / Dept</th>
@@ -492,7 +492,7 @@ export const TrainingManagement: React.FC = () => {
                           <th className="px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-wider">Priority</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-surface-100">
+                      <tbody className="divide-y divide-surface-border">
                         {expiringLoading ? Array.from({ length: 5 }).map((_, index) => (
                           <tr key={index}>
                             <td className="px-6 py-4"><SMSkeleton className="h-12 w-full rounded-xl" /></td>
@@ -502,10 +502,10 @@ export const TrainingManagement: React.FC = () => {
                             <td className="px-6 py-4"><SMSkeleton className="h-12 w-full rounded-xl" /></td>
                           </tr>
                         )) : filteredExpiring.map((record) => (
-                          <tr key={record.id} className="hover:bg-surface-50/50 transition-colors">
+                          <tr key={record.id} className="hover:bg-surface-overlay/30 transition-colors">
                             <td className="px-6 py-4">
                               <div className="flex items-center gap-3">
-                                <div className="w-9 h-9 rounded-full bg-accent-100 flex items-center justify-center text-accent font-bold text-xs">
+                                <div className="w-9 h-9 rounded-full bg-accent/15 flex items-center justify-center text-accent font-bold text-xs">
                                   {record.employeeName.split(' ').map((name) => name[0]).join('').slice(0, 2)}
                                 </div>
                                 <div>

@@ -9,12 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import { useEmissionsData } from '../api/hooks/useAPIHooks';
 
 const SectionEmptyState = ({ title, description }: { title: string; description: string }) => (
-  <div className="rounded-[2rem] border border-dashed border-surface-200 bg-white p-8 text-center shadow-soft">
-    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-100 text-surface-400">
+  <div className="rounded-[2rem] border border-dashed border-surface-border bg-surface-raised p-8 text-center shadow-soft">
+    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-sunken text-text-muted">
       <Database className="h-5 w-5" />
     </div>
-    <h3 className="text-lg font-bold text-brand-900">{title}</h3>
-    <p className="mx-auto mt-2 max-w-lg text-sm text-surface-500">{description}</p>
+    <h3 className="text-lg font-bold text-text-primary">{title}</h3>
+    <p className="mx-auto mt-2 max-w-lg text-sm text-text-secondary">{description}</p>
   </div>
 );
 
@@ -187,7 +187,7 @@ export const EmissionReports: React.FC = () => {
   const hasEmissionData = detailedEmissions.length > 0 || (backendEmissions?.logs?.length ?? 0) > 0 || (backendEmissions?.facilityBreakdown?.length ?? 0) > 0;
 
   return (
-    <div className="min-h-screen bg-surface-50 pb-32 text-left">
+    <div className="min-h-screen bg-surface-base pb-32 text-left">
 
       
       <main className="max-w-7xl mx-auto px-6 py-12 space-y-12">
@@ -199,27 +199,27 @@ export const EmissionReports: React.FC = () => {
           >
             <button 
               onClick={() => navigate(-1)}
-              className="flex items-center gap-2 text-brand-600 font-bold text-[10px] uppercase tracking-[0.3em] mb-4 hover:text-brand-700 transition-colors"
+              className="flex items-center gap-2 text-accent font-bold text-[10px] uppercase tracking-[0.3em] mb-4 hover:text-accent transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Risk Digester
             </button>
-            <div className="flex items-center gap-3 text-brand-500 font-bold text-[10px] uppercase tracking-[0.3em] mb-2">
+            <div className="flex items-center gap-3 text-accent font-bold text-[10px] uppercase tracking-[0.3em] mb-2">
               <Wind className="w-4 h-4" />
               Environmental Compliance
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-brand-900 tracking-tighter leading-none text-left">Emission Reports</h1>
-            <p className="text-surface-500 mt-4 max-w-xl text-lg text-left">
+            <h1 className="text-4xl md:text-5xl font-bold text-text-primary tracking-tighter leading-none text-left">Emission Reports</h1>
+            <p className="text-text-secondary mt-4 max-w-xl text-lg text-left">
               Detailed analysis of atmospheric pollutants and greenhouse gas emissions across all facilities.
             </p>
           </motion.div>
           
           <div className="flex gap-3">
-            <button className="flex items-center gap-2 px-6 py-4 bg-white border border-surface-100 rounded-2xl shadow-soft hover:bg-surface-50 transition-all text-xs font-bold uppercase tracking-widest text-surface-600">
+            <button className="flex items-center gap-2 px-6 py-4 bg-surface-raised border border-surface-border rounded-2xl shadow-soft hover:bg-surface-sunken transition-all text-xs font-bold uppercase tracking-widest text-text-secondary">
               <Calendar className="w-4 h-4" />
               Last 30 Days
             </button>
-            <button className="flex items-center gap-2 px-6 py-4 bg-white border border-surface-100 rounded-2xl shadow-soft hover:bg-surface-50 transition-all text-xs font-bold uppercase tracking-widest text-surface-600">
+            <button className="flex items-center gap-2 px-6 py-4 bg-surface-raised border border-surface-border rounded-2xl shadow-soft hover:bg-surface-sunken transition-all text-xs font-bold uppercase tracking-widest text-text-secondary">
               <Filter className="w-4 h-4" />
               Filter
             </button>
@@ -227,7 +227,7 @@ export const EmissionReports: React.FC = () => {
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex gap-2 bg-surface-100/50 p-1 rounded-2xl w-fit">
+        <div className="flex gap-2 bg-surface-sunken/50 p-1 rounded-2xl w-fit">
           {[
             { id: 'overview' as const, label: 'Overview', icon: BarChart3 },
             { id: 'compliance' as const, label: 'Compliance Status', icon: CheckCircle2 },
@@ -237,7 +237,7 @@ export const EmissionReports: React.FC = () => {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
-                activeTab === tab.id ? 'bg-white shadow-soft text-brand-700' : 'text-surface-500 hover:text-brand-600'
+                activeTab === tab.id ? 'bg-surface-raised shadow-soft text-accent' : 'text-text-muted hover:text-accent'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -262,17 +262,17 @@ export const EmissionReports: React.FC = () => {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.08 }}
-                  className="rounded-[2rem] border border-surface-100 bg-white p-6 shadow-soft"
+                  className="rounded-[2rem] border border-surface-border bg-surface-raised p-6 shadow-soft"
                 >
                   <div className="mb-4 flex items-center justify-between">
-                    <div className="rounded-2xl bg-brand-50 p-3 text-brand-600">
+                    <div className="rounded-2xl bg-accent/10 p-3 text-accent">
                       <card.icon className="h-5 w-5" />
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-surface-400">Live</span>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-text-muted">Live</span>
                   </div>
-                  <p className="text-sm font-semibold text-surface-500">{card.label}</p>
-                  <p className="mt-2 text-3xl font-bold tracking-tight text-brand-900">{card.value}</p>
-                  <p className="mt-2 text-xs text-surface-500">{card.detail}</p>
+                  <p className="text-sm font-semibold text-text-secondary">{card.label}</p>
+                  <p className="mt-2 text-3xl font-bold tracking-tight text-text-primary">{card.value}</p>
+                  <p className="mt-2 text-xs text-text-muted">{card.detail}</p>
                 </motion.div>
               ))}
             </div>
@@ -313,13 +313,13 @@ export const EmissionReports: React.FC = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-white rounded-2xl p-5 border border-surface-100 shadow-soft"
+                    className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-soft"
                   >
                     <div className="mb-3 flex items-start justify-between gap-3">
-                      <h4 className="font-bold text-brand-900 text-sm">{card.title}</h4>
-                      <span className="rounded-lg bg-brand-50 px-2 py-1 text-[10px] font-bold text-brand-700">{card.status}</span>
+                      <h4 className="font-bold text-text-primary text-sm">{card.title}</h4>
+                      <span className="rounded-lg bg-accent/10 px-2 py-1 text-[10px] font-bold text-accent">{card.status}</span>
                     </div>
-                    <p className="text-sm text-surface-600">{card.detail}</p>
+                    <p className="text-sm text-text-secondary">{card.detail}</p>
                   </motion.div>
                 ))}
               </div>
@@ -335,33 +335,33 @@ export const EmissionReports: React.FC = () => {
         {activeTab === 'ai-forecast' && (
           <div className="space-y-6">
             {/* AI Forecast Dashboard */}
-            <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-6 text-white border border-cyan-500/20">
+            <div className="bg-surface-overlay border border-surface-border rounded-3xl p-6">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center">
-                  <Brain className="w-5 h-5 text-cyan-400" />
+                <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
+                  <Brain className="w-5 h-5 text-accent" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">AI Emission Forecasting Engine</h3>
-                  <p className="text-cyan-300 text-xs font-mono">BACKEND ANOMALY SYNTHESIS • LIVE SENSOR SIGNALS • CURRENT PERIOD OUTLOOK</p>
+                  <h3 className="font-bold text-lg text-text-primary">AI Emission Forecasting Engine</h3>
+                  <p className="text-accent text-xs font-mono">BACKEND ANOMALY SYNTHESIS • LIVE SENSOR SIGNALS • CURRENT PERIOD OUTLOOK</p>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 {forecastMetrics.map((metric, index) => (
-                  <div key={metric.label} className="bg-white/5 rounded-xl p-4 border border-white/10">
-                    <p className="text-xs text-cyan-300 mb-1">{metric.label}</p>
-                    <p className="text-xl font-black">{metric.value}</p>
-                    <p className={`text-[10px] font-mono mt-1 ${metric.color === 'green' ? 'text-green-400' : metric.color === 'amber' ? 'text-amber-300' : 'text-cyan-400'}`}>{metric.trend}</p>
+                  <div key={metric.label} className="bg-surface-raised rounded-xl p-4 border border-surface-border">
+                    <p className="text-xs text-text-muted mb-1">{metric.label}</p>
+                    <p className="text-xl font-black text-text-primary">{metric.value}</p>
+                    <p className={`text-[10px] font-mono mt-1 ${metric.color === 'green' ? 'text-success' : metric.color === 'amber' ? 'text-warning' : 'text-accent'}`}>{metric.trend}</p>
                   </div>
                 ))}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {recommendations.length > 0 ? recommendations.map((rec, i) => (
-                  <motion.div key={rec.title} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.15 }} className="bg-white/10 rounded-2xl p-4 border border-white/10">
-                    <h4 className="font-bold text-sm mb-2">{rec.title}</h4>
-                    <p className="text-cyan-200 text-xs mb-3">{rec.description}</p>
+                  <motion.div key={rec.title} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.15 }} className="bg-surface-raised rounded-2xl p-4 border border-surface-border">
+                    <h4 className="font-bold text-sm mb-2 text-text-primary">{rec.title}</h4>
+                    <p className="text-text-secondary text-xs mb-3">{rec.description}</p>
                     <div className="flex justify-between items-center">
                       <span className="text-[10px] text-green-400 font-bold">{rec.impact}</span>
-                      <span className="text-[10px] text-cyan-300 font-mono">Confidence: {rec.confidence}%</span>
+                      <span className="text-[10px] text-text-muted font-mono">Confidence: {rec.confidence}%</span>
                     </div>
                   </motion.div>
                 )) : (

@@ -46,21 +46,21 @@ const getStatusColor = (status: string) => {
   switch (status) {
     case 'completed':
     case 'normal':
-      return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+      return 'bg-success/10 text-success border-success/20';
     case 'scheduled':
-      return 'bg-blue-50 text-blue-700 border-blue-200';
+      return 'bg-accent/10 text-accent border-accent/20';
     case 'in_progress':
     case 'warning':
-      return 'bg-amber-50 text-amber-700 border-amber-200';
+      return 'bg-warning/10 text-warning border-warning/20';
     case 'critical':
     case 'overdue':
-      return 'bg-red-50 text-red-700 border-red-200';
+      return 'bg-danger/10 text-danger border-danger/20';
     case 'offline':
     case 'cancelled':
     case 'maintenance':
-      return 'bg-surface-50 text-surface-600 border-surface-200';
+      return 'bg-surface-sunken text-text-muted border-surface-border';
     default:
-      return 'bg-surface-50 text-surface-600 border-surface-200';
+      return 'bg-surface-sunken text-text-muted border-surface-border';
   }
 };
 
@@ -154,51 +154,51 @@ export const InspectionScheduling: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-surface-50 to-surface-100 pb-32">
+    <div className="min-h-screen bg-surface-base pb-32">
 
 
       <main className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8 space-y-8">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">
-          <div className="flex items-center gap-2 text-brand-500 font-bold text-[10px] uppercase tracking-[0.3em]">
+          <div className="flex items-center gap-2 text-accent font-bold text-[10px] uppercase tracking-[0.3em]">
             <ClipboardCheck className="w-4 h-4" />
             Inspection Operations
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-brand-900 tracking-tight">Inspection Scheduling</h1>
-          <p className="text-surface-500 max-w-3xl">
+          <h1 className="text-3xl md:text-4xl font-bold text-text-primary tracking-tight">Inspection Scheduling</h1>
+          <p className="text-text-muted max-w-3xl">
             Live inspection schedule and sensor status powered by backend inspection and monitoring routes.
           </p>
         </motion.div>
 
         {createMessage && (
-          <div className={`rounded-2xl px-4 py-3 text-sm border ${createInspection.error ? 'bg-red-50 text-red-700 border-red-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}`}>
+          <div className={`rounded-2xl px-4 py-3 text-sm border ${createInspection.error ? 'bg-danger/10 text-danger border-danger/20' : 'bg-success/10 text-success border-success/20'}`}>
             {createMessage}
           </div>
         )}
 
         <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4">
           <SMCard className="p-5">
-            <div className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2">Inspections</div>
-            <div className="text-2xl font-bold text-brand-900">{statsLoading ? '...' : stats?.inspections.total ?? 0}</div>
+            <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Inspections</div>
+            <div className="text-2xl font-bold text-text-primary">{statsLoading ? '...' : stats?.inspections.total ?? 0}</div>
           </SMCard>
           <SMCard className="p-5">
-            <div className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2">Scheduled</div>
-            <div className="text-2xl font-bold text-blue-600">{statsLoading ? '...' : stats?.inspections.scheduled ?? 0}</div>
+            <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Scheduled</div>
+            <div className="text-2xl font-bold text-accent">{statsLoading ? '...' : stats?.inspections.scheduled ?? 0}</div>
           </SMCard>
           <SMCard className="p-5">
-            <div className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2">In Progress</div>
-            <div className="text-2xl font-bold text-amber-600">{statsLoading ? '...' : stats?.inspections.inProgress ?? 0}</div>
+            <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">In Progress</div>
+            <div className="text-2xl font-bold text-warning">{statsLoading ? '...' : stats?.inspections.inProgress ?? 0}</div>
           </SMCard>
           <SMCard className="p-5">
-            <div className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2">Overdue</div>
-            <div className="text-2xl font-bold text-red-600">{statsLoading ? '...' : stats?.inspections.overdue ?? 0}</div>
+            <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Overdue</div>
+            <div className="text-2xl font-bold text-danger">{statsLoading ? '...' : stats?.inspections.overdue ?? 0}</div>
           </SMCard>
           <SMCard className="p-5">
-            <div className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2">Sensors</div>
-            <div className="text-2xl font-bold text-brand-900">{statsLoading ? '...' : stats?.sensors.total ?? 0}</div>
+            <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Sensors</div>
+            <div className="text-2xl font-bold text-text-primary">{statsLoading ? '...' : stats?.sensors.total ?? 0}</div>
           </SMCard>
           <SMCard className="p-5">
-            <div className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2">Critical Sensors</div>
-            <div className="text-2xl font-bold text-red-600">{statsLoading ? '...' : stats?.sensors.critical ?? 0}</div>
+            <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Critical Sensors</div>
+            <div className="text-2xl font-bold text-danger">{statsLoading ? '...' : stats?.sensors.critical ?? 0}</div>
           </SMCard>
         </div>
 
@@ -212,8 +212,8 @@ export const InspectionScheduling: React.FC = () => {
               onClick={() => setActiveTab(tab.id as InspectionTab)}
               className={`px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
                 activeTab === tab.id
-                  ? 'bg-brand-900 text-white shadow-lg'
-                  : 'bg-white text-brand-700 border border-surface-200 hover:bg-surface-50'
+                  ? 'bg-accent text-text-onAccent shadow-lg'
+                  : 'bg-surface-sunken text-text-secondary border border-surface-border hover:bg-surface-overlay'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -228,56 +228,56 @@ export const InspectionScheduling: React.FC = () => {
               <SMCard className="p-6 space-y-4">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                   <div>
-                    <h3 className="font-bold text-brand-900">Inspection Schedule</h3>
-                    <p className="text-sm text-surface-500">Live inspections from backend schedule table.</p>
+                    <h3 className="font-bold text-text-primary">Inspection Schedule</h3>
+                    <p className="text-sm text-text-muted">Live inspections from backend schedule table.</p>
                   </div>
                   <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />} onClick={() => setShowCreateForm((current) => !current)}>Schedule Inspection</SMButton>
                 </div>
 
                 {showCreateForm && (
-                  <form onSubmit={handleCreateInspection} className="space-y-3 p-4 rounded-2xl border border-surface-100 bg-surface-50">
-                    <input value={formData.title} onChange={(event) => setFormData((current) => ({ ...current, title: event.target.value }))} className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400" placeholder="Inspection title" required />
+                  <form onSubmit={handleCreateInspection} className="space-y-3 p-4 rounded-2xl border border-surface-border bg-surface-sunken">
+                    <input value={formData.title} onChange={(event) => setFormData((current) => ({ ...current, title: event.target.value }))} className="w-full px-4 py-3 rounded-xl border border-surface-border bg-surface-overlay text-sm outline-none focus:border-accent" placeholder="Inspection title" required />
                     <div className="grid grid-cols-2 gap-3">
-                      <select value={formData.inspectionType} onChange={(event) => setFormData((current) => ({ ...current, inspectionType: event.target.value as CreateInspectionPayload['inspectionType'] }))} className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400">
+                      <select value={formData.inspectionType} onChange={(event) => setFormData((current) => ({ ...current, inspectionType: event.target.value as CreateInspectionPayload['inspectionType'] }))} className="w-full px-4 py-3 rounded-xl border border-surface-border bg-surface-overlay text-sm outline-none focus:border-accent">
                         {INSPECTION_TYPES.map((type) => <option key={type.value} value={type.value}>{type.label}</option>)}
                       </select>
-                      <select value={formData.recurrence} onChange={(event) => setFormData((current) => ({ ...current, recurrence: event.target.value as CreateInspectionPayload['recurrence'] }))} className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400">
+                      <select value={formData.recurrence} onChange={(event) => setFormData((current) => ({ ...current, recurrence: event.target.value as CreateInspectionPayload['recurrence'] }))} className="w-full px-4 py-3 rounded-xl border border-surface-border bg-surface-overlay text-sm outline-none focus:border-accent">
                         {RECURRENCES.map((recurrence) => <option key={recurrence} value={recurrence}>{recurrence}</option>)}
                       </select>
                     </div>
-                    <textarea value={formData.description} onChange={(event) => setFormData((current) => ({ ...current, description: event.target.value }))} rows={2} className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400 resize-none" placeholder="Description" />
+                    <textarea value={formData.description} onChange={(event) => setFormData((current) => ({ ...current, description: event.target.value }))} rows={2} className="w-full px-4 py-3 rounded-xl border border-surface-border bg-surface-overlay text-sm outline-none focus:border-accent resize-none" placeholder="Description" />
                     <div className="grid grid-cols-2 gap-3">
-                      <input value={formData.zone} onChange={(event) => setFormData((current) => ({ ...current, zone: event.target.value }))} className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400" placeholder="Zone" />
-                      <input value={formData.location} onChange={(event) => setFormData((current) => ({ ...current, location: event.target.value }))} className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400" placeholder="Location" />
+                      <input value={formData.zone} onChange={(event) => setFormData((current) => ({ ...current, zone: event.target.value }))} className="w-full px-4 py-3 rounded-xl border border-surface-border bg-surface-overlay text-sm outline-none focus:border-accent" placeholder="Zone" />
+                      <input value={formData.location} onChange={(event) => setFormData((current) => ({ ...current, location: event.target.value }))} className="w-full px-4 py-3 rounded-xl border border-surface-border bg-surface-overlay text-sm outline-none focus:border-accent" placeholder="Location" />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                      <input value={formData.assignedTo} onChange={(event) => setFormData((current) => ({ ...current, assignedTo: event.target.value }))} className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400" placeholder="Assigned to" />
-                      <input value={formData.assigneeEmail} onChange={(event) => setFormData((current) => ({ ...current, assigneeEmail: event.target.value }))} className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400" placeholder="Assignee email" />
+                      <input value={formData.assignedTo} onChange={(event) => setFormData((current) => ({ ...current, assignedTo: event.target.value }))} className="w-full px-4 py-3 rounded-xl border border-surface-border bg-surface-overlay text-sm outline-none focus:border-accent" placeholder="Assigned to" />
+                      <input value={formData.assigneeEmail} onChange={(event) => setFormData((current) => ({ ...current, assigneeEmail: event.target.value }))} className="w-full px-4 py-3 rounded-xl border border-surface-border bg-surface-overlay text-sm outline-none focus:border-accent" placeholder="Assignee email" />
                     </div>
                     <div className="grid grid-cols-3 gap-3">
-                      <input type="date" value={formData.scheduledDate} onChange={(event) => setFormData((current) => ({ ...current, scheduledDate: event.target.value }))} className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400" required />
-                      <input type="time" value={formData.scheduledTime} onChange={(event) => setFormData((current) => ({ ...current, scheduledTime: event.target.value }))} className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400" />
-                      <input type="number" min={15} value={formData.duration} onChange={(event) => setFormData((current) => ({ ...current, duration: Number(event.target.value) }))} className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400" />
+                      <input type="date" value={formData.scheduledDate} onChange={(event) => setFormData((current) => ({ ...current, scheduledDate: event.target.value }))} className="w-full px-4 py-3 rounded-xl border border-surface-border bg-surface-overlay text-sm outline-none focus:border-accent" required />
+                      <input type="time" value={formData.scheduledTime} onChange={(event) => setFormData((current) => ({ ...current, scheduledTime: event.target.value }))} className="w-full px-4 py-3 rounded-xl border border-surface-border bg-surface-overlay text-sm outline-none focus:border-accent" />
+                      <input type="number" min={15} value={formData.duration} onChange={(event) => setFormData((current) => ({ ...current, duration: Number(event.target.value) }))} className="w-full px-4 py-3 rounded-xl border border-surface-border bg-surface-overlay text-sm outline-none focus:border-accent" />
                     </div>
                     <div className="flex gap-2">
                       {(['low', 'medium', 'high', 'critical'] as const).map((priority) => (
-                        <button key={priority} type="button" onClick={() => setFormData((current) => ({ ...current, priority }))} className={`flex-1 px-3 py-2 rounded-xl text-sm font-medium border ${formData.priority === priority ? getStatusColor(priority) : 'bg-white border-surface-200 text-surface-600'}`}>
+                        <button key={priority} type="button" onClick={() => setFormData((current) => ({ ...current, priority }))} className={`flex-1 px-3 py-2 rounded-xl text-sm font-medium border ${formData.priority === priority ? getStatusColor(priority) : 'bg-surface-overlay border-surface-border text-text-muted'}`}>
                           {priority}
                         </button>
                       ))}
                     </div>
                     <div className="space-y-2">
                       <div className="flex gap-2">
-                        <input value={checklistDraft} onChange={(event) => setChecklistDraft(event.target.value)} className="flex-1 px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400" placeholder="Checklist item" />
-                        <button type="button" onClick={addChecklistItem} className="px-4 py-3 rounded-xl bg-surface-900 text-white text-sm font-bold">Add</button>
+                        <input value={checklistDraft} onChange={(event) => setChecklistDraft(event.target.value)} className="flex-1 px-4 py-3 rounded-xl border border-surface-border bg-surface-overlay text-sm outline-none focus:border-accent" placeholder="Checklist item" />
+                        <button type="button" onClick={addChecklistItem} className="px-4 py-3 rounded-xl bg-accent text-text-onAccent text-sm font-bold">Add</button>
                       </div>
                       <div className="flex flex-wrap gap-2">
                         {(formData.checklist || []).map((item) => (
-                          <span key={item} className="px-3 py-1 rounded-full bg-white border border-surface-200 text-xs text-surface-600">{item}</span>
+                          <span key={item} className="px-3 py-1 rounded-full bg-surface-overlay border border-surface-border text-xs text-text-muted">{item}</span>
                         ))}
                       </div>
                     </div>
-                    <textarea value={formData.notes} onChange={(event) => setFormData((current) => ({ ...current, notes: event.target.value }))} rows={2} className="w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-sm outline-none focus:border-brand-400 resize-none" placeholder="Notes" />
+                    <textarea value={formData.notes} onChange={(event) => setFormData((current) => ({ ...current, notes: event.target.value }))} rows={2} className="w-full px-4 py-3 rounded-xl border border-surface-border bg-surface-overlay text-sm outline-none focus:border-accent resize-none" placeholder="Notes" />
                     <SMButton variant="primary" type="submit" className="w-full" loading={createInspection.loading} leftIcon={createInspection.loading ? <Clock className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}>
                       {createInspection.loading ? 'Scheduling...' : 'Save Inspection'}
                     </SMButton>
@@ -285,7 +285,7 @@ export const InspectionScheduling: React.FC = () => {
                 )}
 
                 <div className="flex flex-wrap items-center gap-3">
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-50 border border-surface-200 text-sm text-surface-500">
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-sunken border border-surface-border text-sm text-text-muted">
                     <Filter className="w-4 h-4" />
                     <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value as InspectionStatus)} className="bg-transparent outline-none">
                       <option value="all">All Statuses</option>
@@ -296,13 +296,13 @@ export const InspectionScheduling: React.FC = () => {
                       <option value="cancelled">Cancelled</option>
                     </select>
                   </div>
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-50 border border-surface-200 text-sm text-surface-500">
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-sunken border border-surface-border text-sm text-text-muted">
                     <select value={typeFilter} onChange={(event) => setTypeFilter(event.target.value as InspectionType)} className="bg-transparent outline-none">
                       <option value="all">All Types</option>
                       {INSPECTION_TYPES.map((type) => <option key={type.value} value={type.value}>{type.label}</option>)}
                     </select>
                   </div>
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-50 border border-surface-200 text-sm text-surface-500">
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-sunken border border-surface-border text-sm text-text-muted">
                     <select value={priorityFilter} onChange={(event) => setPriorityFilter(event.target.value as InspectionPriority)} className="bg-transparent outline-none">
                       <option value="all">All Priorities</option>
                       <option value="low">Low</option>
@@ -315,73 +315,73 @@ export const InspectionScheduling: React.FC = () => {
 
                 <div className="space-y-3 max-h-[760px] overflow-auto pr-1">
                   {scheduleItems.map((inspection) => (
-                    <button key={inspection.id} onClick={() => setSelectedInspectionId(inspection.id)} className={`w-full text-left p-4 rounded-2xl border transition-colors ${selectedInspectionId === inspection.id ? 'border-brand-300 bg-brand-50' : 'border-surface-100 bg-surface-50 hover:bg-surface-100'}`}>
+                    <button key={inspection.id} onClick={() => setSelectedInspectionId(inspection.id)} className={`w-full text-left p-4 rounded-2xl border transition-colors ${selectedInspectionId === inspection.id ? 'border-accent/30 bg-accent/5' : 'border-surface-border bg-surface-sunken hover:bg-surface-overlay'}`}>
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <div className="flex items-center gap-2 mb-1 flex-wrap">
                             <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${getStatusColor(inspection.status)}`}>{inspection.status.replace('_', ' ')}</span>
                             <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${getStatusColor(inspection.priority)}`}>{inspection.priority}</span>
                           </div>
-                          <h4 className="font-semibold text-brand-900">{inspection.title}</h4>
-                          <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-surface-500">
+                          <h4 className="font-semibold text-text-primary">{inspection.title}</h4>
+                          <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-text-muted">
                             <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{formatDate(inspection.scheduledDate)}</span>
                             <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{inspection.scheduledTime || 'N/A'}</span>
                             <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{inspection.zone || inspection.location || 'N/A'}</span>
                             <span className="flex items-center gap-1"><User className="w-3 h-3" />{inspection.assignedTo || 'Unassigned'}</span>
                           </div>
                         </div>
-                        <ChevronDown className="w-4 h-4 text-surface-400" />
+                        <ChevronDown className="w-4 h-4 text-text-muted" />
                       </div>
                     </button>
                   ))}
-                  {!scheduleLoading && scheduleItems.length === 0 && <div className="text-sm text-surface-500">No inspections found for current filters.</div>}
+                  {!scheduleLoading && scheduleItems.length === 0 && <div className="text-sm text-text-muted">No inspections found for current filters.</div>}
                 </div>
               </SMCard>
 
               <SMCard className="p-6 space-y-4">
                 <div>
-                  <h3 className="font-bold text-brand-900">Inspection Detail</h3>
-                  <p className="text-sm text-surface-500">Selected inspection detail from backend.</p>
+                  <h3 className="font-bold text-text-primary">Inspection Detail</h3>
+                  <p className="text-sm text-text-muted">Selected inspection detail from backend.</p>
                 </div>
-                {detailLoading && <div className="text-sm text-surface-500">Loading inspection detail...</div>}
-                {!selectedInspectionId && <div className="text-sm text-surface-500">Select an inspection to inspect live detail.</div>}
+                {detailLoading && <div className="text-sm text-text-muted">Loading inspection detail...</div>}
+                {!selectedInspectionId && <div className="text-sm text-text-muted">Select an inspection to inspect live detail.</div>}
                 {selectedInspection && (
                   <div className="space-y-4">
-                    <div className="p-4 rounded-2xl bg-surface-50 border border-surface-100">
+                    <div className="p-4 rounded-2xl bg-surface-sunken border border-surface-border">
                       <div className="flex items-center gap-2 mb-2 flex-wrap">
                         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${getStatusColor(selectedInspection.status)}`}>{selectedInspection.status.replace('_', ' ')}</span>
                         {selectedInspection.result && <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${getStatusColor(selectedInspection.result === 'fail' ? 'critical' : selectedInspection.result === 'partial' ? 'warning' : 'completed')}`}>{selectedInspection.result}</span>}
                       </div>
-                      <h4 className="text-xl font-bold text-brand-900">{selectedInspection.title}</h4>
+                      <h4 className="text-xl font-bold text-text-primary">{selectedInspection.title}</h4>
                       <div className="grid grid-cols-2 gap-3 mt-4 text-sm">
-                        <div className="p-3 rounded-xl bg-white border border-surface-100"><div className="text-[10px] font-bold text-surface-400 uppercase tracking-wider">Type</div><div className="font-semibold text-brand-900 mt-1">{selectedInspection.inspectionType}</div></div>
-                        <div className="p-3 rounded-xl bg-white border border-surface-100"><div className="text-[10px] font-bold text-surface-400 uppercase tracking-wider">Recurrence</div><div className="font-semibold text-brand-900 mt-1">{selectedInspection.recurrence}</div></div>
-                        <div className="p-3 rounded-xl bg-white border border-surface-100"><div className="text-[10px] font-bold text-surface-400 uppercase tracking-wider">Assigned To</div><div className="font-semibold text-brand-900 mt-1">{selectedInspection.assignedTo || 'Unassigned'}</div></div>
-                        <div className="p-3 rounded-xl bg-white border border-surface-100"><div className="text-[10px] font-bold text-surface-400 uppercase tracking-wider">Next Scheduled</div><div className="font-semibold text-brand-900 mt-1">{formatDate(selectedInspection.nextScheduledDate)}</div></div>
+                        <div className="p-3 rounded-xl bg-surface-overlay border border-surface-border"><div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Type</div><div className="font-semibold text-text-primary mt-1">{selectedInspection.inspectionType}</div></div>
+                        <div className="p-3 rounded-xl bg-surface-overlay border border-surface-border"><div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Recurrence</div><div className="font-semibold text-text-primary mt-1">{selectedInspection.recurrence}</div></div>
+                        <div className="p-3 rounded-xl bg-surface-overlay border border-surface-border"><div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Assigned To</div><div className="font-semibold text-text-primary mt-1">{selectedInspection.assignedTo || 'Unassigned'}</div></div>
+                        <div className="p-3 rounded-xl bg-surface-overlay border border-surface-border"><div className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Next Scheduled</div><div className="font-semibold text-text-primary mt-1">{formatDate(selectedInspection.nextScheduledDate)}</div></div>
                       </div>
-                      {selectedInspection.description && <p className="mt-4 text-sm text-surface-600">{selectedInspection.description}</p>}
+                      {selectedInspection.description && <p className="mt-4 text-sm text-text-secondary">{selectedInspection.description}</p>}
                     </div>
 
                     <div>
-                      <h4 className="font-bold text-brand-900 mb-3">Checklist</h4>
+                      <h4 className="font-bold text-text-primary mb-3">Checklist</h4>
                       <div className="space-y-2">
                         {(selectedInspection.checklist || []).map((item, index) => (
-                          <div key={`${item.item}-${index}`} className="flex items-center gap-3 p-3 rounded-xl bg-surface-50 border border-surface-100">
-                            {item.completed ? <CheckCircle2 className="w-4 h-4 text-emerald-600" /> : <ClipboardCheck className="w-4 h-4 text-surface-400" />}
-                            <span className="text-sm text-surface-700">{item.item}</span>
+                          <div key={`${item.item}-${index}`} className="flex items-center gap-3 p-3 rounded-xl bg-surface-sunken border border-surface-border">
+                            {item.completed ? <CheckCircle2 className="w-4 h-4 text-success" /> : <ClipboardCheck className="w-4 h-4 text-text-muted" />}
+                            <span className="text-sm text-text-secondary">{item.item}</span>
                           </div>
                         ))}
-                        {selectedInspection.checklist?.length === 0 && <div className="text-sm text-surface-500">No checklist configured.</div>}
+                        {selectedInspection.checklist?.length === 0 && <div className="text-sm text-text-muted">No checklist configured.</div>}
                       </div>
                     </div>
 
                     <div>
-                      <h4 className="font-bold text-brand-900 mb-3">Findings</h4>
+                      <h4 className="font-bold text-text-primary mb-3">Findings</h4>
                       <div className="space-y-2">
                         {(selectedInspection.findings || []).map((finding, index) => (
-                          <div key={`${finding}-${index}`} className="p-3 rounded-xl bg-red-50 border border-red-100 text-sm text-red-700">{finding}</div>
+                          <div key={`${finding}-${index}`} className="p-3 rounded-xl bg-danger/10 border border-danger/20 text-sm text-danger">{finding}</div>
                         ))}
-                        {selectedInspection.findings?.length === 0 && <div className="text-sm text-surface-500">No findings recorded.</div>}
+                        {selectedInspection.findings?.length === 0 && <div className="text-sm text-text-muted">No findings recorded.</div>}
                       </div>
                     </div>
                   </div>
@@ -394,10 +394,10 @@ export const InspectionScheduling: React.FC = () => {
             <motion.div key="sensors" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                 <div>
-                  <h3 className="font-bold text-brand-900">Sensor Status Board</h3>
-                  <p className="text-sm text-surface-500">Live sensor configuration list from inspection backend.</p>
+                  <h3 className="font-bold text-text-primary">Sensor Status Board</h3>
+                  <p className="text-sm text-text-muted">Live sensor configuration list from inspection backend.</p>
                 </div>
-                <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-50 border border-surface-200 text-sm text-surface-500">
+                <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-sunken border border-surface-border text-sm text-text-muted">
                   <ShieldAlert className="w-4 h-4" />
                   <select value={sensorStatusFilter} onChange={(event) => setSensorStatusFilter(event.target.value as typeof SENSOR_STATUSES[number] | 'all')} className="bg-transparent outline-none">
                     <option value="all">All Sensors</option>
@@ -410,29 +410,29 @@ export const InspectionScheduling: React.FC = () => {
                   <SMCard key={sensor.sensorId} className="p-5">
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div>
-                        <div className="text-xs font-bold text-brand-600 uppercase tracking-wider">{sensor.sensorId}</div>
-                        <h4 className="font-bold text-brand-900 mt-1">{sensor.name}</h4>
+                        <div className="text-xs font-bold text-accent uppercase tracking-wider">{sensor.sensorId}</div>
+                        <h4 className="font-bold text-text-primary mt-1">{sensor.name}</h4>
                       </div>
                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${getStatusColor(sensor.status)}`}>{sensor.status}</span>
                     </div>
-                    <div className="space-y-2 text-sm text-surface-600">
-                      <div className="flex items-center gap-2"><Radio className="w-4 h-4 text-surface-400" />{sensor.sensorType}</div>
-                      <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-surface-400" />{sensor.location}</div>
-                      <div className="flex items-center gap-2"><Calendar className="w-4 h-4 text-surface-400" />Calibration due: {formatDate(sensor.calibrationDue)}</div>
+                    <div className="space-y-2 text-sm text-text-secondary">
+                      <div className="flex items-center gap-2"><Radio className="w-4 h-4 text-text-muted" />{sensor.sensorType}</div>
+                      <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-text-muted" />{sensor.location}</div>
+                      <div className="flex items-center gap-2"><Calendar className="w-4 h-4 text-text-muted" />Calibration due: {formatDate(sensor.calibrationDue)}</div>
                     </div>
                     <div className="grid grid-cols-2 gap-3 mt-4 text-xs">
-                      <div className="p-3 rounded-xl bg-surface-50 border border-surface-100">
-                        <div className="text-surface-400 uppercase tracking-wider">Threshold Min</div>
-                        <div className="font-semibold text-brand-900 mt-1">{sensor.minThreshold ?? 'N/A'}</div>
+                      <div className="p-3 rounded-xl bg-surface-sunken border border-surface-border">
+                        <div className="text-text-muted uppercase tracking-wider">Threshold Min</div>
+                        <div className="font-semibold text-text-primary mt-1">{sensor.minThreshold ?? 'N/A'}</div>
                       </div>
-                      <div className="p-3 rounded-xl bg-surface-50 border border-surface-100">
-                        <div className="text-surface-400 uppercase tracking-wider">Threshold Max</div>
-                        <div className="font-semibold text-brand-900 mt-1">{sensor.maxThreshold ?? 'N/A'}</div>
+                      <div className="p-3 rounded-xl bg-surface-sunken border border-surface-border">
+                        <div className="text-text-muted uppercase tracking-wider">Threshold Max</div>
+                        <div className="font-semibold text-text-primary mt-1">{sensor.maxThreshold ?? 'N/A'}</div>
                       </div>
                     </div>
                   </SMCard>
                 ))}
-                {!sensorsLoading && sensorItems.length === 0 && <div className="text-sm text-surface-500">No sensors found for current filter.</div>}
+                {!sensorsLoading && sensorItems.length === 0 && <div className="text-sm text-text-muted">No sensors found for current filter.</div>}
               </div>
             </motion.div>
           )}

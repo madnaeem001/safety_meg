@@ -52,10 +52,10 @@ export function ReleasePlanningView({
     : releases[0] ?? null;
 
   const statusConfig = {
-    planning: { label: 'Planning', color: 'gray', icon: Target, bgColor: 'bg-gray-100 dark:bg-gray-700' },
-    in_progress: { label: 'In Progress', color: 'blue', icon: Clock, bgColor: 'bg-blue-100 dark:bg-blue-900/30' },
-    released: { label: 'Released', color: 'emerald', icon: CheckCircle, bgColor: 'bg-emerald-100 dark:bg-emerald-900/30' },
-    archived: { label: 'Archived', color: 'gray', icon: Package, bgColor: 'bg-gray-100 dark:bg-gray-700' }
+    planning: { label: 'Planning', color: 'gray', icon: Target, bgColor: 'bg-surface-sunken' },
+    in_progress: { label: 'In Progress', color: 'blue', icon: Clock, bgColor: 'bg-accent/10' },
+    released: { label: 'Released', color: 'emerald', icon: CheckCircle, bgColor: 'bg-success/10' },
+    archived: { label: 'Archived', color: 'gray', icon: Package, bgColor: 'bg-surface-sunken' }
   };
 
   const riskConfig = {
@@ -117,7 +117,7 @@ export function ReleasePlanningView({
         </div>
       )}
       {error && (
-        <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-700 dark:text-red-400 text-sm">
+        <div className="p-4 bg-danger/10 border border-danger/20 rounded-xl text-danger text-sm">
           Failed to load releases. Please try again.
         </div>
       )}
@@ -126,18 +126,18 @@ export function ReleasePlanningView({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-            <Package className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+          <div className="p-2 bg-accent/10 rounded-lg">
+            <Package className="w-6 h-6 text-accent" />
           </div>
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Release Planning</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Plan and track software releases</p>
+            <h2 className="text-xl font-semibold text-text-primary text-text-primary">Release Planning</h2>
+            <p className="text-sm text-text-muted">Plan and track software releases</p>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
           {/* View Toggle */}
-          <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+          <div className="flex bg-surface-sunken rounded-lg p-1">
             {[
               { id: 'timeline', label: 'Timeline', icon: GitBranch },
               { id: 'board', label: 'Board', icon: Layers },
@@ -148,8 +148,8 @@ export function ReleasePlanningView({
                 onClick={() => setView(id as 'timeline' | 'board' | 'details')}
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-colors ${
                   view === id
-                    ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                    ? 'bg-surface-raised text-text-primary text-text-primary shadow-sm'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -178,76 +178,76 @@ export function ReleasePlanningView({
         ].map(stat => (
           <div
             key={stat.label}
-            className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4"
+            className="bg-surface-raised rounded-xl border border-surface-border p-4"
           >
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</span>
+              <span className="text-sm text-text-muted">{stat.label}</span>
               <stat.icon className={`w-5 h-5 text-${stat.color}-500`} />
             </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{stat.value}</p>
+            <p className="text-2xl font-bold text-text-primary text-text-primary mt-1">{stat.value}</p>
           </div>
         ))}
       </div>
 
       {/* Add Release Modal */}
       {isAddingRelease && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Create New Release</h3>
+        <div className="bg-surface-raised rounded-xl border border-surface-border p-6">
+          <h3 className="text-lg font-semibold text-text-primary text-text-primary mb-4">Create New Release</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Version</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Version</label>
               <input
                 type="text"
                 value={newRelease.version}
                 onChange={(e) => setNewRelease(prev => ({ ...prev, version: e.target.value }))}
                 placeholder="e.g., v2.3.0"
-                className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                className="w-full px-3 py-2 border border-surface-border rounded-lg bg-surface-raised text-text-primary text-text-primary"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Release Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Release Name</label>
               <input
                 type="text"
                 value={newRelease.name}
                 onChange={(e) => setNewRelease(prev => ({ ...prev, name: e.target.value }))}
                 placeholder="e.g., Performance Update"
-                className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                className="w-full px-3 py-2 border border-surface-border rounded-lg bg-surface-raised text-text-primary text-text-primary"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Planned Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Planned Date</label>
               <input
                 type="date"
                 value={newRelease.plannedDate}
                 onChange={(e) => setNewRelease(prev => ({ ...prev, plannedDate: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                className="w-full px-3 py-2 border border-surface-border rounded-lg bg-surface-raised text-text-primary text-text-primary"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Owner</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Owner</label>
               <input
                 type="text"
                 value={newRelease.owner}
                 onChange={(e) => setNewRelease(prev => ({ ...prev, owner: e.target.value }))}
                 placeholder="Release manager name"
-                className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                className="w-full px-3 py-2 border border-surface-border rounded-lg bg-surface-raised text-text-primary text-text-primary"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
               <textarea
                 value={newRelease.description}
                 onChange={(e) => setNewRelease(prev => ({ ...prev, description: e.target.value }))}
                 placeholder="Release description..."
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white resize-none"
+                className="w-full px-3 py-2 border border-surface-border rounded-lg bg-surface-raised text-text-primary text-text-primary resize-none"
               />
             </div>
           </div>
           <div className="flex justify-end gap-2 mt-4">
             <button
               onClick={() => setIsAddingRelease(false)}
-              className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400"
+              className="px-4 py-2 text-sm text-text-secondary"
             >
               Cancel
             </button>
@@ -265,10 +265,10 @@ export function ReleasePlanningView({
       {/* Main Content */}
       {view === 'timeline' && (
         /* Timeline View */
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+        <div className="bg-surface-raised rounded-xl border border-surface-border p-6">
           <div className="relative">
             {/* Timeline Line */}
-            <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200 dark:bg-gray-700" />
+            <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-surface-sunken" />
 
             {/* Releases */}
             <div className="space-y-8">
@@ -285,8 +285,8 @@ export function ReleasePlanningView({
                     className="relative pl-12"
                   >
                     {/* Timeline Node */}
-                    <div className={`absolute left-0 top-0 w-8 h-8 rounded-full flex items-center justify-center ${config.bgColor} ring-4 ring-white dark:ring-gray-800`}>
-                      <config.icon className={`w-4 h-4 text-${config.color}-600 dark:text-${config.color}-400`} />
+                    <div className={`absolute left-0 top-0 w-8 h-8 rounded-full flex items-center justify-center ${config.bgColor}`}>
+                      <config.icon className={`w-4 h-4 text-${config.color}-600`} />
                     </div>
 
                     {/* Release Card */}
@@ -294,27 +294,27 @@ export function ReleasePlanningView({
                       onClick={() => setSelectedReleaseId(release.id)}
                       className={`p-4 rounded-xl border cursor-pointer transition-all ${
                         selectedReleaseId === release.id
-                          ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 ring-1 ring-indigo-500'
-                          : 'border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-700'
+                          ? 'border-accent bg-accent/10 ring-1 ring-indigo-500'
+                          : 'border-surface-border hover:border-accent/30'
                       }`}
                     >
                       <div className="flex items-start justify-between">
                         <div>
                           <div className="flex items-center gap-3 mb-1">
-                            <span className="text-lg font-bold text-indigo-600 dark:text-indigo-400">{release.version}</span>
-                            <span className={`px-2 py-0.5 text-xs font-medium rounded-full text-${config.color}-700 dark:text-${config.color}-300 ${config.bgColor}`}>
+                            <span className="text-lg font-bold text-accent">{release.version}</span>
+                            <span className={`px-2 py-0.5 text-xs font-medium rounded-full text-text-primary ${config.bgColor}`}>
                               {config.label}
                             </span>
                             <span className="text-sm">{risk.icon}</span>
                           </div>
-                          <h4 className="text-lg font-semibold text-gray-900 dark:text-white">{release.name}</h4>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{release.description}</p>
+                          <h4 className="text-lg font-semibold text-text-primary text-text-primary">{release.name}</h4>
+                          <p className="text-sm text-text-secondary mt-1">{release.description}</p>
                         </div>
-                        <ChevronRight className="w-5 h-5 text-gray-400" />
+                        <ChevronRight className="w-5 h-5 text-text-muted" />
                       </div>
 
                       {/* Progress & Meta */}
-                      <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                      <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-text-muted">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
                           {release.status === 'released' ? release.releaseDate : release.plannedDate}
@@ -332,10 +332,10 @@ export function ReleasePlanningView({
                       {/* Progress Bar */}
                       <div className="mt-3">
                         <div className="flex items-center justify-between text-sm mb-1">
-                          <span className="text-gray-600 dark:text-gray-400">Progress</span>
-                          <span className="font-medium text-gray-900 dark:text-white">{release.progress}%</span>
+                          <span className="text-text-secondary">Progress</span>
+                          <span className="font-medium text-text-primary text-text-primary">{release.progress}%</span>
                         </div>
-                        <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
                           <div
                             className={`h-full rounded-full transition-all ${
                               release.progress === 100 ? 'bg-emerald-500' : 'bg-indigo-500'
@@ -361,11 +361,11 @@ export function ReleasePlanningView({
             const statusReleases = releases.filter(r => r.status === status);
 
             return (
-              <div key={status} className="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-4">
+              <div key={status} className="bg-surface-sunken rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-4">
-                  <config.icon className={`w-5 h-5 text-${config.color}-600 dark:text-${config.color}-400`} />
-                  <span className="font-medium text-gray-900 dark:text-white">{config.label}</span>
-                  <span className="ml-auto px-2 py-0.5 text-xs font-medium bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
+                  <config.icon className={`w-5 h-5 text-${config.color}-600`} />
+                  <span className="font-medium text-text-primary text-text-primary">{config.label}</span>
+                  <span className="ml-auto px-2 py-0.5 text-xs font-medium bg-surface-sunken text-text-secondary rounded-full">
                     {statusReleases.length}
                   </span>
                 </div>
@@ -378,18 +378,18 @@ export function ReleasePlanningView({
                         setSelectedReleaseId(release.id);
                         setView('details');
                       }}
-                      className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-700 cursor-pointer hover:shadow-md transition-shadow"
+                      className="bg-surface-raised rounded-lg p-3 border border-surface-border cursor-pointer hover:shadow-md transition-shadow"
                     >
                       <div className="flex items-center gap-2 mb-2">
-                        <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">{release.version}</span>
+                        <span className="text-sm font-bold text-accent">{release.version}</span>
                         <span className="text-sm">{riskConfig[release.riskLevel].icon}</span>
                       </div>
-                      <h5 className="font-medium text-gray-900 dark:text-white text-sm">{release.name}</h5>
-                      <div className="flex items-center justify-between mt-2 text-xs text-gray-500 dark:text-gray-400">
+                      <h5 className="font-medium text-text-primary text-text-primary text-sm">{release.name}</h5>
+                      <div className="flex items-center justify-between mt-2 text-xs text-text-muted">
                         <span>{release.plannedDate || release.releaseDate}</span>
                         <span>{release.progress}%</span>
                       </div>
-                      <div className="h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full mt-2 overflow-hidden">
+                      <div className="h-1.5 bg-surface-sunken rounded-full mt-2 overflow-hidden">
                         <div
                           className={`h-full rounded-full ${release.progress === 100 ? 'bg-emerald-500' : 'bg-indigo-500'}`}
                           style={{ width: `${release.progress}%` }}
@@ -409,39 +409,39 @@ export function ReleasePlanningView({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Release Info */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+            <div className="bg-surface-raised rounded-xl border border-surface-border p-6">
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{selectedRelease.version}</span>
-                    <span className={`px-3 py-1 text-sm font-medium rounded-full ${statusConfig[selectedRelease.status].bgColor} text-${statusConfig[selectedRelease.status].color}-700 dark:text-${statusConfig[selectedRelease.status].color}-300`}>
+                    <span className="text-2xl font-bold text-accent">{selectedRelease.version}</span>
+                    <span className={`px-3 py-1 text-sm font-medium rounded-full ${statusConfig[selectedRelease.status].bgColor} text-text-primary`}>
                       {statusConfig[selectedRelease.status].label}
                     </span>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{selectedRelease.name}</h3>
+                  <h3 className="text-xl font-semibold text-text-primary text-text-primary">{selectedRelease.name}</h3>
                 </div>
                 <div className="flex gap-2">
-                  <button className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                  <button className="p-2 text-text-muted hover:text-text-primary rounded-lg hover:bg-surface-sunken">
                     <Settings className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => handleDeleteRelease(selectedRelease.id)}
-                    className="p-2 text-gray-400 hover:text-red-500 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20"
+                    className="p-2 text-text-muted hover:text-red-500 rounded-lg hover:bg-danger/10"
                   >
                     <Trash2 className="w-5 h-5" />
                   </button>
                 </div>
               </div>
 
-              <p className="text-gray-600 dark:text-gray-400 mb-6">{selectedRelease.description}</p>
+              <p className="text-text-secondary mb-6">{selectedRelease.description}</p>
 
               {/* Progress */}
               <div className="mb-6">
                 <div className="flex items-center justify-between text-sm mb-2">
-                  <span className="font-medium text-gray-700 dark:text-gray-300">Release Progress</span>
-                  <span className="font-bold text-gray-900 dark:text-white">{selectedRelease.progress}%</span>
+                  <span className="font-medium text-gray-700">Release Progress</span>
+                  <span className="font-bold text-text-primary text-text-primary">{selectedRelease.progress}%</span>
                 </div>
-                <div className="h-3 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                <div className="h-3 bg-surface-sunken rounded-full overflow-hidden">
                   <div
                     className={`h-full rounded-full ${selectedRelease.progress === 100 ? 'bg-emerald-500' : 'bg-indigo-500'}`}
                     style={{ width: `${selectedRelease.progress}%` }}
@@ -451,15 +451,15 @@ export function ReleasePlanningView({
 
               {/* Features */}
               <div className="mb-6">
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <h4 className="font-semibold text-text-primary text-text-primary mb-3 flex items-center gap-2">
                   <Tag className="w-4 h-4" />
                   Features ({selectedRelease.features.length})
                 </h4>
                 <div className="space-y-2">
                   {selectedRelease.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                    <div key={idx} className="flex items-center gap-3 p-2 bg-surface-sunken rounded-lg">
                       <CheckCircle className="w-4 h-4 text-emerald-500" />
-                      <span className="text-sm text-gray-700 dark:text-gray-300">{feature}</span>
+                      <span className="text-sm text-gray-700">{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -468,7 +468,7 @@ export function ReleasePlanningView({
               {/* Epics in Release */}
               {selectedRelease.epicIds.length > 0 && (
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                  <h4 className="font-semibold text-text-primary text-text-primary mb-3 flex items-center gap-2">
                     <Layers className="w-4 h-4" />
                     Epics
                   </h4>
@@ -478,11 +478,11 @@ export function ReleasePlanningView({
                       const completedTasks = epicTasks.filter(t => t.status === 'completed').length;
 
                       return (
-                        <div key={epic.id} className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
+                        <div key={epic.id} className="p-3 border border-surface-border rounded-lg">
                           <div className="flex items-center gap-3">
                             <div className="w-3 h-3 rounded" style={{ backgroundColor: epic.color }} />
-                            <span className="font-medium text-gray-900 dark:text-white">{epic.name}</span>
-                            <span className="text-sm text-gray-500 dark:text-gray-400 ml-auto">
+                            <span className="font-medium text-text-primary text-text-primary">{epic.name}</span>
+                            <span className="text-sm text-text-muted ml-auto">
                               {completedTasks}/{epicTasks.length} tasks
                             </span>
                           </div>
@@ -495,8 +495,8 @@ export function ReleasePlanningView({
             </div>
 
             {/* Status Actions */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Update Status</h4>
+            <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
+              <h4 className="font-semibold text-text-primary text-text-primary mb-3">Update Status</h4>
               <div className="flex flex-wrap gap-2">
                 {(['planning', 'in_progress', 'released', 'archived'] as ReleaseStatus[]).map(status => {
                   const config = statusConfig[status];
@@ -507,7 +507,7 @@ export function ReleasePlanningView({
                       className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-colors ${
                         selectedRelease.status === status
                           ? `${config.bgColor} ring-2 ring-${config.color}-500`
-                          : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          : 'bg-surface-sunken hover:bg-surface-sunken'
                       }`}
                     >
                       <config.icon className="w-4 h-4" />
@@ -522,26 +522,26 @@ export function ReleasePlanningView({
           {/* Sidebar */}
           <div className="space-y-4">
             {/* Release Info Card */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-4">Release Info</h4>
+            <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
+              <h4 className="font-semibold text-text-primary text-text-primary mb-4">Release Info</h4>
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-500 dark:text-gray-400">Planned Date</span>
-                  <span className="text-gray-900 dark:text-white">{selectedRelease.plannedDate}</span>
+                  <span className="text-text-muted">Planned Date</span>
+                  <span className="text-text-primary text-text-primary">{selectedRelease.plannedDate}</span>
                 </div>
                 {selectedRelease.releaseDate && (
                   <div className="flex justify-between">
-                    <span className="text-gray-500 dark:text-gray-400">Released Date</span>
-                    <span className="text-emerald-600 dark:text-emerald-400">{selectedRelease.releaseDate}</span>
+                    <span className="text-text-muted">Released Date</span>
+                    <span className="text-success">{selectedRelease.releaseDate}</span>
                   </div>
                 )}
                 <div className="flex justify-between">
-                  <span className="text-gray-500 dark:text-gray-400">Owner</span>
-                  <span className="text-gray-900 dark:text-white">{selectedRelease.owner}</span>
+                  <span className="text-text-muted">Owner</span>
+                  <span className="text-text-primary text-text-primary">{selectedRelease.owner}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-500 dark:text-gray-400">Risk Level</span>
-                  <span className={`flex items-center gap-1 text-${riskConfig[selectedRelease.riskLevel].color}-600 dark:text-${riskConfig[selectedRelease.riskLevel].color}-400`}>
+                  <span className="text-text-muted">Risk Level</span>
+                  <span className={`flex items-center gap-1 text-text-secondary`}>
                     {riskConfig[selectedRelease.riskLevel].icon} {riskConfig[selectedRelease.riskLevel].label}
                   </span>
                 </div>
@@ -550,16 +550,16 @@ export function ReleasePlanningView({
 
             {/* Dependencies */}
             {selectedRelease.dependencies.length > 0 && (
-              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+              <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
+                <h4 className="font-semibold text-text-primary text-text-primary mb-3 flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 text-amber-500" />
                   Dependencies
                 </h4>
                 <div className="space-y-2">
                   {selectedRelease.dependencies.map((dep, idx) => (
-                    <div key={idx} className="flex items-center gap-2 p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
-                      <Clock className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                      <span className="text-sm text-amber-800 dark:text-amber-200">{dep}</span>
+                    <div key={idx} className="flex items-center gap-2 p-2 bg-warning/10 rounded-lg">
+                      <Clock className="w-4 h-4 text-warning" />
+                      <span className="text-sm text-warning">{dep}</span>
                     </div>
                   ))}
                 </div>
@@ -568,11 +568,11 @@ export function ReleasePlanningView({
 
             {/* Changelog */}
             {selectedRelease.changelog.length > 0 && (
-              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Changelog</h4>
+              <div className="bg-surface-raised rounded-xl border border-surface-border p-4">
+                <h4 className="font-semibold text-text-primary text-text-primary mb-3">Changelog</h4>
                 <ul className="space-y-2">
                   {selectedRelease.changelog.map((change, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <li key={idx} className="flex items-start gap-2 text-sm text-text-secondary">
                       <span className="text-indigo-500 mt-1">•</span>
                       {change}
                     </li>

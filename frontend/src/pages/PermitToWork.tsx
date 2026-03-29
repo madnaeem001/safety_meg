@@ -518,7 +518,7 @@ export const PermitToWork = () => {
             ))}
 
             {!loading && permits.length === 0 && (
-              <div className="rounded-[2rem] border border-dashed border-surface-300 bg-white p-10 text-center shadow-soft">
+              <div className="rounded-[2rem] border border-dashed border-surface-border bg-surface-raised p-10 text-center shadow-soft">
                 <h3 className="text-lg font-semibold text-text-primary">No permits found</h3>
                 <p className="mt-2 text-sm text-text-muted">Adjust the filters or create the first live permit.</p>
               </div>
@@ -528,13 +528,13 @@ export const PermitToWork = () => {
           <div className="rounded-[2rem] border border-surface-border bg-surface-raised p-6 shadow-soft">
             {!selectedPermitId || !selectedPermit ? (
               <div className="flex min-h-[420px] flex-col items-center justify-center text-center">
-                <FileCheck className="h-12 w-12 text-surface-300" />
+                <FileCheck className="h-12 w-12 text-text-muted" />
                 <h3 className="mt-4 text-lg font-semibold text-text-primary">Select a permit</h3>
                 <p className="mt-2 max-w-sm text-sm text-text-muted">Choose a permit from the queue to review details, approvals, PPE, and status transitions.</p>
               </div>
             ) : (
               <div className="space-y-6">
-                <div className="flex flex-col gap-4 border-b border-surface-200 pb-5">
+                <div className="flex flex-col gap-4 border-b border-surface-border pb-5">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-muted">{selectedPermit.permitNumber}</p>
@@ -546,7 +546,7 @@ export const PermitToWork = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-3 text-sm text-surface-600 md:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-3 text-sm text-text-secondary md:grid-cols-2">
                     <div className="inline-flex items-center gap-2"><ClipboardCheck className="h-4 w-4 text-text-muted" />{getPermitTypeLabel(selectedPermit.permitType)}</div>
                     <div className="inline-flex items-center gap-2"><MapPin className="h-4 w-4 text-text-muted" />{selectedPermit.location}</div>
                     <div className="inline-flex items-center gap-2"><User className="h-4 w-4 text-text-muted" />{selectedPermit.requestedBy || 'Unassigned requester'}</div>
@@ -600,7 +600,7 @@ export const PermitToWork = () => {
                     <button
                       onClick={() => handleStatusUpdate(selectedPermit, 'closed')}
                       disabled={actionBusy}
-                      className="rounded-2xl bg-surface-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-surface-800 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="rounded-2xl bg-accent px-4 py-2.5 text-sm font-semibold text-text-onAccent transition hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       Close Permit
                     </button>
@@ -610,7 +610,7 @@ export const PermitToWork = () => {
                     <button
                       onClick={() => handleStatusUpdate(selectedPermit, 'cancelled')}
                       disabled={actionBusy}
-                      className="rounded-2xl border border-surface-200 px-4 py-2.5 text-sm font-semibold text-surface-700 transition hover:bg-surface-50 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="rounded-2xl border border-surface-border px-4 py-2.5 text-sm font-semibold text-text-secondary transition hover:bg-surface-overlay disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       Cancel Permit
                     </button>
@@ -626,14 +626,14 @@ export const PermitToWork = () => {
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <div className="rounded-[1.5rem] bg-surface-50 p-4">
+                  <div className="rounded-[1.5rem] bg-surface-raised p-4">
                     <h3 className="text-sm font-semibold text-text-primary">Description</h3>
-                    <p className="mt-2 text-sm leading-6 text-surface-600">{selectedPermit.description || 'No description provided.'}</p>
+                    <p className="mt-2 text-sm leading-6 text-text-secondary">{selectedPermit.description || 'No description provided.'}</p>
                   </div>
 
-                  <div className="rounded-[1.5rem] bg-surface-50 p-4">
+                  <div className="rounded-[1.5rem] bg-surface-raised p-4">
                     <h3 className="text-sm font-semibold text-text-primary">Emergency Procedure</h3>
-                    <p className="mt-2 text-sm leading-6 text-surface-600">{selectedPermit.emergencyProcedure || 'No emergency procedure recorded.'}</p>
+                    <p className="mt-2 text-sm leading-6 text-text-secondary">{selectedPermit.emergencyProcedure || 'No emergency procedure recorded.'}</p>
                   </div>
                 </div>
 
@@ -666,11 +666,11 @@ export const PermitToWork = () => {
                   </div>
                 </div>
 
-                <div className="rounded-[1.5rem] border border-surface-200 p-4">
+                <div className="rounded-[1.5rem] border border-surface-border p-4">
                   <h3 className="text-sm font-semibold text-text-primary">Approval Trail</h3>
                   <div className="mt-4 space-y-3">
                     {selectedPermit.approvals?.length ? selectedPermit.approvals.map((approval) => (
-                      <div key={approval.id} className="rounded-2xl bg-surface-50 p-4">
+                      <div key={approval.id} className="rounded-2xl bg-surface-raised p-4">
                         <div className="flex flex-wrap items-center justify-between gap-3">
                           <div>
                             <p className="text-sm font-semibold text-text-primary">{approval.approverName}</p>
@@ -678,13 +678,13 @@ export const PermitToWork = () => {
                           </div>
                           <SMBadge variant={approval.status === 'approved' ? 'success' : 'danger'}>{formatStatus(approval.status)}</SMBadge>
                         </div>
-                        {approval.comments && <p className="mt-3 text-sm text-surface-600">{approval.comments}</p>}
+                        {approval.comments && <p className="mt-3 text-sm text-text-secondary">{approval.comments}</p>}
                       </div>
                     )) : <p className="text-sm text-text-muted">No approvals recorded yet.</p>}
                   </div>
                 </div>
 
-                <div className="rounded-[1.5rem] bg-surface-50 p-4 text-sm text-surface-600">
+                <div className="rounded-[1.5rem] bg-surface-raised p-4 text-sm text-text-secondary">
                   <p><span className="font-semibold text-text-primary">Created:</span> {formatDate(selectedPermit.createdAt)}</p>
                   <p className="mt-2"><span className="font-semibold text-text-primary">Updated:</span> {detailLoading ? 'Refreshing...' : formatDate(selectedPermit.updatedAt)}</p>
                   <p className="mt-2"><span className="font-semibold text-text-primary">Notes:</span> {selectedPermit.notes || 'No notes recorded.'}</p>

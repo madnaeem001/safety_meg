@@ -40,9 +40,9 @@ const categoryIcons: Record<string, React.ReactNode> = {
 };
 
 const statusColors: Record<string, { bg: string; text: string; border: string }> = {
-  compliant: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200' },
-  warning: { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200' },
-  violation: { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200' },
+  compliant: { bg: 'bg-success/10', text: 'text-success', border: 'border-success/20' },
+  warning: { bg: 'bg-warning/10', text: 'text-warning', border: 'border-warning/20' },
+  violation: { bg: 'bg-danger/10', text: 'text-danger', border: 'border-danger/20' },
 };
 
 export const EPAReportingDashboard: React.FC = () => {
@@ -119,34 +119,34 @@ export const EPAReportingDashboard: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-surface-50 via-white to-surface-100">
+    <div className="min-h-screen bg-surface-base">
       {/* Header */}
-      <header className="sticky top-[72px] z-50 bg-white/80 backdrop-blur-xl border-b border-surface-200/60">
+      <header className="sticky top-[72px] z-50 bg-surface-overlay/80 backdrop-blur-xl border-b border-surface-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => navigate('/')}
-                className="p-2 hover:bg-surface-100 rounded-xl transition-colors"
+                className="p-2 hover:bg-surface-raised rounded-xl transition-colors"
               >
-                <ArrowLeft className="w-5 h-5 text-surface-600" />
+                <ArrowLeft className="w-5 h-5 text-text-secondary" />
               </button>
               <div>
-                <h1 className="text-xl font-semibold text-surface-900">EPA Reporting Dashboard</h1>
-                <p className="text-sm text-surface-500">Environmental compliance metrics and trends</p>
+                <h1 className="text-xl font-semibold text-text-primary">EPA Reporting Dashboard</h1>
+                <p className="text-sm text-text-muted">Environmental compliance metrics and trends</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
               <select
                 value={selectedPeriod}
                 onChange={(e) => setSelectedPeriod(e.target.value)}
-                className="px-3 py-2 bg-white border border-surface-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="px-3 py-2 bg-surface-raised border border-surface-border rounded-xl text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/40"
               >
                 {mockEPAReportData.map(d => (
                   <option key={d.period} value={d.period}>{d.period}</option>
                 ))}
               </select>
-              <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-brand-600 to-brand-700 text-white rounded-xl shadow-button hover:shadow-lg transition-all">
+              <button className="flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-xl hover:bg-accent/90 transition-all">
                 <Download className="w-4 h-4" />
                 Export Report
               </button>
@@ -161,11 +161,11 @@ export const EPAReportingDashboard: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-2xl p-5 border border-surface-100 shadow-soft"
+            className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-soft"
           >
             <div className="flex items-center justify-between mb-3">
-              <div className="p-2 bg-emerald-100 rounded-xl">
-                <Target className="w-5 h-5 text-emerald-600" />
+              <div className="p-2 bg-success/10 rounded-xl">
+                <Target className="w-5 h-5 text-success" />
               </div>
               {complianceChange !== null && (
                 <div className={`flex items-center gap-1 text-sm font-medium ${complianceChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
@@ -174,26 +174,26 @@ export const EPAReportingDashboard: React.FC = () => {
                 </div>
               )}
             </div>
-            <div className="text-3xl font-bold text-surface-900">{currentPeriodData.complianceRate}%</div>
-            <div className="text-sm text-surface-500 mt-1">Compliance Rate</div>
+            <div className="text-3xl font-bold text-text-primary">{currentPeriodData.complianceRate}%</div>
+            <div className="text-sm text-text-muted mt-1">Compliance Rate</div>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            className="bg-white rounded-2xl p-5 border border-surface-100 shadow-soft"
+            className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-soft"
           >
             <div className="flex items-center justify-between mb-3">
-              <div className="p-2 bg-blue-100 rounded-xl">
-                <BarChart3 className="w-5 h-5 text-blue-600" />
+              <div className="p-2 bg-accent/10 rounded-xl">
+                <BarChart3 className="w-5 h-5 text-accent" />
               </div>
             </div>
-            <div className="text-3xl font-bold text-surface-900">{currentPeriodData.inspectionsCompleted}</div>
-            <div className="text-sm text-surface-500 mt-1">Inspections Completed</div>
+            <div className="text-3xl font-bold text-text-primary">{currentPeriodData.inspectionsCompleted}</div>
+            <div className="text-sm text-text-muted mt-1">Inspections Completed</div>
             <div className="flex gap-2 mt-2">
-              <span className="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full">{currentPeriodData.inspectionsPassed} passed</span>
-              <span className="text-xs px-2 py-0.5 bg-red-100 text-red-700 rounded-full">{currentPeriodData.inspectionsFailed} failed</span>
+              <span className="text-xs px-2 py-0.5 bg-success/10 text-success rounded-full">{currentPeriodData.inspectionsPassed} passed</span>
+              <span className="text-xs px-2 py-0.5 bg-danger/10 text-danger rounded-full">{currentPeriodData.inspectionsFailed} failed</span>
             </div>
           </motion.div>
 
@@ -201,23 +201,23 @@ export const EPAReportingDashboard: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white rounded-2xl p-5 border border-surface-100 shadow-soft"
+            className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-soft"
           >
             <div className="flex items-center justify-between mb-3">
-              <div className="p-2 bg-amber-100 rounded-xl">
-                <AlertTriangle className="w-5 h-5 text-amber-600" />
+              <div className="p-2 bg-warning/10 rounded-xl">
+                <AlertTriangle className="w-5 h-5 text-warning" />
               </div>
             </div>
-            <div className="text-3xl font-bold text-surface-900">{currentPeriodData.issuesIdentified}</div>
-            <div className="text-sm text-surface-500 mt-1">Issues Identified</div>
+            <div className="text-3xl font-bold text-text-primary">{currentPeriodData.issuesIdentified}</div>
+            <div className="text-sm text-text-muted mt-1">Issues Identified</div>
             <div className="flex items-center gap-2 mt-2">
-              <div className="flex-1 h-2 bg-surface-100 rounded-full overflow-hidden">
+              <div className="flex-1 h-2 bg-surface-sunken rounded-full overflow-hidden">
                 <div 
-                  className="h-full bg-green-500 rounded-full"
+                  className="h-full bg-success rounded-full"
                   style={{ width: `${(currentPeriodData.issuesResolved / currentPeriodData.issuesIdentified) * 100}%` }}
                 />
               </div>
-              <span className="text-xs text-surface-600">{currentPeriodData.issuesResolved} resolved</span>
+              <span className="text-xs text-text-secondary">{currentPeriodData.issuesResolved} resolved</span>
             </div>
           </motion.div>
 
@@ -225,15 +225,15 @@ export const EPAReportingDashboard: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="bg-white rounded-2xl p-5 border border-surface-100 shadow-soft"
+            className="bg-surface-raised rounded-2xl p-5 border border-surface-border shadow-soft"
           >
             <div className="flex items-center justify-between mb-3">
-              <div className="p-2 bg-purple-100 rounded-xl">
-                <Activity className="w-5 h-5 text-purple-600" />
+              <div className="p-2 bg-purple-500/10 rounded-xl">
+                <Activity className="w-5 h-5 text-purple-400" />
               </div>
             </div>
-            <div className="text-3xl font-bold text-surface-900">{currentPeriodData.avgResolutionDays}</div>
-            <div className="text-sm text-surface-500 mt-1">Avg. Resolution (days)</div>
+            <div className="text-3xl font-bold text-text-primary">{currentPeriodData.avgResolutionDays}</div>
+            <div className="text-sm text-text-muted mt-1">Avg. Resolution (days)</div>
           </motion.div>
         </div>
 
@@ -243,10 +243,10 @@ export const EPAReportingDashboard: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft"
+            className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft"
           >
-            <h3 className="text-lg font-semibold text-surface-900 mb-4 flex items-center gap-2">
-              <PieChart className="w-5 h-5 text-brand-600" />
+            <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
+              <PieChart className="w-5 h-5 text-accent" />
               Real-Time Compliance
             </h3>
             <div className="relative w-40 h-40 mx-auto">
@@ -258,7 +258,7 @@ export const EPAReportingDashboard: React.FC = () => {
                   stroke="currentColor"
                   strokeWidth="12"
                   fill="none"
-                  className="text-surface-100"
+                  className="text-surface-raised"
                 />
                 <circle
                   cx="80"
@@ -273,22 +273,22 @@ export const EPAReportingDashboard: React.FC = () => {
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-3xl font-bold text-surface-900">{overallCompliance}%</span>
-                <span className="text-sm text-surface-500">Compliant</span>
+                <span className="text-3xl font-bold text-text-primary">{overallCompliance}%</span>
+                <span className="text-sm text-text-muted">Compliant</span>
               </div>
             </div>
             <div className="flex justify-center gap-4 mt-4">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-green-500" />
-                <span className="text-sm text-surface-600">{mockEPAMetrics.filter(m => m.status === 'compliant').length} OK</span>
+                <span className="text-sm text-text-secondary">{mockEPAMetrics.filter(m => m.status === 'compliant').length} OK</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-amber-500" />
-                <span className="text-sm text-surface-600">{mockEPAMetrics.filter(m => m.status === 'warning').length} Warn</span>
+                <div className="w-3 h-3 rounded-full bg-warning" />
+                <span className="text-sm text-text-secondary">{mockEPAMetrics.filter(m => m.status === 'warning').length} Warn</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500" />
-                <span className="text-sm text-surface-600">{mockEPAMetrics.filter(m => m.status === 'violation').length} Viol</span>
+                <div className="w-3 h-3 rounded-full bg-danger" />
+                <span className="text-sm text-text-secondary">{mockEPAMetrics.filter(m => m.status === 'violation').length} Viol</span>
               </div>
             </div>
           </motion.div>
@@ -298,10 +298,10 @@ export const EPAReportingDashboard: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
-            className="md:col-span-2 bg-white rounded-2xl p-6 border border-surface-100 shadow-soft"
+            className="md:col-span-2 bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft"
           >
-            <h3 className="text-lg font-semibold text-surface-900 mb-4 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-brand-600" />
+            <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-accent" />
               Quarterly Compliance Trend
             </h3>
             <div className="h-48 flex items-end gap-4 px-4">
@@ -313,8 +313,8 @@ export const EPAReportingDashboard: React.FC = () => {
                     }`}
                     style={{ height: `${(data.complianceRate / 100) * 150}px` }}
                   />
-                  <div className="text-xs text-surface-600 mt-2 font-medium">{data.period}</div>
-                  <div className="text-sm font-semibold text-surface-900">{data.complianceRate}%</div>
+                  <div className="text-xs text-text-secondary mt-2 font-medium">{data.period}</div>
+                  <div className="text-sm font-semibold text-text-primary">{data.complianceRate}%</div>
                 </div>
               ))}
             </div>
@@ -326,16 +326,16 @@ export const EPAReportingDashboard: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white rounded-2xl border border-surface-100 shadow-soft overflow-hidden"
+          className="bg-surface-raised rounded-2xl border border-surface-border shadow-soft overflow-hidden"
         >
-          <div className="p-4 border-b border-surface-100 flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-surface-900">Environmental Metrics</h3>
+          <div className="p-4 border-b border-surface-border flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-text-primary">Environmental Metrics</h3>
             <div className="flex items-center gap-2">
-              <Filter className="w-4 h-4 text-surface-500" />
+              <Filter className="w-4 h-4 text-text-muted" />
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="px-3 py-1.5 bg-surface-50 border border-surface-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="px-3 py-1.5 bg-surface-sunken border border-surface-border rounded-lg text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/40"
               >
                 <option value="all">All Categories</option>
                 <option value="Air Quality">Air Quality</option>
@@ -344,14 +344,14 @@ export const EPAReportingDashboard: React.FC = () => {
               </select>
             </div>
           </div>
-          <div className="divide-y divide-surface-100">
+          <div className="divide-y divide-surface-border/50">
             {Object.entries(metricsByCategory).filter(([cat]) => categoryFilter === 'all' || cat === categoryFilter).map(([category, metrics]) => (
               <div key={category} className="p-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="p-1.5 bg-brand-100 rounded-lg text-brand-600">
+                  <div className="p-1.5 bg-accent/10 rounded-lg text-accent">
                     {categoryIcons[category]}
                   </div>
-                  <h4 className="font-medium text-surface-900">{category}</h4>
+                  <h4 className="font-medium text-text-primary">{category}</h4>
                 </div>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {metrics.map(metric => {
@@ -360,20 +360,20 @@ export const EPAReportingDashboard: React.FC = () => {
                     return (
                       <div key={metric.metric} className={`p-4 rounded-xl border ${colors.bg} ${colors.border}`}>
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm font-medium text-surface-700">{metric.metric}</span>
+                          <span className="text-sm font-medium text-text-primary">{metric.metric}</span>
                           <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${colors.text} ${colors.bg}`}>
                             {metric.status === 'compliant' ? 'OK' : metric.status === 'warning' ? 'Warning' : 'Violation'}
                           </span>
                         </div>
-                        <div className="text-2xl font-bold text-surface-900">
-                          {metric.value} <span className="text-sm font-normal text-surface-500">{metric.unit}</span>
+                        <div className="text-2xl font-bold text-text-primary">
+                          {metric.value} <span className="text-sm font-normal text-text-muted">{metric.unit}</span>
                         </div>
                         <div className="mt-2">
-                          <div className="flex justify-between text-xs text-surface-500 mb-1">
+                          <div className="flex justify-between text-xs text-text-muted mb-1">
                             <span>0</span>
                             <span>Limit: {metric.limit} {metric.unit}</span>
                           </div>
-                          <div className="h-2 bg-white rounded-full overflow-hidden">
+                          <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
                             <div 
                               className={`h-full rounded-full transition-all ${
                                 metric.status === 'compliant' ? 'bg-green-500' :
@@ -383,7 +383,7 @@ export const EPAReportingDashboard: React.FC = () => {
                             />
                           </div>
                         </div>
-                        <div className="text-xs text-surface-500 mt-2">
+                        <div className="text-xs text-text-muted mt-2">
                           Updated: {new Date(metric.lastUpdated).toLocaleDateString()}
                         </div>
                       </div>
@@ -400,42 +400,42 @@ export const EPAReportingDashboard: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
-          className="bg-white rounded-2xl p-6 border border-surface-100 shadow-soft"
+          className="bg-surface-raised rounded-2xl p-6 border border-surface-border shadow-soft"
         >
-          <h3 className="text-lg font-semibold text-surface-900 mb-4 flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-brand-600" />
+          <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
+            <Calendar className="w-5 h-5 text-accent" />
             Upcoming Environmental Inspections
           </h3>
           <div className="space-y-3">
             {epaInspections.filter(i => i.status === 'scheduled').slice(0, 5).map(inspection => (
-              <div key={inspection.id} className="flex items-center justify-between p-3 bg-surface-50 rounded-xl">
+              <div key={inspection.id} className="flex items-center justify-between p-3 bg-surface-sunken rounded-xl">
                 <div className="flex items-center gap-3">
                   <div className={`w-2 h-10 rounded-full ${
                     ((inspection as any).type ?? (inspection as any).inspectionType) === 'epa' ? 'bg-emerald-500' :
                     ((inspection as any).type ?? (inspection as any).inspectionType) === 'swppp' ? 'bg-blue-500' : 'bg-cyan-500'
                   }`} />
                   <div>
-                    <div className="font-medium text-surface-900">{inspection.title}</div>
-                    <div className="text-sm text-surface-500">{inspection.zone} • {String((inspection as any).assignedTo || 'Unassigned')}</div>
+                    <div className="font-medium text-text-primary">{inspection.title}</div>
+                    <div className="text-sm text-text-muted">{inspection.zone} • {String((inspection as any).assignedTo || 'Unassigned')}</div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm font-medium text-surface-900">
+                  <div className="text-sm font-medium text-text-primary">
                     {new Date(inspection.scheduledDate).toLocaleDateString()}
                   </div>
-                  <div className="text-xs text-surface-500">{inspection.scheduledTime}</div>
+                  <div className="text-xs text-text-muted">{inspection.scheduledTime}</div>
                 </div>
               </div>
             ))}
             {epaInspections.filter(i => i.status === 'scheduled').length === 0 && (
-              <div className="text-center py-8 text-surface-500">
+              <div className="text-center py-8 text-text-muted">
                 No upcoming environmental inspections scheduled.
               </div>
             )}
           </div>
           <button
             onClick={() => navigate('/inspection-scheduling')}
-            className="w-full mt-4 py-2.5 text-brand-600 font-medium hover:bg-brand-50 rounded-xl transition-colors"
+            className="w-full mt-4 py-2.5 text-accent font-medium hover:bg-accent/10 rounded-xl transition-colors"
           >
             View All Scheduled Inspections
           </button>

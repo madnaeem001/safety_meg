@@ -23,17 +23,17 @@ interface SprintPlanningViewProps {
 }
 
 const ISSUE_TYPE_ICONS: Record<IssueType, { icon: typeof Target; color: string }> = {
-  epic: { icon: Zap, color: 'text-purple-600 bg-purple-50' },
-  story: { icon: BookOpen, color: 'text-green-600 bg-green-50' },
-  task: { icon: CheckSquare, color: 'text-blue-600 bg-blue-50' },
-  subtask: { icon: Layers, color: 'text-cyan-600 bg-cyan-50' },
-  bug: { icon: Bug, color: 'text-red-600 bg-red-50' },
+  epic: { icon: Zap, color: 'text-purple-600 bg-purple-500/10' },
+  story: { icon: BookOpen, color: 'text-success bg-success/10' },
+  task: { icon: CheckSquare, color: 'text-accent bg-accent/10' },
+  subtask: { icon: Layers, color: 'text-cyan-400 bg-cyan-500/10' },
+  bug: { icon: Bug, color: 'text-danger bg-danger/10' },
 };
 
 const SPRINT_STATUS_COLORS = {
-  future: 'bg-slate-100 text-slate-600 border-slate-200',
-  active: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-  completed: 'bg-blue-100 text-blue-700 border-blue-200',
+  future: 'bg-surface-sunken text-text-muted border-surface-border',
+  active: 'bg-success/10 text-success border-success/20',
+  completed: 'bg-accent/10 text-accent border-accent/20',
 };
 
 const SprintTaskCard: React.FC<{
@@ -52,18 +52,18 @@ const SprintTaskCard: React.FC<{
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       onClick={() => onOpen(task)}
-      className="bg-white p-3 rounded-xl border border-surface-100 hover:border-brand-200 hover:shadow-md transition-all cursor-pointer group"
+      className="bg-surface-raised p-3 rounded-xl border border-surface-border hover:border-brand-200 hover:shadow-md transition-all cursor-pointer group"
     >
       <div className="flex items-start gap-2">
-        <div className="drag-handle cursor-grab active:cursor-grabbing p-1 rounded hover:bg-surface-50 touch-none opacity-0 group-hover:opacity-100 transition-opacity">
-          <GripVertical className="w-3.5 h-3.5 text-surface-300" />
+        <div className="drag-handle cursor-grab active:cursor-grabbing p-1 rounded hover:bg-surface-base touch-none opacity-0 group-hover:opacity-100 transition-opacity">
+          <GripVertical className="w-3.5 h-3.5 text-text-muted" />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <span className={`p-1 rounded ${ISSUE_TYPE_ICONS[issueType]?.color || 'text-blue-600 bg-blue-50'}`}>
+            <span className={`p-1 rounded ${ISSUE_TYPE_ICONS[issueType]?.color || 'text-accent bg-accent/10'}`}>
               <IssueIcon className="w-3 h-3" />
             </span>
-            <span className="text-[10px] font-mono text-surface-500">{task.key || task.id}</span>
+            <span className="text-[10px] font-mono text-text-muted">{task.key || task.id}</span>
             {epic && (
               <span 
                 className="text-[9px] px-1.5 py-0.5 rounded-full font-medium"
@@ -73,21 +73,21 @@ const SprintTaskCard: React.FC<{
               </span>
             )}
           </div>
-          <h4 className="text-sm font-medium text-brand-900 line-clamp-1">{task.title}</h4>
+          <h4 className="text-sm font-medium text-text-primary line-clamp-1">{task.title}</h4>
           <div className="flex items-center gap-3 mt-2 text-[10px]">
             {task.storyPoints && (
-              <span className="px-1.5 py-0.5 bg-indigo-50 text-indigo-600 rounded font-bold">
+              <span className="px-1.5 py-0.5 bg-accent/10 text-accent rounded font-bold">
                 {task.storyPoints} SP
               </span>
             )}
-            <div className="flex items-center gap-1 text-surface-400">
+            <div className="flex items-center gap-1 text-text-muted">
               <User className="w-3 h-3" />
               {task.assignee.split(' ')[0]}
             </div>
             <span className={`px-1.5 py-0.5 rounded text-[9px] font-medium ${
-              task.status === 'completed' ? 'bg-emerald-50 text-emerald-600' :
-              task.status === 'in_progress' ? 'bg-blue-50 text-blue-600' :
-              'bg-surface-50 text-surface-500'
+              task.status === 'completed' ? 'bg-success/10 text-success' :
+              task.status === 'in_progress' ? 'bg-accent/10 text-accent' :
+              'bg-surface-base text-text-muted'
             }`}>
               {task.status.replace('_', ' ')}
             </span>
@@ -117,7 +117,7 @@ const SprintColumn: React.FC<{
   const daysRemaining = Math.max(0, Math.ceil((endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)));
 
   return (
-    <div className="bg-surface-50/50 rounded-2xl border border-surface-100 p-4 min-w-[320px] flex-shrink-0">
+    <div className="bg-surface-sunken/50 rounded-2xl border border-surface-border p-4 min-w-[320px] flex-shrink-0">
       <div className="flex items-start justify-between mb-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
@@ -127,37 +127,37 @@ const SprintColumn: React.FC<{
               {sprint.status.toUpperCase()}
             </span>
           </div>
-          <h3 className="font-semibold text-brand-900 text-sm">{sprint.name}</h3>
-          <p className="text-[10px] text-surface-500 mt-0.5">{sprint.goal}</p>
+          <h3 className="font-semibold text-text-primary text-sm">{sprint.name}</h3>
+          <p className="text-[10px] text-text-muted mt-0.5">{sprint.goal}</p>
         </div>
       </div>
 
       {/* Sprint stats */}
       <div className="grid grid-cols-3 gap-2 mb-4">
-        <div className="bg-white p-2 rounded-lg border border-surface-100 text-center">
-          <div className="text-lg font-bold text-brand-700">{tasks.length}</div>
-          <div className="text-[9px] text-surface-500 uppercase">Issues</div>
+        <div className="bg-surface-raised p-2 rounded-lg border border-surface-border text-center">
+          <div className="text-lg font-bold text-accent">{tasks.length}</div>
+          <div className="text-[9px] text-text-muted uppercase">Issues</div>
         </div>
-        <div className="bg-white p-2 rounded-lg border border-surface-100 text-center">
-          <div className="text-lg font-bold text-indigo-600">{totalPoints}</div>
-          <div className="text-[9px] text-surface-500 uppercase">Points</div>
+        <div className="bg-surface-raised p-2 rounded-lg border border-surface-border text-center">
+          <div className="text-lg font-bold text-accent">{totalPoints}</div>
+          <div className="text-[9px] text-text-muted uppercase">Points</div>
         </div>
-        <div className="bg-white p-2 rounded-lg border border-surface-100 text-center">
-          <div className="text-lg font-bold text-emerald-600">{progressPercent}%</div>
-          <div className="text-[9px] text-surface-500 uppercase">Done</div>
+        <div className="bg-surface-raised p-2 rounded-lg border border-surface-border text-center">
+          <div className="text-lg font-bold text-success">{progressPercent}%</div>
+          <div className="text-[9px] text-text-muted uppercase">Done</div>
         </div>
       </div>
 
       {/* Progress bar */}
       <div className="mb-4">
         <div className="flex justify-between text-[10px] mb-1">
-          <span className="text-surface-500">{completedPoints}/{totalPoints} points</span>
-          <span className="text-surface-500 flex items-center gap-1">
+          <span className="text-text-muted">{completedPoints}/{totalPoints} points</span>
+          <span className="text-text-muted flex items-center gap-1">
             <Clock className="w-3 h-3" />
             {daysRemaining} days left
           </span>
         </div>
-        <div className="h-2 bg-surface-200 rounded-full overflow-hidden">
+        <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${progressPercent}%` }}
@@ -168,7 +168,7 @@ const SprintColumn: React.FC<{
       </div>
 
       {/* Sprint dates */}
-      <div className="flex items-center gap-2 text-[10px] text-surface-500 mb-4 bg-white p-2 rounded-lg border border-surface-100">
+      <div className="flex items-center gap-2 text-[10px] text-text-muted mb-4 bg-surface-raised p-2 rounded-lg border border-surface-border">
         <Calendar className="w-3.5 h-3.5" />
         <span>{sprint.startDate}</span>
         <ArrowRight className="w-3 h-3" />
@@ -196,7 +196,7 @@ const SprintColumn: React.FC<{
       </Reorder.Group>
 
       {tasks.length === 0 && (
-        <div className="text-center py-8 text-surface-400 text-sm">
+        <div className="text-center py-8 text-text-muted text-sm">
           No issues in this sprint
         </div>
       )}
@@ -275,9 +275,9 @@ export const SprintPlanningView: React.FC<SprintPlanningViewProps> = ({
 
   if (sprintsError) {
     return (
-      <div className="flex items-center gap-3 p-6 bg-red-50 border border-red-200 rounded-2xl">
+      <div className="flex items-center gap-3 p-6 bg-danger/10 border border-danger/20 rounded-2xl">
         <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0" />
-        <p className="text-sm text-red-700">Failed to load sprints. Please try again.</p>
+        <p className="text-sm text-danger">Failed to load sprints. Please try again.</p>
       </div>
     );
   }
@@ -288,8 +288,8 @@ export const SprintPlanningView: React.FC<SprintPlanningViewProps> = ({
       <SMCard className="p-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div>
-            <h3 className="text-xl font-bold text-brand-900">Sprint Planning</h3>
-            <p className="text-sm text-surface-500 mt-1">Plan and manage your sprint cycles</p>
+            <h3 className="text-xl font-bold text-text-primary">Sprint Planning</h3>
+            <p className="text-sm text-text-muted mt-1">Plan and manage your sprint cycles</p>
           </div>
           
           {/* Sprint selector */}
@@ -297,7 +297,7 @@ export const SprintPlanningView: React.FC<SprintPlanningViewProps> = ({
             <select
               value={selectedSprint}
               onChange={(e) => setSelectedSprint(e.target.value)}
-              className="px-4 py-2 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm bg-white"
+              className="px-4 py-2 rounded-xl border border-surface-border focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-all text-sm bg-surface-raised"
             >
               <option value="all">All Sprints</option>
               {sprints.map(sprint => (
@@ -313,32 +313,32 @@ export const SprintPlanningView: React.FC<SprintPlanningViewProps> = ({
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-gradient-to-br from-brand-50 to-brand-100/50 p-4 rounded-xl border border-brand-100">
             <div className="flex items-center gap-2 mb-2">
-              <Target className="w-5 h-5 text-brand-600" />
-              <span className="text-[10px] font-bold text-brand-600 uppercase tracking-wider">Active Sprint</span>
+              <Target className="w-5 h-5 text-accent" />
+              <span className="text-[10px] font-bold text-accent uppercase tracking-wider">Active Sprint</span>
             </div>
-            <div className="text-lg font-bold text-brand-900">{activeSprint?.name || 'None'}</div>
+            <div className="text-lg font-bold text-text-primary">{activeSprint?.name || 'None'}</div>
           </div>
           
           <div className="bg-gradient-to-br from-indigo-50 to-indigo-100/50 p-4 rounded-xl border border-indigo-100">
             <div className="flex items-center gap-2 mb-2">
-              <TrendingUp className="w-5 h-5 text-indigo-600" />
-              <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-wider">Avg Velocity</span>
+              <TrendingUp className="w-5 h-5 text-accent" />
+              <span className="text-[10px] font-bold text-accent uppercase tracking-wider">Avg Velocity</span>
             </div>
             <div className="text-lg font-bold text-indigo-900">{averageVelocity} pts/sprint</div>
           </div>
           
           <div className="bg-gradient-to-br from-emerald-50 to-emerald-100/50 p-4 rounded-xl border border-emerald-100">
             <div className="flex items-center gap-2 mb-2">
-              <Check className="w-5 h-5 text-emerald-600" />
-              <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">Completed</span>
+              <Check className="w-5 h-5 text-success" />
+              <span className="text-[10px] font-bold text-success uppercase tracking-wider">Completed</span>
             </div>
             <div className="text-lg font-bold text-emerald-900">{completedSprints.length} sprints</div>
           </div>
           
           <div className="bg-gradient-to-br from-amber-50 to-amber-100/50 p-4 rounded-xl border border-amber-100">
             <div className="flex items-center gap-2 mb-2">
-              <BarChart3 className="w-5 h-5 text-amber-600" />
-              <span className="text-[10px] font-bold text-amber-600 uppercase tracking-wider">Backlog</span>
+              <BarChart3 className="w-5 h-5 text-warning" />
+              <span className="text-[10px] font-bold text-warning uppercase tracking-wider">Backlog</span>
             </div>
             <div className="text-lg font-bold text-amber-900">{tasksBySprint.backlog?.length || 0} items</div>
           </div>

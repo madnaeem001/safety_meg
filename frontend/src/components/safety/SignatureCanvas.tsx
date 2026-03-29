@@ -163,18 +163,18 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
     <motion.div 
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl border border-surface-200 p-4 space-y-4"
+      className="bg-surface-raised rounded-2xl border border-surface-border p-4 space-y-4"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Pen className="w-5 h-5 text-brand-600" />
-          <span className="font-semibold text-brand-900">
+          <Pen className="w-5 h-5 text-accent" />
+          <span className="font-semibold text-text-primary">
             {label}
             {required && <span className="text-red-500 ml-1">*</span>}
           </span>
         </div>
         {signatureConfirmed && (
-          <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full flex items-center gap-1">
+          <span className="px-3 py-1 bg-success/10 text-success text-xs font-semibold rounded-full flex items-center gap-1">
             <Check className="w-3 h-3" />
             Signed
           </span>
@@ -184,24 +184,24 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
       {/* Signer Info */}
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="text-xs font-medium text-surface-500">Name</label>
+          <label className="text-xs font-medium text-text-muted">Name</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Full Name"
-            className="w-full px-3 py-2 bg-surface-50 border border-surface-200 rounded-lg text-sm"
+            className="w-full px-3 py-2 bg-surface-sunken border border-surface-border rounded-lg text-sm"
             disabled={signatureConfirmed}
           />
         </div>
         <div>
-          <label className="text-xs font-medium text-surface-500">Title/Position</label>
+          <label className="text-xs font-medium text-text-muted">Title/Position</label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Job Title"
-            className="w-full px-3 py-2 bg-surface-50 border border-surface-200 rounded-lg text-sm"
+            className="w-full px-3 py-2 bg-surface-sunken border border-surface-border rounded-lg text-sm"
             disabled={signatureConfirmed}
           />
         </div>
@@ -209,7 +209,7 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
 
       {/* Canvas */}
       <div className={`relative border-2 rounded-xl overflow-hidden ${
-        signatureConfirmed ? 'border-emerald-300 bg-emerald-50/30' : 'border-surface-200 bg-white'
+        signatureConfirmed ? 'border-success/50 bg-success/5' : 'border-surface-border bg-surface-sunken'
       }`}>
         <canvas
           ref={canvasRef}
@@ -225,13 +225,13 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
         />
         {!hasSignature && !signatureConfirmed && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span className="text-surface-400 text-sm">Sign here</span>
+            <span className="text-text-muted text-sm">Sign here</span>
           </div>
         )}
       </div>
 
       {/* Timestamp */}
-      <div className="flex items-center justify-between text-xs text-surface-500">
+      <div className="flex items-center justify-between text-xs text-text-muted">
         <span>Date: {new Date().toLocaleDateString()}</span>
         <span>Time: {new Date().toLocaleTimeString()}</span>
       </div>
@@ -243,7 +243,7 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
             <button
               type="button"
               onClick={clearCanvas}
-              className="flex-1 px-4 py-2 bg-surface-100 text-surface-600 rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:bg-surface-200 transition-colors"
+              className="flex-1 px-4 py-2 bg-surface-sunken text-text-secondary rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:bg-surface-raised transition-colors"
             >
               <RotateCcw className="w-4 h-4" />
               Clear
@@ -252,7 +252,7 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
               type="button"
               onClick={confirmSignature}
               disabled={!hasSignature || !name}
-              className="flex-1 px-4 py-2 bg-brand-600 text-white rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-4 py-2 bg-accent text-white rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:bg-accent/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Check className="w-4 h-4" />
               Confirm
@@ -263,7 +263,7 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
             <button
               type="button"
               onClick={clearCanvas}
-              className="flex-1 px-4 py-2 bg-red-100 text-red-600 rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:bg-red-200 transition-colors"
+              className="flex-1 px-4 py-2 bg-danger/10 text-danger rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:bg-danger/20 transition-colors"
             >
               <X className="w-4 h-4" />
               Re-sign
@@ -271,7 +271,7 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
             <button
               type="button"
               onClick={downloadSignature}
-              className="flex-1 px-4 py-2 bg-surface-100 text-surface-600 rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:bg-surface-200 transition-colors"
+              className="flex-1 px-4 py-2 bg-surface-sunken text-text-secondary rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:bg-surface-raised transition-colors"
             >
               <Download className="w-4 h-4" />
               Download
@@ -323,8 +323,8 @@ export const MultiSignaturePanel: React.FC<MultiSignaturePanelProps> = ({
 
   return (
     <div className="space-y-4">
-      <h3 className="font-bold text-brand-900 flex items-center gap-2">
-        <Pen className="w-5 h-5 text-brand-600" />
+      <h3 className="font-bold text-text-primary flex items-center gap-2">
+        <Pen className="w-5 h-5 text-accent" />
         Required Signatures
       </h3>
       <div className="grid gap-4 md:grid-cols-2">
