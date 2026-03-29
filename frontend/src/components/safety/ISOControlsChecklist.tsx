@@ -21,10 +21,10 @@ export const ISOControlsChecklist: React.FC<ISOControlsChecklistProps> = ({ cont
     <div className="space-y-6">
       <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-brand-50 rounded-xl flex items-center justify-center border border-brand-100">
-            <FileText className="w-5 h-5 text-brand-600" />
+          <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center border border-accent/20">
+            <FileText className="w-5 h-5 text-accent" />
           </div>
-          <h3 className="text-xl font-bold text-brand-900 tracking-tight">ISO 45001 Compliance</h3>
+          <h3 className="text-xl font-bold text-text-primary tracking-tight">ISO 45001 Compliance</h3>
         </div>
       </div>
 
@@ -38,21 +38,21 @@ export const ISOControlsChecklist: React.FC<ISOControlsChecklistProps> = ({ cont
             transition={{ delay: index * 0.1 }}
             className="p-6 flex gap-5 relative overflow-hidden group"
           >
-            <div className="absolute top-0 right-0 w-20 h-20 bg-brand-50 rounded-full -mr-10 -mt-10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute top-0 right-0 w-20 h-20 bg-accent/10 rounded-full -mr-10 -mt-10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
             
             <div className="mt-1 relative z-10">
-              <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center border border-emerald-100">
-                <CheckCircle2 className="w-6 h-6 text-emerald-600" />
+              <div className="w-10 h-10 bg-success/10 rounded-xl flex items-center justify-center border border-success/20">
+                <CheckCircle2 className="w-6 h-6 text-success" />
               </div>
             </div>
             
             <div className="relative z-10 flex-1">
               <div className="flex items-center justify-between mb-2">
                 <SMBadge size="sm" variant="teal">Clause {control.clause}</SMBadge>
-                <ArrowUpRight className="w-4 h-4 text-surface-300 group-hover:text-brand-500 transition-colors" />
+                <ArrowUpRight className="w-4 h-4 text-text-muted group-hover:text-accent transition-colors" />
               </div>
-              <h4 className="font-bold text-brand-900 text-lg tracking-tight mb-2">{control.title}</h4>
-              <p className="text-sm text-surface-500 leading-relaxed">
+              <h4 className="font-bold text-text-primary text-lg tracking-tight mb-2">{control.title}</h4>
+              <p className="text-sm text-text-muted leading-relaxed">
                 {control.description}
               </p>
             </div>
