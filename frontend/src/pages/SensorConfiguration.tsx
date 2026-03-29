@@ -160,7 +160,7 @@ export const SensorConfiguration: React.FC = () => {
             </button>
             <div>
               <h1 className="text-xl font-bold text-text-primary flex items-center gap-2">
-                <Sliders className="w-6 h-6 text-brand-600" />
+                <Sliders className="w-6 h-6 text-accent" />
                 Sensor Configuration
               </h1>
               <p className="text-sm text-text-muted">Configure thresholds and alerts</p>
@@ -171,8 +171,8 @@ export const SensorConfiguration: React.FC = () => {
             disabled={!hasChanges}
             className={`px-4 py-2 rounded-xl font-bold text-sm flex items-center gap-2 transition-all ${
               hasChanges 
-                ? 'bg-brand-600 text-white hover:bg-brand-700' 
-                : 'bg-surface-200 text-text-muted cursor-not-allowed'
+                ? 'bg-accent text-text-onAccent hover:bg-accent/80' 
+                : 'bg-surface-sunken text-text-muted cursor-not-allowed'
             }`}
           >
             <Save className="w-4 h-4" />
@@ -188,7 +188,7 @@ export const SensorConfiguration: React.FC = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed top-24 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-2xl shadow-lg flex items-center gap-2"
+            className="fixed top-24 left-1/2 -translate-x-1/2 z-50 bg-success text-text-onAccent px-6 py-3 rounded-2xl shadow-lg flex items-center gap-2"
           >
             <CheckCircle2 className="w-5 h-5" />
             Configuration saved successfully
@@ -203,7 +203,7 @@ export const SensorConfiguration: React.FC = () => {
             onClick={() => setEditMode('individual')}
             className={`px-5 py-3 rounded-2xl font-bold text-sm transition-all ${
               editMode === 'individual' 
-                ? 'bg-brand-900 text-white shadow-lg' 
+                ? 'bg-accent text-text-onAccent shadow-lg' 
                 : 'bg-surface-raised text-text-secondary border border-surface-border'
             }`}
           >
@@ -213,7 +213,7 @@ export const SensorConfiguration: React.FC = () => {
             onClick={() => setEditMode('type')}
             className={`px-5 py-3 rounded-2xl font-bold text-sm transition-all ${
               editMode === 'type' 
-                ? 'bg-brand-900 text-white shadow-lg' 
+                ? 'bg-accent text-text-onAccent shadow-lg' 
                 : 'bg-surface-raised text-text-secondary border border-surface-border'
             }`}
           >
@@ -238,15 +238,15 @@ export const SensorConfiguration: React.FC = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className={`bg-surface-raised p-6 rounded-3xl border shadow-soft transition-all ${
-                    hasEdit ? 'border-brand-300 ring-2 ring-brand-100' : 'border-surface-border'
+                    hasEdit ? 'border-accent/40 ring-2 ring-accent/20' : 'border-surface-border'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-6">
                     <div className="flex items-center gap-4">
                       <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${
-                        sensor.status === 'critical' ? 'bg-red-100 text-red-600' :
-                        sensor.status === 'warning' ? 'bg-yellow-100 text-yellow-600' :
-                        'bg-green-100 text-green-600'
+                        sensor.status === 'critical' ? 'bg-danger/10 text-danger' :
+                        sensor.status === 'warning' ? 'bg-warning/10 text-warning' :
+                        'bg-success/10 text-success'
                       }`}>
                         <Icon className="w-7 h-7" />
                       </div>
@@ -256,9 +256,9 @@ export const SensorConfiguration: React.FC = () => {
                         <div className="flex items-center gap-2 mt-1">
                           <span className="text-lg font-bold text-text-primary">{sensor.value}{sensor.unit}</span>
                           <span className={`px-2 py-0.5 rounded text-xs font-bold uppercase ${
-                            sensor.status === 'critical' ? 'bg-red-100 text-red-600' :
-                            sensor.status === 'warning' ? 'bg-yellow-100 text-yellow-600' :
-                            'bg-green-100 text-green-600'
+                            sensor.status === 'critical' ? 'bg-danger/10 text-danger' :
+                            sensor.status === 'warning' ? 'bg-warning/10 text-warning' :
+                            'bg-success/10 text-success'
                           }`}>
                             {sensor.status}
                           </span>
@@ -275,7 +275,7 @@ export const SensorConfiguration: React.FC = () => {
                               type="number"
                               value={currentMin}
                               onChange={(e) => handleSensorThresholdChange(sensor.id, 'minThreshold', parseFloat(e.target.value))}
-                              className="w-full px-4 py-3 bg-surface-raised border border-surface-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 outline-none"
+                              className="w-full px-4 py-3 bg-surface-sunken border border-surface-border rounded-xl focus:ring-2 focus:ring-accent/20 outline-none"
                             />
                             <span className="text-sm text-text-muted">{sensor.unit}</span>
                           </div>
@@ -301,7 +301,7 @@ export const SensorConfiguration: React.FC = () => {
                           </p>
                           <button
                             onClick={() => resetToDefaults(sensor.id)}
-                            className="text-xs text-brand-600 font-bold hover:underline flex items-center gap-1"
+                            className="text-xs text-accent font-bold hover:underline flex items-center gap-1"
                           >
                             <RotateCcw className="w-3 h-3" />
                             Reset
@@ -332,18 +332,18 @@ export const SensorConfiguration: React.FC = () => {
                 >
                   <div className="flex items-start justify-between gap-6 mb-6">
                     <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 bg-brand-50 text-brand-600 rounded-2xl flex items-center justify-center">
+                      <div className="w-14 h-14 bg-accent/10 text-accent rounded-2xl flex items-center justify-center">
                         <Icon className="w-7 h-7" />
                       </div>
                       <div>
                         <h3 className="font-bold text-text-primary capitalize">{config.sensorType} Sensors</h3>
                         <p className="text-sm text-text-muted">{config.description}</p>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="px-2 py-0.5 bg-surface-100 text-text-secondary rounded text-xs font-bold">
+                          <span className="px-2 py-0.5 bg-surface-sunken text-text-secondary rounded text-xs font-bold">
                             {sensorCount} sensors
                           </span>
                           {config.regulatoryReference && (
-                            <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded text-xs font-bold">
+                            <span className="px-2 py-0.5 bg-accent/10 text-accent rounded text-xs font-bold">
                               {config.regulatoryReference}
                             </span>
                           )}
@@ -355,8 +355,8 @@ export const SensorConfiguration: React.FC = () => {
                       disabled={!edit}
                       className={`px-4 py-2 rounded-xl font-bold text-sm transition-all ${
                         edit 
-                          ? 'bg-brand-600 text-white hover:bg-brand-700' 
-                          : 'bg-surface-100 text-text-muted cursor-not-allowed'
+                          ? 'bg-accent text-text-onAccent hover:bg-accent/80' 
+                          : 'bg-surface-sunken text-text-muted cursor-not-allowed'
                       }`}
                     >
                       Apply to All
@@ -404,7 +404,7 @@ export const SensorConfiguration: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="mt-4 p-3 bg-surface-raised rounded-xl flex items-start gap-2">
+                  <div className="mt-4 p-3 bg-surface-sunken rounded-xl flex items-start gap-2">
                     <Info className="w-4 h-4 text-text-muted mt-0.5" />
                     <p className="text-xs text-text-muted">
                       Warning alerts trigger at {currentConfig.warningPercent}% of max threshold ({Math.round(currentConfig.defaultMax * currentConfig.warningPercent / 100)}{config.unit}).
@@ -418,12 +418,12 @@ export const SensorConfiguration: React.FC = () => {
         )}
 
         {/* Info Section */}
-        <div className="bg-amber-50 border border-amber-200 p-6 rounded-3xl">
+        <div className="bg-warning/10 border border-warning/20 p-6 rounded-3xl">
           <div className="flex items-start gap-4">
-            <AlertTriangle className="w-6 h-6 text-amber-600 mt-0.5" />
+            <AlertTriangle className="w-6 h-6 text-warning mt-0.5" />
             <div>
-              <h4 className="font-bold text-amber-800">Threshold Configuration Guidelines</h4>
-              <ul className="mt-2 space-y-1 text-sm text-amber-700">
+              <h4 className="font-bold text-warning">Threshold Configuration Guidelines</h4>
+              <ul className="mt-2 space-y-1 text-sm text-warning/80">
                 <li>• Set thresholds based on regulatory requirements and site-specific conditions</li>
                 <li>• Warning thresholds should provide adequate time for corrective action</li>
                 <li>• Critical thresholds should trigger immediate response procedures</li>

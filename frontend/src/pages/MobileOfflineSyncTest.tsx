@@ -125,11 +125,11 @@ const categoryLabels: Record<string, { label: string; color: string }> = {
 
 const statusIcon = (status: string) => {
   switch (status) {
-    case 'passed': return <Check className="w-4 h-4 text-emerald-400" />;
-    case 'failed': return <X className="w-4 h-4 text-red-400" />;
-    case 'running': return <RefreshCw className="w-4 h-4 text-cyan-400 animate-spin" />;
-    case 'skipped': return <AlertCircle className="w-4 h-4 text-slate-400" />;
-    default: return <Clock className="w-4 h-4 text-slate-500" />;
+    case 'passed': return <Check className="w-4 h-4 text-success" />;
+    case 'failed': return <X className="w-4 h-4 text-danger" />;
+    case 'running': return <RefreshCw className="w-4 h-4 text-accent animate-spin" />;
+    case 'skipped': return <AlertCircle className="w-4 h-4 text-text-muted" />;
+    default: return <Clock className="w-4 h-4 text-text-muted" />;
   }
 };
 
@@ -324,15 +324,15 @@ function MobileOfflineSyncTest() {
       {/* Connection Status Banner */}
       <motion.div
         animate={{ backgroundColor: isOnline ? 'rgba(6, 182, 212, 0.1)' : 'rgba(239, 68, 68, 0.1)' }}
-        className={`rounded-xl p-4 border ${isOnline ? 'border-cyan-500/30' : 'border-red-500/30'} flex items-center justify-between`}
+        className={`rounded-xl p-4 border ${isOnline ? 'border-success/30' : 'border-danger/30'} flex items-center justify-between`}
       >
         <div className="flex items-center gap-3">
-          {isOnline ? <Wifi className="w-6 h-6 text-cyan-400" /> : <WifiOff className="w-6 h-6 text-red-400" />}
+          {isOnline ? <Wifi className="w-6 h-6 text-accent" /> : <WifiOff className="w-6 h-6 text-danger" />}
           <div>
-            <h3 className={`font-semibold text-sm ${isOnline ? 'text-cyan-300' : 'text-red-300'}`}>
+            <h3 className={`font-semibold text-sm ${isOnline ? 'text-accent' : 'text-danger'}`}>
               {isOnline ? 'Online — Connected to SafetyMEG Cloud' : 'Offline Mode — Changes Queued Locally'}
             </h3>
-            <p className="text-slate-400 text-xs">
+            <p className="text-text-muted text-xs">
               {isOnline ? `Last sync: ${lastSyncTime || 'Not yet synced'}` : `${pendingCount} records pending sync`}
             </p>
           </div>
@@ -342,8 +342,8 @@ function MobileOfflineSyncTest() {
             onClick={toggleConnection}
             className={`px-3 py-2 rounded-lg text-xs font-medium border transition-all ${
               isOnline
-                ? 'bg-red-500/10 border-red-500/30 text-red-300 hover:bg-red-500/20'
-                : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20'
+                ? 'bg-danger/10 border-danger/30 text-danger hover:bg-danger/20'
+                : 'bg-success/10 border-success/30 text-success hover:bg-success/20'
             }`}
           >
             {isOnline ? <><CloudOff className="w-3.5 h-3.5 inline mr-1" /> Go Offline</> : <><Cloud className="w-3.5 h-3.5 inline mr-1" /> Go Online</>}
@@ -352,7 +352,7 @@ function MobileOfflineSyncTest() {
             <button
               onClick={runSync}
               disabled={isSyncing || pendingCount === 0}
-              className="px-3 py-2 bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 rounded-lg text-xs font-medium hover:bg-cyan-500/30 transition-all disabled:opacity-50 flex items-center gap-1"
+              className="px-3 py-2 bg-accent/20 border border-accent/30 text-accent rounded-lg text-xs font-medium hover:bg-accent/30 transition-all disabled:opacity-50 flex items-center gap-1"
             >
               {isSyncing ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
               {isSyncing ? `Syncing ${syncProgress}%` : 'Sync Now'}
@@ -363,9 +363,9 @@ function MobileOfflineSyncTest() {
 
       {/* Sync Progress Bar */}
       {isSyncing && (
-        <div className="w-full bg-slate-800/60 rounded-full h-2 overflow-hidden">
+        <div className="w-full bg-surface-sunken rounded-full h-2 overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"
+            className="h-full bg-gradient-to-r from-accent to-ai rounded-full"
             initial={{ width: 0 }}
             animate={{ width: `${syncProgress}%` }}
             transition={{ duration: 0.3 }}
@@ -381,20 +381,20 @@ function MobileOfflineSyncTest() {
           { label: 'Conflicts', value: conflictCount, icon: AlertTriangle, color: 'red', sub: 'to resolve' },
           { label: 'Tests Passed', value: `${passedTests}/${tests.length}`, icon: Shield, color: 'cyan', sub: failedTests > 0 ? `${failedTests} failed` : 'all clear' },
         ].map(stat => (
-          <div key={stat.label} className="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-4">
+          <div key={stat.label} className="bg-surface-sunken backdrop-blur-sm border border-surface-border rounded-xl p-4">
             <div className="flex items-center justify-between mb-2">
               <stat.icon className={`w-5 h-5 text-${stat.color}-400`} />
-              <span className="text-2xl font-bold text-white">{stat.value}</span>
+              <span className="text-2xl font-bold text-text-primary">{stat.value}</span>
             </div>
-            <p className="text-slate-400 text-xs">{stat.label}</p>
-            <p className="text-slate-500 text-[10px]">{stat.sub}</p>
+            <p className="text-text-muted text-xs">{stat.label}</p>
+            <p className="text-text-muted text-[10px]">{stat.sub}</p>
           </div>
         ))}
       </div>
 
       {/* Sync Architecture Diagram */}
-      <div className="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-5">
-        <h3 className="text-white font-semibold text-sm mb-4">Sync Architecture</h3>
+      <div className="bg-surface-sunken backdrop-blur-sm border border-surface-border rounded-xl p-5">
+        <h3 className="text-text-primary font-semibold text-sm mb-4">Sync Architecture</h3>
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
           {[
             { icon: Smartphone, label: 'Mobile App', sub: 'IndexedDB Queue', color: 'cyan' },
@@ -407,32 +407,32 @@ function MobileOfflineSyncTest() {
                 <div className={`p-3 rounded-xl bg-${step.color}-500/10 border border-${step.color}-500/30 mb-2`}>
                   <step.icon className={`w-6 h-6 text-${step.color}-400`} />
                 </div>
-                <p className="text-white text-xs font-medium">{step.label}</p>
-                <p className="text-slate-500 text-[10px]">{step.sub}</p>
+                <p className="text-text-primary text-xs font-medium">{step.label}</p>
+                <p className="text-text-muted text-[10px]">{step.sub}</p>
               </div>
-              {idx < 3 && <ChevronRight className="w-5 h-5 text-slate-600 hidden md:block" />}
+              {idx < 3 && <ChevronRight className="w-5 h-5 text-text-muted hidden md:block" />}
             </React.Fragment>
           ))}
         </div>
       </div>
 
       {/* Recent Sync Activity */}
-      <div className="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-5">
-        <h3 className="text-white font-semibold text-sm mb-3">Recent Sync Activity</h3>
+      <div className="bg-surface-sunken backdrop-blur-sm border border-surface-border rounded-xl p-5">
+        <h3 className="text-text-primary font-semibold text-sm mb-3">Recent Sync Activity</h3>
         <div className="space-y-2">
           {syncQueue.slice(0, 5).map(record => (
-            <div key={record.id} className="flex items-center gap-3 p-2.5 bg-slate-900/40 rounded-lg">
-              <div className={`p-1.5 rounded-lg ${record.synced ? 'bg-emerald-500/20' : record.conflicted ? 'bg-red-500/20' : 'bg-amber-500/20'}`}>
-                {record.synced ? <CheckCircle className="w-4 h-4 text-emerald-400" /> : record.conflicted ? <AlertTriangle className="w-4 h-4 text-red-400" /> : <Clock className="w-4 h-4 text-amber-400" />}
+            <div key={record.id} className="flex items-center gap-3 p-2.5 bg-surface-sunken rounded-lg">
+              <div className={`p-1.5 rounded-lg ${record.synced ? 'bg-success/20' : record.conflicted ? 'bg-danger/20' : 'bg-warning/20'}`}>
+                {record.synced ? <CheckCircle className="w-4 h-4 text-success" /> : record.conflicted ? <AlertTriangle className="w-4 h-4 text-danger" /> : <Clock className="w-4 h-4 text-warning" />}
               </div>
               <div className="flex-1">
-                <p className="text-white text-xs font-medium">{record.entity}</p>
-                <p className="text-slate-400 text-[10px]">{record.action} • v{record.version} • {record.timestamp}</p>
+                <p className="text-text-primary text-xs font-medium">{record.entity}</p>
+                <p className="text-text-muted text-[10px]">{record.action} • v{record.version} • {record.timestamp}</p>
               </div>
               <span className={`text-[10px] px-2 py-0.5 rounded-full border ${
-                record.synced ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30'
-                  : record.conflicted ? 'text-red-400 bg-red-500/10 border-red-500/30'
-                  : 'text-amber-400 bg-amber-500/10 border-amber-500/30'
+                record.synced ? 'text-success bg-success/10 border-success/30'
+                  : record.conflicted ? 'text-danger bg-danger/10 border-danger/30'
+                  : 'text-warning bg-warning/10 border-warning/30'
               }`}>
                 {record.synced ? 'Synced' : record.conflicted ? 'Conflict' : 'Pending'}
               </span>

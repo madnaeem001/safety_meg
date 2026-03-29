@@ -49,20 +49,20 @@ const tabs = [
 /* ─── helpers ─────────────────────────────────────────────────────── */
 function statusBadge(s: string) {
   const map: Record<string, string> = {
-    'in-progress': 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
-    planned: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-    research: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-    completed: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+    'in-progress': 'bg-accent/20 text-accent border-accent/30',
+    planned: 'bg-warning/20 text-warning border-warning/30',
+    research: 'bg-ai/20 text-ai border-ai/30',
+    completed: 'bg-success/20 text-success border-success/30',
   };
-  return map[s] ?? 'bg-gray-700 text-gray-400 border-gray-600';
+  return map[s] ?? 'bg-surface-sunken text-text-muted border-surface-border';
 }
 
 function healthDot(h: string) {
-  return h === 'healthy' ? 'bg-emerald-400' : h === 'warning' ? 'bg-amber-400' : h === 'error' ? 'bg-red-400' : 'bg-gray-500';
+  return h === 'healthy' ? 'bg-success' : h === 'warning' ? 'bg-warning' : h === 'error' ? 'bg-danger' : 'bg-surface-border';
 }
 
 function priorityColor(p: string) {
-  return p === 'critical' ? 'text-red-400' : p === 'high' ? 'text-amber-400' : 'text-gray-400';
+  return p === 'critical' ? 'text-danger' : p === 'high' ? 'text-warning' : 'text-text-muted';
 }
 
 export function V2Roadmap() {
@@ -77,7 +77,7 @@ export function V2Roadmap() {
       <div className="flex flex-wrap items-center gap-2 mb-2">
         {['all', 'in-progress', 'planned', 'research'].map(f => (
           <button key={f} onClick={() => setRoadmapFilter(f)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${roadmapFilter === f ? 'bg-violet-500/20 text-violet-300 border border-violet-500/40' : 'text-gray-400 hover:text-white border border-transparent'}`}>
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${roadmapFilter === f ? 'bg-accent/20 text-accent border border-accent/40' : 'text-text-muted hover:text-text-primary border border-transparent'}`}>
             {f === 'all' ? 'All Items' : f.replace('-', ' ').replace(/^\w/, c => c.toUpperCase())}
           </button>
         ))}
@@ -89,33 +89,33 @@ export function V2Roadmap() {
         if (!items.length) return null;
         return (
           <div key={ver}>
-            <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-              <span className="px-2 py-0.5 rounded bg-violet-500/20 text-violet-300 text-sm font-bold">v{ver}</span>
+            <h3 className="text-lg font-semibold text-text-primary mb-3 flex items-center gap-2">
+              <span className="px-2 py-0.5 rounded bg-accent/20 text-accent text-sm font-bold">v{ver}</span>
               {ver === '2.0' ? 'Current Development' : 'Next Major Release'}
             </h3>
             <div className="space-y-3">
               {items.map((item, i) => (
                 <motion.div key={item.id} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
-                  className="rounded-xl border border-white/10 bg-gray-900/60 backdrop-blur-sm p-5">
+                  className="rounded-xl border border-surface-border bg-surface-sunken backdrop-blur-sm p-5">
                   <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h4 className="text-white font-medium">{item.title}</h4>
+                        <h4 className="text-text-primary font-medium">{item.title}</h4>
                         <span className={`text-xs px-2 py-0.5 rounded-full border ${statusBadge(item.status)}`}>{item.status.replace('-', ' ')}</span>
                         <span className={`text-xs font-medium ${priorityColor(item.priority)}`}>● {item.priority}</span>
                       </div>
-                      <p className="text-sm text-gray-400 mt-2">{item.description}</p>
+                      <p className="text-sm text-text-muted mt-2">{item.description}</p>
                     </div>
                     <div className="flex gap-4 text-right shrink-0">
-                      <div><p className="text-xs text-gray-500">Effort</p><p className="text-sm text-gray-300">{item.effort}</p></div>
-                      <div><p className="text-xs text-gray-500">ETA</p><p className="text-sm text-violet-300">{item.eta}</p></div>
+                      <div><p className="text-xs text-text-muted">Effort</p><p className="text-sm text-text-secondary">{item.effort}</p></div>
+                      <div><p className="text-xs text-text-muted">ETA</p><p className="text-sm text-accent">{item.eta}</p></div>
                     </div>
                   </div>
                   {item.progress > 0 && (
                     <div className="mt-3">
-                      <div className="flex justify-between text-xs text-gray-500 mb-1"><span>Progress</span><span>{item.progress}%</span></div>
-                      <div className="w-full bg-gray-800 rounded-full h-2">
-                        <div className="bg-gradient-to-r from-violet-500 to-purple-400 h-2 rounded-full transition-all" style={{ width: `${item.progress}%` }} />
+                      <div className="flex justify-between text-xs text-text-muted mb-1"><span>Progress</span><span>{item.progress}%</span></div>
+                      <div className="w-full bg-surface-sunken rounded-full h-2">
+                        <div className="bg-gradient-to-r from-accent to-ai h-2 rounded-full transition-all" style={{ width: `${item.progress}%` }} />
                       </div>
                     </div>
                   )}
@@ -132,37 +132,37 @@ export function V2Roadmap() {
   const renderAPI = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-white">API Integration Hub</h3>
-        <button className="px-4 py-2 rounded-lg bg-violet-500/20 border border-violet-500/40 text-violet-300 text-sm hover:bg-violet-500/30 transition">+ Add Integration</button>
+        <h3 className="text-lg font-semibold text-text-primary">API Integration Hub</h3>
+        <button className="px-4 py-2 rounded-lg bg-accent/20 border border-accent/40 text-accent text-sm hover:bg-accent/30 transition">+ Add Integration</button>
       </div>
 
       <div className="grid md:grid-cols-2 gap-4">
         {API_INTEGRATIONS.map((api, i) => (
           <motion.div key={api.id} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.07 }}
-            className="rounded-xl border border-white/10 bg-gray-900/60 backdrop-blur-sm p-5">
+            className="rounded-xl border border-surface-border bg-surface-sunken backdrop-blur-sm p-5">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
                 <span className={`w-2.5 h-2.5 rounded-full ${healthDot(api.health)}`} />
-                <h4 className="text-white font-medium text-sm">{api.name}</h4>
+                <h4 className="text-text-primary font-medium text-sm">{api.name}</h4>
               </div>
-              <span className={`text-xs px-2 py-0.5 rounded-full ${api.status === 'connected' ? 'bg-emerald-500/20 text-emerald-400' : api.status === 'error' ? 'bg-red-500/20 text-red-400' : api.status === 'pending' ? 'bg-amber-500/20 text-amber-400' : 'bg-gray-700 text-gray-400'}`}>
+              <span className={`text-xs px-2 py-0.5 rounded-full ${api.status === 'connected' ? 'bg-success/20 text-success' : api.status === 'error' ? 'bg-danger/20 text-danger' : api.status === 'pending' ? 'bg-warning/20 text-warning' : 'bg-surface-sunken text-text-muted'}`}>
                 {api.status}
               </span>
             </div>
-            <p className="text-xs text-gray-500 mt-2">Type: {api.type}</p>
-            <div className="grid grid-cols-2 gap-3 mt-3 pt-3 border-t border-white/5">
-              <div><p className="text-xs text-gray-500">Last Sync</p><p className="text-xs text-gray-300">{api.lastSync}</p></div>
-              <div><p className="text-xs text-gray-500">Records</p><p className="text-xs text-gray-300">{api.records.toLocaleString()}</p></div>
-              <div className="col-span-2"><p className="text-xs text-gray-500">Frequency: <span className="text-gray-300">{api.frequency}</span></p></div>
+            <p className="text-xs text-text-muted mt-2">Type: {api.type}</p>
+            <div className="grid grid-cols-2 gap-3 mt-3 pt-3 border-t border-surface-border/30">
+              <div><p className="text-xs text-text-muted">Last Sync</p><p className="text-xs text-text-secondary">{api.lastSync}</p></div>
+              <div><p className="text-xs text-text-muted">Records</p><p className="text-xs text-text-secondary">{api.records.toLocaleString()}</p></div>
+              <div className="col-span-2"><p className="text-xs text-text-muted">Frequency: <span className="text-text-secondary">{api.frequency}</span></p></div>
             </div>
           </motion.div>
         ))}
       </div>
 
       {/* HR Roster Highlight */}
-      <div className="rounded-xl border border-violet-500/30 bg-violet-500/5 backdrop-blur-sm p-6">
-        <h3 className="text-lg font-semibold text-violet-400 mb-2">🔗 HR Auto-Roster: Feature Spotlight</h3>
-        <p className="text-sm text-gray-400 mb-4">Automatically sync your employee roster from HR systems instead of manual CSV imports. Supports Workday, BambooHR, ADP, and UKG.</p>
+      <div className="rounded-xl border border-accent/30 bg-accent/5 backdrop-blur-sm p-6">
+        <h3 className="text-lg font-semibold text-accent mb-2">🔗 HR Auto-Roster: Feature Spotlight</h3>
+        <p className="text-sm text-text-muted mb-4">Automatically sync your employee roster from HR systems instead of manual CSV imports. Supports Workday, BambooHR, ADP, and UKG.</p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { l: 'Employees Synced', v: '1,284' },
@@ -170,9 +170,9 @@ export function V2Roadmap() {
             { l: 'Terminations (30d)', v: '7' },
             { l: 'Dept Changes', v: '12' },
           ].map((s, i) => (
-            <div key={i} className="rounded-lg bg-gray-900/60 p-3 text-center">
-              <p className="text-xs text-gray-500">{s.l}</p>
-              <p className="text-xl font-bold text-white mt-1">{s.v}</p>
+            <div key={i} className="rounded-lg bg-surface-sunken p-3 text-center">
+              <p className="text-xs text-text-muted">{s.l}</p>
+              <p className="text-xl font-bold text-text-primary mt-1">{s.v}</p>
             </div>
           ))}
         </div>
@@ -183,7 +183,7 @@ export function V2Roadmap() {
   /* ── Offline & Sync ────────────────────────────────────────────── */
   const renderOffline = () => (
     <div className="space-y-6">
-      <h3 className="text-lg font-semibold text-white">Offline Sync Health Monitor</h3>
+      <h3 className="text-lg font-semibold text-text-primary">Offline Sync Health Monitor</h3>
 
       {/* stats cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -194,17 +194,17 @@ export function V2Roadmap() {
           { l: 'Conflicts Detected', v: OFFLINE_STATS.conflictsDetected.toString(), c: 'from-amber-500 to-orange-500' },
         ].map((s, i) => (
           <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
-            className="relative overflow-hidden rounded-xl border border-white/10 bg-gray-900/60 backdrop-blur-sm p-4">
+            className="relative overflow-hidden rounded-xl border border-surface-border bg-surface-sunken backdrop-blur-sm p-4">
             <div className={`absolute inset-0 opacity-10 bg-gradient-to-br ${s.c}`} />
-            <p className="text-xs text-gray-400">{s.l}</p>
-            <p className="text-2xl font-bold text-white mt-1">{s.v}</p>
+            <p className="text-xs text-text-muted">{s.l}</p>
+            <p className="text-2xl font-bold text-text-primary mt-1">{s.v}</p>
           </motion.div>
         ))}
       </div>
 
       {/* conflict resolution breakdown */}
-      <div className="rounded-xl border border-white/10 bg-gray-900/60 backdrop-blur-sm p-6">
-        <h4 className="text-white font-medium mb-4">Conflict Resolution Breakdown</h4>
+      <div className="rounded-xl border border-surface-border bg-surface-sunken backdrop-blur-sm p-6">
+        <h4 className="text-text-primary font-medium mb-4">Conflict Resolution Breakdown</h4>
         <div className="flex items-center gap-6">
           <div className="relative w-32 h-32">
             <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
@@ -212,40 +212,40 @@ export function V2Roadmap() {
               <circle cx="18" cy="18" r="15.9" fill="none" stroke="#10b981" strokeWidth="3" strokeDasharray={`${(OFFLINE_STATS.autoResolved / OFFLINE_STATS.conflictsDetected) * 100} ${100 - (OFFLINE_STATS.autoResolved / OFFLINE_STATS.conflictsDetected) * 100}`} strokeLinecap="round" />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-2xl font-bold text-white">{Math.round((OFFLINE_STATS.autoResolved / OFFLINE_STATS.conflictsDetected) * 100)}%</span>
-              <span className="text-xs text-gray-500">Auto</span>
+              <span className="text-2xl font-bold text-text-primary">{Math.round((OFFLINE_STATS.autoResolved / OFFLINE_STATS.conflictsDetected) * 100)}%</span>
+              <span className="text-xs text-text-muted">Auto</span>
             </div>
           </div>
           <div className="space-y-3 flex-1">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-emerald-500" /><span className="text-sm text-gray-300">Auto-Resolved</span></div>
-              <span className="text-white font-medium">{OFFLINE_STATS.autoResolved}</span>
+              <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-success" /><span className="text-sm text-text-secondary">Auto-Resolved</span></div>
+              <span className="text-text-primary font-medium">{OFFLINE_STATS.autoResolved}</span>
             </div>
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-amber-500" /><span className="text-sm text-gray-300">Manual Review Needed</span></div>
-              <span className="text-white font-medium">{OFFLINE_STATS.manualReview}</span>
+              <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-warning" /><span className="text-sm text-text-secondary">Manual Review Needed</span></div>
+              <span className="text-text-primary font-medium">{OFFLINE_STATS.manualReview}</span>
             </div>
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-gray-600" /><span className="text-sm text-gray-300">Total Conflicts</span></div>
-              <span className="text-white font-medium">{OFFLINE_STATS.conflictsDetected}</span>
+              <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-surface-border" /><span className="text-sm text-text-secondary">Total Conflicts</span></div>
+              <span className="text-text-primary font-medium">{OFFLINE_STATS.conflictsDetected}</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Sync strategies */}
-      <div className="rounded-xl border border-cyan-500/20 bg-gray-900/60 backdrop-blur-sm p-6">
-        <h4 className="text-cyan-400 font-medium mb-3">Sync Conflict Resolution Strategies</h4>
+      <div className="rounded-xl border border-accent/20 bg-surface-sunken backdrop-blur-sm p-6">
+        <h4 className="text-accent font-medium mb-3">Sync Conflict Resolution Strategies</h4>
         <div className="grid md:grid-cols-3 gap-4">
           {[
             { title: 'Last Write Wins', desc: 'Most recent timestamp overwrites. Best for non-critical fields like notes.', usage: 'Used in 72% of auto-resolutions' },
             { title: 'Supervisor Merge', desc: 'Both values are flagged for supervisor to pick the correct one.', usage: 'Used for safety-critical fields' },
             { title: 'Field-Level Merge', desc: 'Non-conflicting fields merge automatically; only true conflicts are flagged.', usage: 'Default for multi-section forms' },
           ].map((s, i) => (
-            <div key={i} className="rounded-lg border border-white/5 bg-gray-800/50 p-4">
-              <h5 className="text-white text-sm font-medium">{s.title}</h5>
-              <p className="text-xs text-gray-400 mt-1">{s.desc}</p>
-              <p className="text-xs text-cyan-400 mt-2">{s.usage}</p>
+            <div key={i} className="rounded-lg border border-surface-border/30 bg-surface-sunken p-4">
+              <h5 className="text-text-primary text-sm font-medium">{s.title}</h5>
+              <p className="text-xs text-text-muted mt-1">{s.desc}</p>
+              <p className="text-xs text-accent mt-2">{s.usage}</p>
             </div>
           ))}
         </div>
@@ -256,42 +256,42 @@ export function V2Roadmap() {
   /* ── Sync Conflicts ────────────────────────────────────────────── */
   const renderConflicts = () => (
     <div className="space-y-6">
-      <h3 className="text-lg font-semibold text-white">Active Sync Conflicts</h3>
+      <h3 className="text-lg font-semibold text-text-primary">Active Sync Conflicts</h3>
       <div className="space-y-4">
         {SYNC_CONFLICTS.map((c, i) => (
           <motion.div key={c.id} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
-            className={`rounded-xl border backdrop-blur-sm p-5 ${c.status === 'unresolved' ? 'border-amber-500/30 bg-amber-500/5' : 'border-emerald-500/20 bg-gray-900/60'}`}>
+            className={`rounded-xl border backdrop-blur-sm p-5 ${c.status === 'unresolved' ? 'border-warning/30 bg-warning/5' : 'border-success/20 bg-surface-sunken'}`}>
             <div className="flex items-start justify-between mb-3">
               <div>
-                <h4 className="text-white font-medium">{c.form}</h4>
-                <p className="text-sm text-gray-400 mt-0.5">Field: <span className="text-gray-300">{c.field}</span></p>
+                <h4 className="text-text-primary font-medium">{c.form}</h4>
+                <p className="text-sm text-text-muted mt-0.5">Field: <span className="text-text-secondary">{c.field}</span></p>
               </div>
-              <span className={`text-xs px-2 py-0.5 rounded-full ${c.status === 'unresolved' ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
+              <span className={`text-xs px-2 py-0.5 rounded-full ${c.status === 'unresolved' ? 'bg-warning/20 text-warning' : 'bg-success/20 text-success'}`}>
                 {c.status}
               </span>
             </div>
             <div className="grid md:grid-cols-2 gap-3">
-              <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-3">
-                <p className="text-xs text-blue-400 font-medium">{c.user1}</p>
-                <p className="text-sm text-white mt-1 font-mono">{c.value1}</p>
-                <p className="text-xs text-gray-500 mt-1">{c.timestamp1}</p>
+              <div className="rounded-lg border border-accent/20 bg-accent/5 p-3">
+                <p className="text-xs text-accent font-medium">{c.user1}</p>
+                <p className="text-sm text-text-primary mt-1 font-mono">{c.value1}</p>
+                <p className="text-xs text-text-muted mt-1">{c.timestamp1}</p>
               </div>
-              <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-3">
-                <p className="text-xs text-purple-400 font-medium">{c.user2}</p>
-                <p className="text-sm text-white mt-1 font-mono">{c.value2}</p>
-                <p className="text-xs text-gray-500 mt-1">{c.timestamp2}</p>
+              <div className="rounded-lg border border-ai/20 bg-ai/5 p-3">
+                <p className="text-xs text-ai font-medium">{c.user2}</p>
+                <p className="text-sm text-text-primary mt-1 font-mono">{c.value2}</p>
+                <p className="text-xs text-text-muted mt-1">{c.timestamp2}</p>
               </div>
             </div>
             {c.status === 'resolved' && c.resolution && (
-              <div className="mt-3 px-3 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                <p className="text-sm text-emerald-400">✓ {c.resolution}</p>
+              <div className="mt-3 px-3 py-2 rounded-lg bg-success/10 border border-success/20">
+                <p className="text-sm text-success">✓ {c.resolution}</p>
               </div>
             )}
             {c.status === 'unresolved' && (
               <div className="flex gap-2 mt-3">
-                <button className="px-3 py-1.5 rounded-lg bg-blue-500/20 border border-blue-500/40 text-blue-300 text-xs hover:bg-blue-500/30 transition">Keep {c.user1}'s</button>
-                <button className="px-3 py-1.5 rounded-lg bg-purple-500/20 border border-purple-500/40 text-purple-300 text-xs hover:bg-purple-500/30 transition">Keep {c.user2}'s</button>
-                <button className="px-3 py-1.5 rounded-lg bg-gray-800 border border-gray-700 text-gray-300 text-xs hover:bg-gray-700 transition">Escalate to Supervisor</button>
+                <button className="px-3 py-1.5 rounded-lg bg-accent/20 border border-accent/40 text-accent text-xs hover:bg-accent/30 transition">Keep {c.user1}'s</button>
+                <button className="px-3 py-1.5 rounded-lg bg-ai/20 border border-ai/40 text-ai text-xs hover:bg-ai/30 transition">Keep {c.user2}'s</button>
+                <button className="px-3 py-1.5 rounded-lg bg-surface-sunken border border-surface-border text-text-secondary text-xs hover:bg-surface-overlay transition">Escalate to Supervisor</button>
               </div>
             )}
           </motion.div>
@@ -302,7 +302,7 @@ export function V2Roadmap() {
 
   /* ── page shell ─────────────────────────────────────────────────── */
   return (
-    <div className="min-h-screen bg-[#0a0a1a]">
+    <div className="min-h-screen bg-surface-base">
 
       <main className="pt-20 pb-24 px-4 md:px-8 max-w-7xl mx-auto">
         {/* header */}
@@ -310,8 +310,8 @@ export function V2Roadmap() {
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center text-xl">🗺️</div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-white">Version 2.0 Roadmap</h1>
-              <p className="text-gray-400 text-sm">API integrations, offline sync &amp; feature planning</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-text-primary">Version 2.0 Roadmap</h1>
+              <p className="text-text-muted text-sm">API integrations, offline sync &amp; feature planning</p>
             </div>
           </div>
         </motion.div>
@@ -320,7 +320,7 @@ export function V2Roadmap() {
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
           {tabs.map(t => (
             <button key={t.id} onClick={() => setActiveTab(t.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition ${activeTab === t.id ? 'bg-violet-500/20 text-violet-300 border border-violet-500/40' : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'}`}>
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition ${activeTab === t.id ? 'bg-accent/20 text-accent border border-accent/40' : 'text-text-muted hover:text-text-primary hover:bg-surface-overlay border border-transparent'}`}>
               <span>{t.icon}</span>{t.label}
             </button>
           ))}

@@ -69,17 +69,17 @@ export const HyperCareTraining: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen pb-24 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-screen pb-24 bg-surface-base">
 
       <div className="px-4 pt-20 pb-24 max-w-7xl mx-auto">
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
           <div className="flex items-center gap-3 mb-2">
-            <div className="p-2.5 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/30">
-              <GraduationCap className="w-6 h-6 text-emerald-400" />
+            <div className="p-2.5 rounded-xl bg-success/10 border border-success/20">
+              <GraduationCap className="w-6 h-6 text-success" />
             </div>
             <div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">Hyper-Care Training</h1>
-              <p className="text-sm text-gray-400">Strategic Adoption & "Build It, They Will Come" Prevention</p>
+              <p className="text-sm text-text-muted">Strategic Adoption & "Build It, They Will Come" Prevention</p>
             </div>
           </div>
         </motion.div>
@@ -87,7 +87,7 @@ export const HyperCareTraining: React.FC = () => {
         <div className="flex gap-1 mb-6 overflow-x-auto pb-2 scrollbar-hide">
           {tabs.map(tab => (
             <button key={tab} onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${activeTab === tab ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50'}`}>
+              className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${activeTab === tab ? 'bg-success/20 text-success border border-success/30' : 'text-text-muted hover:text-text-secondary hover:bg-surface-overlay'}`}>
               {tab}
             </button>
           ))}
@@ -99,30 +99,30 @@ export const HyperCareTraining: React.FC = () => {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
               {displayKPIs.map((kpi, i) => (
                 <motion.div key={kpi.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-                  className="bg-gray-800/60 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-4">
-                  <kpi.icon className={`w-5 h-5 mb-2 ${kpi.color === 'cyan' ? 'text-cyan-400' : kpi.color === 'emerald' ? 'text-emerald-400' : kpi.color === 'amber' ? 'text-amber-400' : 'text-purple-400'}`} />
-                  <div className="text-2xl font-bold text-white">{kpi.value}</div>
-                  <div className="text-xs text-gray-400">{kpi.label}</div>
+                  className="bg-surface-raised border border-surface-border rounded-2xl p-4">
+                  <kpi.icon className={`w-5 h-5 mb-2 ${kpi.color === 'cyan' ? 'text-accent' : kpi.color === 'emerald' ? 'text-success' : kpi.color === 'amber' ? 'text-warning' : 'text-ai'}`} />
+                  <div className="text-2xl font-bold text-text-primary">{kpi.value}</div>
+                  <div className="text-xs text-text-muted">{kpi.label}</div>
                 </motion.div>
               ))}
             </div>
             <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-6">
-              <h3 className="text-emerald-400 font-semibold text-lg mb-3">🎯 Hyper-Care Strategy</h3>
+              <h3 className="text-success font-semibold text-lg mb-3">🎯 Hyper-Care Strategy</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-gray-900/50 rounded-xl p-4 border border-gray-700/30">
-                  <Presentation className="w-6 h-6 text-cyan-400 mb-2" />
-                  <h4 className="text-white font-medium mb-1">5-Min Toolbox Talk Demos</h4>
-                  <p className="text-xs text-gray-400">Live demos during existing safety meetings — not long Zoom webinars. Workers see it, try it, adopt it.</p>
+                <div className="bg-surface-sunken rounded-xl p-4 border border-surface-border">
+                  <Presentation className="w-6 h-6 text-accent mb-2" />
+                  <h4 className="text-text-primary font-medium mb-1">5-Min Toolbox Talk Demos</h4>
+                  <p className="text-xs text-text-muted">Live demos during existing safety meetings — not long Zoom webinars. Workers see it, try it, adopt it.</p>
                 </div>
-                <div className="bg-gray-900/50 rounded-xl p-4 border border-gray-700/30">
-                  <Star className="w-6 h-6 text-amber-400 mb-2" />
-                  <h4 className="text-white font-medium mb-1">Safety Champions</h4>
-                  <p className="text-xs text-gray-400">Designated "Super Users" at each site who get extra training to help peers on the fly — your ground-level support network.</p>
+                <div className="bg-surface-sunken rounded-xl p-4 border border-surface-border">
+                  <Star className="w-6 h-6 text-warning mb-2" />
+                  <h4 className="text-text-primary font-medium mb-1">Safety Champions</h4>
+                  <p className="text-xs text-text-muted">Designated "Super Users" at each site who get extra training to help peers on the fly — your ground-level support network.</p>
                 </div>
-                <div className="bg-gray-900/50 rounded-xl p-4 border border-gray-700/30">
-                  <QrCode className="w-6 h-6 text-purple-400 mb-2" />
-                  <h4 className="text-white font-medium mb-1">QR Code Deployment</h4>
-                  <p className="text-xs text-gray-400">Stick QR codes on equipment & facility entrances linking directly to the specific inspection form for that area.</p>
+                <div className="bg-surface-sunken rounded-xl p-4 border border-surface-border">
+                  <QrCode className="w-6 h-6 text-ai mb-2" />
+                  <h4 className="text-text-primary font-medium mb-1">QR Code Deployment</h4>
+                  <p className="text-xs text-text-muted">Stick QR codes on equipment & facility entrances linking directly to the specific inspection form for that area.</p>
                 </div>
               </div>
             </div>
@@ -133,28 +133,28 @@ export const HyperCareTraining: React.FC = () => {
         {activeTab === 'Toolbox Talk Demos' && (
           <div className="space-y-4">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-lg font-semibold text-white">Scheduled 5-Minute Demos</h3>
-              <button className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl text-sm font-medium hover:shadow-lg hover:shadow-emerald-500/20 transition-all">+ Schedule Demo</button>
+              <h3 className="text-lg font-semibold text-text-primary">Scheduled 5-Minute Demos</h3>
+              <button className="px-4 py-2 bg-success text-text-onAccent rounded-xl text-sm font-medium hover:bg-success/80 transition-all">+ Schedule Demo</button>
             </div>
             <div className="space-y-3">
               {displayDemos.map((demo, i) => (
                 <motion.div key={demo.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-                  className="bg-gray-800/60 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-5">
+                  className="bg-surface-raised border border-surface-border rounded-2xl p-5">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-xl ${demo.status === 'completed' ? 'bg-emerald-500/20' : demo.status === 'upcoming' ? 'bg-cyan-500/20' : 'bg-gray-700/30'}`}>
-                        {demo.type === 'live' ? <Video className={`w-5 h-5 ${demo.status === 'completed' ? 'text-emerald-400' : 'text-cyan-400'}`} /> : <Play className="w-5 h-5 text-purple-400" />}
+                      <div className={`p-2 rounded-xl ${demo.status === 'completed' ? 'bg-success/20' : demo.status === 'upcoming' ? 'bg-accent/20' : 'bg-surface-border/30'}`}>
+                        {demo.type === 'live' ? <Video className={`w-5 h-5 ${demo.status === 'completed' ? 'text-success' : 'text-accent'}`} /> : <Play className="w-5 h-5 text-ai" />}
                       </div>
                       <div>
-                        <h4 className="text-white font-medium">{demo.title}</h4>
-                        <p className="text-xs text-gray-400">{demo.audience} • {demo.duration}</p>
+                        <h4 className="text-text-primary font-medium">{demo.title}</h4>
+                        <p className="text-xs text-text-muted">{demo.audience} • {demo.duration}</p>
                       </div>
                     </div>
-                    <span className={`px-3 py-1 rounded-lg text-xs font-medium ${demo.status === 'completed' ? 'bg-emerald-500/20 text-emerald-400' : demo.status === 'upcoming' ? 'bg-cyan-500/20 text-cyan-400' : 'bg-gray-700/30 text-gray-400'}`}>
+                    <span className={`px-3 py-1 rounded-lg text-xs font-medium ${demo.status === 'completed' ? 'bg-success/20 text-success' : demo.status === 'upcoming' ? 'bg-accent/20 text-accent' : 'bg-surface-border/30 text-text-muted'}`}>
                       {demo.status}
                     </span>
                   </div>
-                  <div className="flex items-center gap-4 text-xs text-gray-400">
+                  <div className="flex items-center gap-4 text-xs text-text-muted">
                     <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{demo.site}</span>
                     <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{demo.scheduled}</span>
                     <span className="flex items-center gap-1"><Users className="w-3 h-3" />{demo.attendees} attendees</span>
@@ -169,39 +169,39 @@ export const HyperCareTraining: React.FC = () => {
         {activeTab === 'Safety Champions' && (
           <div className="space-y-4">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-lg font-semibold text-white">Designated Super Users</h3>
-              <button className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl text-sm font-medium">+ Nominate Champion</button>
+              <h3 className="text-lg font-semibold text-text-primary">Designated Super Users</h3>
+              <button className="px-4 py-2 bg-warning text-text-onAccent rounded-xl text-sm font-medium hover:bg-warning/80 transition-all">+ Nominate Champion</button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {displayChampions.map((champ, i) => (
                 <motion.div key={champ.id} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.08 }}
-                  className="bg-gray-800/60 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-6">
+                  className="bg-surface-sunken backdrop-blur-xl border border-surface-border rounded-2xl p-6">
                   <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white font-bold text-lg">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-warning to-danger flex items-center justify-center text-text-onAccent font-bold text-lg">
                       {champ.name.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-white font-semibold">{champ.name}</h4>
-                      <p className="text-sm text-gray-400">{champ.role} • {champ.site}</p>
+                      <h4 className="text-text-primary font-semibold">{champ.name}</h4>
+                      <p className="text-sm text-text-muted">{champ.role} • {champ.site}</p>
                     </div>
-                    <div className="flex items-center gap-1 bg-amber-500/20 rounded-lg px-2 py-1">
-                      <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                      <span className="text-sm text-amber-400 font-bold">{champ.rating}</span>
+                    <div className="flex items-center gap-1 bg-warning/20 rounded-lg px-2 py-1">
+                      <Star className="w-3.5 h-3.5 text-warning fill-warning" />
+                      <span className="text-sm text-warning font-bold">{champ.rating}</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3 mb-3">
-                    <div className="bg-gray-900/50 rounded-xl p-3 text-center">
-                      <div className="text-xl font-bold text-white">{champ.peersHelped}</div>
-                      <div className="text-xs text-gray-400">Peers Helped</div>
+                    <div className="bg-surface-sunken rounded-xl p-3 text-center">
+                      <div className="text-xl font-bold text-text-primary">{champ.peersHelped}</div>
+                      <div className="text-xs text-text-muted">Peers Helped</div>
                     </div>
-                    <div className="bg-gray-900/50 rounded-xl p-3 text-center">
-                      <div className="text-xs text-gray-400 mb-1">Trained Since</div>
-                      <div className="text-sm text-white font-medium">{champ.trained}</div>
+                    <div className="bg-surface-sunken rounded-xl p-3 text-center">
+                      <div className="text-xs text-text-muted mb-1">Trained Since</div>
+                      <div className="text-sm text-text-primary font-medium">{champ.trained}</div>
                     </div>
                   </div>
                   <div className="flex gap-2 flex-wrap">
                     {champ.specialties.map(s => (
-                      <span key={s} className="px-2 py-0.5 rounded-full text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">{s}</span>
+                      <span key={s} className="px-2 py-0.5 rounded-full text-xs bg-success/20 text-success border border-success/30">{s}</span>
                     ))}
                   </div>
                 </motion.div>
@@ -214,30 +214,30 @@ export const HyperCareTraining: React.FC = () => {
         {activeTab === 'QR Code Deployment' && (
           <div className="space-y-4">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-lg font-semibold text-white">Equipment & Location QR Codes</h3>
-              <button className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl text-sm font-medium">+ Generate QR Code</button>
+              <h3 className="text-lg font-semibold text-text-primary">Equipment & Location QR Codes</h3>
+              <button className="px-4 py-2 bg-ai text-text-onAccent rounded-xl text-sm font-medium hover:bg-ai/80 transition-all">+ Generate QR Code</button>
             </div>
-            <p className="text-sm text-gray-400 bg-purple-500/10 border border-purple-500/20 rounded-xl p-3">
-              <QrCode className="w-4 h-4 inline mr-2 text-purple-400" />
+            <p className="text-sm text-text-muted bg-ai/10 border border-ai/20 rounded-xl p-3">
+              <QrCode className="w-4 h-4 inline mr-2 text-ai" />
               Stick QR codes on equipment or at facility entrances that link directly to the specific inspection form for that area. Workers scan → form opens instantly.
             </p>
             <div className="space-y-3">
               {displayQr.map((qr, i) => (
                 <motion.div key={qr.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-                  className="bg-gray-800/60 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-5">
+                  className="bg-surface-raised border border-surface-border rounded-2xl p-5">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-xl bg-purple-500/20 border border-purple-500/30">
-                        <QrCode className="w-6 h-6 text-purple-400" />
+                      <div className="p-3 rounded-xl bg-ai/20 border border-ai/30">
+                        <QrCode className="w-6 h-6 text-ai" />
                       </div>
                       <div>
-                        <h4 className="text-white font-medium">{qr.location}</h4>
-                        <p className="text-sm text-gray-400">→ {qr.form}</p>
+                        <h4 className="text-text-primary font-medium">{qr.location}</h4>
+                        <p className="text-sm text-text-muted">→ {qr.form}</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-white">{qr.scans}</div>
-                      <div className="text-xs text-gray-400">scans • {qr.lastScan}</div>
+                      <div className="text-lg font-bold text-text-primary">{qr.scans}</div>
+                      <div className="text-xs text-text-muted">scans • {qr.lastScan}</div>
                     </div>
                   </div>
                 </motion.div>

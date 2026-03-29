@@ -84,13 +84,13 @@ const COMPETENCY_AREAS = [
 ];
 
 const colorMap: Record<string, { border: string; bg: string; text: string }> = {
-  cyan: { border: 'border-cyan-500/20', bg: 'bg-cyan-500/10', text: 'text-cyan-400' },
-  green: { border: 'border-emerald-500/20', bg: 'bg-emerald-500/10', text: 'text-emerald-400' },
-  red: { border: 'border-red-500/20', bg: 'bg-red-500/10', text: 'text-red-400' },
-  purple: { border: 'border-purple-500/20', bg: 'bg-purple-500/10', text: 'text-purple-400' },
-  amber: { border: 'border-amber-500/20', bg: 'bg-amber-500/10', text: 'text-amber-400' },
-  blue: { border: 'border-blue-500/20', bg: 'bg-blue-500/10', text: 'text-blue-400' },
-  emerald: { border: 'border-emerald-500/20', bg: 'bg-emerald-500/10', text: 'text-emerald-400' },
+  cyan: { border: 'border-ai/20', bg: 'bg-ai/10', text: 'text-ai' },
+  green: { border: 'border-success/20', bg: 'bg-success/10', text: 'text-success' },
+  red: { border: 'border-danger/20', bg: 'bg-danger/10', text: 'text-danger' },
+  purple: { border: 'border-ai/20', bg: 'bg-ai/10', text: 'text-ai' },
+  amber: { border: 'border-warning/20', bg: 'bg-warning/10', text: 'text-warning' },
+  blue: { border: 'border-accent/20', bg: 'bg-accent/10', text: 'text-accent' },
+  emerald: { border: 'border-success/20', bg: 'bg-success/10', text: 'text-success' },
 };
 
 const ModuleCard: React.FC<{ mod: typeof AI_MODULES[0]; index: number }> = ({ mod, index }) => {
@@ -102,12 +102,12 @@ const ModuleCard: React.FC<{ mod: typeof AI_MODULES[0]; index: number }> = ({ mo
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08 }}
-      className={`relative overflow-hidden p-5 rounded-2xl bg-slate-900/80 backdrop-blur-xl border ${c.border} hover:scale-[1.02] transition-all duration-300 group cursor-pointer`}
+      className={`relative overflow-hidden p-5 rounded-2xl bg-surface-raised backdrop-blur-xl border ${c.border} hover:scale-[1.02] transition-all duration-300 group cursor-pointer`}
     >
       {mod.aiGenerated && (
-        <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 bg-cyan-500 border border-cyan-500 rounded-lg">
-          <Sparkles className="w-3 h-3 text-white" />
-          <span className="text-[9px] font-bold text-white uppercase tracking-wider">AI Generated</span>
+        <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 bg-ai border border-ai/50 rounded-lg">
+          <Sparkles className="w-3 h-3 text-text-onAccent" />
+          <span className="text-[9px] font-bold text-text-onAccent uppercase tracking-wider">AI Generated</span>
         </div>
       )}
       
@@ -116,24 +116,24 @@ const ModuleCard: React.FC<{ mod: typeof AI_MODULES[0]; index: number }> = ({ mo
           <Brain className={`w-6 h-6 ${c.text}`} />
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-bold text-white mb-1 truncate">{mod.title}</h3>
-          <p className="text-[11px] text-slate-400 line-clamp-2">{mod.description}</p>
+          <h3 className="text-sm font-bold text-text-primary mb-1 truncate">{mod.title}</h3>
+          <p className="text-[11px] text-text-secondary line-clamp-2">{mod.description}</p>
         </div>
       </div>
       
       <div className="flex flex-wrap gap-1.5 mb-4">
         {mod.tags.map(tag => (
-          <span key={tag} className="px-2 py-0.5 text-[9px] font-bold text-slate-400 bg-slate-800/60 rounded-md border border-slate-700/30">{tag}</span>
+          <span key={tag} className="px-2 py-0.5 text-[9px] font-bold text-text-muted bg-surface-sunken rounded-md border border-surface-border">{tag}</span>
         ))}
       </div>
       
       {/* Progress Bar */}
       <div className="mb-3">
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-[10px] text-slate-500 font-mono">{mod.completed}/{mod.modules} MODULES</span>
+          <span className="text-[10px] text-text-muted font-mono">{mod.completed}/{mod.modules} MODULES</span>
           <span className={`text-[10px] font-bold ${c.text}`}>{progressPct}%</span>
         </div>
-        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+        <div className="w-full h-1.5 bg-surface-overlay rounded-full overflow-hidden">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${progressPct}%` }}
@@ -146,16 +146,16 @@ const ModuleCard: React.FC<{ mod: typeof AI_MODULES[0]; index: number }> = ({ mo
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
-            <Clock className="w-3 h-3 text-slate-500" />
-            <span className="text-[10px] text-slate-500">{mod.duration}</span>
+            <Clock className="w-3 h-3 text-text-muted" />
+            <span className="text-[10px] text-text-muted">{mod.duration}</span>
           </div>
           <div className="flex items-center gap-1">
-            <Users className="w-3 h-3 text-slate-500" />
-            <span className="text-[10px] text-slate-500">{mod.enrolled}</span>
+            <Users className="w-3 h-3 text-text-muted" />
+            <span className="text-[10px] text-text-muted">{mod.enrolled}</span>
           </div>
           <div className="flex items-center gap-1">
-            <Star className="w-3 h-3 text-amber-400" />
-            <span className="text-[10px] text-amber-400 font-bold">{mod.score}%</span>
+            <Star className="w-3 h-3 text-warning" />
+            <span className="text-[10px] text-warning font-bold">{mod.score}%</span>
           </div>
         </div>
         <div className={`px-3 py-1.5 rounded-lg ${c.bg} ${c.text} text-[10px] font-bold flex items-center gap-1 group-hover:scale-105 transition-transform`}>
@@ -164,16 +164,16 @@ const ModuleCard: React.FC<{ mod: typeof AI_MODULES[0]; index: number }> = ({ mo
       </div>
       
       {/* Adaptive AI Score */}
-      <div className="mt-3 pt-3 border-t border-slate-800/50 flex items-center justify-between">
+      <div className="mt-3 pt-3 border-t border-surface-border/50 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Cpu className="w-3 h-3 text-purple-400" />
-          <span className="text-[9px] text-slate-500 uppercase tracking-wider">AI Adaptive Score</span>
+          <Cpu className="w-3 h-3 text-ai" />
+          <span className="text-[9px] text-text-muted uppercase tracking-wider">AI Adaptive Score</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-16 h-1 bg-slate-800 rounded-full overflow-hidden">
-            <div className="h-full bg-purple-400 rounded-full" style={{ width: `${mod.adaptiveScore}%` }} />
+          <div className="w-16 h-1 bg-surface-overlay rounded-full overflow-hidden">
+            <div className="h-full bg-ai rounded-full" style={{ width: `${mod.adaptiveScore}%` }} />
           </div>
-          <span className="text-[10px] font-bold text-purple-400">{mod.adaptiveScore}%</span>
+          <span className="text-[10px] font-bold text-ai">{mod.adaptiveScore}%</span>
         </div>
       </div>
     </motion.div>
@@ -219,11 +219,8 @@ export const AITrainingModules: React.FC = () => {
   const avgScore = Math.round(displayModules.reduce((s, m) => s + m.score, 0) / displayModules.length);
 
   return (
-    <div className="ai-purple-theme min-h-screen pb-28" style={{ background: 'linear-gradient(165deg, #020617 0%, #0f172a 35%, #0c1222 70%, #020617 100%)' }}>
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-gradient-radial from-purple-500/8 via-purple-500/3 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-10 w-[400px] h-[400px] bg-gradient-radial from-cyan-500/5 via-transparent to-transparent rounded-full blur-3xl" />
-      </div>
+    <div className="ai-purple-theme min-h-screen pb-28 bg-surface-base">
+
 
 
 
@@ -231,17 +228,17 @@ export const AITrainingModules: React.FC = () => {
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center gap-3 mb-3">
-            <div className="p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/20">
-              <Brain className="w-6 h-6 text-purple-400" />
+            <div className="p-2.5 rounded-xl bg-ai/10 border border-ai/20">
+              <Brain className="w-6 h-6 text-ai" />
             </div>
             <div>
-              <div className="flex items-center gap-2 text-white font-bold text-[10px] uppercase tracking-[0.3em]">
+              <div className="flex items-center gap-2 text-text-primary font-bold text-[10px] uppercase tracking-[0.3em]">
                 <Sparkles className="w-3 h-3" /> AI-Powered Training
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-white font-display">AI Training Modules</h1>
+              <h1 className="text-2xl md:text-3xl font-bold text-text-primary font-display">AI Training Modules</h1>
             </div>
           </div>
-          <p className="text-sm text-slate-400 max-w-2xl">
+          <p className="text-sm text-text-muted max-w-2xl">
             Adaptive AI-generated training with personalized learning paths, real-time competency tracking, and intelligent course recommendations.
           </p>
         </motion.div>
@@ -261,13 +258,13 @@ export const AITrainingModules: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }}
-                className={`p-4 rounded-2xl bg-slate-900/80 backdrop-blur-xl border ${c.border}`}
+                className={`p-4 rounded-2xl bg-surface-raised backdrop-blur-xl border ${c.border}`}
               >
                 <div className="flex items-center gap-2 mb-2">
                   <stat.icon className={`w-4 h-4 ${c.text}`} />
-                  <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">{stat.label}</span>
+                  <span className="text-[10px] text-text-muted uppercase tracking-wider font-bold">{stat.label}</span>
                 </div>
-                <p className="text-2xl font-black text-white font-display">{stat.value}</p>
+                <p className="text-2xl font-black text-text-primary font-display">{stat.value}</p>
               </motion.div>
             );
           })}
@@ -286,8 +283,8 @@ export const AITrainingModules: React.FC = () => {
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
                 activeTab === tab.id
-                  ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
-                  : 'text-slate-400 border border-slate-700/30 hover:border-slate-600/50 hover:text-slate-300'
+                  ? 'bg-ai/20 text-ai border border-ai/30'
+                  : 'text-text-muted border border-surface-border hover:border-surface-border hover:text-text-secondary'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -309,39 +306,40 @@ export const AITrainingModules: React.FC = () => {
             <motion.div key="paths" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-5">
               {displayPaths.map((path, i) => {
                 const c = colorMap[path.color] || colorMap.cyan;
+                const PathIcon = (path as any).icon ?? BookOpen;
                 return (
                   <motion.div
                     key={path.name}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.1 }}
-                    className={`p-5 rounded-2xl bg-slate-900/80 backdrop-blur-xl border ${c.border} flex flex-col md:flex-row md:items-center gap-4`}
+                    className={`p-5 rounded-2xl bg-surface-raised backdrop-blur-xl border ${c.border} flex flex-col md:flex-row md:items-center gap-4`}
                   >
                     <div className={`p-3 rounded-xl ${c.bg} shrink-0`}>
-                      <path.icon className={`w-6 h-6 ${c.text}`} />
+                      <PathIcon className={`w-6 h-6 ${c.text}`} />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-sm font-bold text-white">{path.name}</h3>
+                        <h3 className="text-sm font-bold text-text-primary">{path.name}</h3>
                         {path.certified && (
-                          <span className="px-2 py-0.5 text-[9px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-lg flex items-center gap-1">
+                          <span className="px-2 py-0.5 text-[9px] font-bold text-success bg-success/10 border border-success/20 rounded-lg flex items-center gap-1">
                             <Award className="w-3 h-3" /> Certified
                           </span>
                         )}
                       </div>
-                      <p className="text-[11px] text-slate-500">{path.modules} modules • {path.duration}</p>
-                      <div className="mt-2 w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                      <p className="text-[11px] text-text-muted">{path.modules} modules • {path.duration}</p>
+                      <div className="mt-2 w-full h-2 bg-surface-overlay rounded-full overflow-hidden">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: `${path.progress}%` }}
                           transition={{ duration: 1, delay: i * 0.15 }}
-                          className={`h-full rounded-full ${path.progress === 100 ? 'bg-emerald-400' : c.text.replace('text-', 'bg-')}`}
+                          className={`h-full rounded-full ${path.progress === 100 ? 'bg-success' : c.text.replace('text-', 'bg-')}`}
                         />
                       </div>
                     </div>
                     <div className="text-right shrink-0">
                       <p className={`text-xl font-black ${c.text} font-display`}>{path.progress}%</p>
-                      <p className="text-[10px] text-slate-500">PROGRESS</p>
+                      <p className="text-[10px] text-text-muted">PROGRESS</p>
                     </div>
                   </motion.div>
                 );
@@ -352,14 +350,14 @@ export const AITrainingModules: React.FC = () => {
           {/* Competency Map Tab */}
           {activeTab === 'competency' && (
             <motion.div key="competency" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-5">
-              <div className="p-5 rounded-2xl bg-slate-900/80 backdrop-blur-xl border border-purple-500/15">
+              <div className="p-5 rounded-2xl bg-surface-raised backdrop-blur-xl border border-ai/15">
                 <div className="flex items-center gap-3 mb-5">
-                  <div className="p-2.5 rounded-xl bg-purple-500/10">
-                    <Target className="w-5 h-5 text-purple-400" />
+                  <div className="p-2.5 rounded-xl bg-ai/10">
+                    <Target className="w-5 h-5 text-ai" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white">AI Competency Assessment</h3>
-                    <p className="text-[10px] text-slate-500">Real-time skill gap analysis powered by adaptive AI</p>
+                    <h3 className="text-sm font-bold text-text-primary">AI Competency Assessment</h3>
+                    <p className="text-[10px] text-text-muted">Real-time skill gap analysis powered by adaptive AI</p>
                   </div>
                 </div>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -369,27 +367,27 @@ export const AITrainingModules: React.FC = () => {
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: i * 0.08 }}
-                      className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/30"
+                      className="p-4 rounded-xl bg-surface-sunken border border-surface-border"
                     >
                       <div className="flex items-center justify-between mb-3">
-                        <span className="text-xs font-medium text-slate-300">{comp.area}</span>
-                        <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md">{comp.trend}</span>
+                        <span className="text-xs font-medium text-text-secondary">{comp.area}</span>
+                        <span className="text-[10px] font-bold text-success bg-success/10 px-2 py-0.5 rounded-md">{comp.trend}</span>
                       </div>
                       <div className="flex items-end gap-3 mb-2">
-                        <span className="text-3xl font-black text-white font-display">{comp.score}</span>
-                        <span className="text-[10px] text-slate-500 mb-1">/ 100</span>
+                        <span className="text-3xl font-black text-text-primary font-display">{comp.score}</span>
+                        <span className="text-[10px] text-text-muted mb-1">/ 100</span>
                       </div>
-                      <div className="w-full h-2 bg-slate-700/50 rounded-full overflow-hidden mb-2">
+                      <div className="w-full h-2 bg-surface-overlay rounded-full overflow-hidden mb-2">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: `${comp.score}%` }}
                           transition={{ duration: 1, delay: i * 0.1 }}
-                          className={`h-full rounded-full ${comp.score >= 90 ? 'bg-emerald-400' : comp.score >= 75 ? 'bg-cyan-400' : 'bg-amber-400'}`}
+                          className={`h-full rounded-full ${comp.score >= 90 ? 'bg-success' : comp.score >= 75 ? 'bg-ai' : 'bg-warning'}`}
                         />
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-[9px] text-slate-600">Industry Benchmark</span>
-                        <span className="text-[9px] text-slate-500 font-mono">{comp.benchmark}%</span>
+                        <span className="text-[9px] text-text-muted">Industry Benchmark</span>
+                        <span className="text-[9px] text-text-muted font-mono">{comp.benchmark}%</span>
                       </div>
                     </motion.div>
                   ))}
@@ -397,21 +395,21 @@ export const AITrainingModules: React.FC = () => {
               </div>
               
               {/* Overall Readiness */}
-              <div className="p-5 rounded-2xl bg-slate-900/80 backdrop-blur-xl border border-cyan-500/15">
+              <div className="p-5 rounded-2xl bg-surface-raised backdrop-blur-xl border border-ai/15">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-cyan-400" /> Overall Training Readiness
+                  <h3 className="text-sm font-bold text-text-primary flex items-center gap-2">
+                    <Zap className="w-4 h-4 text-ai" /> Overall Training Readiness
                   </h3>
-                  <span className="text-lg font-black text-cyan-400 font-display">
+                  <span className="text-lg font-black text-ai font-display">
                     {Math.round(displayCompetency.reduce((s, c) => s + c.score, 0) / displayCompetency.length)}%
                   </span>
                 </div>
-                <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden">
+                <div className="w-full h-3 bg-surface-overlay rounded-full overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${Math.round(displayCompetency.reduce((s, c) => s + c.score, 0) / displayCompetency.length)}%` }}
                     transition={{ duration: 1.5 }}
-                    className="h-full bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400 rounded-full"
+                    className="h-full bg-gradient-to-r from-ai via-accent to-ai rounded-full"
                   />
                 </div>
               </div>
@@ -421,39 +419,39 @@ export const AITrainingModules: React.FC = () => {
           {/* AI Course Generator Tab */}
           {activeTab === 'generator' && (
             <motion.div key="generator" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-5">
-              <div className="p-6 rounded-2xl bg-slate-900/80 backdrop-blur-xl border border-purple-500/15">
+              <div className="p-6 rounded-2xl bg-surface-raised backdrop-blur-xl border border-ai/15">
                 <div className="flex items-center gap-3 mb-5">
-                  <div className="p-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-cyan-500/20 border border-purple-500/20">
-                    <Sparkles className="w-6 h-6 text-purple-400" />
+                  <div className="p-3 rounded-xl bg-gradient-to-br from-ai/20 to-accent/20 border border-ai/20">
+                    <Sparkles className="w-6 h-6 text-ai" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">AI Course Generator</h3>
-                    <p className="text-xs text-slate-400">Generate custom training modules from topics, regulations, or incident data</p>
+                    <h3 className="text-lg font-bold text-text-primary">AI Course Generator</h3>
+                    <p className="text-xs text-text-muted">Generate custom training modules from topics, regulations, or incident data</p>
                   </div>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-4 mb-6">
                   <div>
-                    <label className="block text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-2">Topic / Regulation</label>
+                    <label className="block text-[10px] text-text-muted uppercase tracking-wider font-bold mb-2">Topic / Regulation</label>
                     <input
                       type="text"
                       value={topic}
                       onChange={e => setTopic(e.target.value)}
                       placeholder="e.g., Fall Protection, OSHA 1926.501"
-                      className="w-full px-4 py-3 bg-slate-800/60 border border-slate-700/30 rounded-xl text-sm text-white placeholder-slate-600 focus:border-purple-500/40 focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary placeholder-text-muted focus:border-ai/40 focus:outline-none transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-2">Difficulty Level</label>
-                    <select value={difficulty} onChange={e => setDifficulty(e.target.value as 'Beginner' | 'Intermediate' | 'Advanced')} className="w-full px-4 py-3 bg-slate-800/60 border border-slate-700/30 rounded-xl text-sm text-white focus:border-purple-500/40 focus:outline-none transition-colors">
+                    <label className="block text-[10px] text-text-muted uppercase tracking-wider font-bold mb-2">Difficulty Level</label>
+                    <select value={difficulty} onChange={e => setDifficulty(e.target.value as 'Beginner' | 'Intermediate' | 'Advanced')} className="w-full px-4 py-3 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary focus:border-ai/40 focus:outline-none transition-colors">
                       <option>Beginner</option>
                       <option>Intermediate</option>
                       <option>Advanced</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-2">Target Audience</label>
-                    <select value={audience} onChange={e => setAudience(e.target.value)} className="w-full px-4 py-3 bg-slate-800/60 border border-slate-700/30 rounded-xl text-sm text-white focus:border-purple-500/40 focus:outline-none transition-colors">
+                    <label className="block text-[10px] text-text-muted uppercase tracking-wider font-bold mb-2">Target Audience</label>
+                    <select value={audience} onChange={e => setAudience(e.target.value)} className="w-full px-4 py-3 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary focus:border-ai/40 focus:outline-none transition-colors">
                       <option>All Workers</option>
                       <option>Supervisors</option>
                       <option>Maintenance</option>
@@ -462,8 +460,8 @@ export const AITrainingModules: React.FC = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-2">Module Count</label>
-                    <select value={moduleCount} onChange={e => setModuleCount(e.target.value)} className="w-full px-4 py-3 bg-slate-800/60 border border-slate-700/30 rounded-xl text-sm text-white focus:border-purple-500/40 focus:outline-none transition-colors">
+                    <label className="block text-[10px] text-text-muted uppercase tracking-wider font-bold mb-2">Module Count</label>
+                    <select value={moduleCount} onChange={e => setModuleCount(e.target.value)} className="w-full px-4 py-3 bg-surface-sunken border border-surface-border rounded-xl text-sm text-text-primary focus:border-ai/40 focus:outline-none transition-colors">
                       <option>5 modules (~30 min)</option>
                       <option>10 modules (~60 min)</option>
                       <option>15 modules (~90 min)</option>
@@ -475,7 +473,7 @@ export const AITrainingModules: React.FC = () => {
                 <button
                   onClick={handleGenerate}
                   disabled={generating}
-                  className="w-full py-3.5 bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-bold rounded-xl hover:from-purple-400 hover:to-cyan-400 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full py-3.5 bg-gradient-to-r from-ai to-accent text-text-onAccent font-bold rounded-xl hover:from-ai/80 hover:to-accent/80 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   {generating ? (
                     <><RefreshCw className="w-4 h-4 animate-spin" /> Generating with AI...</>
@@ -488,13 +486,13 @@ export const AITrainingModules: React.FC = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mt-5 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20"
+                    className="mt-5 p-4 rounded-xl bg-success/10 border border-success/20"
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                      <span className="text-xs font-bold text-emerald-400">Module Generated Successfully</span>
+                      <CheckCircle2 className="w-4 h-4 text-success" />
+                      <span className="text-xs font-bold text-success">Module Generated Successfully</span>
                     </div>
-                    <p className="text-sm text-slate-300">{generatedModule}</p>
+                    <p className="text-sm text-text-secondary">{generatedModule}</p>
                   </motion.div>
                 )}
               </div>
@@ -511,11 +509,11 @@ export const AITrainingModules: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.1 }}
-                    className="p-4 rounded-2xl bg-slate-900/80 border border-slate-700/30"
+                    className="p-4 rounded-2xl bg-surface-raised border border-surface-border"
                   >
-                    <cap.icon className="w-5 h-5 text-purple-400 mb-3" />
-                    <h4 className="text-xs font-bold text-white mb-1">{cap.title}</h4>
-                    <p className="text-[11px] text-slate-500">{cap.desc}</p>
+                    <cap.icon className="w-5 h-5 text-ai mb-3" />
+                    <h4 className="text-xs font-bold text-text-primary mb-1">{cap.title}</h4>
+                    <p className="text-[11px] text-text-muted">{cap.desc}</p>
                   </motion.div>
                 ))}
               </div>

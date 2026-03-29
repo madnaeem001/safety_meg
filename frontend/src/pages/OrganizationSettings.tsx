@@ -92,32 +92,32 @@ export const OrganizationSettings: React.FC = () => {
 
   const getRoleBadgeColor = (role: TeamMember['role']) => {
     switch (role) {
-      case 'owner': return 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400';
-      case 'admin': return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400';
-      case 'manager': return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
-      case 'user': return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
-      default: return 'bg-surface-100 text-surface-700 dark:bg-surface-700 dark:text-surface-300';
+      case 'owner': return 'bg-ai/10 text-ai';
+      case 'admin': return 'bg-danger/10 text-danger';
+      case 'manager': return 'bg-accent/10 text-accent';
+      case 'user': return 'bg-success/10 text-success';
+      default: return 'bg-surface-sunken text-text-secondary';
     }
   };
 
   return (
     <FadeContent blur duration={400} delay={0}>
-      <div className="min-h-screen pb-24 bg-surface-50 dark:bg-surface-900">
+      <div className="min-h-screen pb-24 bg-surface-base">
         {/* Header */}
-        <header className="sticky top-[72px] z-40 bg-white dark:bg-surface-800 border-b border-surface-200 dark:border-surface-700">
+        <header className="sticky top-[72px] z-40 bg-surface-overlay border-b border-surface-border">
           <div className="px-4 py-3">
             <div className="flex items-center gap-3">
               <button 
                 onClick={() => navigate(-1)}
-                className="p-2 hover:bg-surface-100 dark:hover:bg-surface-700 rounded-full transition-colors"
+                className="p-2 hover:bg-surface-overlay rounded-full transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
               <div>
-                <h1 className="text-lg font-semibold text-surface-900 dark:text-white">Organization Settings</h1>
-                <p className="text-xs text-surface-500">{organization.name}</p>
+                <h1 className="text-lg font-semibold text-text-primary">Organization Settings</h1>
+                <p className="text-xs text-text-muted">{organization.name}</p>
               </div>
             </div>
 
@@ -129,8 +129,8 @@ export const OrganizationSettings: React.FC = () => {
                   onClick={() => setActiveTab(tab.id as typeof activeTab)}
                   className={`flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${
                     activeTab === tab.id
-                      ? 'bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400'
-                      : 'text-surface-600 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-700'
+                      ? 'bg-accent/10 text-accent'
+                      : 'text-text-secondary hover:bg-surface-overlay'
                   }`}
                 >
                   <tab.icon className="w-4 h-4" />
@@ -153,69 +153,69 @@ export const OrganizationSettings: React.FC = () => {
                 exit="hidden"
                 className="space-y-4"
               >
-                <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-4">
-                  <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Organization Profile</h3>
+                <motion.div variants={itemVariants} className="bg-surface-overlay rounded-xl border border-surface-border p-4">
+                  <h3 className="font-semibold text-text-primary mb-4">Organization Profile</h3>
                   
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center text-white text-2xl font-bold">
+                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center text-text-onAccent text-2xl font-bold">
                       {organization.name.charAt(0)}
                     </div>
                     <div>
-                      <button className="text-sm text-brand-600 font-medium">Change Logo</button>
+                      <button className="text-sm text-accent font-medium">Change Logo</button>
                     </div>
                   </div>
 
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1">
+                      <label className="block text-sm font-medium text-text-secondary mb-1">
                         Organization Name
                       </label>
                       <input
                         type="text"
                         defaultValue={organization.name}
-                        className="w-full px-3 py-2 border border-surface-300 dark:border-surface-600 rounded-lg bg-white dark:bg-surface-700"
+                        className="w-full px-3 py-2 border border-surface-border rounded-lg bg-surface-sunken"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1">
+                      <label className="block text-sm font-medium text-text-secondary mb-1">
                         Organization ID
                       </label>
                       <input
                         type="text"
                         value={organization.id}
                         disabled
-                        className="w-full px-3 py-2 border border-surface-300 dark:border-surface-600 rounded-lg bg-surface-100 dark:bg-surface-800 text-surface-500"
+                        className="w-full px-3 py-2 border border-surface-300 dark:border-surface-600 rounded-lg bg-surface-sunken text-text-muted"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1">
+                      <label className="block text-sm font-medium text-text-secondary mb-1">
                         Primary Industries
                       </label>
                       <div className="flex flex-wrap gap-2">
                         {organization.industries.map((industry) => (
-                          <span key={industry} className="px-3 py-1 bg-surface-100 dark:bg-surface-700 rounded-full text-sm">
+                          <span key={industry} className="px-3 py-1 bg-surface-sunken rounded-full text-sm">
                             {industry}
                           </span>
                         ))}
-                        <button className="px-3 py-1 border border-dashed border-surface-300 dark:border-surface-600 rounded-full text-sm text-surface-500 hover:border-brand-500 hover:text-brand-500 transition-colors">
+                        <button className="px-3 py-1 border border-dashed border-surface-border rounded-full text-sm text-text-muted hover:border-accent hover:text-accent transition-colors">
                           + Add
                         </button>
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1">
+                      <label className="block text-sm font-medium text-text-secondary mb-1">
                         Operating Regions
                       </label>
                       <div className="flex flex-wrap gap-2">
                         {organization.regions.map((region) => (
-                          <span key={region} className="px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 rounded-full text-sm">
+                          <span key={region} className="px-3 py-1 bg-accent/10 text-accent rounded-full text-sm">
                             {region}
                           </span>
                         ))}
-                        <button className="px-3 py-1 border border-dashed border-surface-300 dark:border-surface-600 rounded-full text-sm text-surface-500 hover:border-brand-500 hover:text-brand-500 transition-colors">
+                        <button className="px-3 py-1 border border-dashed border-surface-border rounded-full text-sm text-text-muted hover:border-accent hover:text-accent transition-colors">
                           + Add
                         </button>
                       </div>
@@ -223,14 +223,14 @@ export const OrganizationSettings: React.FC = () => {
                   </div>
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-4">
-                  <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Localization</h3>
+                <motion.div variants={itemVariants} className="bg-surface-overlay rounded-xl border border-surface-border p-4">
+                  <h3 className="font-semibold text-text-primary mb-4">Localization</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1">
+                      <label className="block text-sm font-medium text-text-secondary mb-1">
                         Default Language
                       </label>
-                      <select className="w-full px-3 py-2 border border-surface-300 dark:border-surface-600 rounded-lg bg-white dark:bg-surface-700">
+                      <select className="w-full px-3 py-2 border border-surface-border rounded-lg bg-surface-sunken">
                         <option value="en">English</option>
                         <option value="es">Español</option>
                         <option value="fr">Français</option>
@@ -242,10 +242,10 @@ export const OrganizationSettings: React.FC = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1">
+                      <label className="block text-sm font-medium text-text-secondary mb-1">
                         Timezone
                       </label>
-                      <select className="w-full px-3 py-2 border border-surface-300 dark:border-surface-600 rounded-lg bg-white dark:bg-surface-700">
+                      <select className="w-full px-3 py-2 border border-surface-border rounded-lg bg-surface-sunken">
                         <option value="UTC">UTC</option>
                         <option value="America/New_York">Eastern Time</option>
                         <option value="America/Chicago">Central Time</option>
@@ -257,20 +257,20 @@ export const OrganizationSettings: React.FC = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1">
+                      <label className="block text-sm font-medium text-text-secondary mb-1">
                         Date Format
                       </label>
-                      <select className="w-full px-3 py-2 border border-surface-300 dark:border-surface-600 rounded-lg bg-white dark:bg-surface-700">
+                      <select className="w-full px-3 py-2 border border-surface-border rounded-lg bg-surface-sunken">
                         <option value="MM/DD/YYYY">MM/DD/YYYY</option>
                         <option value="DD/MM/YYYY">DD/MM/YYYY</option>
                         <option value="YYYY-MM-DD">YYYY-MM-DD</option>
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1">
+                      <label className="block text-sm font-medium text-text-secondary mb-1">
                         Units
                       </label>
-                      <select className="w-full px-3 py-2 border border-surface-300 dark:border-surface-600 rounded-lg bg-white dark:bg-surface-700">
+                      <select className="w-full px-3 py-2 border border-surface-border rounded-lg bg-surface-sunken">
                         <option value="imperial">Imperial (ft, lb, °F)</option>
                         <option value="metric">Metric (m, kg, °C)</option>
                       </select>
@@ -278,13 +278,13 @@ export const OrganizationSettings: React.FC = () => {
                   </div>
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-4">
-                  <h3 className="font-semibold text-surface-900 dark:text-white mb-4">System Maintenance</h3>
+                <motion.div variants={itemVariants} className="bg-surface-overlay rounded-xl border border-surface-border p-4">
+                  <h3 className="font-semibold text-text-primary mb-4">System Maintenance</h3>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-medium text-surface-900 dark:text-white">Clear Application Cache</p>
-                        <p className="text-sm text-surface-500">Remove all locally stored audits, history, and preferences.</p>
+                        <p className="font-medium text-text-primary">Clear Application Cache</p>
+                        <p className="text-sm text-text-muted">Remove all locally stored audits, history, and preferences.</p>
                       </div>
                       <button 
                         onClick={() => {
@@ -293,7 +293,7 @@ export const OrganizationSettings: React.FC = () => {
                             window.location.reload();
                           }
                         }}
-                        className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-colors"
+                        className="px-4 py-2 bg-danger hover:bg-danger/80 text-text-onAccent rounded-lg text-sm font-medium transition-colors"
                       >
                         Clear All Data
                       </button>
@@ -319,8 +319,8 @@ export const OrganizationSettings: React.FC = () => {
               >
                 <motion.div variants={itemVariants} className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-semibold text-surface-900 dark:text-white">Team Members</h3>
-                    <p className="text-sm text-surface-500">{teamMembers.length} of {organization.plan === 'enterprise' ? 'Unlimited' : organization.plan === 'professional' ? '25' : '5'} users</p>
+                    <h3 className="font-semibold text-text-primary">Team Members</h3>
+                    <p className="text-sm text-text-muted">{teamMembers.length} of {organization.plan === 'enterprise' ? 'Unlimited' : organization.plan === 'professional' ? '25' : '5'} users</p>
                   </div>
                   <SMButton variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />}>Invite</SMButton>
                 </motion.div>
@@ -330,32 +330,32 @@ export const OrganizationSettings: React.FC = () => {
                     <motion.div
                       key={member.id}
                       variants={itemVariants}
-                      className="flex items-center gap-4 p-4 bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700"
+                      className="flex items-center gap-4 p-4 bg-surface-overlay rounded-xl border border-surface-border"
                     >
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-medium">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-text-onAccent font-medium">
                         {member.name.split(' ').map(n => n[0]).join('')}
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-medium text-surface-900 dark:text-white">{member.name}</h4>
-                        <p className="text-sm text-surface-500">{member.email}</p>
+                        <h4 className="font-medium text-text-primary">{member.name}</h4>
+                        <p className="text-sm text-text-muted">{member.email}</p>
                       </div>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${getRoleBadgeColor(member.role)}`}>
                         {member.role}
                       </span>
-                      <button className="p-2 hover:bg-surface-100 dark:hover:bg-surface-700 rounded-lg transition-colors">
-                        <ChevronRight className="w-4 h-4 text-surface-400" />
+                      <button className="p-2 hover:bg-surface-overlay rounded-lg transition-colors">
+                        <ChevronRight className="w-4 h-4 text-text-muted" />
                       </button>
                     </motion.div>
                   ))}
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-4">
-                  <h3 className="font-semibold text-surface-900 dark:text-white mb-3">Role Permissions</h3>
+                <motion.div variants={itemVariants} className="bg-surface-overlay rounded-xl border border-surface-border p-4">
+                  <h3 className="font-semibold text-text-primary mb-3">Role Permissions</h3>
                   <div className="space-y-3">
                     {['Owner', 'Admin', 'Manager', 'User', 'Viewer'].map((role) => (
-                      <div key={role} className="flex items-center justify-between py-2 border-b border-surface-100 dark:border-surface-700 last:border-0">
-                        <span className="text-sm font-medium text-surface-700 dark:text-surface-300">{role}</span>
-                        <button className="text-xs text-brand-600 font-medium">Configure</button>
+                      <div key={role} className="flex items-center justify-between py-2 border-b border-surface-border last:border-0">
+                        <span className="text-sm font-medium text-text-secondary">{role}</span>
+                        <button className="text-xs text-accent font-medium">Configure</button>
                       </div>
                     ))}
                   </div>
@@ -373,34 +373,34 @@ export const OrganizationSettings: React.FC = () => {
                 exit="hidden"
                 className="space-y-4"
               >
-                <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-4">
-                  <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Single Sign-On (SSO)</h3>
+                <motion.div variants={itemVariants} className="bg-surface-overlay rounded-xl border border-surface-border p-4">
+                  <h3 className="font-semibold text-text-primary mb-4">Single Sign-On (SSO)</h3>
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                    <div className="flex items-center justify-between p-4 bg-success/10 rounded-lg border border-success/20">
                       <div className="flex items-center gap-3">
-                        <Shield className="w-5 h-5 text-green-600" />
+                        <Shield className="w-5 h-5 text-success" />
                         <div>
-                          <p className="font-medium text-green-700 dark:text-green-400">SAML 2.0 Available</p>
-                          <p className="text-sm text-green-600 dark:text-green-500">Enterprise feature enabled</p>
+                          <p className="font-medium text-success">SAML 2.0 Available</p>
+                          <p className="text-sm text-success">Enterprise feature enabled</p>
                         </div>
                       </div>
-                      <button className="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors">
+                      <button className="px-4 py-2 bg-success text-text-onAccent rounded-lg font-medium hover:bg-success/80 transition-colors">
                         Configure
                       </button>
                     </div>
                     <div className="space-y-2">
                       {['Okta', 'Azure AD', 'Google Workspace', 'OneLogin', 'Custom SAML'].map((provider) => (
-                        <div key={provider} className="flex items-center justify-between p-3 bg-surface-50 dark:bg-surface-700 rounded-lg">
-                          <span className="text-sm font-medium text-surface-700 dark:text-surface-300">{provider}</span>
-                          <button className="text-xs text-brand-600 font-medium">Setup</button>
+                        <div key={provider} className="flex items-center justify-between p-3 bg-surface-sunken rounded-lg">
+                          <span className="text-sm font-medium text-text-secondary">{provider}</span>
+                          <button className="text-xs text-accent font-medium">Setup</button>
                         </div>
                       ))}
                     </div>
                   </div>
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-4">
-                  <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Security Policies</h3>
+                <motion.div variants={itemVariants} className="bg-surface-overlay rounded-xl border border-surface-border p-4">
+                  <h3 className="font-semibold text-text-primary mb-4">Security Policies</h3>
                   <div className="space-y-3">
                     {[
                       { label: 'Two-Factor Authentication', description: 'Require 2FA for all users', enabled: true },
@@ -408,24 +408,24 @@ export const OrganizationSettings: React.FC = () => {
                       { label: 'IP Allowlist', description: 'Restrict access to approved IPs', enabled: false },
                       { label: 'Password Policy', description: 'Enforce strong passwords', enabled: true },
                     ].map((policy) => (
-                      <div key={policy.label} className="flex items-center justify-between p-3 bg-surface-50 dark:bg-surface-700 rounded-lg">
+                      <div key={policy.label} className="flex items-center justify-between p-3 bg-surface-sunken rounded-lg">
                         <div>
-                          <p className="text-sm font-medium text-surface-700 dark:text-surface-300">{policy.label}</p>
-                          <p className="text-xs text-surface-500">{policy.description}</p>
+                          <p className="text-sm font-medium text-text-secondary">{policy.label}</p>
+                          <p className="text-xs text-text-muted">{policy.description}</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input type="checkbox" defaultChecked={policy.enabled} className="sr-only peer" />
-                          <div className="w-11 h-6 bg-surface-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-brand-500 rounded-full peer dark:bg-surface-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500"></div>
+                          <div className="w-11 h-6 bg-surface-border peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-accent rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent"></div>
                         </label>
                       </div>
                     ))}
                   </div>
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-4">
+                <motion.div variants={itemVariants} className="bg-surface-overlay rounded-xl border border-surface-border p-4">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold text-surface-900 dark:text-white">Audit Log</h3>
-                    <button className="text-xs text-brand-600 font-medium">Export</button>
+                    <h3 className="font-semibold text-text-primary">Audit Log</h3>
+                    <button className="text-xs text-accent font-medium">Export</button>
                   </div>
                   <div className="space-y-2">
                     {[
@@ -434,12 +434,12 @@ export const OrganizationSettings: React.FC = () => {
                       { action: 'SSO configured', user: 'Admin', time: '3 hr ago' },
                       { action: 'Password reset', user: 'Emily Williams', time: '1 day ago' },
                     ].map((log, index) => (
-                      <div key={index} className="flex items-center justify-between py-2 border-b border-surface-100 dark:border-surface-700 last:border-0">
+                      <div key={index} className="flex items-center justify-between py-2 border-b border-surface-border last:border-0">
                         <div>
-                          <p className="text-sm text-surface-700 dark:text-surface-300">{log.action}</p>
-                          <p className="text-xs text-surface-500">{log.user}</p>
+                          <p className="text-sm text-text-secondary">{log.action}</p>
+                          <p className="text-xs text-text-muted">{log.user}</p>
                         </div>
-                        <span className="text-xs text-surface-500">{log.time}</span>
+                        <span className="text-xs text-text-muted">{log.time}</span>
                       </div>
                     ))}
                   </div>
@@ -457,10 +457,10 @@ export const OrganizationSettings: React.FC = () => {
                 exit="hidden"
                 className="space-y-4"
               >
-                <motion.div variants={itemVariants} className="bg-gradient-to-r from-brand-500 to-brand-600 rounded-xl p-6 text-white">
+                <motion.div variants={itemVariants} className="bg-gradient-to-r from-brand-500 to-brand-600 rounded-xl p-6 text-text-onAccent">
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <p className="text-brand-100 text-sm">Current Plan</p>
+                      <p className="text-text-onAccent/70 text-sm">Current Plan</p>
                       <h3 className="text-2xl font-bold capitalize">{organization.plan}</h3>
                     </div>
                     <span className="px-3 py-1 bg-white/20 rounded-full text-sm font-medium">Active</span>
@@ -474,50 +474,50 @@ export const OrganizationSettings: React.FC = () => {
                   </div>
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-4">
-                  <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Usage This Month</h3>
+                <motion.div variants={itemVariants} className="bg-surface-overlay rounded-xl border border-surface-border p-4">
+                  <h3 className="font-semibold text-text-primary mb-4">Usage This Month</h3>
                   <div className="space-y-4">
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-surface-600 dark:text-surface-400">Active Users</span>
-                        <span className="font-medium text-surface-900 dark:text-white">{organization.users} / Unlimited</span>
+                        <span className="text-surface-600 dark:text-text-muted">Active Users</span>
+                        <span className="font-medium text-text-primary">{organization.users} / Unlimited</span>
                       </div>
-                      <div className="h-2 bg-surface-100 dark:bg-surface-700 rounded-full overflow-hidden">
-                        <div className="h-full bg-brand-500 rounded-full" style={{ width: '45%' }} />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="text-surface-600 dark:text-surface-400">Facilities</span>
-                        <span className="font-medium text-surface-900 dark:text-white">{organization.facilities} / Unlimited</span>
-                      </div>
-                      <div className="h-2 bg-surface-100 dark:bg-surface-700 rounded-full overflow-hidden">
-                        <div className="h-full bg-green-500 rounded-full" style={{ width: '30%' }} />
+                      <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
+                        <div className="h-full bg-accent rounded-full" style={{ width: '45%' }} />
                       </div>
                     </div>
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-surface-600 dark:text-surface-400">API Calls</span>
-                        <span className="font-medium text-surface-900 dark:text-white">1.2M / 5M</span>
+                        <span className="text-surface-600 dark:text-text-muted">Facilities</span>
+                        <span className="font-medium text-text-primary">{organization.facilities} / Unlimited</span>
                       </div>
-                      <div className="h-2 bg-surface-100 dark:bg-surface-700 rounded-full overflow-hidden">
-                        <div className="h-full bg-blue-500 rounded-full" style={{ width: '24%' }} />
+                      <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
+                        <div className="h-full bg-success rounded-full" style={{ width: '30%' }} />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span className="text-surface-600 dark:text-text-muted">API Calls</span>
+                        <span className="font-medium text-text-primary">1.2M / 5M</span>
+                      </div>
+                      <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
+                        <div className="h-full bg-accent rounded-full" style={{ width: '24%' }} />
                       </div>
                     </div>
                   </div>
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-4">
-                  <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Payment Method</h3>
-                  <div className="flex items-center gap-4 p-4 bg-surface-50 dark:bg-surface-700 rounded-lg">
+                <motion.div variants={itemVariants} className="bg-surface-overlay rounded-xl border border-surface-border p-4">
+                  <h3 className="font-semibold text-text-primary mb-4">Payment Method</h3>
+                  <div className="flex items-center gap-4 p-4 bg-surface-sunken rounded-lg">
                     <div className="w-12 h-8 bg-gradient-to-r from-blue-600 to-blue-800 rounded flex items-center justify-center text-white text-xs font-bold">
                       VISA
                     </div>
                     <div>
-                      <p className="font-medium text-surface-900 dark:text-white">•••• •••• •••• 4242</p>
-                      <p className="text-xs text-surface-500">Expires 12/2027</p>
+                      <p className="font-medium text-text-primary">•••• •••• •••• 4242</p>
+                      <p className="text-xs text-text-muted">Expires 12/2027</p>
                     </div>
-                    <button className="ml-auto text-sm text-brand-600 font-medium">Update</button>
+                    <button className="ml-auto text-sm text-accent font-medium">Update</button>
                   </div>
                 </motion.div>
               </motion.div>
@@ -533,27 +533,27 @@ export const OrganizationSettings: React.FC = () => {
                 exit="hidden"
                 className="space-y-4"
               >
-                <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-4">
-                  <h3 className="font-semibold text-surface-900 dark:text-white mb-4">API Access</h3>
+                <motion.div variants={itemVariants} className="bg-surface-overlay rounded-xl border border-surface-border p-4">
+                  <h3 className="font-semibold text-text-primary mb-4">API Access</h3>
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 bg-surface-50 dark:bg-surface-700 rounded-lg">
+                    <div className="flex items-center justify-between p-4 bg-surface-sunken rounded-lg">
                       <div className="flex items-center gap-3">
-                        <Key className="w-5 h-5 text-surface-600 dark:text-surface-400" />
+                        <Key className="w-5 h-5 text-surface-600 dark:text-text-muted" />
                         <div>
-                          <p className="font-medium text-surface-900 dark:text-white">API Key</p>
-                          <p className="text-sm text-surface-500 font-mono">sk-••••••••••••••••4a2f</p>
+                          <p className="font-medium text-text-primary">API Key</p>
+                          <p className="text-sm text-text-muted font-mono">sk-••••••••••••••••4a2f</p>
                         </div>
                       </div>
-                      <button className="text-sm text-brand-600 font-medium">Regenerate</button>
+                      <button className="text-sm text-accent font-medium">Regenerate</button>
                     </div>
-                    <a href="#" className="block text-sm text-brand-600 font-medium hover:underline">
+                    <a href="#" className="block text-sm text-accent font-medium hover:underline">
                       View API Documentation →
                     </a>
                   </div>
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-4">
-                  <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Connected Services</h3>
+                <motion.div variants={itemVariants} className="bg-surface-overlay rounded-xl border border-surface-border p-4">
+                  <h3 className="font-semibold text-text-primary mb-4">Connected Services</h3>
                   <div className="space-y-2">
                     {[
                       { name: 'Slack', icon: '💬', status: 'connected', description: 'Real-time notifications' },
@@ -563,20 +563,20 @@ export const OrganizationSettings: React.FC = () => {
                       { name: 'Power BI', icon: '📊', status: 'connected', description: 'Analytics dashboard' },
                       { name: 'Tableau', icon: '📈', status: 'available', description: 'Data visualization' },
                     ].map((service) => (
-                      <div key={service.name} className="flex items-center justify-between p-3 bg-surface-50 dark:bg-surface-700 rounded-lg">
+                      <div key={service.name} className="flex items-center justify-between p-3 bg-surface-sunken rounded-lg">
                         <div className="flex items-center gap-3">
                           <span className="text-2xl">{service.icon}</span>
                           <div>
-                            <p className="font-medium text-surface-900 dark:text-white">{service.name}</p>
-                            <p className="text-xs text-surface-500">{service.description}</p>
+                            <p className="font-medium text-text-primary">{service.name}</p>
+                            <p className="text-xs text-text-muted">{service.description}</p>
                           </div>
                         </div>
                         {service.status === 'connected' ? (
-                          <span className="px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded-full text-xs font-medium">
+                          <span className="px-2 py-1 bg-success/10 text-success rounded-full text-xs font-medium">
                             Connected
                           </span>
                         ) : (
-                          <button className="px-3 py-1 border border-brand-500 text-brand-600 rounded-lg text-sm font-medium hover:bg-brand-50 dark:hover:bg-brand-900/20 transition-colors">
+                          <button className="px-3 py-1 border border-accent text-accent rounded-lg text-sm font-medium hover:bg-accent/5 transition-colors">
                             Connect
                           </button>
                         )}
@@ -585,12 +585,12 @@ export const OrganizationSettings: React.FC = () => {
                   </div>
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-4">
-                  <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Webhooks</h3>
-                  <p className="text-sm text-surface-500 mb-4">Receive real-time notifications for events</p>
+                <motion.div variants={itemVariants} className="bg-surface-overlay rounded-xl border border-surface-border p-4">
+                  <h3 className="font-semibold text-text-primary mb-4">Webhooks</h3>
+                  <p className="text-sm text-text-muted mb-4">Receive real-time notifications for events</p>
                   <button 
                     onClick={() => navigate('/webhooks')}
-                    className="w-full py-2 border border-brand-500 text-brand-600 rounded-lg font-medium hover:bg-brand-50 dark:hover:bg-brand-900/20 transition-colors"
+                    className="w-full py-2 border border-accent text-accent rounded-lg font-medium hover:bg-accent/5 transition-colors"
                   >
                     Configure Webhooks
                   </button>

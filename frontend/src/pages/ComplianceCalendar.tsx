@@ -32,15 +32,15 @@ const typeConfig: Record<EventType, { icon: any; color: string; label: string }>
 };
 
 const statusConfig: Record<string, { bg: string; text: string; label: string }> = {
-  'upcoming': { bg: 'bg-cyan-500/10', text: 'text-cyan-400', label: 'Upcoming' },
-  'overdue': { bg: 'bg-red-500/10', text: 'text-red-400', label: 'Overdue' },
-  'completed': { bg: 'bg-emerald-500/10', text: 'text-emerald-400', label: 'Completed' },
-  'in-progress': { bg: 'bg-amber-500/10', text: 'text-amber-400', label: 'In Progress' },
+  'upcoming': { bg: 'bg-accent/10', text: 'text-accent', label: 'Upcoming' },
+  'overdue': { bg: 'bg-danger/10', text: 'text-danger', label: 'Overdue' },
+  'completed': { bg: 'bg-success/10', text: 'text-success', label: 'Completed' },
+  'in-progress': { bg: 'bg-warning/10', text: 'text-warning', label: 'In Progress' },
 };
 
 const priorityConfig: Record<string, { dot: string }> = {
-  high: { dot: 'bg-red-400' },
-  medium: { dot: 'bg-amber-400' },
+  high: { dot: 'bg-danger' },
+  medium: { dot: 'bg-warning' },
   low: { dot: 'bg-text-muted' },
 };
 
@@ -100,11 +100,7 @@ export const ComplianceCalendar: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen pb-28" style={{ background: 'linear-gradient(165deg, #020617 0%, #0f172a 35%, #0c1222 70%, #020617 100%)' }}>
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-32 right-10 w-[500px] h-[500px] bg-gradient-radial from-cyan-500/6 via-transparent to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-20 -left-20 w-[400px] h-[400px] bg-gradient-radial from-purple-500/5 via-transparent to-transparent rounded-full blur-3xl" />
-      </div>
+    <div className="min-h-screen pb-28 bg-surface-base">
 
 
 
@@ -112,14 +108,14 @@ export const ComplianceCalendar: React.FC = () => {
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center gap-3 mb-3">
-            <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
-              <CalendarDays className="w-6 h-6 text-cyan-400" />
+            <div className="p-2.5 rounded-xl bg-accent/10 border border-accent/20">
+              <CalendarDays className="w-6 h-6 text-accent" />
             </div>
             <div>
-              <div className="flex items-center gap-2 text-cyan-400 font-bold text-[10px] uppercase tracking-[0.3em]">
+              <div className="flex items-center gap-2 text-accent font-bold text-[10px] uppercase tracking-[0.3em]">
                 <Shield className="w-3 h-3" /> Compliance Management
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-white font-display">Compliance Calendar</h1>
+              <h1 className="text-2xl md:text-3xl font-bold text-text-primary font-display">Compliance Calendar</h1>
             </div>
           </div>
           <p className="text-sm text-text-muted max-w-2xl">
@@ -130,9 +126,9 @@ export const ComplianceCalendar: React.FC = () => {
         {/* Stats */}
         <div className="grid grid-cols-3 md:grid-cols-3 gap-4">
           {[
-            { label: 'Overdue', value: overdueCount, icon: AlertCircle, color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/20' },
-            { label: 'Upcoming', value: upcomingCount, icon: Clock, color: 'text-cyan-400', bg: 'bg-cyan-500/10', border: 'border-cyan-500/20' },
-            { label: 'Completed', value: completedCount, icon: CheckCircle2, color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
+            { label: 'Overdue', value: overdueCount, icon: AlertCircle, color: 'text-danger', bg: 'bg-danger/10', border: 'border-danger/20' },
+            { label: 'Upcoming', value: upcomingCount, icon: Clock, color: 'text-accent', bg: 'bg-accent/10', border: 'border-accent/20' },
+            { label: 'Completed', value: completedCount, icon: CheckCircle2, color: 'text-success', bg: 'bg-success/10', border: 'border-success/20' },
           ].map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -172,13 +168,13 @@ export const ComplianceCalendar: React.FC = () => {
 
         <div className="grid lg:grid-cols-5 gap-6">
           {/* Calendar Grid */}
-          <div className="lg:col-span-3 p-5 rounded-2xl bg-surface-overlay border border-cyan-500/15">
+          <div className="lg:col-span-3 p-5 rounded-2xl bg-surface-raised border border-accent/15">
             <div className="flex items-center justify-between mb-5">
-              <button onClick={() => navigateMonth(-1)} className="p-2 rounded-lg hover:bg-slate-800 transition-colors">
+              <button onClick={() => navigateMonth(-1)} className="p-2 rounded-lg hover:bg-surface-overlay transition-colors">
                 <ChevronLeft className="w-5 h-5 text-text-muted" />
               </button>
-              <h3 className="text-lg font-bold text-white font-display">{MONTHS[currentMonth]} {currentYear}</h3>
-              <button onClick={() => navigateMonth(1)} className="p-2 rounded-lg hover:bg-slate-800 transition-colors">
+              <h3 className="text-lg font-bold text-text-primary font-display">{MONTHS[currentMonth]} {currentYear}</h3>
+              <button onClick={() => navigateMonth(1)} className="p-2 rounded-lg hover:bg-surface-overlay transition-colors">
                 <ChevronRight className="w-5 h-5 text-text-muted" />
               </button>
             </div>
@@ -186,7 +182,7 @@ export const ComplianceCalendar: React.FC = () => {
             {/* Day headers */}
             <div className="grid grid-cols-7 gap-1 mb-2">
               {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
-                <div key={d} className="text-center text-[10px] text-slate-600 font-bold uppercase tracking-wider py-2">{d}</div>
+                <div key={d} className="text-center text-[10px] text-text-muted font-bold uppercase tracking-wider py-2">{d}</div>
               ))}
             </div>
 
@@ -205,17 +201,17 @@ export const ComplianceCalendar: React.FC = () => {
                     key={day}
                     onClick={() => setSelectedDate(dateStr === selectedDate ? null : dateStr)}
                     className={`aspect-square rounded-xl flex flex-col items-center justify-center relative transition-all ${
-                      isSelected ? 'bg-cyan-500/20 border border-cyan-500/40' :
-                      isToday ? 'bg-cyan-500/10 border border-cyan-500/20' :
-                      dayEvents.length > 0 ? 'bg-slate-800/50 hover:bg-slate-800 border border-surface-border' :
-                      'hover:bg-slate-800/30 border border-transparent'
+                      isSelected ? 'bg-accent/20 border border-accent/40' :
+                      isToday ? 'bg-accent/10 border border-accent/20' :
+                      dayEvents.length > 0 ? 'bg-surface-sunken hover:bg-surface-overlay border border-surface-border' :
+                      'hover:bg-surface-overlay/30 border border-transparent'
                     }`}
                   >
-                    <span className={`text-xs font-bold ${isToday ? 'text-cyan-400' : isSelected ? 'text-white' : 'text-text-muted'}`}>{day}</span>
+                    <span className={`text-xs font-bold ${isToday ? 'text-accent' : isSelected ? 'text-text-primary' : 'text-text-muted'}`}>{day}</span>
                     {dayEvents.length > 0 && (
                       <div className="flex gap-0.5 mt-1">
                         {dayEvents.slice(0, 3).map((ev, idx) => (
-                          <div key={idx} className={`w-1.5 h-1.5 rounded-full ${hasOverdue ? 'bg-red-400' : 'bg-cyan-400'}`} />
+                          <div key={idx} className={`w-1.5 h-1.5 rounded-full ${hasOverdue ? 'bg-danger' : 'bg-accent'}`} />
                         ))}
                       </div>
                     )}
@@ -227,8 +223,8 @@ export const ComplianceCalendar: React.FC = () => {
 
           {/* Event List */}
           <div className="lg:col-span-2 space-y-3">
-            <h3 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
-              <Bell className="w-4 h-4 text-cyan-400" />
+            <h3 className="text-sm font-bold text-text-primary mb-3 flex items-center gap-2">
+              <Bell className="w-4 h-4 text-accent" />
               {selectedDate ? `Events for ${new Date(selectedDate + 'T00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}` : 'All Compliance Events'}
             </h3>
             <div className="space-y-2 max-h-[500px] overflow-y-auto scrollbar-hide">
@@ -248,28 +244,28 @@ export const ComplianceCalendar: React.FC = () => {
                       initial={{ opacity: 0, x: 10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.05 }}
-                      className={`p-4 rounded-xl bg-slate-900/80 border ${event.status === 'overdue' ? 'border-red-500/30' : 'border-surface-border'} hover:border-cyan-500/20 transition-all`}
+                      className={`p-4 rounded-xl bg-surface-raised border ${event.status === 'overdue' ? 'border-danger/30' : 'border-surface-border'} hover:border-accent/20 transition-all`}
                     >
                       <div className="flex items-start gap-3">
-                        <div className={`p-2 rounded-lg ${event.status === 'overdue' ? 'bg-red-500/10' : 'bg-slate-800/50'}`}>
-                          <tc.icon className={`w-4 h-4 ${event.status === 'overdue' ? 'text-red-400' : 'text-cyan-400'}`} />
+                        <div className={`p-2 rounded-lg ${event.status === 'overdue' ? 'bg-danger/10' : 'bg-surface-sunken'}`}>
+                          <tc.icon className={`w-4 h-4 ${event.status === 'overdue' ? 'text-danger' : 'text-accent'}`} />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
                             <div className={`w-1.5 h-1.5 rounded-full ${pc.dot}`} />
-                            <h4 className="text-xs font-bold text-white truncate">{event.title}</h4>
+                            <h4 className="text-xs font-bold text-text-primary truncate">{event.title}</h4>
                           </div>
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${sc.bg} ${sc.text}`}>{sc.label}</span>
                             <span className="text-[9px] text-text-muted">{new Date(event.date + 'T00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                             {event.regulation && (
-                              <span className="text-[9px] text-slate-600 bg-slate-800/50 px-1.5 py-0.5 rounded">{event.regulation}</span>
+                              <span className="text-[9px] text-text-muted bg-surface-sunken px-1.5 py-0.5 rounded">{event.regulation}</span>
                             )}
                           </div>
                           <div className="flex items-center gap-2 mt-1.5">
                             <span className="text-[10px] text-text-muted">{event.assignee}</span>
                             {event.daysLeft !== undefined && (
-                              <span className={`text-[9px] font-bold ${event.daysLeft < 0 ? 'text-red-400' : event.daysLeft <= 3 ? 'text-amber-400' : 'text-text-muted'}`}>
+                              <span className={`text-[9px] font-bold ${event.daysLeft < 0 ? 'text-danger' : event.daysLeft <= 3 ? 'text-warning' : 'text-text-muted'}`}>
                                 {event.daysLeft < 0 ? `${Math.abs(event.daysLeft)}d overdue` : event.daysLeft === 0 ? 'Today' : `${event.daysLeft}d left`}
                               </span>
                             )}
@@ -280,7 +276,7 @@ export const ComplianceCalendar: React.FC = () => {
                   );
                 })}
               {selectedDate && filteredEvents.filter(e => e.date === selectedDate).length === 0 && (
-                <div className="p-8 text-center text-slate-600 text-sm">No events for this date</div>
+                <div className="p-8 text-center text-text-muted text-sm">No events for this date</div>
               )}
             </div>
           </div>

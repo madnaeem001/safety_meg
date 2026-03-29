@@ -152,29 +152,29 @@ export const EmailNotificationSystem: React.FC = () => {
   const filteredTemplates = selectedCategory === 'All' ? allTemplates : allTemplates.filter(t => t.category === selectedCategory);
 
   const colorMap: Record<string, { bg: string; text: string; border: string }> = {
-    cyan: { bg: 'bg-cyan-500/10', text: 'text-cyan-400', border: 'border-cyan-500/20' },
-    purple: { bg: 'bg-purple-500/10', text: 'text-purple-400', border: 'border-purple-500/20' },
-    blue: { bg: 'bg-blue-500/10', text: 'text-blue-400', border: 'border-blue-500/20' },
-    amber: { bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/20' },
-    red: { bg: 'bg-red-500/10', text: 'text-red-400', border: 'border-red-500/20' },
-    emerald: { bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/20' },
-    violet: { bg: 'bg-violet-500/10', text: 'text-violet-400', border: 'border-violet-500/20' },
-    indigo: { bg: 'bg-indigo-500/10', text: 'text-indigo-400', border: 'border-indigo-500/20' },
-    green: { bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/20' },
+    cyan:    { bg: 'bg-accent/10',   text: 'text-accent',   border: 'border-accent/20'   },
+    purple:  { bg: 'bg-ai/10',       text: 'text-ai',       border: 'border-ai/20'       },
+    blue:    { bg: 'bg-accent/10',   text: 'text-accent',   border: 'border-accent/20'   },
+    amber:   { bg: 'bg-warning/10',  text: 'text-warning',  border: 'border-warning/20'  },
+    red:     { bg: 'bg-danger/10',   text: 'text-danger',   border: 'border-danger/20'   },
+    emerald: { bg: 'bg-success/10',  text: 'text-success',  border: 'border-success/20'  },
+    violet:  { bg: 'bg-ai/10',       text: 'text-ai',       border: 'border-ai/20'       },
+    indigo:  { bg: 'bg-accent/10',   text: 'text-accent',   border: 'border-accent/20'   },
+    green:   { bg: 'bg-success/10',  text: 'text-success',  border: 'border-success/20'  },
   };
 
   return (
-    <div className="min-h-screen pb-28 transition-colors duration-500" style={{ background: 'linear-gradient(165deg, #020617 0%, #0f172a 35%, #0c1222 70%, #020617 100%)' }}>
+    <div className="min-h-screen pb-28 bg-surface-base">
 
       <main className="relative z-10 max-w-7xl mx-auto pt-8 md:pt-12 px-5 md:px-8 lg:px-12">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <div className="h-px w-8 bg-cyan-500" />
-            <span className="text-[13px] font-bold text-cyan-400 uppercase tracking-[0.3em] font-display">Communications</span>
+            <div className="h-px w-8 bg-accent" />
+            <span className="text-[13px] font-bold text-accent uppercase tracking-[0.3em] font-display">Communications</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-white font-display">Email Notification System</h1>
-          <p className="text-slate-400 text-sm mt-2">Automated email campaigns, alerts, and transactional messaging</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-text-primary font-display">Email Notification System</h1>
+          <p className="text-text-muted text-sm mt-2">Automated email campaigns, alerts, and transactional messaging</p>
         </motion.div>
 
         {/* Tabs */}
@@ -182,7 +182,7 @@ export const EmailNotificationSystem: React.FC = () => {
           {tabs.map(tab => (
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                activeTab === tab ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' : 'bg-slate-800/40 text-slate-400 border border-slate-700/30 hover:border-cyan-500/20'
+                activeTab === tab ? 'bg-accent/20 text-accent border border-accent/30' : 'bg-surface-sunken text-text-muted border border-surface-border hover:border-accent/20'
               }`}>{tab}</button>
           ))}
         </div>
@@ -195,13 +195,13 @@ export const EmailNotificationSystem: React.FC = () => {
                 const c = colorMap[stat.color] || colorMap.cyan;
                 return (
                   <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-                    className={`p-4 rounded-2xl bg-slate-900/80 backdrop-blur-xl border ${c.border} hover:scale-[1.02] transition-all`}>
+                    className={`p-4 rounded-2xl bg-surface-raised backdrop-blur-xl border ${c.border} hover:scale-[1.02] transition-all`}>
                     <div className={`p-2 rounded-lg w-fit mb-3 ${c.bg}`}>
                       <stat.icon className={`w-4 h-4 ${c.text}`} />
                     </div>
-                    <p className="text-xl font-black text-white">{stat.value}</p>
-                    <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold mt-0.5">{stat.label}</p>
-                    <span className="text-[10px] font-bold text-emerald-400 mt-1 inline-flex items-center gap-1">
+                    <p className="text-xl font-black text-text-primary">{stat.value}</p>
+                    <p className="text-[10px] text-text-muted uppercase tracking-wider font-bold mt-0.5">{stat.label}</p>
+                    <span className="text-[10px] font-bold text-success mt-1 inline-flex items-center gap-1">
                       <TrendingUp className="w-3 h-3" /> {stat.change}
                     </span>
                   </motion.div>
@@ -210,13 +210,13 @@ export const EmailNotificationSystem: React.FC = () => {
             </div>
 
             {/* Recent Activity */}
-            <div className="bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-cyan-500/15 overflow-hidden">
-              <div className="p-5 border-b border-cyan-500/10">
-                <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-cyan-400" /> Recent Email Activity
+            <div className="bg-surface-raised backdrop-blur-xl rounded-2xl border border-accent/15 overflow-hidden">
+              <div className="p-5 border-b border-accent/10">
+                <h3 className="text-sm font-bold text-text-primary flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-accent" /> Recent Email Activity
                 </h3>
               </div>
-              <div className="divide-y divide-slate-800/50">
+              <div className="divide-y divide-surface-border/50">
                 {[
                   { time: '2m ago', event: 'Incident Alert sent to Zone B supervisors', type: 'alert', count: 4 },
                   { time: '15m ago', event: 'Welcome email delivered to new user', type: 'onboarding', count: 1 },
@@ -225,15 +225,15 @@ export const EmailNotificationSystem: React.FC = () => {
                   { time: '6h ago', event: 'Training renewal reminders dispatched', type: 'training', count: 34 },
                 ].map((item, i) => (
                   <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.05 }}
-                    className="flex items-center justify-between p-4 hover:bg-slate-800/30 transition-colors">
+                    className="flex items-center justify-between p-4 hover:bg-surface-overlay transition-colors">
                     <div className="flex items-center gap-3">
-                      <div className={`w-2 h-2 rounded-full ${item.type === 'alert' ? 'bg-red-400' : item.type === 'onboarding' ? 'bg-cyan-400' : item.type === 'campaign' ? 'bg-purple-400' : 'bg-emerald-400'}`} />
+                      <div className={`w-2 h-2 rounded-full ${item.type === 'alert' ? 'bg-danger' : item.type === 'onboarding' ? 'bg-accent' : item.type === 'campaign' ? 'bg-ai' : 'bg-success'}`} />
                       <div>
-                        <p className="text-xs text-slate-300 font-medium">{item.event}</p>
-                        <p className="text-[10px] text-slate-600">{item.time} · {item.count} recipient{item.count > 1 ? 's' : ''}</p>
+                        <p className="text-xs text-text-secondary font-medium">{item.event}</p>
+                        <p className="text-[10px] text-text-muted">{item.time} · {item.count} recipient{item.count > 1 ? 's' : ''}</p>
                       </div>
                     </div>
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <CheckCircle2 className="w-4 h-4 text-success" />
                   </motion.div>
                 ))}
               </div>
@@ -248,7 +248,7 @@ export const EmailNotificationSystem: React.FC = () => {
               {categories.map(cat => (
                 <button key={cat} onClick={() => setSelectedCategory(cat)}
                   className={`px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all ${
-                    selectedCategory === cat ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' : 'bg-slate-800/40 text-slate-500 border border-slate-700/30 hover:text-slate-300'
+                    selectedCategory === cat ? 'bg-ai/20 text-ai border border-ai/30' : 'bg-surface-sunken text-text-muted border border-surface-border hover:text-text-secondary'
                   }`}>{cat}</button>
               ))}
             </div>
@@ -257,27 +257,27 @@ export const EmailNotificationSystem: React.FC = () => {
                 const c = colorMap[tmpl.color] || colorMap.cyan;
                 return (
                   <motion.div key={tmpl.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
-                    className={`p-5 rounded-2xl bg-slate-900/80 backdrop-blur-xl border ${c.border} hover:scale-[1.01] transition-all group`}>
+                    className={`p-5 rounded-2xl bg-surface-raised backdrop-blur-xl border ${c.border} hover:scale-[1.01] transition-all group`}>
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-3">
                         <div className={`p-2.5 rounded-xl ${c.bg}`}>
                           <tmpl.icon className={`w-5 h-5 ${c.text}`} />
                         </div>
                         <div>
-                          <p className="text-sm font-bold text-white">{tmpl.name}</p>
-                          <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">{tmpl.category}</p>
+                          <p className="text-sm font-bold text-text-primary">{tmpl.name}</p>
+                          <p className="text-[10px] text-text-muted uppercase tracking-wider font-bold">{tmpl.category}</p>
                         </div>
                       </div>
                       <span className={`text-[10px] font-bold px-2 py-1 rounded-lg ${
-                        tmpl.status === 'active' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                        tmpl.status === 'active' ? 'bg-success/10 text-success border border-success/20' : 'bg-warning/10 text-warning border border-warning/20'
                       }`}>{tmpl.status}</span>
                     </div>
-                    <p className="text-xs text-slate-400 mb-3 line-clamp-1">Subject: {tmpl.subject}</p>
-                    <p className="text-[11px] text-slate-500 mb-4">{tmpl.description}</p>
+                    <p className="text-xs text-text-secondary mb-3 line-clamp-1">Subject: {tmpl.subject}</p>
+                    <p className="text-[11px] text-text-muted mb-4">{tmpl.description}</p>
                     <div className="flex items-center gap-4 text-[10px] font-bold">
-                      <span className="text-cyan-400">{tmpl.openRate}% open</span>
-                      <span className="text-purple-400">{tmpl.clickRate}% click</span>
-                      <span className="text-slate-500">{tmpl.sentCount.toLocaleString()} sent</span>
+                      <span className="text-accent">{tmpl.openRate}% open</span>
+                      <span className="text-ai">{tmpl.clickRate}% click</span>
+                      <span className="text-text-muted">{tmpl.sentCount.toLocaleString()} sent</span>
                     </div>
                   </motion.div>
                 );
@@ -289,32 +289,32 @@ export const EmailNotificationSystem: React.FC = () => {
         {/* Automations Tab */}
         {activeTab === 'Automations' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            className="bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-purple-500/15 overflow-hidden">
-            <div className="p-5 border-b border-purple-500/10 flex items-center justify-between">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <Zap className="w-4 h-4 text-purple-400" /> Email Automation Workflows
+            className="bg-surface-raised backdrop-blur-xl rounded-2xl border border-ai/15 overflow-hidden">
+            <div className="p-5 border-b border-ai/10 flex items-center justify-between">
+              <h3 className="text-sm font-bold text-text-primary flex items-center gap-2">
+                <Zap className="w-4 h-4 text-ai" /> Email Automation Workflows
               </h3>
-              <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-500/10 text-purple-400 text-[11px] font-bold border border-purple-500/20 hover:bg-purple-500/20 transition-all">
+              <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-ai/10 text-ai text-[11px] font-bold border border-ai/20 hover:bg-ai/20 transition-all">
                 <Plus className="w-3 h-3" /> New Workflow
               </button>
             </div>
-            <div className="divide-y divide-slate-800/50">
+            <div className="divide-y divide-surface-border/50">
               {automationWorkflows.map((wf, i) => (
                 <motion.div key={wf.name} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.06 }}
-                  className="flex items-center justify-between p-5 hover:bg-slate-800/30 transition-colors group">
+                  className="flex items-center justify-between p-5 hover:bg-surface-overlay transition-colors group">
                   <div className="flex items-center gap-4">
-                    <div className="p-2.5 rounded-xl bg-purple-500/10">
-                      <Zap className="w-4 h-4 text-purple-400" />
+                    <div className="p-2.5 rounded-xl bg-ai/10">
+                      <Zap className="w-4 h-4 text-ai" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white">{wf.name}</p>
-                      <p className="text-[10px] text-slate-500 mt-0.5">Trigger: {wf.trigger} · {wf.emails} emails in sequence</p>
+                      <p className="text-sm font-medium text-text-primary">{wf.name}</p>
+                      <p className="text-[10px] text-text-muted mt-0.5">Trigger: {wf.trigger} · {wf.emails} emails in sequence</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
-                    <span className="text-[10px] font-mono text-slate-500">{wf.deliveryRate}%</span>
+                    <span className="text-[10px] font-mono text-text-muted">{wf.deliveryRate}%</span>
                     <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg ${
-                      wf.status === 'active' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                      wf.status === 'active' ? 'bg-success/10 text-success border border-success/20' : 'bg-warning/10 text-warning border border-warning/20'
                     }`}>{wf.status}</span>
                   </div>
                 </motion.div>
@@ -326,34 +326,34 @@ export const EmailNotificationSystem: React.FC = () => {
         {/* Campaign Builder Tab */}
         {activeTab === 'Campaign Builder' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-            <div className="bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-cyan-500/15 p-6">
-              <h3 className="text-sm font-bold text-white mb-6 flex items-center gap-2">
-                <Edit3 className="w-4 h-4 text-cyan-400" /> Create New Campaign
+            <div className="bg-surface-raised backdrop-blur-xl rounded-2xl border border-accent/15 p-6">
+              <h3 className="text-sm font-bold text-text-primary mb-6 flex items-center gap-2">
+                <Edit3 className="w-4 h-4 text-accent" /> Create New Campaign
               </h3>
               <div className="space-y-5">
                 <div>
-                  <label className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2 block">Campaign Name</label>
-                  <input type="text" placeholder="e.g., February Safety Update" value={campaignName} onChange={e => setCampaignName(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-slate-800/60 border border-slate-700/30 text-white text-sm placeholder:text-slate-600 focus:border-cyan-500/40 focus:outline-none transition-colors" />
+                  <label className="text-xs text-text-muted font-bold uppercase tracking-wider mb-2 block">Campaign Name</label>
+                  <input type="text" placeholder="e.g., February Safety Update" value={campaignName} onChange={e => setCampaignName(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-surface-sunken border border-surface-border text-text-primary text-sm placeholder:text-text-muted focus:border-accent/40 focus:outline-none transition-colors" />
                 </div>
                 <div>
-                  <label className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2 block">Subject Line</label>
-                  <input type="text" placeholder="Your compelling subject line..." value={campaignSubject} onChange={e => setCampaignSubject(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-slate-800/60 border border-slate-700/30 text-white text-sm placeholder:text-slate-600 focus:border-cyan-500/40 focus:outline-none transition-colors" />
+                  <label className="text-xs text-text-muted font-bold uppercase tracking-wider mb-2 block">Subject Line</label>
+                  <input type="text" placeholder="Your compelling subject line..." value={campaignSubject} onChange={e => setCampaignSubject(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-surface-sunken border border-surface-border text-text-primary text-sm placeholder:text-text-muted focus:border-accent/40 focus:outline-none transition-colors" />
                 </div>
                 <div>
-                  <label className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2 block">Audience Segment</label>
+                  <label className="text-xs text-text-muted font-bold uppercase tracking-wider mb-2 block">Audience Segment</label>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {['All Users', 'Active Users', 'At-Risk Users', 'Admins Only'].map(seg => (
-                      <button key={seg} onClick={() => setCampaignSegment(seg)} className={`px-3 py-2.5 rounded-xl bg-slate-800/40 border border-slate-700/30 text-xs font-medium transition-all ${campaignSegment === seg ? 'border-cyan-500/30 text-cyan-400' : 'text-slate-400 hover:border-cyan-500/30 hover:text-cyan-400'}`}>{seg}</button>
+                      <button key={seg} onClick={() => setCampaignSegment(seg)} className={`px-3 py-2.5 rounded-xl bg-surface-sunken border border-surface-border text-xs font-medium transition-all ${campaignSegment === seg ? 'border-accent/30 text-accent' : 'text-text-muted hover:border-accent/30 hover:text-accent'}`}>{seg}</button>
                     ))}
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2 block">Email Body</label>
-                  <textarea rows={6} placeholder="Write your email content here... Supports markdown formatting." value={campaignBody} onChange={e => setCampaignBody(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-slate-800/60 border border-slate-700/30 text-white text-sm placeholder:text-slate-600 focus:border-cyan-500/40 focus:outline-none transition-colors resize-none" />
+                  <label className="text-xs text-text-muted font-bold uppercase tracking-wider mb-2 block">Email Body</label>
+                  <textarea rows={6} placeholder="Write your email content here... Supports markdown formatting." value={campaignBody} onChange={e => setCampaignBody(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-surface-sunken border border-surface-border text-text-primary text-sm placeholder:text-text-muted focus:border-accent/40 focus:outline-none transition-colors resize-none" />
                 </div>
                 <div className="flex items-center gap-3 pt-2">
                   <button
-                    className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold shadow-lg shadow-cyan-500/25 hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-text-onAccent text-sm font-bold shadow-lg shadow-accent/25 hover:bg-accent/80 hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={!campaignName.trim() || !campaignSubject.trim() || createCampaign.loading}
                     onClick={() => {
                       if (!campaignName.trim() || !campaignSubject.trim()) return;
@@ -371,7 +371,7 @@ export const EmailNotificationSystem: React.FC = () => {
                   >
                     <Send className="w-4 h-4" /> {createCampaign.loading ? 'Sending...' : 'Send Campaign'}
                   </button>
-                  <button className="flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-800/60 border border-slate-700/30 text-slate-400 text-sm font-medium hover:text-white transition-all">
+                  <button className="flex items-center gap-2 px-6 py-3 rounded-xl bg-surface-sunken border border-surface-border text-text-muted text-sm font-medium hover:text-text-primary transition-all">
                     <Clock className="w-4 h-4" /> Schedule
                   </button>
                 </div>
