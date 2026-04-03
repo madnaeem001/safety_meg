@@ -1846,6 +1846,55 @@ CREATE INDEX IF NOT EXISTS idx_et_category ON email_templates(category);
 CREATE INDEX IF NOT EXISTS idx_et_status ON email_templates(status);
 CREATE INDEX IF NOT EXISTS idx_aw_status ON automation_workflows(status);
 CREATE INDEX IF NOT EXISTS idx_ec_status ON email_campaigns(status);
+
+-- ==================== SITES ====================
+
+CREATE TABLE IF NOT EXISTS sites (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  address TEXT,
+  country TEXT,
+  timezone TEXT,
+  is_active INTEGER NOT NULL DEFAULT 1,
+  created_at INTEGER NOT NULL DEFAULT (unixepoch() * 1000),
+  updated_at INTEGER NOT NULL DEFAULT (unixepoch() * 1000)
+);
+
+-- ==================== AUDIT SCHEDULES ====================
+
+CREATE TABLE IF NOT EXISTS audit_schedules (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  site_id INTEGER NOT NULL REFERENCES sites(id) ON DELETE CASCADE,
+  rrule_string TEXT NOT NULL,
+  last_run_at INTEGER,
+  next_run_at INTEGER,
+  is_active INTEGER NOT NULL DEFAULT 1,
+  created_by INTEGER NOT NULL REFERENCES users(id),
+  created_at INTEGER NOT NULL DEFAULT (unixepoch() * 1000),
+  updated_at INTEGER NOT NULL DEFAULT (unixepoch() * 1000)
+);
+
+CREATE INDEX IF NOT EXISTS idx_audit_schedules_next_run ON audit_schedules(next_run_at);
+CREATE INDEX IF NOT EXISTS idx_audit_schedules_is_active ON audit_schedules(is_active);
+CREATE INDEX IF NOT EXISTS idx_audit_schedules_site ON audit_schedules(site_id);
+CREATE INDEX IF NOT EXISTS idx_audit_schedules_created_by ON audit_schedules(created_by);
+
+-- ==================== AUDIT INSTANCES ====================
+-- One row per triggered execution of an AuditSchedule.
+
+CREATE TABLE IF NOT EXISTS audit_instances (
+  id TEXT PRIMARY KEY,
+  schedule_id TEXT NOT NULL REFERENCES audit_schedules(id) ON DELETE CASCADE,
+  site_id INTEGER NOT NULL REFERENCES sites(id),
+  triggered_at INTEGER NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  created_at INTEGER NOT NULL DEFAULT (unixepoch() * 1000)
+);
+
+CREATE INDEX IF NOT EXISTS idx_audit_instances_schedule ON audit_instances(schedule_id);
+CREATE INDEX IF NOT EXISTS idx_audit_instances_status ON audit_instances(status);
+CREATE INDEX IF NOT EXISTS idx_audit_instances_triggered_at ON audit_instances(triggered_at);
 `;
 
 try {
@@ -2660,8 +2709,44 @@ try {
   console.log('  - email_templates');
   console.log('  - automation_workflows');
   console.log('  - email_campaigns');
+  console.log('  - sites');
+  console.log('  - audit_schedules');
+  console.log('  - audit_instances');
   console.log('\nIndexes created for better query performance.');
-  
+
+  // SEED: Insert default sites if the table is empty (matches frontend MOCK_SITES constant)
+  {
+    const siteCount = (sqlite.prepare('SELECT COUNT(*) as n FROM sites').get() as { n: number }).n;
+    if (siteCount === 0) {
+      const insertSite = sqlite.prepare(
+        `INSERT INTO sites (name, address, country, timezone, is_active, created_at, updated_at)
+         VALUES (?, ?, ?, ?, 1, ?, ?)`
+      );
+      const now = Date.now();
+      const defaultSites = [
+        ['Plant A — Birmingham',          'Aston Road, Birmingham, B6 4BJ',     'UK',  'Europe/London'],
+        ['Plant B — Manchester',           'Trafford Park Road, Manchester, M17', 'UK',  'Europe/London'],
+        ['Offshore Rig Alpha',             'North Sea, Platform Alpha',           'UK',  'Europe/London'],
+        ['Head Office — London',           '30 St Mary Axe, London, EC3A 8BF',   'UK',  'Europe/London'],
+        ['Distribution Centre — Leeds',    'Stourton Industrial Park, Leeds, LS10', 'UK', 'Europe/London'],
+      ];
+      for (const [name, address, country, timezone] of defaultSites) {
+        insertSite.run(name, address, country, timezone, now, now);
+      }
+      console.log('✓ Seeded 5 default sites');
+    }
+
+    // Seed system user (id=1) so created_by FK is always satisfiable
+    const userCount = (sqlite.prepare('SELECT COUNT(*) as n FROM users').get() as { n: number }).n;
+    if (userCount === 0) {
+      sqlite.prepare(
+        `INSERT INTO users (id, email, first_name, last_name, role, created_at)
+         VALUES (1, 'system@safetymeg.com', 'System', 'User', 'admin', ?)`
+      ).run(Date.now());
+      console.log('✓ Seeded system user (id=1)');
+    }
+  }
+
 } catch (error) {
   console.error('❌ Database initialization error:', error);
   process.exit(1);

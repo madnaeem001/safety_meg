@@ -88,6 +88,8 @@ const SelfAdminPlatform = lazy(() => import('./pages/SelfAdminPlatform'));
 const CustomAppBuilder = lazy(() => import('./pages/CustomAppBuilder'));
 const AIVisualAudit = lazy(() => import('./pages/AIVisualAudit'));
 const AIAuditTemplateForm = lazy(() => import('./pages/AIAuditTemplateForm').then(m => ({ default: m.AIAuditTemplateForm })));
+const AuditScheduleBuilder = lazy(() => import('./pages/audits/AuditScheduleBuilder'));
+const AuditScheduleList = lazy(() => import('./pages/audits/AuditScheduleList'));
 const AIVisualAuditHub = lazy(() => import('./pages/AIVisualAuditHub'));
 const AIVisualAuditHistory = lazy(() => import('./pages/AIVisualAuditHistory'));
 const AssetQRScanner = lazy(() => import('./pages/AssetQRScanner'));
@@ -221,6 +223,8 @@ function AnimatedRoutes() {
           <Route path="/nfpa-codes" element={<ProtectedRoute><NFPACodes /></ProtectedRoute>} />
           <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
           <Route path="/safety-audit" element={<ProtectedRoute><SafetyAudit /></ProtectedRoute>} />
+          <Route path="/audit-schedule/new" element={<ProtectedRoute><AuditScheduleBuilder /></ProtectedRoute>} />
+          <Route path="/audit-schedules" element={<ProtectedRoute><AuditScheduleList /></ProtectedRoute>} />
           <Route path="/safety-procedures" element={<ProtectedRoute><SafetyProcedures /></ProtectedRoute>} />
           <Route path="/report-incident" element={<ProtectedRoute><IncidentReporting /></ProtectedRoute>} />
           <Route path="/injury-report" element={<ProtectedRoute><InjuryReport /></ProtectedRoute>} />

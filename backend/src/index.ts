@@ -70,6 +70,7 @@ import { organizationSettingsRoutes } from "./routes/organization-settings";
 import { pilotProgramRoutes } from "./routes/pilot-program";
 import { predictiveSafetyRoutes } from "./routes/predictive-safety";
 import { webhooksRoutes } from "./routes/webhooks";
+import { auditScheduleRoutes } from "./routes/audit-schedules";
 import { ZodError } from "zod";
 
 const appLogger = createLogger('App');
@@ -323,6 +324,7 @@ export async function createApp(edgespark: any): Promise<Hono> {
   pilotProgramRoutes(app);
   predictiveSafetyRoutes(app);
   webhooksRoutes(app);
+  auditScheduleRoutes(app);
 
   return app;
 }

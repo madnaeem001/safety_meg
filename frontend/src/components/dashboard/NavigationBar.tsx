@@ -70,6 +70,7 @@ export const NAV_SECTIONS = [
       { icon: ThumbsUp, label: 'BBS Observations', path: '/behavior-based-safety' },
       { icon: Layers, label: 'Bow Tie Analysis', path: '/bowtie-analysis' },
       { icon: ClipboardCheck, label: 'Quality Management', path: '/quality-management' },
+      { icon: CalendarDays, label: 'Audit Schedules', path: '/audit-schedules' },
     ]
   },
   {

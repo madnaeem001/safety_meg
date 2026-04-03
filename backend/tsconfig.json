@@ -10,7 +10,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "baseUrl": ".",
     "paths": {
       "@generated": ["./src/__generated__/index.ts"],
       "@sdk/server-types": ["./src/__generated__/server-types.d.ts"]
